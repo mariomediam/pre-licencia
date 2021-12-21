@@ -1,51 +1,7 @@
 import Header from "../../components/Header";
-import PreLicenciaDatosComponent from "../../components/licenciaFuncionamiento/PreLicenciaDatosComponent";
-import PreLicenciaCuestionarioComponent from "../../components/licenciaFuncionamiento/PreLicenciaCuestionarioComponent";
-import PreLicenciaNRComponent from "../../components/licenciaFuncionamiento/PreLicenciaNRComponent";
-import PreLicenciaCompatibComponent from "../../components/licenciaFuncionamiento/PreLicenciaCompatibComponent";
-import PreLicenciaRequisitosComponent from "../../components/licenciaFuncionamiento/PreLicenciaRequisitosComponent";
-import { useAccordionButton } from "react-bootstrap/AccordionButton";
-import {
-  Accordion,
-  Card,
-  Navbar,
-  Container,
-  Tabs,
-  Tab,
-  Button,
-} from "react-bootstrap";
+import { Table, Button, Form, InputGroup, FormControl } from "react-bootstrap";
 
 export default function PreLicenciaView() {
-  function CustomToggle({ children, eventKey }) {
-    const decoratedOnClick = useAccordionButton(eventKey, () =>
-      console.log("totally custom!")
-    );
-
-    return (
-      //     <div className="d-grid gap-2">
-      //   <Button
-      //     type="button"
-      //     // style={{ backgroundColor: "black" }}
-      //     onClick={decoratedOnClick}
-      //     variant="link"
-      //   >
-      //     {children}
-      //   </Button>
-      //   </div>
-
-      <Navbar
-        expand="lg"
-        className="color-header1"
-        variant="dark"
-        onClick={decoratedOnClick}
-      >
-        <Container fluid>
-          <Navbar.Brand>Cuestionario</Navbar.Brand>
-        </Container>
-      </Navbar>
-    );
-  }
-
   return (
     <div>
       <Header />
@@ -60,74 +16,70 @@ export default function PreLicenciaView() {
               <i class="fas fa-store me-3"></i>
               Pre Licencia de Funcionamiento
             </h3>
-            <div style={{ border: "1px solid rgb(40, 116, 166)" }}>
-              <Navbar className="color-header1" variant="dark">
-                <Container fluid>
-                  <Navbar.Brand href="#home">
-                    Pre-Licencia Nº 00001
-                  </Navbar.Brand>
-                  <div className="d-flex justify-content-end">
-                    <Button variant="success">
-                      <i class="fas fa-arrow-alt-circle-left me-2"></i>Regresar
+            <div className="row mt-4">
+              <div className="col-12 col-sm-6">
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label className="fw-bold">Mostrar</Form.Label>
+                  <Form.Select aria-label="Default select example">
+                    <option>Pendientes</option>
+                    <option value="1">Aprobados</option>
+                    <option value="2">Rechazados</option>
+                    <option value="3">Todos</option>
+                  </Form.Select>
+                </Form.Group>
+              </div>
+              <div className="col-12 col-sm-6">
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label className="fw-bold">Buscar</Form.Label>
+                  <InputGroup className="mb-3">
+                    <FormControl
+                      // placeholder="Recipient's username"
+                      // aria-label="Recipient's username"
+                      aria-describedby="basic-addon2"
+                    />
+                    <Button variant="outline-secondary" id="button-addon2" title="Buscar">
+                      <i class="fas fa-search"></i>
                     </Button>
-                  </div>
-                </Container>
-              </Navbar>
-              <div className="px-2">
-                <PreLicenciaDatosComponent />
+                  </InputGroup>
+                </Form.Group>
               </div>
             </div>
-
-            <div
-              className="mt-2 color-header1"
-              style={{ border: "1px solid rgb(40, 116, 166)" }}
-            >
-              <Accordion defaultActiveKey="0">
-                <Card>
-                  <Card.Header className="color-header1 p-0">
-                    <CustomToggle eventKey="0">Cuestionario</CustomToggle>
-                  </Card.Header>
-                  <Accordion.Collapse eventKey="0">
-                    <Card.Body>
-                      <PreLicenciaCuestionarioComponent />
-                    </Card.Body>
-                  </Accordion.Collapse>
-                </Card>
-              </Accordion>
-            </div>
-
-            <div
-              className="mt-2"
-              style={{ border: "1px solid rgb(40, 116, 166)" }}
-            >
-              <Navbar className="color-header1" variant="dark">
-                <Container fluid>
-                  <Navbar.Brand href="#home">Evaluaciones</Navbar.Brand>
-                </Container>
-              </Navbar>
-              <div className="p-2">
-                <Tabs
-                  defaultActiveKey="profile"
-                  id="uncontrolled-tab-example"
-                  className="mb-3"
-                  fill
-                  justify
-                >
-                  <Tab eventKey="home" title="Nivel de riesgo">
-                    <PreLicenciaNRComponent />
-                  </Tab>
-                  <Tab
-                    eventKey="profile"
-                    title="Compatibilidad de uso"
-                    style={{ color: "yellow !important" }}
-                  >
-                    <PreLicenciaCompatibComponent />
-                  </Tab>
-                  <Tab eventKey="contact" title="Requisitos">
-                    <PreLicenciaRequisitosComponent />
-                  </Tab>
-                </Tabs>
-              </div>
+            <div>
+              <Table bordered hover>
+                <thead>
+                  <tr className="color-header1 text-white">
+                    <th>#</th>
+                    <th>Código</th>
+                    <th>Solicitante</th>
+                    <th>Estado</th>
+                    <th>Ver</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>00001</td>
+                    <td>DEDIOS SAAVEDRA-JORGE ANTONIO</td>
+                    <td>Pendiente</td>
+                    <td>
+                      <Button href="/pre_licencia_ver" variant="success" size="sm" title="Ver solicitud">
+                        <i class="fas fa-eye"></i>
+                      </Button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>00002</td>
+                    <td>DEDIOS SAAVEDRA-JORGE ANTONIO</td>
+                    <td>Rechazado</td>
+                    <td>
+                      <Button href="/pre_licencia_ver" variant="success" size="sm" title="Ver solicitud">
+                        <i class="fas fa-eye"></i>
+                      </Button>
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
             </div>
           </div>
         </div>
