@@ -1,0 +1,19 @@
+{
+  "name": "react_apache_ubuntu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariomediam/react_apache_ubuntu.git"
+  },
+  "author": "Mario Medina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariomediam/react_apache_ubuntu/issues"
+  },
+  "homepage": "https://github.com/mariomediam/react_apache_ubuntu#readme"
+}
