@@ -9,7 +9,7 @@ export default function PreLicenciaDatosComponent(){
                 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label className="fw-bold">Solicitante</Form.Label>
-                    <Form.Control type="text"/>
+                    <Form.Control type="text" readOnly style={{backgroundColor: "#FFFFFF", color: "black"}} value="MARIO MEDINA"/>
                     {/* <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
                     </Form.Text> */}
@@ -18,13 +18,13 @@ export default function PreLicenciaDatosComponent(){
                     <div className="col">
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="fw-bold">Fecha de solicitud</Form.Label>
-                        <Form.Control type="text"/>
+                        <Form.Control type="text" readOnly style={{backgroundColor: "#FFFFFF", color: "black"}} value = "22/12/2021"/>
                         </Form.Group>
                     </div>
                     <div className="col">
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label className="fw-bold">Área (m2)</Form.Label>
-                            <Form.Control type="text"/>                            
+                            <Form.Control type="text" readOnly style={{backgroundColor: "#FFFFFF", color: "black"}} value = "30.80"/>                            
                         </Form.Group>
                     </div>
                 </div>

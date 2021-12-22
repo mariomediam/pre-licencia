@@ -13,7 +13,7 @@ export default function PreLicenciaView() {
             style={{ border: "0px solid black" }}
           >
             <h3 className="mt-0 text-center">
-              <i class="fas fa-store me-3"></i>
+              <i className="fas fa-store me-3"></i>
               Pre Licencia de Funcionamiento
             </h3>
             <div className="row mt-4">
@@ -38,7 +38,7 @@ export default function PreLicenciaView() {
                       aria-describedby="basic-addon2"
                     />
                     <Button variant="outline-secondary" id="button-addon2" title="Buscar">
-                      <i class="fas fa-search"></i>
+                      <i className="fas fa-search"></i>
                     </Button>
                   </InputGroup>
                 </Form.Group>
@@ -63,7 +63,7 @@ export default function PreLicenciaView() {
                     <td>Pendiente</td>
                     <td>
                       <Button href="/pre_licencia_ver" variant="success" size="sm" title="Ver solicitud">
-                        <i class="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i>
                       </Button>
                     </td>
                   </tr>
@@ -74,7 +74,7 @@ export default function PreLicenciaView() {
                     <td>Rechazado</td>
                     <td>
                       <Button href="/pre_licencia_ver" variant="success" size="sm" title="Ver solicitud">
-                        <i class="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i>
                       </Button>
                     </td>
                   </tr>

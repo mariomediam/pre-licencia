@@ -57,7 +57,7 @@ export default function PreLicenciaEditView() {
             style={{ border: "0px solid black" }}
           >
             <h3 className="mt-0 text-center">
-              <i class="fas fa-store me-3"></i>
+              <i className="fas fa-store me-3"></i>
               Pre Licencia de Funcionamiento
             </h3>
             <div style={{ border: "1px solid rgb(40, 116, 166)" }}>
@@ -68,7 +68,7 @@ export default function PreLicenciaEditView() {
                   </Navbar.Brand>
                   <div className="d-flex justify-content-end">
                     <Button variant="success" href="/pre_licencia">
-                      <i class="fas fa-arrow-alt-circle-left me-2"></i>Regresar
+                      <i className="fas fa-arrow-alt-circle-left me-2"></i>Regresar
                     </Button>
                   </div>
                 </Container>
