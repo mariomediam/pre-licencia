@@ -6,7 +6,7 @@ export default function PreLicenciaCompatibComponent() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+
   return (
     <div>
       <div className="d-flex justify-content-end">
@@ -33,7 +33,10 @@ export default function PreLicenciaCompatibComponent() {
           keyboard={false}
         >
           <Modal.Header closeButton>
-            <Modal.Title><i className="fas fa-map-marked-alt me-2"></i>Evaluar compatibilidad de uso</Modal.Title>
+            <Modal.Title>
+              <i className="fas fa-map-marked-alt me-2"></i>Evaluar
+              compatibilidad de uso
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -55,13 +58,14 @@ export default function PreLicenciaCompatibComponent() {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Cerrar
+              <i class="far fa-times-circle me-1"></i>Cerrar
             </Button>
-            <Button variant="primary">Grabar</Button>
+            <Button variant="primary">
+              <i class="far fa-save me-2"></i>Grabar
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>
-
     </div>
   );
 }

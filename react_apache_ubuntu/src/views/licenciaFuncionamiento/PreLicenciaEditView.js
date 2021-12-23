@@ -40,7 +40,7 @@ export default function PreLicenciaEditView() {
         onClick={decoratedOnClick}
       >
         <Container fluid>
-          <Navbar.Brand>Cuestionario</Navbar.Brand>
+          <Navbar.Brand><i class="far fa-question-circle me-2"></i>Cuestionario</Navbar.Brand>
         </Container>
       </Navbar>
     );
@@ -56,7 +56,7 @@ export default function PreLicenciaEditView() {
             className="align-items-center p-2 col-sm-12 col-lg-8"
             style={{ border: "0px solid black" }}
           >
-            <h3 className="mt-0 text-center">
+            <h3 className="mt-0 mb-4 text-center">
               <i className="fas fa-store me-3"></i>
               Pre Licencia de Funcionamiento
             </h3>
@@ -64,7 +64,7 @@ export default function PreLicenciaEditView() {
               <Navbar className="color-header1" variant="dark">
                 <Container fluid>
                   <Navbar.Brand href="#home">
-                    Pre-Licencia Nº 00001
+                  <i className="far fa-file-alt me-2"></i>Solicitud Nº 00001
                   </Navbar.Brand>
                   <div className="d-flex justify-content-end">
                     <Button variant="success" href="/pre_licencia">
@@ -84,7 +84,7 @@ export default function PreLicenciaEditView() {
             >
               <Accordion defaultActiveKey="0">
                 <Card>
-                  <Card.Header className="color-header1 p-0">
+                  <Card.Header className="color-header1 p-0">                  
                     <CustomToggle eventKey="0">Cuestionario</CustomToggle>
                   </Card.Header>
                   <Accordion.Collapse eventKey="0">
@@ -102,18 +102,18 @@ export default function PreLicenciaEditView() {
             >
               <Navbar className="color-header1" variant="dark">
                 <Container fluid>
-                  <Navbar.Brand href="#home">Evaluaciones</Navbar.Brand>
+                  <Navbar.Brand href="#home"><i class="far fa-check-circle me-1"></i> Evaluaciones</Navbar.Brand>
                 </Container>
               </Navbar>
               <div className="p-2">
                 <Tabs
-                  defaultActiveKey="profile"
+                  defaultActiveKey="NR"
                   id="uncontrolled-tab-example"
                   className="mb-3"
                   fill
                   justify
                 >
-                  <Tab eventKey="home" title="Nivel de riesgo">
+                  <Tab eventKey="NR" title="Nivel de riesgo">
                     <PreLicenciaNRComponent />
                   </Tab>
                   <Tab
