@@ -19,7 +19,11 @@ export default function PreLicenciaView() {
   
   const [listPrecalUsuEstado, setListPrecalUsuEstado] = useState([]);
 
+  const [listPrecalUsuEstadoFiltro, setListPrecalUsuEstadoFiltro] = useState([])
+
   const selectEstado = useRef();
+
+  const inputFiltro = useRef();
 
   const listarPrecalUsuEstado = async () => {
     
@@ -33,15 +37,48 @@ export default function PreLicenciaView() {
       estado
     );
     setListPrecalUsuEstado(listPrecalUsuEstadoTmp);
+    
   };
 
- 
-  
+  const listarPrecalUsuEstadoFiltro = () => {
+
+    let listPrecalUsuEstadoFiltroTmp = []
+
+    if (inputFiltro.current.value.length > 0){
+      if (!isNaN(inputFiltro.current.value)){
+        listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(fila => fila.precalId === parseInt(inputFiltro.current.value))
+      } else  {
+        listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(fila => fila.webContribNomCompleto.replace("  ", " ").toUpperCase().includes(inputFiltro.current.value.toUpperCase()))
+      }
+
+    } else{
+      listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado]
+    }
+    
+    
+
+    setListPrecalUsuEstadoFiltro(listPrecalUsuEstadoFiltroTmp)
+
+  }
+
+  const inputKeyUp = (event) => {
+    if(event.keyCode===13){
+      listarPrecalUsuEstadoFiltro()
+    }
+
+  }
+
   useEffect(() => {
         
 		listarPrecalUsuEstado()	
     // eslint-disable-next-line react-hooks/exhaustive-deps	
-    }, [])
+    }, [userName])
+
+    useEffect(() => {
+        
+      listarPrecalUsuEstadoFiltro()	
+      // eslint-disable-next-line react-hooks/exhaustive-deps	
+      }, [listPrecalUsuEstado])
 
   
 
@@ -114,17 +151,20 @@ export default function PreLicenciaView() {
               </div>
               <div className="col-12 col-sm-6">
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label className="fw-bold">Buscar</Form.Label>
+                  <Form.Label className="fw-bold">Filtrar por</Form.Label>
                   <InputGroup className="mb-3">
                     <FormControl
                       // placeholder="Recipient's username"
                       // aria-label="Recipient's username"
                       aria-describedby="basic-addon2"
+                      ref={inputFiltro}
+                      onKeyUp={inputKeyUp}
                     />
                     <Button
                       variant="outline-secondary"
                       id="button-addon2"
-                      title="Buscar"
+                      title="Buscar"   
+                      onClick={listarPrecalUsuEstadoFiltro}                   
                     >
                       <i className="fas fa-search"></i>
                     </Button>
@@ -133,7 +173,8 @@ export default function PreLicenciaView() {
               </div>
             </div>
             <div className="table-responsive">
-              <Table bordered hover>
+              <Table bordered hover className="caption-top">
+                <caption className="py-0"> {listPrecalUsuEstadoFiltro.length} registro(s) encontrado(s)</caption>
                 <thead>
                   <tr className="color-header1 text-white">
                     <th>Id</th>
@@ -169,7 +210,7 @@ export default function PreLicenciaView() {
                   </tr>
                 </thead>
                 <tbody>
-                  {listPrecalUsuEstado.map((soliciPrecalif, i) => (
+                  {listPrecalUsuEstadoFiltro.map((soliciPrecalif, i) => (
                     <tr key={soliciPrecalif.precalId}>
                       <td>
                         {soliciPrecalif.precalId.toString().padStart(4, "0")}

@@ -16,8 +16,6 @@ const obtenerPrecalUsuEstado = async(login, estado) => {
             URLPrecalUsuEstado = `${URLPrecalUsuEstado}&estado=${estado}`
         }
 
-        console.log(URLPrecalUsuEstado)
-
         let { data : { content} } = await api.get(`${URLPrecalUsuEstado}`)                
         
         return content //ya tenemos los datos
