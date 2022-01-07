@@ -1,7 +1,89 @@
+import { useState, useRef, useEffect, useContext } from "react";
+import {
+  Table,
+  Button,
+  Form,
+  InputGroup,
+  FormControl,
+  Popover,
+  OverlayTrigger,
+} from "react-bootstrap";
+
+import AuthContext from "../../context/AuthContext";
+
 import Header from "../../components/Header";
-import { Table, Button, Form, InputGroup, FormControl } from "react-bootstrap";
+import { obtenerPrecalUsuEstado } from "../../services/licFuncService";
 
 export default function PreLicenciaView() {
+  const { userName } = useContext(AuthContext);
+  
+  const [listPrecalUsuEstado, setListPrecalUsuEstado] = useState([]);
+
+  const selectEstado = useRef();
+
+  const listarPrecalUsuEstado = async () => {
+    
+    let estado =
+      selectEstado.current.value === "9"
+        ? undefined
+        : selectEstado.current.value;
+
+    const listPrecalUsuEstadoTmp = await obtenerPrecalUsuEstado(
+      userName,
+      estado
+    );
+    setListPrecalUsuEstado(listPrecalUsuEstadoTmp);
+  };
+
+ 
+  
+  useEffect(() => {
+        
+		listarPrecalUsuEstado()	
+    // eslint-disable-next-line react-hooks/exhaustive-deps	
+    }, [])
+
+  
+
+  const popoverNR = (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">Nivel de riesgo</Popover.Header>
+      <Popover.Body>
+        Resultado de la evaluación del nivel de riesgo:
+        <br />
+        (vacio) pendiente de evaluación <br />
+        <i className="fas fa-check"></i> Aprobado <br />
+        <i className="fas fa-times"></i> Rechazado
+      </Popover.Body>
+    </Popover>
+  );
+
+  const popoverCU = (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">Compatibilidad de uso</Popover.Header>
+      <Popover.Body>
+        Resultado de la evaluación de compatibilidad de uso:
+        <br />
+        (vacio) pendiente de evaluación <br />
+        <i className="fas fa-check"></i> Compatible <br />
+        <i className="fas fa-times"></i> No compatible
+      </Popover.Body>
+    </Popover>
+  );
+
+  const popoverAC = (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">Atención al ciudadano</Popover.Header>
+      <Popover.Body>
+        Resultado de la evaluación de la Subgerencia de Atención al Ciudadano:
+        <br />
+        (vacio) pendiente de evaluación <br />
+        <i className="fas fa-check"></i> Aprobado <br />
+        <i className="fas fa-times"></i> Rechazado
+      </Popover.Body>
+    </Popover>
+  );
+
   return (
     <div>
       <Header />
@@ -20,11 +102,13 @@ export default function PreLicenciaView() {
               <div className="col-12 col-sm-6">
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label className="fw-bold">Mostrar</Form.Label>
-                  <Form.Select aria-label="Default select example">
-                    <option>Pendientes</option>
-                    <option value="1">Aprobados</option>
-                    <option value="2">Rechazados</option>
-                    <option value="3">Todos</option>
+                  <Form.Select
+                    aria-label="Default select example"
+                    ref={selectEstado}
+                    onChange={listarPrecalUsuEstado}
+                  >
+                    <option value="0">Pendientes</option>
+                    <option value="9">Todos</option>
                   </Form.Select>
                 </Form.Group>
               </div>
@@ -37,47 +121,100 @@ export default function PreLicenciaView() {
                       // aria-label="Recipient's username"
                       aria-describedby="basic-addon2"
                     />
-                    <Button variant="outline-secondary" id="button-addon2" title="Buscar">
+                    <Button
+                      variant="outline-secondary"
+                      id="button-addon2"
+                      title="Buscar"
+                    >
                       <i className="fas fa-search"></i>
                     </Button>
                   </InputGroup>
                 </Form.Group>
               </div>
             </div>
-            <div>
+            <div className="table-responsive">
               <Table bordered hover>
                 <thead>
                   <tr className="color-header1 text-white">
-                    <th>#</th>
-                    <th>Código</th>
+                    <th>Id</th>
                     <th>Solicitante</th>
-                    <th>Estado</th>
-                    <th>Ver</th>
+                    <OverlayTrigger
+                      trigger="click"
+                      placement="top"
+                      overlay={popoverNR}
+                    >
+                      <th className="px-1 mx-0" title="Nivel de riesgo">
+                        NR
+                      </th>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      trigger="click"
+                      placement="top"
+                      overlay={popoverCU}
+                    >
+                    <th className="px-1 mx-0" title="Compatibilidad de uso">
+                      CU
+                    </th>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      trigger="click"
+                      placement="top"
+                      overlay={popoverAC}
+                    >
+                    <th className="px-1 mx-0" title="Atención al ciudadano">
+                      AC
+                    </th>
+                    </OverlayTrigger>
+                    <th className="px-1 mx-0">Ver</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>00001</td>
-                    <td>DEDIOS SAAVEDRA-JORGE ANTONIO</td>
-                    <td>Pendiente</td>
-                    <td>
-                      <Button href="/pre_licencia_ver" variant="success" size="sm" title="Ver solicitud">
-                        <i className="fas fa-eye"></i>
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>00002</td>
-                    <td>DEDIOS SAAVEDRA-JORGE ANTONIO</td>
-                    <td>Rechazado</td>
-                    <td>
-                      <Button href="/pre_licencia_ver" variant="success" size="sm" title="Ver solicitud">
-                        <i className="fas fa-eye"></i>
-                      </Button>
-                    </td>
-                  </tr>
+                  {listPrecalUsuEstado.map((soliciPrecalif, i) => (
+                    <tr key={soliciPrecalif.precalId}>
+                      <td>
+                        {soliciPrecalif.precalId.toString().padStart(4, "0")}
+                      </td>
+                      <td>{soliciPrecalif.webContribNomCompleto}</td>
+                      {/* <td>{soliciPrecalif.precalEstadoNom}</td> */}
+                      <td className="px-1 mx-0">
+                        {soliciPrecalif.precalRiesgoEval === 1 ? (
+                          <i className="fas fa-check" title="Aprobado"></i>
+                        ) : (
+                          soliciPrecalif.precalRiesgoEval === 2 && (
+                            <i className="fas fa-times" title="Rechazado"></i>
+                          )
+                        )}
+                      </td>
+                      <td className="px-1 mx-0">
+                        {soliciPrecalif.precalCompatCU === 1 ? (
+                          <i className="fas fa-check" title="Aprobado">></i>
+                        ) : (
+                          soliciPrecalif.precalCompatCU === 2 && (
+                            <i className="fas fa-times" title="Rechazado">></i>
+                          )
+                        )}
+                      </td>
+                      <td className="px-1 mx-0">
+                        {soliciPrecalif.precalCompatDL === 1 ? (
+                          <i className="fas fa-check" title="Aprobado">></i>
+                        ) : (
+                          soliciPrecalif.precalCompatDL === 2 && (
+                            <i className="fas fa-times" title="Rechazado">></i>
+                          )
+                        )}
+                      </td>
+                      <td className="px-1 mx-0">
+                        <Button
+                          href="/pre_licencia_ver"
+                          variant="success"
+                          size="sm"
+                          title="Ver solicitud"
+                        >
+                          <i className="fas fa-eye"></i>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </Table>
             </div>

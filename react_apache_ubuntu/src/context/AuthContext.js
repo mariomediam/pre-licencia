@@ -25,7 +25,7 @@ export const AuthProvider = ({children}) => {
         if (localStorage.getItem('authTokens')){
             userNameTmp = jwt_decode(JSON.parse(localStorage.getItem('authTokens')).access).user_id
         }
-        setUserName(userNameTmp)        
+        setUserName(userNameTmp ? userNameTmp.trim() : undefined)        
     }, [])
 
     let tokenEsValido = () => {
