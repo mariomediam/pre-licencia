@@ -15,7 +15,7 @@ export default function App() {
           <Route path="/" element={<LoginView />} />
           <Route path="/buscar_trabajador" element={<TrabajadorView />} />        
           <Route path="/pre_licencia" element={<PreLicenciaView />} />
-          <Route path="/pre_licencia_ver" element={<PreLicenciaEditView />} />
+          <Route path="/pre_licencia_ver/:precalId" element={<PreLicenciaEditView />} />
         </Routes>          
       </AuthProvider>
     </BrowserRouter>

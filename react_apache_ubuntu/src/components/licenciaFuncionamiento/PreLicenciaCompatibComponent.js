@@ -58,10 +58,10 @@ export default function PreLicenciaCompatibComponent() {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              <i class="far fa-times-circle me-1"></i>Cerrar
+              <i className="far fa-times-circle me-1"></i>Cerrar
             </Button>
             <Button variant="primary">
-              <i class="far fa-save me-2"></i>Grabar
+              <i className="far fa-save me-2"></i>Grabar
             </Button>
           </Modal.Footer>
         </Modal>

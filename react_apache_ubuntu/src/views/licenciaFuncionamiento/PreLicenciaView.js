@@ -228,25 +228,25 @@ export default function PreLicenciaView() {
                       </td>
                       <td className="px-1 mx-0">
                         {soliciPrecalif.precalCompatCU === 1 ? (
-                          <i className="fas fa-check" title="Aprobado">></i>
+                          <i className="fas fa-check" title="Aprobado"></i>
                         ) : (
                           soliciPrecalif.precalCompatCU === 2 && (
-                            <i className="fas fa-times" title="Rechazado">></i>
+                            <i className="fas fa-times" title="Rechazado"></i>
                           )
                         )}
                       </td>
                       <td className="px-1 mx-0">
                         {soliciPrecalif.precalCompatDL === 1 ? (
-                          <i className="fas fa-check" title="Aprobado">></i>
+                          <i className="fas fa-check" title="Aprobado"></i>
                         ) : (
                           soliciPrecalif.precalCompatDL === 2 && (
-                            <i className="fas fa-times" title="Rechazado">></i>
+                            <i className="fas fa-times" title="Rechazado"></i>
                           )
                         )}
                       </td>
                       <td className="px-1 mx-0">
                         <Button
-                          href="/pre_licencia_ver"
+                          href={`/pre_licencia_ver/${soliciPrecalif.precalId}`}
                           variant="success"
                           size="sm"
                           title="Ver solicitud"

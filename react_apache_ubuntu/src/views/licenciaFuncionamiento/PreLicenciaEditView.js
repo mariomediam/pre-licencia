@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom"
 import Header from "../../components/Header";
 import PreLicenciaDatosComponent from "../../components/licenciaFuncionamiento/PreLicenciaDatosComponent";
 import PreLicenciaCuestionarioComponent from "../../components/licenciaFuncionamiento/PreLicenciaCuestionarioComponent";
@@ -16,23 +17,16 @@ import {
 } from "react-bootstrap";
 
 export default function PreLicenciaEditView() {
+
+  const {precalId} = useParams()
+  
   function CustomToggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
       console.log("totally custom!")
     );
 
     return (
-      //     <div className="d-grid gap-2">
-      //   <Button
-      //     type="button"
-      //     // style={{ backgroundColor: "black" }}
-      //     onClick={decoratedOnClick}
-      //     variant="link"
-      //   >
-      //     {children}
-      //   </Button>
-      //   </div>
-
+  
       <Navbar
         expand="lg"
         className="color-header1"
@@ -40,7 +34,7 @@ export default function PreLicenciaEditView() {
         onClick={decoratedOnClick}
       >
         <Container fluid>
-          <Navbar.Brand><i class="far fa-question-circle me-2"></i>Cuestionario</Navbar.Brand>
+          <Navbar.Brand><i className="far fa-question-circle me-2"></i>Cuestionario</Navbar.Brand>
         </Container>
       </Navbar>
     );
@@ -64,7 +58,7 @@ export default function PreLicenciaEditView() {
               <Navbar className="color-header1" variant="dark">
                 <Container fluid>
                   <Navbar.Brand href="#home">
-                  <i className="far fa-file-alt me-2"></i>Solicitud Nº 00001
+                  <i className="far fa-file-alt me-2"></i>Solicitud Nº {precalId.toString().padStart(4, '0')}
                   </Navbar.Brand>
                   <div className="d-flex justify-content-end">
                     <Button variant="success" href="/pre_licencia">
@@ -74,7 +68,7 @@ export default function PreLicenciaEditView() {
                 </Container>
               </Navbar>
               <div className="px-2">
-                <PreLicenciaDatosComponent />
+                <PreLicenciaDatosComponent precalId={precalId}/>
               </div>
             </div>
 
@@ -89,7 +83,7 @@ export default function PreLicenciaEditView() {
                   </Card.Header>
                   <Accordion.Collapse eventKey="0">
                     <Card.Body>
-                      <PreLicenciaCuestionarioComponent />
+                      <PreLicenciaCuestionarioComponent precalId={precalId}/>
                     </Card.Body>
                   </Accordion.Collapse>
                 </Card>
@@ -102,7 +96,7 @@ export default function PreLicenciaEditView() {
             >
               <Navbar className="color-header1" variant="dark">
                 <Container fluid>
-                  <Navbar.Brand href="#home"><i class="far fa-check-circle me-1"></i> Evaluaciones</Navbar.Brand>
+                  <Navbar.Brand href="#home"><i className="far fa-check-circle me-1"></i> Evaluaciones</Navbar.Brand>
                 </Container>
               </Navbar>
               <div className="p-2">
@@ -114,7 +108,7 @@ export default function PreLicenciaEditView() {
                   justify
                 >
                   <Tab eventKey="NR" title="Nivel de riesgo">
-                    <PreLicenciaNRComponent />
+                    <PreLicenciaNRComponent precalId={precalId}/>
                   </Tab>
                   <Tab
                     eventKey="profile"

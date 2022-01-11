@@ -1,6 +1,28 @@
+import { useState, useEffect } from 'react'
 import { Table } from "react-bootstrap";
+import { obtenerCuestionarioPorPrecalId } from "../../services/licFuncService";
 
-export default function PreLicenciaCuestionarioComponent() {
+
+export default function PreLicenciaCuestionarioComponent({ precalId }) {
+
+  const [cuestionario, setCuestionario] = useState([])
+
+  const verCuestionario = async () => {
+        
+      const cuestionarioTmp = await obtenerCuestionarioPorPrecalId(precalId)    
+
+      setCuestionario(cuestionarioTmp)
+    
+  };
+
+  useEffect(() => {
+    
+    verCuestionario();
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
+  }, [precalId]);
+
+
+
   return (
     <div>
       <Table bordered hover>
@@ -13,16 +35,13 @@ export default function PreLicenciaCuestionarioComponent() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>¿La actividad económica esta relacionada con laboratorios clínicos?</td>            
-            <td>No</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>¿La Resolución Directoral de DIRESA establace categoría I1 o I2?</td>
-            <td>Si</td>
-          </tr>          
+        {cuestionario.map(({precalCuestId, precalCuestPreguntaNombre, precalCuestRpta}, i) => (
+           <tr key = {precalCuestId}>
+           <td>{i+1}</td>
+           <td>{precalCuestPreguntaNombre.trim()}</td>            
+           <td>{precalCuestRpta.trim()}</td>
+         </tr>                            
+        ))}
         </tbody>
       </Table>
     </div>
