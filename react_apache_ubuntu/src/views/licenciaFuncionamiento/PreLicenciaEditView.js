@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
 import Header from "../../components/Header";
 import PreLicenciaDatosComponent from "../../components/licenciaFuncionamiento/PreLicenciaDatosComponent";
@@ -5,6 +6,7 @@ import PreLicenciaCuestionarioComponent from "../../components/licenciaFuncionam
 import PreLicenciaNRComponent from "../../components/licenciaFuncionamiento/PreLicenciaNRComponent";
 import PreLicenciaCompatibComponent from "../../components/licenciaFuncionamiento/PreLicenciaCompatibComponent";
 import PreLicenciaRequisitosComponent from "../../components/licenciaFuncionamiento/PreLicenciaRequisitosComponent";
+import { obtenerPrecalificacionPorId } from "../../services/licFuncService";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import {
   Accordion,
@@ -19,6 +21,30 @@ import {
 export default function PreLicenciaEditView() {
 
   const {precalId} = useParams()
+
+  const [mostrarCU, setMostrarCU] = useState(false)
+  const [mostarReq, setMostrarReq] = useState(false)
+
+  const verPrecalificacion = async () => {
+        
+    const { precalRiesgoEval, precalCompatCU } = await obtenerPrecalificacionPorId(
+        precalId
+    );
+
+    if (precalRiesgoEval===1){
+      setMostrarCU(true)  
+      if (precalCompatCU===1){
+        setMostrarReq(true)    
+      }
+    }
+
+  };
+
+  useEffect(() => {
+    verPrecalificacion();  
+    // eslint-disable-next-line react-hooks/exhaustive-deps      
+  }, [precalId]);
+  
   
   function CustomToggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
@@ -110,16 +136,19 @@ export default function PreLicenciaEditView() {
                   <Tab eventKey="NR" title="Nivel de riesgo">
                     <PreLicenciaNRComponent precalId={precalId}/>
                   </Tab>
-                  <Tab
+                  { mostrarCU && <Tab
                     eventKey="profile"
                     title="Compatibilidad de uso"
                     style={{ color: "yellow !important" }}
                   >
                     <PreLicenciaCompatibComponent />
-                  </Tab>
-                  <Tab eventKey="contact" title="Requisitos">
+                  </Tab>}
+
+                  { mostarReq && <Tab eventKey="contact" title="Requisitos">
                     <PreLicenciaRequisitosComponent />
-                  </Tab>
+                  </Tab>}
+                  
+                  
                 </Tabs>
               </div>
             </div>

@@ -1,27 +1,33 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Form, Button, Modal } from "react-bootstrap";
-import { obtenerEvaluacionPorPrecalIdTipoEval } from "../../services/licFuncService";
+
+import { obtenerEvaluacionPorPrecalIdTipoEval, obtenerUsuarioTipoEval } from "../../services/licFuncService";
+import AuthContext from "../../context/AuthContext";
 
 
 export default function PreLicenciaNRComponent({precalId}) {
+
+  const { userName } = useContext(AuthContext);
 
   const [show, setShow] = useState(false);
   
   const [resultado, setResultado] = useState('Pendiente')
   const [nivelRiesgo, setNivelRiesgo] = useState('')
   const [observaciones, setObservaciones] = useState('')
-  const [existeEvaluacion, setExisteEvaluacion] = useState(false)
+  const [puedeEvaluar, setPuedeEvaluar] = useState(false)
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+  const handleShow = () =>  setShow(true);
 
   const verEvaluacion = async () => {
-        
+      
+    
    
     const evaluacionTmp  = await obtenerEvaluacionPorPrecalIdTipoEval(precalId, 1)
+
+    if (evaluacionTmp){     
                 
-    if (evaluacionTmp){      
-      setExisteEvaluacion(true)
       setResultado(evaluacionTmp.precalEvalEstadoNombre)
       switch(evaluacionTmp.precalificacion.precalRiesgo){
         case 4:
@@ -41,20 +47,32 @@ export default function PreLicenciaNRComponent({precalId}) {
 
       }
       setObservaciones(evaluacionTmp.precalEvalComent)
-    }
-    
+      
+    } else {
+
+      let UsuarioTipoEvalTmp = []
+
+      if (userName){
+        UsuarioTipoEvalTmp  = await obtenerUsuarioTipoEval(userName, 1)    
+
+        if (UsuarioTipoEvalTmp && UsuarioTipoEvalTmp.length > 0){
+          setPuedeEvaluar(true)
+        }
+      }
+      
+    }    
     
   };
 
   useEffect(() => {
     verEvaluacion();  
     // eslint-disable-next-line react-hooks/exhaustive-deps      
-  }, [precalId]);
+  }, [precalId, userName]);
 
 
   return (
     <div>
-      { !existeEvaluacion && <div className="d-flex justify-content-end">
+      { puedeEvaluar && <div className="d-flex justify-content-end">
         <Button variant="success" onClick={handleShow}>
           <i className="fas fa-clipboard-check me-2"></i>
           Evaluar

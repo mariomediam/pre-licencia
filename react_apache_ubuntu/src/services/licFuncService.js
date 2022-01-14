@@ -87,10 +87,31 @@ const obtenerEvaluacionPorPrecalIdTipoEval = async(precalId, tipoEvalId) => {
     }
 }
 
+const obtenerUsuarioTipoEval = async(login, tipoEvalId = undefined) => {
+    try {
+        
+        let api = UseAxios()
+
+        let URLAccesos = `${URL}/eval-usu/${login}`
+                              
+        let { data : { content} } = await api.get(`${URLAccesos}`)   
+        
+        if (tipoEvalId){
+            return content.filter(row => row.tipoEval === tipoEvalId)
+        } else {
+            return content 
+        }
+        
+    } catch (error) {
+        throw error
+    }
+}
+
 export{
     obtenerPrecalUsuEstado,
     obtenerPrecalificacionPorId,
     obtenerGirosPorPrecalId,
     obtenerCuestionarioPorPrecalId,
-    obtenerEvaluacionPorPrecalIdTipoEval
+    obtenerEvaluacionPorPrecalIdTipoEval,
+    obtenerUsuarioTipoEval
 }
