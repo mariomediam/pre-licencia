@@ -1,28 +1,88 @@
-import { useState } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
+import AuthContext from "../../context/AuthContext";
+import { obtenerEvaluacionPorPrecalIdTipoEval, obtenerUsuarioTipoEval, agregarEvaluacion } from "../../services/licFuncService";
+import { Toast } from '../tools/PopMessage';
 
-export default function PreLicenciaCompatibComponent() {
+export default function PreLicenciaCompatibComponent({precalId, verPrecalificacion}) {
   const [show, setShow] = useState(false);
+  const [resultado, setResultado] = useState('Pendiente')  
+  const [observaciones, setObservaciones] = useState('')
+  const [puedeEvaluar, setPuedeEvaluar] = useState(false)
+
+  const selectResultEval = useRef();
+  const inputObserv = useRef();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const { userName } = useContext(AuthContext);
+
+  const verEvaluacion = async () => {   
+   
+    const evaluacionTmp  = await obtenerEvaluacionPorPrecalIdTipoEval(precalId, 2)
+
+    console.log(evaluacionTmp)
+
+    if (evaluacionTmp){     
+                
+      setResultado(evaluacionTmp.precalEvalEstadoNombre)    
+      setObservaciones(evaluacionTmp.precalEvalComent)
+      
+    } else {
+
+      let UsuarioTipoEvalTmp = []
+
+      if (userName){
+        UsuarioTipoEvalTmp  = await obtenerUsuarioTipoEval(userName, 2)    
+
+        if (UsuarioTipoEvalTmp && UsuarioTipoEvalTmp.length > 0){
+          setPuedeEvaluar(true)
+        }
+      }
+      
+    }    
+    
+  };
+
+  const grabarEvaluacion = async () => {
+            
+    await agregarEvaluacion(precalId, 2, inputObserv.current.value, userName, 'INDETERMINADO', selectResultEval.current.value, undefined)
+
+    verEvaluacion()
+    setPuedeEvaluar(false)
+    verPrecalificacion()
+
+    setShow(false)
+    
+    Toast.fire({
+      icon: 'success',
+      title: 'El registro se grabo con éxito',
+      background: '#F4F6F6',
+    })
+  }
+
+  useEffect(() => {
+    verEvaluacion();  
+    // eslint-disable-next-line react-hooks/exhaustive-deps      
+  }, [precalId, userName]);
+
   return (
     <div>
-      <div className="d-flex justify-content-end">
+      { puedeEvaluar && <div className="d-flex justify-content-end">
         <Button variant="success" onClick={handleShow}>
           <i className="fas fa-clipboard-check me-2"></i>
           Evaluar
         </Button>
-      </div>
+      </div>}
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="fw-bold">Resultado de evaluación</Form.Label>
-          <Form.Control type="text" />
+          <Form.Control type="text" readOnly style={{backgroundColor: "#FFFFFF", color: "black"}} value={resultado}/>
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label className="fw-bold">Observaciones</Form.Label>
-          <Form.Control as="textarea" rows={3} />
+          <Form.Control as="textarea" readOnly style={{backgroundColor: "#FFFFFF", color: "black"}} value={observaciones} rows={3} />
         </Form.Group>
       </Form>
       <div>
@@ -43,7 +103,7 @@ export default function PreLicenciaCompatibComponent() {
               <Form.Label className="fw-bold">
                 Resultado de evaluación
               </Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select aria-label="Default select example" ref={selectResultEval}>
                 <option value="1">Compatible</option>
                 <option value="2">No compatible</option>
               </Form.Select>
@@ -53,14 +113,14 @@ export default function PreLicenciaCompatibComponent() {
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Label className="fw-bold">Observaciones</Form.Label>
-              <Form.Control as="textarea" rows={3} />
+              <Form.Control as="textarea" rows={3} ref={inputObserv}/>
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               <i className="far fa-times-circle me-1"></i>Cerrar
             </Button>
-            <Button variant="primary">
+            <Button variant="primary" onClick={grabarEvaluacion}>
               <i className="far fa-save me-2"></i>Grabar
             </Button>
           </Modal.Footer>

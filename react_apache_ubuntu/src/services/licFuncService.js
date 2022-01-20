@@ -107,11 +107,40 @@ const obtenerUsuarioTipoEval = async(login, tipoEvalId = undefined) => {
     }
 }
 
+const agregarEvaluacion = async (precalificacion, tipoEval, precalEvalComent, precalEvalDigitUser, precalEvalDigitPC, resultEval, precalRiesgo) => {
+
+    console.log("se inicia ejecución de  axios")
+  
+    let credenciales = {
+      precalificacion: precalificacion,
+      tipoEval: tipoEval,
+      precalEvalComent: precalEvalComent,
+      precalEvalDigitUser: precalEvalDigitUser,
+      precalEvalDigitPC: precalEvalDigitPC,
+      resultEval: resultEval,
+      precalRiesgo: precalRiesgo
+    };
+
+    let api = UseAxios()
+  
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      let { data : { content} } = await api.post(`${URL}/precal-eval/${precalificacion}`, credenciales, { headers });
+       
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
+
 export{
     obtenerPrecalUsuEstado,
     obtenerPrecalificacionPorId,
     obtenerGirosPorPrecalId,
     obtenerCuestionarioPorPrecalId,
     obtenerEvaluacionPorPrecalIdTipoEval,
-    obtenerUsuarioTipoEval
+    obtenerUsuarioTipoEval,
+    agregarEvaluacion
 }

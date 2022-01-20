@@ -68,6 +68,7 @@ export default function PreLicenciaEditView() {
 
   return (
     <div>
+    
       <Header />
 
       <div className="container">
@@ -78,7 +79,7 @@ export default function PreLicenciaEditView() {
           >
             <h3 className="mt-0 mb-4 text-center">
               <i className="fas fa-store me-3"></i>
-              Pre Licencia de Funcionamiento
+              Pre Licencia de Funcionamiento              
             </h3>
             <div style={{ border: "1px solid rgb(40, 116, 166)" }}>
               <Navbar className="color-header1" variant="dark">
@@ -134,14 +135,14 @@ export default function PreLicenciaEditView() {
                   justify
                 >
                   <Tab eventKey="NR" title="Nivel de riesgo">
-                    <PreLicenciaNRComponent precalId={precalId}/>
+                    <PreLicenciaNRComponent precalId={precalId} verPrecalificacion={verPrecalificacion}/>
                   </Tab>
                   { mostrarCU && <Tab
                     eventKey="profile"
                     title="Compatibilidad de uso"
                     style={{ color: "yellow !important" }}
                   >
-                    <PreLicenciaCompatibComponent />
+                    <PreLicenciaCompatibComponent precalId={precalId} verPrecalificacion={verPrecalificacion}/>
                   </Tab>}
 
                   { mostarReq && <Tab eventKey="contact" title="Requisitos">
@@ -156,5 +157,6 @@ export default function PreLicenciaEditView() {
         </div>
       </div>
     </div>
+    
   );
 }
