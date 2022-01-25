@@ -48,7 +48,7 @@ export default function PreLicenciaEditView() {
   
   function CustomToggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
-      console.log("totally custom!")
+      console.log("")
     );
 
     return (
@@ -146,7 +146,7 @@ export default function PreLicenciaEditView() {
                   </Tab>}
 
                   { mostarReq && <Tab eventKey="contact" title="Requisitos">
-                    <PreLicenciaRequisitosComponent />
+                    <PreLicenciaRequisitosComponent precalId={precalId} verPrecalificacion={verPrecalificacion}/>
                   </Tab>}
                   
                   

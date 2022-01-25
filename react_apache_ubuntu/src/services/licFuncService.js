@@ -107,7 +107,7 @@ const obtenerUsuarioTipoEval = async(login, tipoEvalId = undefined) => {
     }
 }
 
-const agregarEvaluacion = async (precalificacion, tipoEval, precalEvalComent, precalEvalDigitUser, precalEvalDigitPC, resultEval, precalRiesgo) => {
+const agregarEvaluacion = async (precalificacion, tipoEval, precalEvalComent, precalEvalDigitUser, precalEvalDigitPC, resultEval, precalRiesgo = undefined, documentosSelecc = undefined) => {
 
     console.log("se inicia ejecución de  axios")
   
@@ -118,8 +118,11 @@ const agregarEvaluacion = async (precalificacion, tipoEval, precalEvalComent, pr
       precalEvalDigitUser: precalEvalDigitUser,
       precalEvalDigitPC: precalEvalDigitPC,
       resultEval: resultEval,
-      precalRiesgo: precalRiesgo
+      precalRiesgo: precalRiesgo,
+      documentos: documentosSelecc
     };
+
+    console.log(credenciales)
 
     let api = UseAxios()
   
@@ -135,6 +138,39 @@ const agregarEvaluacion = async (precalificacion, tipoEval, precalEvalComent, pr
     }
   };
 
+  const obtenerDocumPorPrecalIdTipoEval = async(precalId, tipoEvalId) => {
+    try {
+        
+        let api = UseAxios()
+
+        let URLDocumentacion = `${URL}/precal-eval-docum/${precalId}/${tipoEvalId}`
+                              
+        let { data : { content} } = await api.get(`${URLDocumentacion}`)                
+        
+        return content 
+        
+    } catch (error) {
+        throw error
+    }    
+}
+
+const obtenerTipoDocum = async() => {
+    try {
+        
+        let api = UseAxios()
+
+        let URLTipoDocum = `${URL}/tipo-docum`
+                              
+        let { data : { content} } = await api.get(`${URLTipoDocum}`)                
+        
+        return content 
+        
+    } catch (error) {
+        throw error
+    }
+}
+
+
 export{
     obtenerPrecalUsuEstado,
     obtenerPrecalificacionPorId,
@@ -142,5 +178,7 @@ export{
     obtenerCuestionarioPorPrecalId,
     obtenerEvaluacionPorPrecalIdTipoEval,
     obtenerUsuarioTipoEval,
-    agregarEvaluacion
+    agregarEvaluacion,
+    obtenerDocumPorPrecalIdTipoEval,
+    obtenerTipoDocum
 }

@@ -12,18 +12,17 @@ export default function PreLicenciaCompatibComponent({precalId, verPrecalificaci
 
   const selectResultEval = useRef();
   const inputObserv = useRef();
+  const { userName } = useContext(AuthContext);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const { userName } = useContext(AuthContext);
 
   const verEvaluacion = async () => {   
    
     const evaluacionTmp  = await obtenerEvaluacionPorPrecalIdTipoEval(precalId, 2)
 
-    console.log(evaluacionTmp)
-
+  
     if (evaluacionTmp){     
                 
       setResultado(evaluacionTmp.precalEvalEstadoNombre)    
