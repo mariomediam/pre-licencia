@@ -108,8 +108,7 @@ const obtenerUsuarioTipoEval = async(login, tipoEvalId = undefined) => {
 }
 
 const agregarEvaluacion = async (precalificacion, tipoEval, precalEvalComent, precalEvalDigitUser, precalEvalDigitPC, resultEval, precalRiesgo = undefined, documentosSelecc = undefined) => {
-
-    console.log("se inicia ejecución de  axios")
+    
   
     let credenciales = {
       precalificacion: precalificacion,
@@ -122,7 +121,7 @@ const agregarEvaluacion = async (precalificacion, tipoEval, precalEvalComent, pr
       documentos: documentosSelecc
     };
 
-    console.log(credenciales)
+    
 
     let api = UseAxios()
   
