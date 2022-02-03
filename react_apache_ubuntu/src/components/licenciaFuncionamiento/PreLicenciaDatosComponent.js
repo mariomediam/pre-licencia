@@ -10,30 +10,37 @@ export default function PreLicenciaDatosComponent({ precalId }){
     const [solDireccion, setSolDireccion] = useState('')
     const [area, setArea] = useState(0)
     const [giros, setGiros] = useState([])
+    const [solDescrip, setSolDescrip] = useState('')
+    const [solCorreo, setSolCorreo] = useState('')
+    const [solTelefono, setSolTelefono] = useState('')
 
 
     const verPrecalificacion = async () => {
         
-        const {precalArea, precalDigitFecha, precalCodCatast, precalDireccion, precalSolicitante : { webContribNomCompleto }} = await obtenerPrecalificacionPorId(
+        const {precalArea, precalDigitFecha, precalCodCatast, precalDireccion, precalSolicitante : { webContribNomCompleto }, precalDescripcion, precalCorreo, precalTelefono} = await obtenerPrecalificacionPorId(
             precalId
         );
 
         const girosTmp = await obtenerGirosPorPrecalId(precalId)
                     
-        const formatFecha = new Date(precalDigitFecha);
-        const dia = formatFecha.getDate();
-        const mes = formatFecha.getMonth();
+        const formatFecha = new Date(precalDigitFecha);        
+        const dia = formatFecha.getDate().toString().padStart(2, "0");
+        const mes =  String(formatFecha.getMonth() + 1).padStart(2, "0")
         const anio = formatFecha.getFullYear();
         const hora = formatFecha.getHours().toString().padStart(2, "0");
         const minutos = formatFecha.getMinutes().toString().padStart(2, "0");
         
-
         setArea(parseFloat(precalArea).toFixed(2))
         setSolNombre(webContribNomCompleto)
         setSolFecha(''.concat(dia, "/", mes, "/", anio, " ", hora, ":", minutos))
         setSolCodCatast(precalCodCatast)
         setSolDireccion(precalDireccion)
         setGiros(girosTmp)
+        setSolDescrip(precalDescripcion)
+        setSolCorreo(precalCorreo)
+        setSolTelefono(precalTelefono)
+        
+
         
         
       };
@@ -50,13 +57,19 @@ export default function PreLicenciaDatosComponent({ precalId }){
         <div>
             <Form>
                 
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                {/* <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label className="fw-bold">Solicitante</Form.Label>
-                    <Form.Control type="text" readOnly style={{backgroundColor: "#FFFFFF", color: "black"}} value={solNombre}/>
-                    {/* <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                    </Form.Text> */}
+                    <Form.Control type="text" readOnly style={{backgroundColor: "#FFFFFF", color: "black"}} value={solNombre}/>                   
+                </Form.Group> */}
+                <Form.Group className="mb-3" controlId="formSolicitante">
+                    <Form.Label className="fw-bold">Solicitante</Form.Label>
+                    <ListGroup>
+                        <ListGroup.Item>{solNombre}</ListGroup.Item>
+                        <ListGroup.Item><small>Correo:</small> {solCorreo}</ListGroup.Item>
+                        <ListGroup.Item><small>Teléfono:</small> {solTelefono}</ListGroup.Item>
+                    </ListGroup>                    
                 </Form.Group>
+
                 <div className="row ">
                     <div className="col">
                         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -74,10 +87,11 @@ export default function PreLicenciaDatosComponent({ precalId }){
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label className="fw-bold">Actividades económicas</Form.Label>
-                    {giros.map((giro, i) => (
-                        <ListGroup.Item key={giro.precalGiroNegId}>{giro.giroNegocio.giroNegCIIU} {giro.giroNegocio.giroNegNombre}</ListGroup.Item>
-                   
-                    ))}
+                        <ListGroup.Item>{solDescrip}</ListGroup.Item>
+                        {giros.map((giro, i) => (
+                            <ListGroup.Item key={giro.precalGiroNegId}>{giro.giroNegocio.giroNegCIIU} {giro.giroNegocio.giroNegNombre}</ListGroup.Item>
+                    
+                        ))}
                   
 
                    
