@@ -86,7 +86,7 @@ export default function PreLicenciaRequisitosComponent({precalId, verPrecalifica
 
     const documentosSelecc = tipoDocumentos.filter( documento => documento.selecc === true)
 
-    await agregarEvaluacion(precalId, 3, inputObserv.current.value, userName, 'INDETERMINADO', selectResultEval.current.value, undefined, documentosSelecc)
+    await agregarEvaluacion(precalId, 3, inputObserv.current.value, userName, 'INDETERMINADO', parseInt(selectResultEval.current.value), undefined, documentosSelecc)
 
     verEvaluacion()
     setPuedeEvaluar(false)

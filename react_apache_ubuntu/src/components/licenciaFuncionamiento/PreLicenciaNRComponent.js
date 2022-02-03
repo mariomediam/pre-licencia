@@ -67,7 +67,7 @@ export default function PreLicenciaNRComponent({precalId, verPrecalificacion}) {
 
   const grabarEvaluacion = async () => {
             
-    await agregarEvaluacion(precalId, 1, inputObserv.current.value, userName, 'INDETERMINADO', selectResultEval.current.value, selectNivRie.current.value)
+    await agregarEvaluacion(precalId, 1, inputObserv.current.value, userName, 'INDETERMINADO', parseInt(selectResultEval.current.value), selectNivRie.current.value)
 
     verEvaluacion()
     setPuedeEvaluar(false)

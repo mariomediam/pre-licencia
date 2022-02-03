@@ -46,7 +46,7 @@ export default function PreLicenciaCompatibComponent({precalId, verPrecalificaci
 
   const grabarEvaluacion = async () => {
             
-    await agregarEvaluacion(precalId, 2, inputObserv.current.value, userName, 'INDETERMINADO', selectResultEval.current.value, undefined)
+    await agregarEvaluacion(precalId, 2, inputObserv.current.value, userName, 'INDETERMINADO', parseInt(selectResultEval.current.value), undefined)
 
     verEvaluacion()
     setPuedeEvaluar(false)
