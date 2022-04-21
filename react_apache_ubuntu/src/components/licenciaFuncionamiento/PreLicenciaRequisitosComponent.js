@@ -9,6 +9,7 @@ import {
   agregarEvaluacion,
 } from "../../services/licFuncService";
 import { Toast } from "../tools/PopMessage";
+import { Accordion } from "react-bootstrap";
 
 export default function PreLicenciaRequisitosComponent({
   precalId,
@@ -22,9 +23,13 @@ export default function PreLicenciaRequisitosComponent({
   const [tipoDocumentos, setTipoDocumentos] = useState([]);
   const { userName } = useContext(AuthContext);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [mostrarDocumSust, setMostrarDocumSust] = useState(true);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    onSelectResultEvalChange();
+  };
 
   const selectResultEval = useRef();
   const inputObserv = useRef();
@@ -84,6 +89,14 @@ export default function PreLicenciaRequisitosComponent({
     setTipoDocumentos(tipoDocumentos);
   };
 
+  const onSelectResultEvalChange = () => {
+    if (selectResultEval.current?.value === "2") {
+      setMostrarDocumSust(false);
+    } else {
+      setMostrarDocumSust(true);
+    }
+  };
+
   const grabarEvaluacion = async () => {
     try {
       setButtonsDisabled(true);
@@ -114,10 +127,14 @@ export default function PreLicenciaRequisitosComponent({
         title: "El registro se grabo con éxito",
         background: "#F4F6F6",
       });
-    } catch (error) { throw error }
-    finally { setButtonsDisabled(false) }
+    } catch (error) {
+      throw error;
+    } finally {
+      setButtonsDisabled(false);
+    }
   };
 
+  
   return (
     <div>
       {puedeEvaluar && (
@@ -138,6 +155,7 @@ export default function PreLicenciaRequisitosComponent({
             value={resultado}
           />
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="fw-bold">
             Documentación sustentatoria solicitada
@@ -170,6 +188,7 @@ export default function PreLicenciaRequisitosComponent({
           onHide={handleClose}
           backdrop="static"
           keyboard={false}
+          size="lg"
         >
           <Modal.Header closeButton>
             <Modal.Title>
@@ -184,44 +203,58 @@ export default function PreLicenciaRequisitosComponent({
               <Form.Select
                 aria-label="Default select example"
                 ref={selectResultEval}
+                onChange={onSelectResultEvalChange}
               >
                 <option value="1">Aprobado</option>
                 <option value="2">Rechazado</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="fw-bold">
-                Documentación sustentatoria solicitada
-              </Form.Label>
-              <Table bordered hover>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Autoridad competente</th>
-                    <th>Exigible</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tipoDocumentos.map(
-                    ({ precalTipDocId, precalTipDocNombre }, i) => (
-                      <tr key={precalTipDocId}>
-                        <td>{i + 1}</td>
-                        <td>{precalTipDocNombre}</td>
-                        <td>
-                          {" "}
-                          <Form.Check
-                            type="checkbox"
-                            aria-label={precalTipDocNombre}
-                            id={precalTipDocId}
-                            onChange={onCheckChange}
-                          />
-                        </td>
-                      </tr>
-                    )
-                  )}
-                </tbody>
-              </Table>
-            </Form.Group>
+
+            {mostrarDocumSust && (
+              <div>
+                <Accordion>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>
+                      Documentación sustentatoria solicitada
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                        
+                        <Table bordered hover>
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Autoridad competente</th>
+                              <th>Exigible</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {tipoDocumentos.map(
+                              ({ precalTipDocId, precalTipDocNombre }, i) => (
+                                <tr key={precalTipDocId}>
+                                  <td>{i + 1}</td>
+                                  <td>{precalTipDocNombre}</td>
+                                  <td>
+                                    {" "}
+                                    <Form.Check
+                                      type="checkbox"
+                                      aria-label={precalTipDocNombre}
+                                      id={precalTipDocId}
+                                      onChange={onCheckChange}
+                                    />
+                                  </td>
+                                </tr>
+                              )
+                            )}
+                          </tbody>
+                        </Table>
+                      </Form.Group>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </div>
+            )}
+
             <Form.Group
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"

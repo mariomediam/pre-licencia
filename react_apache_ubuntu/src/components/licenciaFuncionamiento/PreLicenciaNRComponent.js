@@ -20,6 +20,7 @@ export default function PreLicenciaNRComponent({
   const [nivelRiesgo, setNivelRiesgo] = useState("");
   const [observaciones, setObservaciones] = useState("");
   const [puedeEvaluar, setPuedeEvaluar] = useState(false);
+  const [mostrarNR, setMostrarNR] = useState(true);
 
   const selectResultEval = useRef();
   const selectNivRie = useRef();
@@ -36,7 +37,7 @@ export default function PreLicenciaNRComponent({
 
     if (evaluacionTmp) {
       setResultado(evaluacionTmp.precalEvalEstadoNombre);
-      switch (evaluacionTmp.precalificacion.precalRiesgo) {
+      switch (evaluacionTmp.precalificacion.precalRiesgo) {        
         case 4:
           setNivelRiesgo("BAJO");
           break;
@@ -50,7 +51,7 @@ export default function PreLicenciaNRComponent({
           setNivelRiesgo("MUY ALTO");
           break;
         default:
-          setNivelRiesgo("INDETERMINADO");
+          setNivelRiesgo("");
       }
       setObservaciones(evaluacionTmp.precalEvalComent);
     } else {
@@ -66,6 +67,15 @@ export default function PreLicenciaNRComponent({
     }
   };
 
+  const mostrarNivelRiesgo = () => {
+
+    if (selectResultEval.current.value === "1"){
+      setMostrarNR(true)
+    } else {
+      setMostrarNR(false)
+    }
+  }
+
   const grabarEvaluacion = async () => {
     
 
@@ -76,7 +86,7 @@ export default function PreLicenciaNRComponent({
         userName,
         "INDETERMINADO",
         parseInt(selectResultEval.current.value),
-        selectNivRie.current.value
+        selectNivRie.current?.value || "0"
       );
 
       verEvaluacion();
@@ -159,23 +169,30 @@ export default function PreLicenciaNRComponent({
                 Resultado de evaluación
               </Form.Label>
               <Form.Select
-                aria-label="Default select example"
+                aria-label="Resultado de evaluación"
                 ref={selectResultEval}
+                onChange={mostrarNivelRiesgo}
+                
               >
                 <option value="1">Aprobado</option>
                 <option value="2">Rechazado</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+
+            { mostrarNR && <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="fw-bold">Nivel de riesgo</Form.Label>
               <Form.Select
-                aria-label="Default select example"
+                aria-label="Nivel de riesgo"
                 ref={selectNivRie}
+                
               >
                 <option value="4">Bajo</option>
                 <option value="5">Medio</option>
               </Form.Select>
-            </Form.Group>
+            </Form.Group> }
+            
+
+
             <Form.Group className="mb-3" controlId="modalTextArea">
               <Form.Label className="fw-bold">Observaciones</Form.Label>
               <Form.Control as="textarea" rows={3} ref={inputObserv} />
