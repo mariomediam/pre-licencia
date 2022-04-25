@@ -44,3 +44,22 @@ code {
   font-weight: normal;
   border-radius: 5px 5px 0px 0px;
 } */
+
+
+.bootstrap-select .dropdown-menu {
+  max-width: 100%;
+  border: 1px solid cornflowerblue;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px #888;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  }
+  
+  .bootstrap-select .dropdown-menu li a span.text {
+  display: inline-block;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 100%;
+  }
+

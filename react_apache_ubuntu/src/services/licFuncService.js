@@ -1,183 +1,230 @@
-import UseAxios from '../utils/useAxios'
+import UseAxios from "../utils/useAxios";
 
-const URL = `${process.env.REACT_APP_API}/licfunc`
+const URL = `${process.env.REACT_APP_API}/licfunc`;
 
-const obtenerPrecalUsuEstado = async(login, estado) => {
-    try {
-        
-        let api = UseAxios()
+const obtenerPrecalUsuEstado = async (login, estado) => {
+  try {
+    let api = UseAxios();
 
-        let URLPrecalUsuEstado = `${URL}/precal-usu-estado?login=${login}`
-                      
-        if (estado){
-            URLPrecalUsuEstado = `${URLPrecalUsuEstado}&estado=${estado}`
-        }
+    let URLPrecalUsuEstado = `${URL}/precal-usu-estado?login=${login}`;
 
-        let { data : { content} } = await api.get(`${URLPrecalUsuEstado}`)                
-        
-        return content 
-        
-    } catch (error) {
-        throw error
+    if (estado) {
+      URLPrecalUsuEstado = `${URLPrecalUsuEstado}&estado=${estado}`;
     }
-}
 
-const obtenerPrecalificacionPorId = async(precalId) => {
-    try {
-        
-        let api = UseAxios()
+    let {
+      data: { content },
+    } = await api.get(`${URLPrecalUsuEstado}`);
 
-        let URLPrecalificacion = `${URL}/precalificacion/${precalId}`
-                              
-        let { data : { content} } = await api.get(`${URLPrecalificacion}`)                
-        
-        return content 
-        
-    } catch (error) {
-        throw error
-    }
-}
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
 
-const obtenerGirosPorPrecalId = async(precalId) => {
-    try {
-        
-        let api = UseAxios()
+const obtenerPrecalificacionPorId = async (precalId) => {
+  try {
+    let api = UseAxios();
 
-        let URLPrecalificacion = `${URL}/precal-giro-neg/${precalId}`
-                              
-        let { data : { content} } = await api.get(`${URLPrecalificacion}`)                
-        
-        return content 
-        
-    } catch (error) {
-        throw error
-    }
-}
+    let URLPrecalificacion = `${URL}/precalificacion/${precalId}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLPrecalificacion}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerGirosPorPrecalId = async (precalId) => {
+  try {
+    let api = UseAxios();
+
+    let URLPrecalificacion = `${URL}/precal-giro-neg/${precalId}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLPrecalificacion}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerCuestionarioPorPrecalId = async (precalId) => {
+  try {
+    let api = UseAxios();
+
+    let URLPrecalificacion = `${URL}/precal-cuestionario/${precalId}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLPrecalificacion}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerEvaluacionPorPrecalIdTipoEval = async (precalId, tipoEvalId) => {
+  try {
+    let api = UseAxios();
+
+    let URLPrecalificacion = `${URL}/precal-eval/${precalId}/${tipoEvalId}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLPrecalificacion}`);
+
+    if (content && tipoEvalId === 3) {
+
+      let miTipoLicencia = content.precalificacion?.tipoLicencia || "None";
+
+      if (miTipoLicencia && miTipoLicencia.length > 0) {
 
 
-const obtenerCuestionarioPorPrecalId = async(precalId) => {
-    try {
-        
-        let api = UseAxios()
+        let URLTipoLicencia = `${URL}/tipo-licencia/${miTipoLicencia}`;
 
-        let URLPrecalificacion = `${URL}/precal-cuestionario/${precalId}`
-                              
-        let { data : { content} } = await api.get(`${URLPrecalificacion}`)                
-        
-        return content 
-        
-    } catch (error) {
-        throw error
-    }
-}
+        let {
+          data: { content: contTipoLic },
+        } = await api.get(`${URLTipoLicencia}`);
 
-const obtenerEvaluacionPorPrecalIdTipoEval = async(precalId, tipoEvalId) => {
-    try {
-        
-        let api = UseAxios()
+        return { ...content, tipoLicencia: contTipoLic };
+      } else {
 
-        let URLPrecalificacion = `${URL}/precal-eval/${precalId}/${tipoEvalId}`
-                              
-        let { data : { content} } = await api.get(`${URLPrecalificacion}`)                
-        
-        return content 
-        
-    } catch (error) {
-        throw error
-    }
-}
+        return content;
+      }
+    } else {
 
-const obtenerUsuarioTipoEval = async(login, tipoEvalId = undefined) => {
-    try {
-        
-        let api = UseAxios()
-
-        let URLAccesos = `${URL}/eval-usu/${login}`
-                              
-        let { data : { content} } = await api.get(`${URLAccesos}`)   
-        
-        if (tipoEvalId){
-            return content.filter(row => row.tipoEval === tipoEvalId)
-        } else {
-            return content 
-        }
-        
-    } catch (error) {
-        throw error
-    }
-}
-
-const agregarEvaluacion = async (precalificacion, tipoEval, precalEvalComent, precalEvalDigitUser, precalEvalDigitPC, resultEval, precalRiesgo = undefined, documentosSelecc = undefined) => {
-    
-  
-    let credenciales = {
-      precalificacion: precalificacion,
-      tipoEval: tipoEval,
-      precalEvalComent: precalEvalComent,
-      precalEvalDigitUser: precalEvalDigitUser,
-      precalEvalDigitPC: precalEvalDigitPC,
-      resultEval: resultEval,
-      precalRiesgo: precalRiesgo,
-      documentos: documentosSelecc
-    };
-
-    
-
-    let api = UseAxios()
-  
-    try {
-      const headers = {
-        "Content-Type": "application/json",
-      };
-      let { data : { content} } = await api.post(`${URL}/precal-eval/${precalificacion}`, credenciales, { headers });
-       
       return content;
-    } catch (error) {
-      throw error;
     }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerUsuarioTipoEval = async (login, tipoEvalId = undefined) => {
+  try {
+    let api = UseAxios();
+
+    let URLAccesos = `${URL}/eval-usu/${login}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLAccesos}`);
+
+    if (tipoEvalId) {
+      return content.filter((row) => row.tipoEval === tipoEvalId);
+    } else {
+      return content;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const agregarEvaluacion = async (
+  precalificacion,
+  tipoEval,
+  precalEvalComent,
+  precalEvalDigitUser,
+  precalEvalDigitPC,
+  resultEval,
+  precalRiesgo = undefined,
+  documentosSelecc = undefined,
+  tipoLicencia = undefined
+) => {
+  let credenciales = {
+    precalificacion: precalificacion,
+    tipoEval: tipoEval,
+    precalEvalComent: precalEvalComent,
+    precalEvalDigitUser: precalEvalDigitUser,
+    precalEvalDigitPC: precalEvalDigitPC,
+    resultEval: resultEval,
+    precalRiesgo: precalRiesgo,
+    documentos: documentosSelecc,
+    tipoLicencia: tipoLicencia,
   };
 
-  const obtenerDocumPorPrecalIdTipoEval = async(precalId, tipoEvalId) => {
-    try {
-        
-        let api = UseAxios()
+  let api = UseAxios();
 
-        let URLDocumentacion = `${URL}/precal-eval-docum/${precalId}/${tipoEvalId}`
-                              
-        let { data : { content} } = await api.get(`${URLDocumentacion}`)                
-        
-        return content 
-        
-    } catch (error) {
-        throw error
-    }    
-}
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await api.post(`${URL}/precal-eval/${precalificacion}`, credenciales, {
+      headers,
+    });
 
-const obtenerTipoDocum = async() => {
-    try {
-        
-        let api = UseAxios()
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
 
-        let URLTipoDocum = `${URL}/tipo-docum`
-                              
-        let { data : { content} } = await api.get(`${URLTipoDocum}`)                
-        
-        return content 
-        
-    } catch (error) {
-        throw error
-    }
-}
+const obtenerDocumPorPrecalIdTipoEval = async (precalId, tipoEvalId) => {
+  try {
+    let api = UseAxios();
 
+    let URLDocumentacion = `${URL}/precal-eval-docum/${precalId}/${tipoEvalId}`;
 
-export{
-    obtenerPrecalUsuEstado,
-    obtenerPrecalificacionPorId,
-    obtenerGirosPorPrecalId,
-    obtenerCuestionarioPorPrecalId,
-    obtenerEvaluacionPorPrecalIdTipoEval,
-    obtenerUsuarioTipoEval,
-    agregarEvaluacion,
-    obtenerDocumPorPrecalIdTipoEval,
-    obtenerTipoDocum
-}
+    let {
+      data: { content },
+    } = await api.get(`${URLDocumentacion}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerTipoDocum = async () => {
+  try {
+    let api = UseAxios();
+
+    let URLTipoDocum = `${URL}/tipo-docum`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLTipoDocum}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerTipoLicencia = async () => {
+  try {
+    let api = UseAxios();
+
+    let URLTipoLicencia = `${URL}/tipo-licencia`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLTipoLicencia}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  obtenerPrecalUsuEstado,
+  obtenerPrecalificacionPorId,
+  obtenerGirosPorPrecalId,
+  obtenerCuestionarioPorPrecalId,
+  obtenerEvaluacionPorPrecalIdTipoEval,
+  obtenerUsuarioTipoEval,
+  agregarEvaluacion,
+  obtenerDocumPorPrecalIdTipoEval,
+  obtenerTipoDocum,
+  obtenerTipoLicencia,
+};

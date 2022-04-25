@@ -7,6 +7,7 @@ import {
   obtenerDocumPorPrecalIdTipoEval,
   obtenerTipoDocum,
   agregarEvaluacion,
+  obtenerTipoLicencia,
 } from "../../services/licFuncService";
 import { Toast } from "../tools/PopMessage";
 import { Accordion } from "react-bootstrap";
@@ -24,6 +25,9 @@ export default function PreLicenciaRequisitosComponent({
   const { userName } = useContext(AuthContext);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [mostrarDocumSust, setMostrarDocumSust] = useState(true);
+  const [tipoLicencia, setTipoLicencia] = useState([]);
+  const [strTipoLicencia, setStrTipoLicencia] = useState("")
+  
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -33,8 +37,11 @@ export default function PreLicenciaRequisitosComponent({
 
   const selectResultEval = useRef();
   const inputObserv = useRef();
+  const inputTipoLicencia = useRef();
+  
 
   const verEvaluacion = async () => {
+
     const evaluacionTmp = await obtenerEvaluacionPorPrecalIdTipoEval(
       precalId,
       3
@@ -45,6 +52,10 @@ export default function PreLicenciaRequisitosComponent({
 
       setResultado(evaluacionTmp.precalEvalEstadoNombre);
       setObservaciones(evaluacionTmp.precalEvalComent);
+
+      if (evaluacionTmp.tipoLicencia){
+        setStrTipoLicencia(evaluacionTmp.tipoLicencia.tipoLicDescrip)
+      }
       setDocumentos(documentosTmp);
     } else {
       let UsuarioTipoEvalTmp = [];
@@ -59,6 +70,12 @@ export default function PreLicenciaRequisitosComponent({
     }
   };
 
+  const verTipoLicencia = async () => {
+    const tipoLicenciaTmp = await obtenerTipoLicencia();
+
+    setTipoLicencia(tipoLicenciaTmp.filter(tipoLic => tipoLic.tipoLicSimula));
+  };
+
   const verTipoDocumentos = async () => {
     const tipoDocumentosTmp = await obtenerTipoDocum();
 
@@ -69,6 +86,7 @@ export default function PreLicenciaRequisitosComponent({
 
   useEffect(() => {
     verEvaluacion();
+    verTipoLicencia();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [precalId, userName]);
 
@@ -101,9 +119,23 @@ export default function PreLicenciaRequisitosComponent({
     try {
       setButtonsDisabled(true);
 
-      const documentosSelecc = tipoDocumentos.filter(
-        (documento) => documento.selecc === true
-      );
+      let documentosSelecc = []
+      let tipoLicenciaSelect = undefined
+
+      console.log(1)
+
+      if (tipoDocumentos) {
+        documentosSelecc = tipoDocumentos.filter(
+          (documento) => documento.selecc === true
+        );        
+      }
+      
+
+      if (inputTipoLicencia.current){
+        tipoLicenciaSelect =  inputTipoLicencia.current.value
+      }
+
+      console.log(2)
 
       await agregarEvaluacion(
         precalId,
@@ -113,8 +145,11 @@ export default function PreLicenciaRequisitosComponent({
         "INDETERMINADO",
         parseInt(selectResultEval.current.value),
         undefined,
-        documentosSelecc
+        documentosSelecc,
+        tipoLicenciaSelect
       );
+
+      console.log(3)
 
       verEvaluacion();
       setPuedeEvaluar(false);
@@ -134,7 +169,6 @@ export default function PreLicenciaRequisitosComponent({
     }
   };
 
-  
   return (
     <div>
       {puedeEvaluar && (
@@ -156,7 +190,7 @@ export default function PreLicenciaRequisitosComponent({
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        { documentos.length > 0 && <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="fw-bold">
             Documentación sustentatoria solicitada
           </Form.Label>
@@ -169,6 +203,18 @@ export default function PreLicenciaRequisitosComponent({
               )
             )}
           </ListGroup>
+        </Form.Group>
+        }
+        
+        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+          <Form.Label className="fw-bold">Tipo de Licencia</Form.Label>
+          <Form.Control
+            as="textarea"
+            readOnly
+            style={{ backgroundColor: "#FFFFFF", color: "black" }}
+            value={strTipoLicencia}
+            rows={2}
+          />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
@@ -219,44 +265,65 @@ export default function PreLicenciaRequisitosComponent({
                     </Accordion.Header>
                     <Accordion.Body>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
-                        
-                        <Table bordered hover>
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th>Autoridad competente</th>
-                              <th>Exigible</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {tipoDocumentos.map(
-                              ({ precalTipDocId, precalTipDocNombre }, i) => (
-                                <tr key={precalTipDocId}>
-                                  <td>{i + 1}</td>
-                                  <td>{precalTipDocNombre}</td>
-                                  <td>
-                                    {" "}
-                                    <Form.Check
-                                      type="checkbox"
-                                      aria-label={precalTipDocNombre}
-                                      id={precalTipDocId}
-                                      onChange={onCheckChange}
-                                    />
-                                  </td>
-                                </tr>
-                              )
-                            )}
-                          </tbody>
-                        </Table>
+                        <div style={{ height: "280px", overflow: "scroll" }}>
+                          <Table bordered hover>
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Autoridad competente</th>
+                                <th>Exigible</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {tipoDocumentos.map(
+                                ({ precalTipDocId, precalTipDocNombre }, i) => (
+                                  <tr key={precalTipDocId}>
+                                    <td>{i + 1}</td>
+                                    <td>{precalTipDocNombre}</td>
+                                    <td>
+                                      {" "}
+                                      <Form.Check
+                                        type="checkbox"
+                                        aria-label={precalTipDocNombre}
+                                        id={precalTipDocId}
+                                        onChange={onCheckChange}
+                                      />
+                                    </td>
+                                  </tr>
+                                )
+                              )}
+                            </tbody>
+                          </Table>
+                        </div>
                       </Form.Group>
                     </Accordion.Body>
                   </Accordion.Item>
                 </Accordion>
+
+                <Form.Group className="my-2" controlId="formTipoLicencia">
+                  <Form.Label className="fw-bold">Tipo de Licencia</Form.Label>
+                  <Form.Select
+                    aria-label="Default select example"  
+                    // ref={selectResultEval}
+                    // className="select2 narrow wrap"
+                    // className="formNamesList setWidth" 
+                    // size="15"
+                    className = "bootstrap-select"
+                    ref={inputTipoLicencia}
+                  >
+                    {tipoLicencia.map(
+                      ({ tipoLicId, tipoLicDescrip }, i) => (
+                        <option key={tipoLicId} value={tipoLicId} style={{ word_wrap:"break-word" }}>{tipoLicDescrip}</option>
+                        
+                      )
+                    )}                
+                  </Form.Select>
+                </Form.Group>
               </div>
             )}
 
             <Form.Group
-              className="mb-3"
+              className="my-2"
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Label className="fw-bold">Observaciones</Form.Label>
