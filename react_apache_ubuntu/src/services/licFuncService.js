@@ -216,6 +216,23 @@ const obtenerTipoLicencia = async () => {
   }
 };
 
+const obtenerReqArchivoPorPrecalId = async (opcion, valor01) => {
+    try {
+      let api = UseAxios();
+
+      let URLReqArchivo = `${URL}/requisito-archivo?opcion=${opcion}&valor01=${valor01}`;
+        
+  
+      let {
+        data: { data : content },
+      } = await api.get(`${URLReqArchivo}`);
+  
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
+
 export {
   obtenerPrecalUsuEstado,
   obtenerPrecalificacionPorId,
@@ -227,4 +244,5 @@ export {
   obtenerDocumPorPrecalIdTipoEval,
   obtenerTipoDocum,
   obtenerTipoLicencia,
+  obtenerReqArchivoPorPrecalId
 };
