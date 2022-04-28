@@ -4,7 +4,8 @@ import { Navbar, Container, Table, Button } from "react-bootstrap";
 
 export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
   const [requisitoArchivo, setRequisitoArchivo] = useState([]);
-
+  const urlDownloadRequisitoArchivo = `${process.env.REACT_APP_API}/licfunc/download/requisito-archivo/`;
+ console.log(urlDownloadRequisitoArchivo)
   const verRequisitoArchivo = async () => {
     const reqArchivoTmp = await obtenerReqArchivoPorPrecalId("01", precalId);
     setRequisitoArchivo(reqArchivoTmp);
@@ -54,6 +55,8 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
                       ruta,
                       C_FileFirma,
                       N_FileFirma_Nombre,
+                      N_FileFirma_Ruta,
+                      idRequisitoArchivo,
                     },
                     i
                   ) => (
@@ -67,7 +70,9 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
                               Archivo firmado:{" "}
                               <i className="fas fa-download" title="Descargar"  style={{color:"#4169E1"}}></i>{" "}
                               {/* <i className="fas fa-eye" title="Ver"></i> */}                              
-                              <span style={{color:"#4169E1"}}>{N_FileFirma_Nombre} </span> -
+                              {/* <span style={{color:"#4169E1"}}><a href={N_FileFirma_Ruta} target="_blank" rel='noreferrer'>{N_FileFirma_Nombre}</a></span> - */}
+                              <span style={{color:"#4169E1"}}><a href={`${urlDownloadRequisitoArchivo}${idRequisitoArchivo}`}target="_blank" rel='noreferrer'>{N_FileFirma_Nombre}</a></span> -
+                              {/* <span style={{color:"#4169E1"}}><a href="http://www.munipiura.gob.pe" target="_blank" rel='noreferrer'>{N_FileFirma_Nombre}</a></span> - */}
                               <i className="fas fa-times ms-2"  style={{color:"#FF0000"}}></i> <span style={{color:"#FF0000"}}> Eliminar archivo </span>
                             </small>
                           </p>
