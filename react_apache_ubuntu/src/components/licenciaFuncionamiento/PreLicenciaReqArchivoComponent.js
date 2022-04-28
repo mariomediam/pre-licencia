@@ -4,7 +4,7 @@ import { Navbar, Container, Table, Button } from "react-bootstrap";
 
 export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
   const [requisitoArchivo, setRequisitoArchivo] = useState([]);
-  const urlDownloadRequisitoArchivo = `${process.env.REACT_APP_API}/licfunc/download/requisito-archivo/`;
+  const urlDownloadRequisitoArchivo = `${process.env.REACT_APP_API}/licfunc/view/requisito-archivo/`;
  console.log(urlDownloadRequisitoArchivo)
   const verRequisitoArchivo = async () => {
     const reqArchivoTmp = await obtenerReqArchivoPorPrecalId("01", precalId);
@@ -69,10 +69,7 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
                             <small>
                               Archivo firmado:{" "}
                               <i className="fas fa-download" title="Descargar"  style={{color:"#4169E1"}}></i>{" "}
-                              {/* <i className="fas fa-eye" title="Ver"></i> */}                              
-                              {/* <span style={{color:"#4169E1"}}><a href={N_FileFirma_Ruta} target="_blank" rel='noreferrer'>{N_FileFirma_Nombre}</a></span> - */}
                               <span style={{color:"#4169E1"}}><a href={`${urlDownloadRequisitoArchivo}${idRequisitoArchivo}`}target="_blank" rel='noreferrer'>{N_FileFirma_Nombre}</a></span> -
-                              {/* <span style={{color:"#4169E1"}}><a href="http://www.munipiura.gob.pe" target="_blank" rel='noreferrer'>{N_FileFirma_Nombre}</a></span> - */}
                               <i className="fas fa-times ms-2"  style={{color:"#FF0000"}}></i> <span style={{color:"#FF0000"}}> Eliminar archivo </span>
                             </small>
                           </p>
@@ -95,10 +92,12 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
                           <div>
                             {" "}
                             <Button
-                              href={ruta}
+                              href={`${urlDownloadRequisitoArchivo}${idRequisitoArchivo}`}
                               variant="success"
                               size="sm"
                               title="Ver requisito"
+                              target="_blank" 
+                              rel='noreferrer'
                             >
                               <i className="fas fa-eye"></i>
                             </Button>
