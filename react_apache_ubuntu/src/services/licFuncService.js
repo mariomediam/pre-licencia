@@ -237,7 +237,7 @@ const obtenerReqArchivoPorPrecalId = async (opcion, valor01) => {
     try {
       let api = UseAxios();
 
-      let URLReqArchivo = `${URL}/agregar-requisito-archivo/${idRequisitoArchivo}`;
+      let URLReqArchivo = `${URL}/agregar-firma-archivo/${idRequisitoArchivo}`;    
 
       const formData = new FormData();
       formData.append("archivo", selectedFile);
@@ -258,6 +258,56 @@ const obtenerReqArchivoPorPrecalId = async (opcion, valor01) => {
     }
   };
 
+  const eliminarFirmaArchivo = async (idFirmaArchivo) => {
+    try {
+      let api = UseAxios();
+
+      let URLReqArchivo = `${URL}/eliminar-firma-archivo/${idFirmaArchivo}`;
+
+      let {
+        data: { data : content },
+      } = await api.post(`${URLReqArchivo}`);
+
+      return content;
+
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const agregarVBDc = async (
+    precalificacion,
+    precalDcVbEval,
+    precalDcVbObs,
+    precalEvalDigitUser,
+    precalEvalDigitPC,    
+  ) => {
+    const credenciales = {      
+      precalDcVbEval: precalDcVbEval,
+      precalDcVbObs: precalDcVbObs,
+      precalEvalDigitUser: precalEvalDigitUser,
+      precalEvalDigitPC: precalEvalDigitPC,
+    };
+  
+    let api = UseAxios();
+  
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      let {
+        data: { content },
+      } = await api.post(`${URL}/precal-vb-dc/${precalificacion}`, credenciales, {
+        headers,
+      });
+  
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
 export {
   obtenerPrecalUsuEstado,
   obtenerPrecalificacionPorId,
@@ -271,4 +321,6 @@ export {
   obtenerTipoLicencia,
   obtenerReqArchivoPorPrecalId,
   agregarFirmaArchivo,
+  eliminarFirmaArchivo,
+  agregarVBDc,  
 };

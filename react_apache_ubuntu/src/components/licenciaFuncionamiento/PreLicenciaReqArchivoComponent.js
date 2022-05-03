@@ -1,21 +1,30 @@
 import { useState, useEffect } from "react";
 import { obtenerReqArchivoPorPrecalId } from "../../services/licFuncService";
 import { Navbar, Container, Table, Button } from "react-bootstrap";
+import { PreLicenciaReqArchSubirFirmaComponent } from "./PreLicenciaReqArchSubirFirmaComponent";
+import { PreLicenciaVBComponent } from "./PreLicenciaVBComponent";
+
 
 export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
   const [requisitoArchivo, setRequisitoArchivo] = useState([]);
-  const urlDownloadRequisitoArchivo = `${process.env.REACT_APP_API}/licfunc/view/requisito-archivo/`;
- console.log(urlDownloadRequisitoArchivo)
+  const urlDownloadRequisitoArchivo = `${process.env.REACT_APP_API}/licfunc/view/requisito-archivo/`;  
+  const urlViewFirmaArchivo = `${process.env.REACT_APP_API}/licfunc/view/firma-archivo/`;
+  const [refresfcarRequisitos, setrefresfcarRequisitos] = useState(true)
+
   const verRequisitoArchivo = async () => {
     const reqArchivoTmp = await obtenerReqArchivoPorPrecalId("01", precalId);
     setRequisitoArchivo(reqArchivoTmp);
+
   };
 
   useEffect(() => {
+    // setRequisitoArchivo([])
     verRequisitoArchivo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [precalId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
+  }, [refresfcarRequisitos, precalId]);
 
+  // precalId, refresfcarRequisitos
+  
   return (
     <>
       {requisitoArchivo.length > 0 && (
@@ -57,33 +66,22 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
                       N_FileFirma_Nombre,
                       N_FileFirma_Ruta,
                       idRequisitoArchivo,
+                      idRequisito
                     },
                     i
                   ) => (
                     <tr key={N_ReqTup_Item}>
                       <td>
                         {N_ReqTup_descrip}
-
-                        {C_FileFirma ? (
-                          <p className="pb-0 mb-0">
-                            <small>
-                              Archivo firmado:{" "}
-                              <i className="fas fa-download" title="Descargar"  style={{color:"#4169E1"}}></i>{" "}
-                              <span style={{color:"#4169E1"}}><a href={`${urlDownloadRequisitoArchivo}${idRequisitoArchivo}`}target="_blank" rel='noreferrer'>{N_FileFirma_Nombre}</a></span> -
-                              <i className="fas fa-times ms-2"  style={{color:"#FF0000"}}></i> <span style={{color:"#FF0000"}}> Eliminar archivo </span>
-                            </small>
-                          </p>
-                        ) : (
-                          <div>
-                            {" "}
-                            <Button
-                              type="button"
-                              variant="outline-secondary"
-                              className="btn-sm"
-                            >
-                              Subir archivo firmado
-                            </Button>
-                          </div>
+                        {idRequisitoArchivo && (
+                          <PreLicenciaReqArchSubirFirmaComponent 
+                            C_FileFirma={C_FileFirma}
+                            urlViewFirmaArchivo = {urlViewFirmaArchivo}
+                            idRequisitoArchivo = {idRequisitoArchivo}
+                            N_FileFirma_Nombre = {N_FileFirma_Nombre} 
+                            setrefresfcarRequisitos = {setrefresfcarRequisitos} 
+                            idRequisito = {idRequisito}                        
+                      />                         
                         )}
                       </td>
                       <td>{numeroFolio}</td>
@@ -96,8 +94,8 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
                               variant="success"
                               size="sm"
                               title="Ver requisito"
-                              target="_blank" 
-                              rel='noreferrer'
+                              target="_blank"
+                              rel="noreferrer"
                             >
                               <i className="fas fa-eye"></i>
                             </Button>
@@ -110,6 +108,7 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
               </tbody>
             </Table>
           </div>
+          <PreLicenciaVBComponent precalId={precalId} />
         </div>
       )}
     </>
