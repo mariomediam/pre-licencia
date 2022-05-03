@@ -5,6 +5,7 @@ import SelectTrabajador from "../components/TrabajadorComponent";
 import {
     Form,
   } from "react-bootstrap";
+import { agregarFirmaArchivo } from "../services/licFuncService";
   
 
 import Header from "../components/Header";
@@ -23,6 +24,13 @@ export default function TrabajadorView() {
     const trabajadorTmp = await obtenerTrabajador("DNI", nroDNI);
     setTrabajador(trabajadorTmp);
   };
+
+  const changeInputFile = (e) => {    
+    e.preventDefault()
+    if (e.target.files[0]){
+      agregarFirmaArchivo(4, e.target.files[0])
+    }
+  }
 
   return (
     <div>
@@ -45,7 +53,7 @@ export default function TrabajadorView() {
             <SelectTrabajador list_trabajador={trabajador} />
             <Form.Group controlId="formFileMultiple" className="mb-3">
               <Form.Label>Multiple files input example</Form.Label>
-              <Form.Control type="file" multiple />
+              <Form.Control type="file" multiple onChange={changeInputFile} />
             </Form.Group>
           </form>
         </div>

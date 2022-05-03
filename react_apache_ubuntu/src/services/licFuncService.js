@@ -233,6 +233,31 @@ const obtenerReqArchivoPorPrecalId = async (opcion, valor01) => {
     }
   };
 
+  const agregarFirmaArchivo = async (idRequisitoArchivo, selectedFile) => {
+    try {
+      let api = UseAxios();
+
+      let URLReqArchivo = `${URL}/agregar-requisito-archivo/${idRequisitoArchivo}`;
+
+      const formData = new FormData();
+      formData.append("archivo", selectedFile);
+
+      const headers = {
+        "Content-Type": "multipart/form-data",
+      };
+      let {
+        data: { content },
+      } = await api.post(`${URLReqArchivo}`, formData, {
+        headers,
+      });
+
+      return content;
+
+    } catch (error) {
+      throw error;
+    }
+  };
+
 export {
   obtenerPrecalUsuEstado,
   obtenerPrecalificacionPorId,
@@ -244,5 +269,6 @@ export {
   obtenerDocumPorPrecalIdTipoEval,
   obtenerTipoDocum,
   obtenerTipoLicencia,
-  obtenerReqArchivoPorPrecalId
+  obtenerReqArchivoPorPrecalId,
+  agregarFirmaArchivo,
 };
