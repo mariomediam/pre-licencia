@@ -307,6 +307,40 @@ const obtenerReqArchivoPorPrecalId = async (opcion, valor01) => {
     }
   };
 
+  const agregarVBDl = async (
+    precalificacion,
+    precalDlVbEval,
+    precalSoliciSimulacion,
+    precalDlVbObs,
+    precalEvalDigitUser,
+    precalEvalDigitPC,    
+  ) => {
+    const credenciales = {      
+      precalDlVbEval: precalDlVbEval,      
+      precalSoliciSimulacion: precalSoliciSimulacion,
+      precalDlVbObs: precalDlVbObs,
+      precalEvalDigitUser: precalEvalDigitUser,
+      precalEvalDigitPC: precalEvalDigitPC,
+    };
+  
+    let api = UseAxios();
+  
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      let {
+        data: { content },
+      } = await api.post(`${URL}/precal-vb-dl/${precalificacion}`, credenciales, {
+        headers,
+      });
+  
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
+
 
 export {
   obtenerPrecalUsuEstado,
@@ -322,5 +356,6 @@ export {
   obtenerReqArchivoPorPrecalId,
   agregarFirmaArchivo,
   eliminarFirmaArchivo,
-  agregarVBDc,  
+  agregarVBDc, 
+  agregarVBDl, 
 };

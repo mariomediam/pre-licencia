@@ -2,6 +2,7 @@
 // import { obtenerPrecalificacionPorId } from "../../services/licFuncService";
 import { Navbar, Container, Tabs, Tab } from "react-bootstrap";
 import PreLicenciaVBNRComponent from "./PreLicenciaVBNRComponent"
+import PreLicenciaVBRequisitosComponent from "./PreLicenciaVBRequisitosComponent";
 
 export const PreLicenciaVBComponent = ({ precalId }) => {
   // const [dlVbEval, setDlVbEval] = useState(0);
@@ -50,14 +51,19 @@ export const PreLicenciaVBComponent = ({ precalId }) => {
       </div>
       <div className="p-2" style={{ border: "1px solid rgb(40, 116, 166)" }}>
           <Tabs
-            defaultActiveKey="NR"
+            defaultActiveKey="VBDC"
             id="uncontrolled-tab-example"
             className="mb-3"
             fill
             justify
           >
-            <Tab eventKey="NR" title="Oficina de Defensa Civil">
+            <Tab eventKey="VBDC" title="Oficina de Defensa Civil">
               <PreLicenciaVBNRComponent
+                precalId={precalId}                
+              />
+            </Tab>
+            <Tab eventKey="VBDL" title="Subgerencia de Atención al Ciudadano">
+              <PreLicenciaVBRequisitosComponent
                 precalId={precalId}                
               />
             </Tab>
