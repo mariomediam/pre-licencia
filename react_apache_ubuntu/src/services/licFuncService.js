@@ -136,7 +136,8 @@ const agregarEvaluacion = async (
   resultEval,
   precalRiesgo = undefined,
   documentosSelecc = undefined,
-  tipoLicencia = undefined
+  tipoLicencia = undefined,
+  precalMonto = undefined
 ) => {
   let credenciales = {
     precalificacion: precalificacion,
@@ -148,6 +149,7 @@ const agregarEvaluacion = async (
     precalRiesgo: precalRiesgo,
     documentos: documentosSelecc,
     tipoLicencia: tipoLicencia,
+    precalMonto: precalMonto
   };
 
   let api = UseAxios();

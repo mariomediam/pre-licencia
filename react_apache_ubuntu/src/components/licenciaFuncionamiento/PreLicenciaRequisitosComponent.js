@@ -26,8 +26,8 @@ export default function PreLicenciaRequisitosComponent({
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [mostrarDocumSust, setMostrarDocumSust] = useState(true);
   const [tipoLicencia, setTipoLicencia] = useState([]);
-  const [strTipoLicencia, setStrTipoLicencia] = useState("")
-  
+  const [strTipoLicencia, setStrTipoLicencia] = useState("");
+  const [tasaLicencia, setTasaLicencia] = useState(0)
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -38,10 +38,9 @@ export default function PreLicenciaRequisitosComponent({
   const selectResultEval = useRef();
   const inputObserv = useRef();
   const inputTipoLicencia = useRef();
-  
+  const inputTasaLicencia = useRef();
 
   const verEvaluacion = async () => {
-
     const evaluacionTmp = await obtenerEvaluacionPorPrecalIdTipoEval(
       precalId,
       3
@@ -52,9 +51,10 @@ export default function PreLicenciaRequisitosComponent({
 
       setResultado(evaluacionTmp.precalEvalEstadoNombre);
       setObservaciones(evaluacionTmp.precalEvalComent);
+      setTasaLicencia(evaluacionTmp.precalificacion.precalMonto)
 
-      if (evaluacionTmp.tipoLicencia){
-        setStrTipoLicencia(evaluacionTmp.tipoLicencia.tipoLicDescrip)
+      if (evaluacionTmp.tipoLicencia) {
+        setStrTipoLicencia(evaluacionTmp.tipoLicencia.tipoLicDescrip);
       }
       setDocumentos(documentosTmp);
     } else {
@@ -73,7 +73,7 @@ export default function PreLicenciaRequisitosComponent({
   const verTipoLicencia = async () => {
     const tipoLicenciaTmp = await obtenerTipoLicencia();
 
-    setTipoLicencia(tipoLicenciaTmp.filter(tipoLic => tipoLic.tipoLicSimula));
+    setTipoLicencia(tipoLicenciaTmp.filter((tipoLic) => tipoLic.tipoLicSimula));
   };
 
   const verTipoDocumentos = async () => {
@@ -119,23 +119,22 @@ export default function PreLicenciaRequisitosComponent({
     try {
       setButtonsDisabled(true);
 
-      let documentosSelecc = []
-      let tipoLicenciaSelect = undefined
+      let documentosSelecc = [];
+      let tipoLicenciaSelect = undefined;
 
-      console.log(1)
+      console.log(1);
 
       if (tipoDocumentos) {
         documentosSelecc = tipoDocumentos.filter(
           (documento) => documento.selecc === true
-        );        
-      }
-      
-
-      if (inputTipoLicencia.current){
-        tipoLicenciaSelect =  inputTipoLicencia.current.value
+        );
       }
 
-      console.log(2)
+      if (inputTipoLicencia.current) {
+        tipoLicenciaSelect = inputTipoLicencia.current.value;
+      }
+
+      console.log(2);
 
       await agregarEvaluacion(
         precalId,
@@ -146,10 +145,11 @@ export default function PreLicenciaRequisitosComponent({
         parseInt(selectResultEval.current.value),
         undefined,
         documentosSelecc,
-        tipoLicenciaSelect
+        tipoLicenciaSelect,
+        parseFloat(inputTasaLicencia.current.value)
       );
 
-      console.log(3)
+      console.log(3);
 
       verEvaluacion();
       setPuedeEvaluar(false);
@@ -190,22 +190,23 @@ export default function PreLicenciaRequisitosComponent({
           />
         </Form.Group>
 
-        { documentos.length > 0 && <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label className="fw-bold">
-            Documentación sustentatoria solicitada
-          </Form.Label>
-          <ListGroup>
-            {documentos.map(
-              ({ precalDocumId, tipoDocum: { precalTipDocNombre } }, i) => (
-                <ListGroup.Item key={precalDocumId}>
-                  {i + 1} {precalTipDocNombre}
-                </ListGroup.Item>
-              )
-            )}
-          </ListGroup>
-        </Form.Group>
-        }
-        
+        {documentos.length > 0 && (
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label className="fw-bold">
+              Documentación sustentatoria solicitada
+            </Form.Label>
+            <ListGroup>
+              {documentos.map(
+                ({ precalDocumId, tipoDocum: { precalTipDocNombre } }, i) => (
+                  <ListGroup.Item key={precalDocumId}>
+                    {i + 1} {precalTipDocNombre}
+                  </ListGroup.Item>
+                )
+              )}
+            </ListGroup>
+          </Form.Group>
+        )}
+
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label className="fw-bold">Tipo de Licencia</Form.Label>
           <Form.Control
@@ -214,6 +215,16 @@ export default function PreLicenciaRequisitosComponent({
             style={{ backgroundColor: "#FFFFFF", color: "black" }}
             value={strTipoLicencia}
             rows={2}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label className="fw-bold">Tasa de Licencia</Form.Label>
+          <Form.Control
+            type="text"             
+            readOnly
+            style={{ backgroundColor: "#FFFFFF", color: "black" }}
+            value={`S/. ${tasaLicencia}` }
           />
         </Form.Group>
 
@@ -303,24 +314,39 @@ export default function PreLicenciaRequisitosComponent({
                 <Form.Group className="my-2" controlId="formTipoLicencia">
                   <Form.Label className="fw-bold">Tipo de Licencia</Form.Label>
                   <Form.Select
-                    aria-label="Default select example"  
+                    aria-label="Default select example"
                     // ref={selectResultEval}
                     // className="select2 narrow wrap"
-                    // className="formNamesList setWidth" 
+                    // className="formNamesList setWidth"
                     // size="15"
-                    className = "bootstrap-select"
+                    className="bootstrap-select"
                     ref={inputTipoLicencia}
                   >
-                    {tipoLicencia.map(
-                      ({ tipoLicId, tipoLicDescrip }, i) => (
-                        <option key={tipoLicId} value={tipoLicId} style={{ word_wrap:"break-word" }}>{tipoLicDescrip}</option>
-                        
-                      )
-                    )}                
+                    {tipoLicencia.map(({ tipoLicId, tipoLicDescrip }, i) => (
+                      <option
+                        key={tipoLicId}
+                        value={tipoLicId}
+                        style={{ word_wrap: "break-word" }}
+                      >
+                        {tipoLicDescrip}
+                      </option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
               </div>
             )}
+
+            <Form.Group className="my-2" controlId="exampleForm.ControlInput1">
+              <Form.Label className="fw-bold">Tasa de licencia de funcionamiento</Form.Label>
+              <Form.Control
+                type="number"
+                step="0.01" 
+                name="numero"
+                // placeholder="00000"
+                // maxLength={5}
+                ref={inputTasaLicencia}
+              />
+            </Form.Group>
 
             <Form.Group
               className="my-2"
