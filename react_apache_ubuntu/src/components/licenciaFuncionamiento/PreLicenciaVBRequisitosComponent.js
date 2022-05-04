@@ -15,6 +15,7 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
   const [dlVbObserv, setDlVbObserv] = useState("");
   const [dlVbSoliciSimula, setDlVbSoliciSimula] = useState("");
   const [textResulEvaluacion, settextResulEvaluacion] = useState("PENDIENTE");
+  const [tasaLicencia, setTasaLicencia] = useState(0.00)
   const [show, setShow] = useState(false);
 
   const selectResultEval = useRef();
@@ -25,12 +26,13 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
   const handleShow = () => setShow(true);
 
   const verEvaluacion = async () => {
-    const { precalDlVbEval, precalSoliciSimulacion, precalDlVbObs } =
+    const { precalDlVbEval, precalSoliciSimulacion, precalDlVbObs, precalMonto } =
       await obtenerPrecalificacionPorId(precalId);
 
     setDlVbEval(precalDlVbEval);
     setDlVbObserv(precalDlVbObs || "");
     setDlVbSoliciSimula(precalSoliciSimulacion || "");
+    setTasaLicencia(precalMonto)
 
     switch (precalDlVbEval) {
       case 0:
@@ -105,12 +107,12 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label className="fw-bold">Simulación de Licencia Nº</Form.Label>
+          <Form.Label className="fw-bold">Tasa de Simulación de Licencia Nº {dlVbSoliciSimula}</Form.Label>
           <Form.Control
             type="text"
             readOnly
             style={{ backgroundColor: "#FFFFFF", color: "black" }}
-            value={dlVbSoliciSimula}
+            value={`S/. ${tasaLicencia}` }
           />
         </Form.Group>
 
