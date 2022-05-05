@@ -4,7 +4,6 @@ import TrabajadorView from "../views/TrabajadorView";
 import { AuthProvider } from "../context/AuthContext";
 import PreLicenciaView from "../views/licenciaFuncionamiento/PreLicenciaView";
 import PreLicenciaEditView from "../views/licenciaFuncionamiento/PreLicenciaEditView";
-import { VerPdf } from "../utils/VerPdf";
 import { ViewPdf } from "../utils/ViewPdf";
 
 export const AppRouter = () => {

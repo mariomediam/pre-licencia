@@ -13,7 +13,6 @@ import AuthContext from "../../context/AuthContext";
 
 import Header from "../../components/Header";
 import { obtenerPrecalUsuEstado } from "../../services/licFuncService";
-import { VerPdf } from "../../utils/VerPdf";
 
 export default function PreLicenciaView() {
   const { userName } = useContext(AuthContext);

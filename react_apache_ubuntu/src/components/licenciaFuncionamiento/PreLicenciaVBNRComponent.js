@@ -11,7 +11,7 @@ import AuthContext from "../../context/AuthContext";
 export default function PreLicenciaVBNRComponent({ precalId }) {
   const { userName } = useContext(AuthContext);
   const [puedeEvaluar, setPuedeEvaluar] = useState(false);
-  const [dcVbEval, setDcVbEval] = useState(0);
+  // const [dcVbEval, setDcVbEval] = useState(0);
   const [dcVbObserv, setDcVbObserv] = useState("");
   const [textResulEvaluacion, settextResulEvaluacion] = useState("PENDIENTE");
   const [show, setShow] = useState(false);
@@ -26,7 +26,7 @@ export default function PreLicenciaVBNRComponent({ precalId }) {
     const { precalDcVbEval, precalDcVbObs } = await obtenerPrecalificacionPorId(
       precalId
     );
-    setDcVbEval(precalDcVbEval);
+    // setDcVbEval(precalDcVbEval);
     setDcVbObserv(precalDcVbObs || "");
 
     switch (precalDcVbEval) {

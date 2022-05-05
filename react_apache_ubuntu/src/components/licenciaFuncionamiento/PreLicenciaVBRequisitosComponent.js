@@ -11,7 +11,7 @@ import AuthContext from "../../context/AuthContext";
 export default function PreLicenciaVBRequisitosComponent({ precalId }) {
   const { userName } = useContext(AuthContext);
   const [puedeEvaluar, setPuedeEvaluar] = useState(false);
-  const [dlVbEval, setDlVbEval] = useState(0);
+  // const [dlVbEval, setDlVbEval] = useState(0);
   const [dlVbObserv, setDlVbObserv] = useState("");
   const [dlVbSoliciSimula, setDlVbSoliciSimula] = useState("");
   const [textResulEvaluacion, settextResulEvaluacion] = useState("PENDIENTE");
@@ -29,7 +29,7 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
     const { precalDlVbEval, precalSoliciSimulacion, precalDlVbObs, precalMonto } =
       await obtenerPrecalificacionPorId(precalId);
 
-    setDlVbEval(precalDlVbEval);
+    // setDlVbEval(precalDlVbEval);
     setDlVbObserv(precalDlVbObs || "");
     setDlVbSoliciSimula(precalSoliciSimulacion || "");
     setTasaLicencia(precalMonto)
