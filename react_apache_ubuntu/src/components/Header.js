@@ -69,7 +69,7 @@ export default function Header() {
                 id="basic-nav-dropdown"
                 drop="start"
               >
-                <NavDropdown.Item onClick={logoutUser} href="/">
+                <NavDropdown.Item onClick={logoutUser} href="/login">
                   Cerrar sesión
                 </NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.2">
