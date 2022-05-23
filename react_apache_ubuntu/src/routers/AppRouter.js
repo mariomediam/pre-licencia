@@ -3,6 +3,7 @@ import LoginView from "../views/LoginView";
 import { AuthProvider } from "../context/AuthContext";
 import { DashboardRoutes } from "./DashboardRoutes";
 import { PrivateRoute } from "./PrivateRoute";
+import { PublicRoute } from "./PublicRoute";
 
 export const AppRouter = () => {
   
@@ -10,7 +11,17 @@ export const AppRouter = () => {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/login" element={<LoginView />} />
+        <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginView />
+              </PublicRoute>
+            }
+          />          
+
+
+          {/* <Route path="/login" element={<LoginView />} /> */}
           <Route
             path="/*"
             element={
