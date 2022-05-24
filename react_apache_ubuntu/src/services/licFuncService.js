@@ -16,6 +16,40 @@ const obtenerPrecalUsuEstado = async (login, estado) => {
       data: { content },
     } = await api.get(`${URLPrecalUsuEstado}`);
 
+    content.forEach(element => { 
+      element["porc_evaluacion"] = 0
+      element["rechazado"] = false
+      element["ofic_pendiente"] = ""
+      if (element.precalRiesgoEval === 2 || element.precalCompatCU === 2 || element.precalCompatDL === 2 ||  element.precalDcVbEva === 2 || element.precalDlVbEval === 2){
+        element["porc_evaluacion"] = 100
+        element["rechazado"] = true
+        element["ofic_pendiente"] = "Rechazado"
+      }
+      else {
+        if (element.precalDlVbEval===1 && element.precalDcVbEval===1){
+          element["porc_evaluacion"] = 100        
+          element["ofic_pendiente"] = "Aprobado"
+        } else if (element.precalDlVbEval!==0) {
+            element["porc_evaluacion"] = 75
+            element["ofic_pendiente"] = "Pendiente visto bueno NR"
+        } else if(element.precalDcVbEval!==0) {
+            element["porc_evaluacion"] = 75
+            element["ofic_pendiente"] = "Pendiente visto bueno AC"
+        } else if (element.precalCompatDL!==0) {
+            element["porc_evaluacion"] = 50
+            element["ofic_pendiente"] = "Pendiente visto bueno NR/AC"
+        } else if (element.precalCompatCU!==0) {
+            element["porc_evaluacion"] = 34
+            element["ofic_pendiente"] = "Pendiente evaluar: AC"
+        } else if (element.precalRiesgoEval!==0) {          
+            element["porc_evaluacion"] = 17
+            element["ofic_pendiente"] = "Pendiente evaluar: CU"
+        } else {
+            element["ofic_pendiente"] = "Pendiente evaluar: NR"
+        }
+      }      
+    });
+
     return content;
   } catch (error) {
     throw error;

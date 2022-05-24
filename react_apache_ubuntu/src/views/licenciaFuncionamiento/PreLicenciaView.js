@@ -5,8 +5,7 @@ import {
   Form,
   InputGroup,
   FormControl,
-  Popover,
-  OverlayTrigger,
+  ProgressBar,
 } from "react-bootstrap";
 
 import AuthContext from "../../context/AuthContext";
@@ -16,17 +15,18 @@ import { obtenerPrecalUsuEstado } from "../../services/licFuncService";
 
 export default function PreLicenciaView() {
   const { userName } = useContext(AuthContext);
-  
+
   const [listPrecalUsuEstado, setListPrecalUsuEstado] = useState([]);
 
-  const [listPrecalUsuEstadoFiltro, setListPrecalUsuEstadoFiltro] = useState([])
+  const [listPrecalUsuEstadoFiltro, setListPrecalUsuEstadoFiltro] = useState(
+    []
+  );
 
   const selectEstado = useRef();
 
   const inputFiltro = useRef();
 
   const listarPrecalUsuEstado = async () => {
-    
     let estado =
       selectEstado.current.value === "9"
         ? undefined
@@ -37,87 +37,50 @@ export default function PreLicenciaView() {
       estado
     );
     setListPrecalUsuEstado(listPrecalUsuEstadoTmp);
-    
   };
 
   const listarPrecalUsuEstadoFiltro = () => {
+    let listPrecalUsuEstadoFiltroTmp = [];
 
-    let listPrecalUsuEstadoFiltroTmp = []
-
-    if (inputFiltro.current.value.length > 0){
-      if (!isNaN(inputFiltro.current.value)){
-        listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(fila => fila.precalId === parseInt(inputFiltro.current.value))
-      } else  {
-        listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(fila => fila.webContribNomCompleto.replace("  ", " ").toUpperCase().includes(inputFiltro.current.value.toUpperCase()))
+    if (inputFiltro.current.value.length > 0) {
+      if (!isNaN(inputFiltro.current.value)) {
+        listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(
+          (fila) => fila.precalId === parseInt(inputFiltro.current.value)
+        );
+      } else {
+        listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter((fila) =>
+          fila.webContribNomCompleto
+            .replace("  ", " ")
+            .toUpperCase()
+            .includes(inputFiltro.current.value.toUpperCase())
+        );
       }
-
-    } else{
-      listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado]
+    } else {
+      listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado];
     }
 
-    setListPrecalUsuEstadoFiltro(listPrecalUsuEstadoFiltroTmp)
+    console.log(listPrecalUsuEstadoFiltroTmp);
 
-  }
+    setListPrecalUsuEstadoFiltro(listPrecalUsuEstadoFiltroTmp);
+  };
 
   const inputKeyUp = (event) => {
-    if(event.keyCode===13){
-      listarPrecalUsuEstadoFiltro()
+    if (event.keyCode === 13) {
+      listarPrecalUsuEstadoFiltro();
     }
-
-  }
+  };
 
   useEffect(() => {
-        
-		listarPrecalUsuEstado()	
-    // eslint-disable-next-line react-hooks/exhaustive-deps	
-    }, [userName])
+    listarPrecalUsuEstado();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userName]);
 
-    useEffect(() => {
-        
-      listarPrecalUsuEstadoFiltro()	
-      // eslint-disable-next-line react-hooks/exhaustive-deps	
-      }, [listPrecalUsuEstado])
+  useEffect(() => {
+    listarPrecalUsuEstadoFiltro();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listPrecalUsuEstado]);
 
   
-
-  const popoverNR = (
-    <Popover id="popover-basic">
-      <Popover.Header as="h3">Nivel de riesgo</Popover.Header>
-      <Popover.Body>
-        Resultado de la evaluación del nivel de riesgo:
-        <br />
-        (vacio) pendiente de evaluación <br />
-        <i className="fas fa-check"></i> Aprobado <br />
-        <i className="fas fa-times"></i> Rechazado
-      </Popover.Body>
-    </Popover>
-  );
-
-  const popoverCU = (
-    <Popover id="popover-basic">
-      <Popover.Header as="h3">Compatibilidad de uso</Popover.Header>
-      <Popover.Body>
-        Resultado de la evaluación de compatibilidad de uso:
-        <br />
-        (vacio) pendiente de evaluación <br />
-        <i className="fas fa-check"></i> Compatible <br />
-        <i className="fas fa-times"></i> No compatible
-      </Popover.Body>
-    </Popover>
-  );
-
-  const popoverAC = (
-    <Popover id="popover-basic">
-      <Popover.Header as="h3">Atención al ciudadano</Popover.Header>
-      <Popover.Body>
-        Resultado de la evaluación de la Subgerencia de Atención al Ciudadano:
-        <br />
-        (vacio) pendiente de evaluación <br />
-        <i className="fas fa-check"></i> Aprobado <br />
-        <i className="fas fa-times"></i> Rechazado
-      </Popover.Body>
-    </Popover>
-  );
 
   return (
     <div>
@@ -161,8 +124,8 @@ export default function PreLicenciaView() {
                     <Button
                       variant="outline-secondary"
                       id="button-addon2"
-                      title="Buscar"   
-                      onClick={listarPrecalUsuEstadoFiltro}                   
+                      title="Buscar"
+                      onClick={listarPrecalUsuEstadoFiltro}
                     >
                       <i className="fas fa-search"></i>
                     </Button>
@@ -172,70 +135,19 @@ export default function PreLicenciaView() {
             </div>
             <div className="table-responsive">
               <Table bordered hover className="caption-top">
-                <caption className="py-0"> {listPrecalUsuEstadoFiltro.length} registro(s) encontrado(s)</caption>
+                <caption className="py-0">
+                  {" "}
+                  {listPrecalUsuEstadoFiltro.length} registro(s) encontrado(s)
+                </caption>
                 <thead>
                   <tr className="color-header1 text-white">
-                    <th className="text-center align-middle m-0 p-0" rowspan="2">Id</th>
-                    <th className="text-center align-middle m-0 p-0" rowspan="2">Solicitante</th>
-                    <th className="text-center align-middle m-0 p-0" colspan="3">Evaluación</th>
-                    <th className="text-center align-middle m-0 p-0" colspan="2">Visto bueno</th>                    
-                    <th className="text-center align-middle m-0 p-0" rowspan="2">Ver</th>
+                    <th className="text-center align-middle m-0 p-0">Id</th>
+                    <th className="text-center align-middle m-0 p-0">
+                      Solicitante
+                    </th>
+                    <th className="text-center align-middle m-0 p-0">Estado</th>
+                    <th className="text-center align-middle m-0 p-0">Ver</th>
                   </tr>
-
-                  <tr className="color-header1 text-white">                    
-                   
-                    <OverlayTrigger
-                      trigger="click"
-                      placement="top"
-                      overlay={popoverNR}
-                    >
-                      <th className="text-center align-middle m-0 p-0" title="Nivel de riesgo">
-                        NR
-                      </th>
-                    </OverlayTrigger>
-                    <OverlayTrigger
-                      trigger="click"
-                      placement="top"
-                      overlay={popoverCU}
-                    >
-                    <th className="text-center align-middle m-0 p-0" title="Compatibilidad de uso">
-                      CU
-                    </th>
-                    </OverlayTrigger>
-
-                    <OverlayTrigger
-                      trigger="click"
-                      placement="top"
-                      overlay={popoverAC}
-                    >
-                    <th className="text-center align-middle m-0 p-0" title="Atención al ciudadano">
-                      AC
-                    </th>                    
-                    </OverlayTrigger>
-
-                    <OverlayTrigger
-                      trigger="click"
-                      placement="top"
-                      overlay={popoverAC}
-                    >
-                    <th className="text-center align-middle m-0 p-0" title="Nivel de Riesgo">
-                      NR
-                    </th>
-                    </OverlayTrigger>
-
-                    <OverlayTrigger
-                      trigger="click"
-                      placement="top"
-                      overlay={popoverAC}
-                    >
-                    <th className="text-center align-middle m-0 p-0" title="Atención al ciudadano">
-                      AC
-                    </th>
-                    </OverlayTrigger>
-                    
-                  </tr>
-
-
                 </thead>
                 <tbody>
                   {listPrecalUsuEstadoFiltro.map((soliciPrecalif, i) => (
@@ -244,53 +156,16 @@ export default function PreLicenciaView() {
                         {soliciPrecalif.precalId.toString().padStart(4, "0")}
                       </td>
                       <td>{soliciPrecalif.webContribNomCompleto}</td>
-                      {/* <td>{soliciPrecalif.precalEstadoNom}</td> */}
-                      <td className="text-center px-1 mx-0">
-                        {soliciPrecalif.precalRiesgoEval === 1 ? (
-                          <i className="fas fa-check" title="Aprobado"></i>
-                        ) : (
-                          soliciPrecalif.precalRiesgoEval === 2 && (
-                            <i className="fas fa-times" title="Rechazado"></i>
-                          )
-                        )}
-                      </td>
-                      <td className="text-center px-1 mx-0">
-                        {soliciPrecalif.precalCompatCU === 1 ? (
-                          <i className="fas fa-check" title="Aprobado"></i>
-                        ) : (
-                          soliciPrecalif.precalCompatCU === 2 && (
-                            <i className="fas fa-times" title="Rechazado"></i>
-                          )
-                        )}
-                      </td>
-                      <td className="text-center px-1 mx-0">
-                        {soliciPrecalif.precalCompatDL === 1 ? (
-                          <i className="fas fa-check" title="Aprobado"></i>
-                        ) : (
-                          soliciPrecalif.precalCompatDL === 2 && (
-                            <i className="fas fa-times" title="Rechazado"></i>
-                          )
-                        )}
-                      </td>
-                      <td className="text-center px-1 mx-0">
-                      
-                        {soliciPrecalif.precalDcVbEval === 1 ? (
-                          <i className="fas fa-check" title="Aprobado"></i>
-                        ) : (
-                          soliciPrecalif.precalDcVbEval === 2 && (
-                            <i className="fas fa-times" title="Rechazado"></i>
-                          )
-                        )}
-                      </td>
-                      <td className="text-center px-1 mx-0">
-                      
-                        {soliciPrecalif.precalDlVbEval === 1 ? (
-                          <i className="fas fa-check" title="Aprobado"></i>
-                        ) : (
-                          soliciPrecalif.precalDlVbEval === 2 && (
-                            <i className="fas fa-times" title="Rechazado"></i>
-                          )
-                        )}
+                      <td>
+                        {/* {soliciPrecalif.webContribNomCompleto} */}
+                        <ProgressBar
+                          now={soliciPrecalif.porc_evaluacion}
+                          label={`${soliciPrecalif.porc_evaluacion}%`}
+                          variant={soliciPrecalif.rechazado ? "danger" : ""}
+                        />
+                        <div>
+                          <small>{soliciPrecalif.ofic_pendiente}</small>
+                        </div>
                       </td>
                       <td className="text-center px-1 mx-0">
                         <Button
@@ -310,7 +185,6 @@ export default function PreLicenciaView() {
           </div>
         </div>
       </div>
-      
     </div>
   );
 }
