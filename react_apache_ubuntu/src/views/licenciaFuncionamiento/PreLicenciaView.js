@@ -54,8 +54,6 @@ export default function PreLicenciaView() {
     } else{
       listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado]
     }
-    
-    
 
     setListPrecalUsuEstadoFiltro(listPrecalUsuEstadoFiltroTmp)
 
@@ -177,14 +175,21 @@ export default function PreLicenciaView() {
                 <caption className="py-0"> {listPrecalUsuEstadoFiltro.length} registro(s) encontrado(s)</caption>
                 <thead>
                   <tr className="color-header1 text-white">
-                    <th>Id</th>
-                    <th>Solicitante</th>
+                    <th className="text-center align-middle m-0 p-0" rowspan="2">Id</th>
+                    <th className="text-center align-middle m-0 p-0" rowspan="2">Solicitante</th>
+                    <th className="text-center align-middle m-0 p-0" colspan="3">Evaluación</th>
+                    <th className="text-center align-middle m-0 p-0" colspan="2">Visto bueno</th>                    
+                    <th className="text-center align-middle m-0 p-0" rowspan="2">Ver</th>
+                  </tr>
+
+                  <tr className="color-header1 text-white">                    
+                   
                     <OverlayTrigger
                       trigger="click"
                       placement="top"
                       overlay={popoverNR}
                     >
-                      <th className="px-1 mx-0" title="Nivel de riesgo">
+                      <th className="text-center align-middle m-0 p-0" title="Nivel de riesgo">
                         NR
                       </th>
                     </OverlayTrigger>
@@ -193,21 +198,44 @@ export default function PreLicenciaView() {
                       placement="top"
                       overlay={popoverCU}
                     >
-                    <th className="px-1 mx-0" title="Compatibilidad de uso">
+                    <th className="text-center align-middle m-0 p-0" title="Compatibilidad de uso">
                       CU
                     </th>
                     </OverlayTrigger>
+
                     <OverlayTrigger
                       trigger="click"
                       placement="top"
                       overlay={popoverAC}
                     >
-                    <th className="px-1 mx-0" title="Atención al ciudadano">
+                    <th className="text-center align-middle m-0 p-0" title="Atención al ciudadano">
+                      AC
+                    </th>                    
+                    </OverlayTrigger>
+
+                    <OverlayTrigger
+                      trigger="click"
+                      placement="top"
+                      overlay={popoverAC}
+                    >
+                    <th className="text-center align-middle m-0 p-0" title="Nivel de Riesgo">
+                      NR
+                    </th>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger
+                      trigger="click"
+                      placement="top"
+                      overlay={popoverAC}
+                    >
+                    <th className="text-center align-middle m-0 p-0" title="Atención al ciudadano">
                       AC
                     </th>
                     </OverlayTrigger>
-                    <th className="px-1 mx-0">Ver</th>
+                    
                   </tr>
+
+
                 </thead>
                 <tbody>
                   {listPrecalUsuEstadoFiltro.map((soliciPrecalif, i) => (
@@ -217,7 +245,7 @@ export default function PreLicenciaView() {
                       </td>
                       <td>{soliciPrecalif.webContribNomCompleto}</td>
                       {/* <td>{soliciPrecalif.precalEstadoNom}</td> */}
-                      <td className="px-1 mx-0">
+                      <td className="text-center px-1 mx-0">
                         {soliciPrecalif.precalRiesgoEval === 1 ? (
                           <i className="fas fa-check" title="Aprobado"></i>
                         ) : (
@@ -226,7 +254,7 @@ export default function PreLicenciaView() {
                           )
                         )}
                       </td>
-                      <td className="px-1 mx-0">
+                      <td className="text-center px-1 mx-0">
                         {soliciPrecalif.precalCompatCU === 1 ? (
                           <i className="fas fa-check" title="Aprobado"></i>
                         ) : (
@@ -235,7 +263,7 @@ export default function PreLicenciaView() {
                           )
                         )}
                       </td>
-                      <td className="px-1 mx-0">
+                      <td className="text-center px-1 mx-0">
                         {soliciPrecalif.precalCompatDL === 1 ? (
                           <i className="fas fa-check" title="Aprobado"></i>
                         ) : (
@@ -244,7 +272,27 @@ export default function PreLicenciaView() {
                           )
                         )}
                       </td>
-                      <td className="px-1 mx-0">
+                      <td className="text-center px-1 mx-0">
+                      
+                        {soliciPrecalif.precalDcVbEval === 1 ? (
+                          <i className="fas fa-check" title="Aprobado"></i>
+                        ) : (
+                          soliciPrecalif.precalDcVbEval === 2 && (
+                            <i className="fas fa-times" title="Rechazado"></i>
+                          )
+                        )}
+                      </td>
+                      <td className="text-center px-1 mx-0">
+                      
+                        {soliciPrecalif.precalDlVbEval === 1 ? (
+                          <i className="fas fa-check" title="Aprobado"></i>
+                        ) : (
+                          soliciPrecalif.precalDlVbEval === 2 && (
+                            <i className="fas fa-times" title="Rechazado"></i>
+                          )
+                        )}
+                      </td>
+                      <td className="text-center px-1 mx-0">
                         <Button
                           href={`/pre_licencia_ver/${soliciPrecalif.precalId}`}
                           variant="success"

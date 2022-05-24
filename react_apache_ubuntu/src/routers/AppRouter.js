@@ -6,22 +6,19 @@ import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 
 export const AppRouter = () => {
-  
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-        <Route
+          <Route
             path="/login"
             element={
               <PublicRoute>
                 <LoginView />
               </PublicRoute>
             }
-          />          
+          />
 
-
-          {/* <Route path="/login" element={<LoginView />} /> */}
           <Route
             path="/*"
             element={
@@ -29,7 +26,7 @@ export const AppRouter = () => {
                 <DashboardRoutes />
               </PrivateRoute>
             }
-          />          
+          />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

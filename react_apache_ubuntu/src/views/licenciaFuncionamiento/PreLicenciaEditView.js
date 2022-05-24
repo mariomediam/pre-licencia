@@ -20,6 +20,7 @@ import {
 } from "react-bootstrap";
 
 export default function PreLicenciaEditView() {
+  
   const { precalId } = useParams();
 
   const [mostrarCU, setMostrarCU] = useState(false);
