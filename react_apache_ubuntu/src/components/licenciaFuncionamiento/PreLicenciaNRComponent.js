@@ -8,11 +8,13 @@ import {
   agregarEvaluacion,
 } from "../../services/licFuncService";
 import AuthContext from "../../context/AuthContext";
+import Loading from "../../components/Loading";
 
 export default function PreLicenciaNRComponent({
   precalId,
   verPrecalificacion,
 }) {
+  const [cargando, setCargando] = useState(false);
   const { userName } = useContext(AuthContext);
 
   const [show, setShow] = useState(false);
@@ -37,7 +39,7 @@ export default function PreLicenciaNRComponent({
 
     if (evaluacionTmp) {
       setResultado(evaluacionTmp.precalEvalEstadoNombre);
-      switch (evaluacionTmp.precalificacion.precalRiesgo) {        
+      switch (evaluacionTmp.precalificacion.precalRiesgo) {
         case 4:
           setNivelRiesgo("BAJO");
           break;
@@ -68,39 +70,37 @@ export default function PreLicenciaNRComponent({
   };
 
   const mostrarNivelRiesgo = () => {
-
-    if (selectResultEval.current.value === "1"){
-      setMostrarNR(true)
+    if (selectResultEval.current.value === "1") {
+      setMostrarNR(true);
     } else {
-      setMostrarNR(false)
+      setMostrarNR(false);
     }
-  }
+  };
 
   const grabarEvaluacion = async () => {
-    
+    setCargando(true);
+    await agregarEvaluacion(
+      precalId,
+      1,
+      inputObserv.current.value,
+      userName,
+      "INDETERMINADO",
+      parseInt(selectResultEval.current.value),
+      selectNivRie.current?.value || "0"
+    );
 
-      await agregarEvaluacion(
-        precalId,
-        1,
-        inputObserv.current.value,
-        userName,
-        "INDETERMINADO",
-        parseInt(selectResultEval.current.value),
-        selectNivRie.current?.value || "0"
-      );
+    verEvaluacion();
+    setPuedeEvaluar(false);
+    verPrecalificacion();
 
-      verEvaluacion();
-      setPuedeEvaluar(false);
-      verPrecalificacion();
+    setShow(false);
+    setCargando(false);
 
-      setShow(false);
-
-      Toast.fire({
-        icon: "success",
-        title: "El registro se grabo con éxito",
-        background: "#F4F6F6",
-      });
-    
+    Toast.fire({
+      icon: "success",
+      title: "El registro se grabo con éxito",
+      background: "#F4F6F6",
+    });
   };
 
   useEffect(() => {
@@ -150,72 +150,64 @@ export default function PreLicenciaNRComponent({
           />
         </Form.Group>
       </Form>
-      <div>
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <i className="fas fa-exclamation-triangle me-2"></i>Evaluar nivel
-              de riesgo
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="fw-bold">
-                Resultado de evaluación
-              </Form.Label>
-              <Form.Select
-                aria-label="Resultado de evaluación"
-                ref={selectResultEval}
-                onChange={mostrarNivelRiesgo}
-                
-              >
-                <option value="1">Aprobado</option>
-                <option value="2">Rechazado</option>
-              </Form.Select>
-            </Form.Group>
+      {cargando ? (
+        <Loading />
+      ) : (
+        <div>
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <i className="fas fa-exclamation-triangle me-2"></i>Evaluar
+                nivel de riesgo
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label className="fw-bold">
+                  Resultado de evaluación
+                </Form.Label>
+                <Form.Select
+                  aria-label="Resultado de evaluación"
+                  ref={selectResultEval}
+                  onChange={mostrarNivelRiesgo}
+                >
+                  <option value="1">Aprobado</option>
+                  <option value="2">Rechazado</option>
+                </Form.Select>
+              </Form.Group>
 
-            { mostrarNR && <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="fw-bold">Nivel de riesgo</Form.Label>
-              <Form.Select
-                aria-label="Nivel de riesgo"
-                ref={selectNivRie}
-                
-              >
-                <option value="4">Bajo</option>
-                <option value="5">Medio</option>
-              </Form.Select>
-            </Form.Group> }
-            
+              {mostrarNR && (
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label className="fw-bold">Nivel de riesgo</Form.Label>
+                  <Form.Select aria-label="Nivel de riesgo" ref={selectNivRie}>
+                    <option value="4">Bajo</option>
+                    <option value="5">Medio</option>
+                  </Form.Select>
+                </Form.Group>
+              )}
 
-
-            <Form.Group className="mb-3" controlId="modalTextArea">
-              <Form.Label className="fw-bold">Observaciones</Form.Label>
-              <Form.Control as="textarea" rows={3} ref={inputObserv} />
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={handleClose}              
-            >
-              <i className="far fa-times-circle me-1"></i>
-              Cerrar
-            </Button>
-            <Button
-              variant="primary"
-              onClick={grabarEvaluacion}
-              
-            >
-              <i className="far fa-save me-2"></i>Grabar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+              <Form.Group className="mb-3" controlId="modalTextArea">
+                <Form.Label className="fw-bold">Observaciones</Form.Label>
+                <Form.Control as="textarea" rows={3} ref={inputObserv} />
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                <i className="far fa-times-circle me-1"></i>
+                Cerrar
+              </Button>
+              <Button variant="primary" onClick={grabarEvaluacion}>
+                <i className="far fa-save me-2"></i>Grabar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,12 +3,14 @@ import { Form, Button, Modal } from "react-bootstrap";
 import {
   obtenerPrecalificacionPorId,
   obtenerUsuarioTipoEval,
-  agregarVBDc
+  agregarVBDc,
 } from "../../services/licFuncService";
 import { Toast } from "../tools/PopMessage";
 import AuthContext from "../../context/AuthContext";
+import Loading from "../../components/Loading";
 
 export default function PreLicenciaVBNRComponent({ precalId }) {
+  const [cargando, setCargando] = useState(false);
   const { userName } = useContext(AuthContext);
   const [puedeEvaluar, setPuedeEvaluar] = useState(false);
   // const [dcVbEval, setDcVbEval] = useState(0);
@@ -54,28 +56,27 @@ export default function PreLicenciaVBNRComponent({ precalId }) {
   };
 
   const grabarEvaluacion = async () => {
-    
-
+    setCargando(true);
     await agregarVBDc(
       precalId,
-      parseInt(selectResultEval.current.value),      
+      parseInt(selectResultEval.current.value),
       inputObserv.current.value,
       userName,
       "INDETERMINADO"
     );
 
     verEvaluacion();
-    setPuedeEvaluar(false);    
+    setPuedeEvaluar(false);
 
     setShow(false);
+    setCargando(false);
 
     Toast.fire({
       icon: "success",
       title: "El registro se grabo con éxito",
       background: "#F4F6F6",
     });
-  
-};
+  };
 
   useEffect(() => {
     verEvaluacion();
@@ -114,51 +115,53 @@ export default function PreLicenciaVBNRComponent({ precalId }) {
           />
         </Form.Group>
       </Form>
-      <div>
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <i className="fas fa-exclamation-triangle me-2"></i>Visto bueno Oficina de Defensa Civil
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="fw-bold">
-                Resultado de evaluación
-              </Form.Label>
-              <Form.Select
-                aria-label="Resultado de evaluación"
-                ref={selectResultEval}
-              >
-                <option value="1">Aprobado</option>
-                <option value="2">Rechazado</option>
-              </Form.Select>
-            </Form.Group>
+      {cargando ? (
+        <Loading />
+      ) : (
+        <div>
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <i className="fas fa-exclamation-triangle me-2"></i>Visto bueno
+                Oficina de Defensa Civil
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label className="fw-bold">
+                  Resultado de evaluación
+                </Form.Label>
+                <Form.Select
+                  aria-label="Resultado de evaluación"
+                  ref={selectResultEval}
+                >
+                  <option value="1">Aprobado</option>
+                  <option value="2">Rechazado</option>
+                </Form.Select>
+              </Form.Group>
 
-            <Form.Group className="mb-3" controlId="modalTextArea">
-              <Form.Label className="fw-bold">Observaciones</Form.Label>
-              <Form.Control as="textarea" rows={3} ref={inputObserv} />
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              <i className="far fa-times-circle me-1"></i>
-              Cerrar
-            </Button>
-            <Button
-              variant="primary"
-              onClick={grabarEvaluacion}
-            >
-              <i className="far fa-save me-2"></i>Grabar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+              <Form.Group className="mb-3" controlId="modalTextArea">
+                <Form.Label className="fw-bold">Observaciones</Form.Label>
+                <Form.Control as="textarea" rows={3} ref={inputObserv} />
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                <i className="far fa-times-circle me-1"></i>
+                Cerrar
+              </Button>
+              <Button variant="primary" onClick={grabarEvaluacion}>
+                <i className="far fa-save me-2"></i>Grabar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      )}
     </div>
   );
 }

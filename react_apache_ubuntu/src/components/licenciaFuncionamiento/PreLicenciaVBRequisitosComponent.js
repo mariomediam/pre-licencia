@@ -7,15 +7,17 @@ import {
 } from "../../services/licFuncService";
 import { Toast } from "../tools/PopMessage";
 import AuthContext from "../../context/AuthContext";
+import Loading from "../../components/Loading";
 
 export default function PreLicenciaVBRequisitosComponent({ precalId }) {
+  const [cargando, setCargando] = useState(false);
   const { userName } = useContext(AuthContext);
   const [puedeEvaluar, setPuedeEvaluar] = useState(false);
   // const [dlVbEval, setDlVbEval] = useState(0);
   const [dlVbObserv, setDlVbObserv] = useState("");
   const [dlVbSoliciSimula, setDlVbSoliciSimula] = useState("");
   const [textResulEvaluacion, settextResulEvaluacion] = useState("PENDIENTE");
-  const [tasaLicencia, setTasaLicencia] = useState(0.00)
+  const [tasaLicencia, setTasaLicencia] = useState(0.0);
   const [show, setShow] = useState(false);
 
   const selectResultEval = useRef();
@@ -26,13 +28,17 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
   const handleShow = () => setShow(true);
 
   const verEvaluacion = async () => {
-    const { precalDlVbEval, precalSoliciSimulacion, precalDlVbObs, precalMonto } =
-      await obtenerPrecalificacionPorId(precalId);
+    const {
+      precalDlVbEval,
+      precalSoliciSimulacion,
+      precalDlVbObs,
+      precalMonto,
+    } = await obtenerPrecalificacionPorId(precalId);
 
     // setDlVbEval(precalDlVbEval);
     setDlVbObserv(precalDlVbObs || "");
     setDlVbSoliciSimula(precalSoliciSimulacion || "");
-    setTasaLicencia(precalMonto)
+    setTasaLicencia(precalMonto);
 
     switch (precalDlVbEval) {
       case 0:
@@ -59,6 +65,7 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
   };
 
   const grabarEvaluacion = async () => {
+    setCargando(true);
     await agregarVBDl(
       precalId,
       parseInt(selectResultEval.current.value),
@@ -70,7 +77,7 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
 
     verEvaluacion();
     setPuedeEvaluar(false);
-
+    setCargando(false);
     setShow(false);
 
     Toast.fire({
@@ -107,12 +114,14 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label className="fw-bold">Tasa de Simulación de Licencia Nº {dlVbSoliciSimula}</Form.Label>
+          <Form.Label className="fw-bold">
+            Tasa de Simulación de Licencia Nº {dlVbSoliciSimula}
+          </Form.Label>
           <Form.Control
             type="text"
             readOnly
             style={{ backgroundColor: "#FFFFFF", color: "black" }}
-            value={`S/. ${tasaLicencia}` }
+            value={`S/. ${tasaLicencia}`}
           />
         </Form.Group>
 
@@ -127,54 +136,66 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
           />
         </Form.Group>
       </Form>
-      <div>
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <i className="fas fa-exclamation-triangle me-2"></i>Visto bueno
-              Subgerencia de Atención al Ciudadano
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="fw-bold">
-                Resultado de evaluación
-              </Form.Label>
-              <Form.Select
-                aria-label="Resultado de evaluación"
-                ref={selectResultEval}
+      {cargando ? (
+        <Loading />
+      ) : (
+        <div>
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <i className="fas fa-exclamation-triangle me-2"></i>Visto bueno
+                Subgerencia de Atención al Ciudadano
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label className="fw-bold">
+                  Resultado de evaluación
+                </Form.Label>
+                <Form.Select
+                  aria-label="Resultado de evaluación"
+                  ref={selectResultEval}
+                >
+                  <option value="1">Aprobado</option>
+                  <option value="2">Rechazado</option>
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
               >
-                <option value="1">Aprobado</option>
-                <option value="2">Rechazado</option>
-              </Form.Select>
-            </Form.Group>
+                <Form.Label>Simulación de Licencia Nº</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="00000"
+                  maxLength={5}
+                  ref={inputSoliciSimula}
+                />
+              </Form.Group>
 
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Simulación de Licencia Nº</Form.Label>
-              <Form.Control type="text" placeholder="00000" maxLength={5} ref={inputSoliciSimula}/>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="modalTextArea">
-              <Form.Label className="fw-bold">Observaciones</Form.Label>
-              <Form.Control as="textarea" rows={3} ref={inputObserv} />
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              <i className="far fa-times-circle me-1"></i>
-              Cerrar
-            </Button>
-            <Button variant="primary" onClick={grabarEvaluacion}>
-              <i className="far fa-save me-2"></i>Grabar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+              <Form.Group className="mb-3" controlId="modalTextArea">
+                <Form.Label className="fw-bold">Observaciones</Form.Label>
+                <Form.Control as="textarea" rows={3} ref={inputObserv} />
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                <i className="far fa-times-circle me-1"></i>
+                Cerrar
+              </Button>
+              <Button variant="primary" onClick={grabarEvaluacion}>
+                <i className="far fa-save me-2"></i>Grabar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      )}
     </div>
   );
 }

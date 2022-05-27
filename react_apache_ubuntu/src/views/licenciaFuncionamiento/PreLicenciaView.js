@@ -12,6 +12,7 @@ import AuthContext from "../../context/AuthContext";
 
 import Header from "../../components/Header";
 import { obtenerPrecalUsuEstado } from "../../services/licFuncService";
+import Loading from "../../components/Loading";
 
 export default function PreLicenciaView() {
   const { userName } = useContext(AuthContext);
@@ -21,12 +22,15 @@ export default function PreLicenciaView() {
   const [listPrecalUsuEstadoFiltro, setListPrecalUsuEstadoFiltro] = useState(
     []
   );
+  const [cargando, setCargando] = useState(false);
 
   const selectEstado = useRef();
 
   const inputFiltro = useRef();
 
   const listarPrecalUsuEstado = async () => {
+
+    setCargando(true)
     let estado =
       selectEstado.current.value === "9"
         ? undefined
@@ -36,30 +40,34 @@ export default function PreLicenciaView() {
       userName,
       estado
     );
+
     setListPrecalUsuEstado(listPrecalUsuEstadoTmp);
+    setCargando(false)
   };
 
   const listarPrecalUsuEstadoFiltro = () => {
     let listPrecalUsuEstadoFiltroTmp = [];
 
-    if (inputFiltro.current.value.length > 0) {
-      if (!isNaN(inputFiltro.current.value)) {
-        listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(
-          (fila) => fila.precalId === parseInt(inputFiltro.current.value)
-        );
+    if (inputFiltro.current) {
+      if (inputFiltro.current.value.length > 0) {
+        if (!isNaN(inputFiltro.current.value)) {
+          listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(
+            (fila) => fila.precalId === parseInt(inputFiltro.current.value)
+          );
+        } else {
+          listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter((fila) =>
+            fila.webContribNomCompleto
+              .replace("  ", " ")
+              .toUpperCase()
+              .includes(inputFiltro.current.value.toUpperCase())
+          );
+        }
       } else {
-        listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter((fila) =>
-          fila.webContribNomCompleto
-            .replace("  ", " ")
-            .toUpperCase()
-            .includes(inputFiltro.current.value.toUpperCase())
-        );
+        listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado];
       }
-    } else {
-      listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado];
     }
 
-    console.log(listPrecalUsuEstadoFiltroTmp);
+    // console.log(listPrecalUsuEstadoFiltroTmp);
 
     setListPrecalUsuEstadoFiltro(listPrecalUsuEstadoFiltroTmp);
   };
@@ -79,8 +87,6 @@ export default function PreLicenciaView() {
     listarPrecalUsuEstadoFiltro();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listPrecalUsuEstado]);
-
-  
 
   return (
     <div>
@@ -134,53 +140,59 @@ export default function PreLicenciaView() {
               </div>
             </div>
             <div className="table-responsive">
-              <Table bordered hover className="caption-top">
-                <caption className="py-0">
-                  {" "}
-                  {listPrecalUsuEstadoFiltro.length} registro(s) encontrado(s)
-                </caption>
-                <thead>
-                  <tr className="color-header1 text-white">
-                    <th className="text-center align-middle m-0 p-0">Id</th>
-                    <th className="text-center align-middle m-0 p-0">
-                      Solicitante
-                    </th>
-                    <th className="text-center align-middle m-0 p-0">Estado</th>
-                    <th className="text-center align-middle m-0 p-0">Ver</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {listPrecalUsuEstadoFiltro.map((soliciPrecalif, i) => (
-                    <tr key={soliciPrecalif.precalId}>
-                      <td>
-                        {soliciPrecalif.precalId.toString().padStart(4, "0")}
-                      </td>
-                      <td>{soliciPrecalif.webContribNomCompleto}</td>
-                      <td>
-                        {/* {soliciPrecalif.webContribNomCompleto} */}
-                        <ProgressBar
-                          now={soliciPrecalif.porc_evaluacion}
-                          label={`${soliciPrecalif.porc_evaluacion}%`}
-                          variant={soliciPrecalif.rechazado ? "danger" : ""}
-                        />
-                        <div>
-                          <small>{soliciPrecalif.ofic_pendiente}</small>
-                        </div>
-                      </td>
-                      <td className="text-center px-1 mx-0">
-                        <Button
-                          href={`/pre_licencia_ver/${soliciPrecalif.precalId}`}
-                          variant="success"
-                          size="sm"
-                          title="Ver solicitud"
-                        >
-                          <i className="fas fa-eye"></i>
-                        </Button>
-                      </td>
+              {cargando ? (
+                <Loading />
+              ) : (
+                <Table bordered hover className="caption-top">
+                  <caption className="py-0">
+                    {" "}
+                    {listPrecalUsuEstadoFiltro.length} registro(s) encontrado(s)
+                  </caption>
+                  <thead>
+                    <tr className="color-header1 text-white">
+                      <th className="text-center align-middle m-0 p-0">Id</th>
+                      <th className="text-center align-middle m-0 p-0">
+                        Solicitante
+                      </th>
+                      <th className="text-center align-middle m-0 p-0">
+                        Estado
+                      </th>
+                      <th className="text-center align-middle m-0 p-0">Ver</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody>
+                    {listPrecalUsuEstadoFiltro.map((soliciPrecalif, i) => (
+                      <tr key={soliciPrecalif.precalId}>
+                        <td>
+                          {soliciPrecalif.precalId.toString().padStart(4, "0")}
+                        </td>
+                        <td>{soliciPrecalif.webContribNomCompleto}</td>
+                        <td>
+                          {/* {soliciPrecalif.webContribNomCompleto} */}
+                          <ProgressBar
+                            now={soliciPrecalif.porc_evaluacion}
+                            label={`${soliciPrecalif.porc_evaluacion}%`}
+                            variant={soliciPrecalif.rechazado ? "danger" : ""}
+                          />
+                          <div>
+                            <small>{soliciPrecalif.ofic_pendiente}</small>
+                          </div>
+                        </td>
+                        <td className="text-center px-1 mx-0">
+                          <Button
+                            href={`/pre_licencia_ver/${soliciPrecalif.precalId}`}
+                            variant="success"
+                            size="sm"
+                            title="Ver solicitud"
+                          >
+                            <i className="fas fa-eye"></i>
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
             </div>
           </div>
         </div>

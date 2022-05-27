@@ -11,11 +11,13 @@ import {
 } from "../../services/licFuncService";
 import { Toast } from "../tools/PopMessage";
 import { Accordion } from "react-bootstrap";
+import Loading from "../../components/Loading";
 
 export default function PreLicenciaRequisitosComponent({
   precalId,
   verPrecalificacion,
 }) {
+  const [cargando, setCargando] = useState(false);
   const [show, setShow] = useState(false);
   const [resultado, setResultado] = useState("Pendiente");
   const [documentos, setDocumentos] = useState([]);
@@ -27,7 +29,7 @@ export default function PreLicenciaRequisitosComponent({
   const [mostrarDocumSust, setMostrarDocumSust] = useState(true);
   const [tipoLicencia, setTipoLicencia] = useState([]);
   const [strTipoLicencia, setStrTipoLicencia] = useState("");
-  const [tasaLicencia, setTasaLicencia] = useState(0)
+  const [tasaLicencia, setTasaLicencia] = useState(0);
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -51,7 +53,7 @@ export default function PreLicenciaRequisitosComponent({
 
       setResultado(evaluacionTmp.precalEvalEstadoNombre);
       setObservaciones(evaluacionTmp.precalEvalComent);
-      setTasaLicencia(evaluacionTmp.precalificacion.precalMonto)
+      setTasaLicencia(evaluacionTmp.precalificacion.precalMonto);
 
       if (evaluacionTmp.tipoLicencia) {
         setStrTipoLicencia(evaluacionTmp.tipoLicencia.tipoLicDescrip);
@@ -116,14 +118,13 @@ export default function PreLicenciaRequisitosComponent({
   };
 
   const grabarEvaluacion = async () => {
+    setCargando(true);
     try {
       setButtonsDisabled(true);
 
       let documentosSelecc = [];
       let tipoLicenciaSelect = undefined;
-
-      console.log(1);
-
+      
       if (tipoDocumentos) {
         documentosSelecc = tipoDocumentos.filter(
           (documento) => documento.selecc === true
@@ -133,8 +134,6 @@ export default function PreLicenciaRequisitosComponent({
       if (inputTipoLicencia.current) {
         tipoLicenciaSelect = inputTipoLicencia.current.value;
       }
-
-      console.log(2);
 
       await agregarEvaluacion(
         precalId,
@@ -149,13 +148,12 @@ export default function PreLicenciaRequisitosComponent({
         parseFloat(inputTasaLicencia.current.value)
       );
 
-      console.log(3);
-
       verEvaluacion();
       setPuedeEvaluar(false);
       verPrecalificacion();
 
       setShow(false);
+      setCargando(false);
 
       Toast.fire({
         icon: "success",
@@ -221,10 +219,10 @@ export default function PreLicenciaRequisitosComponent({
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="fw-bold">Tasa de Licencia</Form.Label>
           <Form.Control
-            type="text"             
+            type="text"
             readOnly
             style={{ backgroundColor: "#FFFFFF", color: "black" }}
-            value={`S/. ${tasaLicencia}` }
+            value={`S/. ${tasaLicencia}`}
           />
         </Form.Group>
 
@@ -239,142 +237,156 @@ export default function PreLicenciaRequisitosComponent({
           />
         </Form.Group>
       </Form>
-      <div>
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-          size="lg"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <i className="fas fa-tasks me-2"></i>Evaluar requisitos
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="fw-bold">
-                Resultado de evaluación
-              </Form.Label>
-              <Form.Select
-                aria-label="Default select example"
-                ref={selectResultEval}
-                onChange={onSelectResultEvalChange}
+      {cargando ? (
+        <Loading />
+      ) : (
+        <div>
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+            size="lg"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <i className="fas fa-tasks me-2"></i>Evaluar requisitos
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label className="fw-bold">
+                  Resultado de evaluación
+                </Form.Label>
+                <Form.Select
+                  aria-label="Default select example"
+                  ref={selectResultEval}
+                  onChange={onSelectResultEvalChange}
+                >
+                  <option value="1">Aprobado</option>
+                  <option value="2">Rechazado</option>
+                </Form.Select>
+              </Form.Group>
+
+              {mostrarDocumSust && (
+                <div>
+                  <Accordion>
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header>
+                        Documentación sustentatoria solicitada
+                      </Accordion.Header>
+                      <Accordion.Body>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <div style={{ height: "280px", overflow: "scroll" }}>
+                            <Table bordered hover>
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Autoridad competente</th>
+                                  <th>Exigible</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {tipoDocumentos.map(
+                                  (
+                                    { precalTipDocId, precalTipDocNombre },
+                                    i
+                                  ) => (
+                                    <tr key={precalTipDocId}>
+                                      <td>{i + 1}</td>
+                                      <td>{precalTipDocNombre}</td>
+                                      <td>
+                                        {" "}
+                                        <Form.Check
+                                          type="checkbox"
+                                          aria-label={precalTipDocNombre}
+                                          id={precalTipDocId}
+                                          onChange={onCheckChange}
+                                        />
+                                      </td>
+                                    </tr>
+                                  )
+                                )}
+                              </tbody>
+                            </Table>
+                          </div>
+                        </Form.Group>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </Accordion>
+
+                  <Form.Group className="my-2" controlId="formTipoLicencia">
+                    <Form.Label className="fw-bold">
+                      Tipo de Licencia
+                    </Form.Label>
+                    <Form.Select
+                      aria-label="Default select example"
+                      // ref={selectResultEval}
+                      // className="select2 narrow wrap"
+                      // className="formNamesList setWidth"
+                      // size="15"
+                      className="bootstrap-select"
+                      ref={inputTipoLicencia}
+                    >
+                      {tipoLicencia.map(({ tipoLicId, tipoLicDescrip }, i) => (
+                        <option
+                          key={tipoLicId}
+                          value={tipoLicId}
+                          style={{ word_wrap: "break-word" }}
+                        >
+                          {tipoLicDescrip}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                </div>
+              )}
+
+              <Form.Group
+                className="my-2"
+                controlId="exampleForm.ControlInput1"
               >
-                <option value="1">Aprobado</option>
-                <option value="2">Rechazado</option>
-              </Form.Select>
-            </Form.Group>
+                <Form.Label className="fw-bold">
+                  Tasa de licencia de funcionamiento
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  step="0.01"
+                  name="numero"
+                  // placeholder="00000"
+                  // maxLength={5}
+                  ref={inputTasaLicencia}
+                />
+              </Form.Group>
 
-            {mostrarDocumSust && (
-              <div>
-                <Accordion>
-                  <Accordion.Item eventKey="0">
-                    <Accordion.Header>
-                      Documentación sustentatoria solicitada
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <div style={{ height: "280px", overflow: "scroll" }}>
-                          <Table bordered hover>
-                            <thead>
-                              <tr>
-                                <th>#</th>
-                                <th>Autoridad competente</th>
-                                <th>Exigible</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {tipoDocumentos.map(
-                                ({ precalTipDocId, precalTipDocNombre }, i) => (
-                                  <tr key={precalTipDocId}>
-                                    <td>{i + 1}</td>
-                                    <td>{precalTipDocNombre}</td>
-                                    <td>
-                                      {" "}
-                                      <Form.Check
-                                        type="checkbox"
-                                        aria-label={precalTipDocNombre}
-                                        id={precalTipDocId}
-                                        onChange={onCheckChange}
-                                      />
-                                    </td>
-                                  </tr>
-                                )
-                              )}
-                            </tbody>
-                          </Table>
-                        </div>
-                      </Form.Group>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-
-                <Form.Group className="my-2" controlId="formTipoLicencia">
-                  <Form.Label className="fw-bold">Tipo de Licencia</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    // ref={selectResultEval}
-                    // className="select2 narrow wrap"
-                    // className="formNamesList setWidth"
-                    // size="15"
-                    className="bootstrap-select"
-                    ref={inputTipoLicencia}
-                  >
-                    {tipoLicencia.map(({ tipoLicId, tipoLicDescrip }, i) => (
-                      <option
-                        key={tipoLicId}
-                        value={tipoLicId}
-                        style={{ word_wrap: "break-word" }}
-                      >
-                        {tipoLicDescrip}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
-              </div>
-            )}
-
-            <Form.Group className="my-2" controlId="exampleForm.ControlInput1">
-              <Form.Label className="fw-bold">Tasa de licencia de funcionamiento</Form.Label>
-              <Form.Control
-                type="number"
-                step="0.01" 
-                name="numero"
-                // placeholder="00000"
-                // maxLength={5}
-                ref={inputTasaLicencia}
-              />
-            </Form.Group>
-
-            <Form.Group
-              className="my-2"
-              controlId="exampleForm.ControlTextarea1"
-            >
-              <Form.Label className="fw-bold">Observaciones</Form.Label>
-              <Form.Control as="textarea" rows={3} ref={inputObserv} />
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={handleClose}
-              disabled={buttonsDisabled}
-            >
-              <i className="far fa-times-circle me-1"></i>
-              Cerrar
-            </Button>
-            <Button
-              variant="primary"
-              onClick={grabarEvaluacion}
-              disabled={buttonsDisabled}
-            >
-              <i className="far fa-save me-2"></i>Grabar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+              <Form.Group
+                className="my-2"
+                controlId="exampleForm.ControlTextarea1"
+              >
+                <Form.Label className="fw-bold">Observaciones</Form.Label>
+                <Form.Control as="textarea" rows={3} ref={inputObserv} />
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="secondary"
+                onClick={handleClose}
+                disabled={buttonsDisabled}
+              >
+                <i className="far fa-times-circle me-1"></i>
+                Cerrar
+              </Button>
+              <Button
+                variant="primary"
+                onClick={grabarEvaluacion}
+                disabled={buttonsDisabled}
+              >
+                <i className="far fa-save me-2"></i>Grabar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      )}
     </div>
   );
 }
