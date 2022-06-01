@@ -6,6 +6,7 @@ import {
   InputGroup,
   FormControl,
   ProgressBar,
+  // Pagination,
 } from "react-bootstrap";
 
 import AuthContext from "../../context/AuthContext";
@@ -29,8 +30,7 @@ export default function PreLicenciaView() {
   const inputFiltro = useRef();
 
   const listarPrecalUsuEstado = async () => {
-
-    setCargando(true)
+    setCargando(true);
     let estado =
       selectEstado.current.value === "9"
         ? undefined
@@ -42,7 +42,7 @@ export default function PreLicenciaView() {
     );
 
     setListPrecalUsuEstado(listPrecalUsuEstadoTmp);
-    setCargando(false)
+    setCargando(false);
   };
 
   const listarPrecalUsuEstadoFiltro = () => {
@@ -143,55 +143,82 @@ export default function PreLicenciaView() {
               {cargando ? (
                 <Loading />
               ) : (
-                <Table bordered hover className="caption-top">
-                  <caption className="py-0">
-                    {" "}
-                    {listPrecalUsuEstadoFiltro.length} registro(s) encontrado(s)
-                  </caption>
-                  <thead>
-                    <tr className="color-header1 text-white">
-                      <th className="text-center align-middle m-0 p-0">Id</th>
-                      <th className="text-center align-middle m-0 p-0">
-                        Solicitante
-                      </th>
-                      <th className="text-center align-middle m-0 p-0">
-                        Estado
-                      </th>
-                      <th className="text-center align-middle m-0 p-0">Ver</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {listPrecalUsuEstadoFiltro.map((soliciPrecalif, i) => (
-                      <tr key={soliciPrecalif.precalId}>
-                        <td>
-                          {soliciPrecalif.precalId.toString().padStart(4, "0")}
-                        </td>
-                        <td>{soliciPrecalif.webContribNomCompleto}</td>
-                        <td>
-                          {/* {soliciPrecalif.webContribNomCompleto} */}
-                          <ProgressBar
-                            now={soliciPrecalif.porc_evaluacion}
-                            label={`${soliciPrecalif.porc_evaluacion}%`}
-                            variant={soliciPrecalif.rechazado ? "danger" : ""}
-                          />
-                          <div>
-                            <small>{soliciPrecalif.ofic_pendiente}</small>
-                          </div>
-                        </td>
-                        <td className="text-center px-1 mx-0">
-                          <Button
-                            href={`/pre_licencia_ver/${soliciPrecalif.precalId}`}
-                            variant="success"
-                            size="sm"
-                            title="Ver solicitud"
-                          >
-                            <i className="fas fa-eye"></i>
-                          </Button>
-                        </td>
+                <div>
+                  <Table bordered hover className="caption-top mb-1">
+                    <caption className="py-0">
+                      {" "}
+                      {listPrecalUsuEstadoFiltro.length} registro(s)
+                      encontrado(s)
+                    </caption>
+                    <thead>
+                      <tr className="color-header1 text-white">
+                        <th className="text-center align-middle m-0 p-0">Id</th>
+                        <th className="text-center align-middle m-0 p-0">
+                          Solicitante
+                        </th>
+                        <th className="text-center align-middle m-0 p-0">
+                          Estado
+                        </th>
+                        <th className="text-center align-middle m-0 p-0">
+                          Ver
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {listPrecalUsuEstadoFiltro.map((soliciPrecalif, i) => (
+                        <tr key={soliciPrecalif.precalId}>
+                          <td>
+                            {soliciPrecalif.precalId
+                              .toString()
+                              .padStart(4, "0")}
+                          </td>
+                          <td>{soliciPrecalif.webContribNomCompleto}</td>
+                          <td>
+                            {/* {soliciPrecalif.webContribNomCompleto} */}
+                            <ProgressBar
+                              now={soliciPrecalif.porc_evaluacion}
+                              label={`${soliciPrecalif.porc_evaluacion}%`}
+                              variant={soliciPrecalif.rechazado ? "danger" : ""}
+                            />
+                            <div>
+                              <small>{soliciPrecalif.ofic_pendiente}</small>
+                            </div>
+                          </td>
+                          <td className="text-center px-1 mx-0">
+                            <Button
+                              href={`/pre_licencia_ver/${soliciPrecalif.precalId}`}
+                              variant="success"
+                              size="sm"
+                              title="Ver solicitud"
+                            >
+                              <i className="fas fa-eye"></i>
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+
+                  {/* <Pagination className="m-0 p-0 justify-content-center" >
+                    <Pagination.First />
+                    <Pagination.Prev /> */}
+                    {/* <Pagination.Item>{1}</Pagination.Item> */}
+                    {/* <Pagination.Ellipsis /> */}
+
+                    {/* <Pagination.Item>{10}</Pagination.Item>
+                    <Pagination.Item>{11}</Pagination.Item> */}
+                    {/* <Pagination.Item active>{`1-10 de 120`}</Pagination.Item> */}
+                    {/* <Pagination.Item>{`1-10 de 120`}</Pagination.Item> */}
+                    {/* <Pagination.Item>{13}</Pagination.Item>
+                    <Pagination.Item disabled>{14}</Pagination.Item>
+
+                    <Pagination.Ellipsis />
+                    <Pagination.Item>{20}</Pagination.Item> */}
+                    {/* <Pagination.Next />
+                    <Pagination.Last />
+                  </Pagination> */}
+                  <hr className="mt-2 b-0"></hr>
+                </div>
               )}
             </div>
           </div>

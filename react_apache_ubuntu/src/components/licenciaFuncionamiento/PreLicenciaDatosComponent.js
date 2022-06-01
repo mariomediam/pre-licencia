@@ -121,7 +121,7 @@ export default function PreLicenciaDatosComponent({ precalId }) {
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label className="fw-bold">Actividades económicas</Form.Label>
-            <ListGroup.Item>{solDescrip}</ListGroup.Item>
+            <ListGroup.Item><small>Descripción del servicio a brindar: </small>{solDescrip}</ListGroup.Item>
             {giros.map((giro, i) => (
               <ListGroup.Item key={giro.precalGiroNegId}>
                 {giro.giroNegocio.giroNegCIIU} {giro.giroNegocio.giroNegNombre}

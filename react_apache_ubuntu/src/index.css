@@ -63,3 +63,46 @@ code {
   max-width: 100%;
   }
 
+  /* .pagination {
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .page-item a,
+  .page-link:hover {
+    color: var(--dark);
+  }
+  
+  .page-item.active .page-link {
+    border-color: var(--dark);
+    background-color: var(--dark);
+  }
+  
+  .page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
+  }
+     */
+
+/* .page-item .page-link{
+  background:  rgb(40, 116, 166);
+} */
+.page-item.active .page-link {
+  background: yellow;
+  background: yellowgreen;
+}    
+
+.page-item a,
+.page-link:hover {
+  color:  rgb(40, 116, 166)
+}
+
+/* .page-item.active .page-link {
+  border-color: var(--dark);
+  background-color: rgb(40, 116, 166)
+} */
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff !important;
+  background-color: rgb(40, 116, 166) !important;
+}

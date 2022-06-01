@@ -41,6 +41,29 @@
   background-color: rgb(95, 174, 31);
 }
 
+/* .pagination {
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.page-item a,
+.page-link:hover {
+  color: var(--dark);
+}
+
+.page-item.active .page-link {
+  border-color: var(--dark);
+  background-color: var(--dark);
+}
+
+.page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
+}
 
 
+ */
+ /* .page-item .page-link {
+  background: red;
+}
 
+  */
