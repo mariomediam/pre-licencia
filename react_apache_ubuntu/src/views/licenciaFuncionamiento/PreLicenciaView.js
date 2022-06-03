@@ -12,69 +12,82 @@ import {
 import AuthContext from "../../context/AuthContext";
 
 import Header from "../../components/Header";
-import { obtenerPrecalUsuEstado } from "../../services/licFuncService";
+import { obtenerPrecalUsuEstadoPagination } from "../../services/licFuncService";
 import Loading from "../../components/Loading";
+import PreLicenciaScrollComponent from "../../components/licenciaFuncionamiento/PreLicenciaScrollComponent";
 
 export default function PreLicenciaView() {
   const { userName } = useContext(AuthContext);
-
-  const [listPrecalUsuEstado, setListPrecalUsuEstado] = useState([]);
-
-  const [listPrecalUsuEstadoFiltro, setListPrecalUsuEstadoFiltro] = useState(
-    []
-  );
-  const [cargando, setCargando] = useState(false);
+  // const [estado, setEstado] = useState("9")
+  const [filtro, setFiltro] = useState({"estado":"9", "textoFiltro":"", "reload":true, "items": Array.from({ length: 20 })})
+  
+  
+  // const [listPrecalUsuEstado, setListPrecalUsuEstado] = useState([]);
+  // const [listPrecalUsuEstadoFiltro, setListPrecalUsuEstadoFiltro] = useState(
+  //   []
+  // );
+  // const [cargando, setCargando] = useState(false);
+  // const [pagNro, setPagNro] = useState(1);
 
   const selectEstado = useRef();
-
   const inputFiltro = useRef();
 
-  const listarPrecalUsuEstado = async () => {
-    setCargando(true);
-    let estado =
-      selectEstado.current.value === "9"
-        ? undefined
-        : selectEstado.current.value;
-
-    const listPrecalUsuEstadoTmp = await obtenerPrecalUsuEstado(
-      userName,
-      estado
-    );
-
-    setListPrecalUsuEstado(listPrecalUsuEstadoTmp);
-    setCargando(false);
-  };
-
-  const listarPrecalUsuEstadoFiltro = () => {
-    let listPrecalUsuEstadoFiltroTmp = [];
-
+  const listarPrecalUsuEstado = async () => { 
+    let textoFiltro = ""
     if (inputFiltro.current) {
-      if (inputFiltro.current.value.length > 0) {
-        if (!isNaN(inputFiltro.current.value)) {
-          listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(
-            (fila) => fila.precalId === parseInt(inputFiltro.current.value)
-          );
-        } else {
-          listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter((fila) =>
-            fila.webContribNomCompleto
-              .replace("  ", " ")
-              .toUpperCase()
-              .includes(inputFiltro.current.value.toUpperCase())
-          );
-        }
-      } else {
-        listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado];
-      }
+      textoFiltro = inputFiltro.current.value
     }
+    setFiltro({"estado": selectEstado.current.value === "9" ? undefined : selectEstado.current.value, "textoFiltro":textoFiltro, "items": Array.from({ length: 20 }), "reload":true})   
 
-    // console.log(listPrecalUsuEstadoFiltroTmp);
 
-    setListPrecalUsuEstadoFiltro(listPrecalUsuEstadoFiltroTmp);
+
+    // setCargando(true);
+    // let estado =
+    //   selectEstado.current.value === "9"
+    //     ? undefined
+    //     : selectEstado.current.value;
+
+    // const data = await obtenerPrecalUsuEstadoPagination(
+    //   userName,
+    //   estado,
+    //   pagNro,
+    //   10
+    // );
+
+    // const listPrecalUsuEstado = data.results;
+
+    // let listPrecalUsuEstadoFiltroTmp = [];
+
+    // if (inputFiltro.current) {
+    //   if (inputFiltro.current.value.length > 0) {
+    //     if (!isNaN(inputFiltro.current.value)) {
+    //       listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(
+    //         (fila) => fila.precalId === parseInt(inputFiltro.current.value)
+    //       );
+    //     } else {
+    //       listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter((fila) =>
+    //         fila.webContribNomCompleto
+    //           .replace("  ", " ")
+    //           .toUpperCase()
+    //           .includes(inputFiltro.current.value.toUpperCase())
+    //       );
+    //     }
+    //   } else {
+    //     listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado];
+    //   }
+    // }
+    
+    // setListPrecalUsuEstadoFiltro(listPrecalUsuEstadoFiltroTmp);    
+    // setCargando(false);
+    // console.log(listPrecalUsuEstadoFiltroTmp)
+    // return listPrecalUsuEstadoFiltroTmp
   };
 
+  
   const inputKeyUp = (event) => {
     if (event.keyCode === 13) {
-      listarPrecalUsuEstadoFiltro();
+      // setPagNro(1)
+      listarPrecalUsuEstado();
     }
   };
 
@@ -83,11 +96,7 @@ export default function PreLicenciaView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName]);
 
-  useEffect(() => {
-    listarPrecalUsuEstadoFiltro();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listPrecalUsuEstado]);
-
+  
   return (
     <div>
       <Header />
@@ -131,7 +140,7 @@ export default function PreLicenciaView() {
                       variant="outline-secondary"
                       id="button-addon2"
                       title="Buscar"
-                      onClick={listarPrecalUsuEstadoFiltro}
+                      onClick={listarPrecalUsuEstado}
                     >
                       <i className="fas fa-search"></i>
                     </Button>
@@ -140,86 +149,13 @@ export default function PreLicenciaView() {
               </div>
             </div>
             <div className="table-responsive">
-              {cargando ? (
+              {/* {cargando ? (
                 <Loading />
-              ) : (
+              ) : ( */}
                 <div>
-                  <Table bordered hover className="caption-top mb-1">
-                    <caption className="py-0">
-                      {" "}
-                      {listPrecalUsuEstadoFiltro.length} registro(s)
-                      encontrado(s)
-                    </caption>
-                    <thead>
-                      <tr className="color-header1 text-white">
-                        <th className="text-center align-middle m-0 p-0">Id</th>
-                        <th className="text-center align-middle m-0 p-0">
-                          Solicitante
-                        </th>
-                        <th className="text-center align-middle m-0 p-0">
-                          Estado
-                        </th>
-                        <th className="text-center align-middle m-0 p-0">
-                          Ver
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {listPrecalUsuEstadoFiltro.map((soliciPrecalif, i) => (
-                        <tr key={soliciPrecalif.precalId}>
-                          <td>
-                            {soliciPrecalif.precalId
-                              .toString()
-                              .padStart(4, "0")}
-                          </td>
-                          <td>{soliciPrecalif.webContribNomCompleto}</td>
-                          <td>
-                            {/* {soliciPrecalif.webContribNomCompleto} */}
-                            <ProgressBar
-                              now={soliciPrecalif.porc_evaluacion}
-                              label={`${soliciPrecalif.porc_evaluacion}%`}
-                              variant={soliciPrecalif.rechazado ? "danger" : ""}
-                            />
-                            <div>
-                              <small>{soliciPrecalif.ofic_pendiente}</small>
-                            </div>
-                          </td>
-                          <td className="text-center px-1 mx-0">
-                            <Button
-                              href={`/pre_licencia_ver/${soliciPrecalif.precalId}`}
-                              variant="success"
-                              size="sm"
-                              title="Ver solicitud"
-                            >
-                              <i className="fas fa-eye"></i>
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-
-                  {/* <Pagination className="m-0 p-0 justify-content-center" >
-                    <Pagination.First />
-                    <Pagination.Prev /> */}
-                    {/* <Pagination.Item>{1}</Pagination.Item> */}
-                    {/* <Pagination.Ellipsis /> */}
-
-                    {/* <Pagination.Item>{10}</Pagination.Item>
-                    <Pagination.Item>{11}</Pagination.Item> */}
-                    {/* <Pagination.Item active>{`1-10 de 120`}</Pagination.Item> */}
-                    {/* <Pagination.Item>{`1-10 de 120`}</Pagination.Item> */}
-                    {/* <Pagination.Item>{13}</Pagination.Item>
-                    <Pagination.Item disabled>{14}</Pagination.Item>
-
-                    <Pagination.Ellipsis />
-                    <Pagination.Item>{20}</Pagination.Item> */}
-                    {/* <Pagination.Next />
-                    <Pagination.Last />
-                  </Pagination> */}
-                  <hr className="mt-2 b-0"></hr>
+                  <PreLicenciaScrollComponent filtro={filtro}/>
                 </div>
-              )}
+              {/* )} */}
             </div>
           </div>
         </div>
