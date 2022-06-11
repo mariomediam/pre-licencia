@@ -19,8 +19,9 @@ import PreLicenciaScrollComponent from "../../components/licenciaFuncionamiento/
 export default function PreLicenciaView() {
   const { userName } = useContext(AuthContext);
   // const [estado, setEstado] = useState("9")
-  const [filtro, setFiltro] = useState({"estado":"9", "textoFiltro":"", "reload":true, "items": Array.from({ length: 20 })})
+  const [filtro, setFiltro] = useState({"estado":"9", "textoFiltro":"", "reload":true, "items": []})
   
+
   
   // const [listPrecalUsuEstado, setListPrecalUsuEstado] = useState([]);
   // const [listPrecalUsuEstadoFiltro, setListPrecalUsuEstadoFiltro] = useState(

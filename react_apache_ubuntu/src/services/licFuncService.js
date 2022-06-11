@@ -434,6 +434,43 @@ const obtenerReqArchivoPorPrecalId = async (opcion, valor01) => {
     }
   };  
 
+  const obtenerGiroNegocio = async (pageNro, ciiu, nombre) => {
+    try {
+      let api = UseAxios();
+  
+      let URLGiroNegocio = `${URL}/giro-negocio-p?page_size=20&p=${pageNro}`;
+
+      if (ciiu){
+        URLGiroNegocio +=  `&ciiu=${ciiu}`
+      }
+
+      if (nombre){
+        URLGiroNegocio +=  `&nombre=${nombre}`
+      }
+  
+      let {
+        data,
+      } = await api.get(`${URLGiroNegocio}`);
+  
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const obtenerGiroNegocioURL = async (URLGiroNegocio) => {
+    try {
+      let api = UseAxios();
+  
+      let {
+        data,
+      } = await api.get(`${URLGiroNegocio}`);
+  
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
 
 export {
   obtenerPrecalUsuEstado,
@@ -452,4 +489,6 @@ export {
   agregarVBDc, 
   agregarVBDl, 
   obtenerPrecalUsuEstadoPagination,
+  obtenerGiroNegocio,
+  obtenerGiroNegocioURL,
 };
