@@ -377,21 +377,11 @@ const obtenerReqArchivoPorPrecalId = async (opcion, valor01) => {
     }
   };
 
-  const obtenerPrecalUsuEstadoPagination = async (login, estado, pagNro, pagSize) => {
-    console.log(pagNro)
+  const obtenerPrecalUsuEstadoPagination = async (URLPrecalUsuEstado) => {
+  
     try {
       let api = UseAxios();
-  
-      let URLPrecalUsuEstado = `${URL}/precal-usu-estado-p?p=${pagNro}&login=${login}`;
-  
-      if (estado) {
-        URLPrecalUsuEstado = `${URLPrecalUsuEstado}&estado=${estado}`;
-      }
-
-      if (pagSize) {
-        URLPrecalUsuEstado = `${URLPrecalUsuEstado}&page_size=${pagSize}`;
-      }
-
+       
       let { data } = await api.get(`${URLPrecalUsuEstado}`);
         
       data.results.forEach(element => { 

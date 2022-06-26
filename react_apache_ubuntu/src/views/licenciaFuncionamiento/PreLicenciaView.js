@@ -1,35 +1,21 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import {
-  Table,
   Button,
   Form,
   InputGroup,
-  FormControl,
-  ProgressBar,
-  // Pagination,
+  FormControl,  
 } from "react-bootstrap";
 
 import AuthContext from "../../context/AuthContext";
 
 import Header from "../../components/Header";
-import { obtenerPrecalUsuEstadoPagination } from "../../services/licFuncService";
-import Loading from "../../components/Loading";
 import PreLicenciaScrollComponent from "../../components/licenciaFuncionamiento/PreLicenciaScrollComponent";
 
 export default function PreLicenciaView() {
   const { userName } = useContext(AuthContext);
-  // const [estado, setEstado] = useState("9")
-  const [filtro, setFiltro] = useState({"estado":"9", "textoFiltro":"", "reload":true, "items": []})
-  
 
+  const [filtro, setFiltro] = useState({"estado":"9", "textoFiltro":"", "reload":true, "items": [],  "usuario":userName})
   
-  // const [listPrecalUsuEstado, setListPrecalUsuEstado] = useState([]);
-  // const [listPrecalUsuEstadoFiltro, setListPrecalUsuEstadoFiltro] = useState(
-  //   []
-  // );
-  // const [cargando, setCargando] = useState(false);
-  // const [pagNro, setPagNro] = useState(1);
-
   const selectEstado = useRef();
   const inputFiltro = useRef();
 
@@ -38,50 +24,7 @@ export default function PreLicenciaView() {
     if (inputFiltro.current) {
       textoFiltro = inputFiltro.current.value
     }
-    setFiltro({"estado": selectEstado.current.value === "9" ? undefined : selectEstado.current.value, "textoFiltro":textoFiltro, "items": Array.from({ length: 20 }), "reload":true})   
-
-
-
-    // setCargando(true);
-    // let estado =
-    //   selectEstado.current.value === "9"
-    //     ? undefined
-    //     : selectEstado.current.value;
-
-    // const data = await obtenerPrecalUsuEstadoPagination(
-    //   userName,
-    //   estado,
-    //   pagNro,
-    //   10
-    // );
-
-    // const listPrecalUsuEstado = data.results;
-
-    // let listPrecalUsuEstadoFiltroTmp = [];
-
-    // if (inputFiltro.current) {
-    //   if (inputFiltro.current.value.length > 0) {
-    //     if (!isNaN(inputFiltro.current.value)) {
-    //       listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter(
-    //         (fila) => fila.precalId === parseInt(inputFiltro.current.value)
-    //       );
-    //     } else {
-    //       listPrecalUsuEstadoFiltroTmp = listPrecalUsuEstado.filter((fila) =>
-    //         fila.webContribNomCompleto
-    //           .replace("  ", " ")
-    //           .toUpperCase()
-    //           .includes(inputFiltro.current.value.toUpperCase())
-    //       );
-    //     }
-    //   } else {
-    //     listPrecalUsuEstadoFiltroTmp = [...listPrecalUsuEstado];
-    //   }
-    // }
-    
-    // setListPrecalUsuEstadoFiltro(listPrecalUsuEstadoFiltroTmp);    
-    // setCargando(false);
-    // console.log(listPrecalUsuEstadoFiltroTmp)
-    // return listPrecalUsuEstadoFiltroTmp
+    setFiltro({"estado": selectEstado.current.value === "9" ? undefined : selectEstado.current.value, "textoFiltro":textoFiltro, "items": [], "reload":true, "usuario":userName})   
   };
 
   
@@ -150,13 +93,11 @@ export default function PreLicenciaView() {
               </div>
             </div>
             <div className="table-responsive">
-              {/* {cargando ? (
-                <Loading />
-              ) : ( */}
                 <div>
-                  <PreLicenciaScrollComponent filtro={filtro}/>
+                  <PreLicenciaScrollComponent filtro={filtro}/> 
+                  
+                  
                 </div>
-              {/* )} */}
             </div>
           </div>
         </div>
