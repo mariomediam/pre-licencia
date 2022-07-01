@@ -1,33 +1,31 @@
 import { useState, useEffect } from "react";
 import { obtenerReqArchivoPorPrecalId } from "../../services/licFuncService";
-import { Navbar, Container, Table, Button } from "react-bootstrap";
+import { Navbar, Container, Table, Button, Alert } from "react-bootstrap";
 import { PreLicenciaReqArchSubirFirmaComponent } from "./PreLicenciaReqArchSubirFirmaComponent";
 import { PreLicenciaVBComponent } from "./PreLicenciaVBComponent";
 
-
-export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
+export const PreLicenciaReqArchivoComponent = ({ precalId, resultadoDL }) => {
   const [requisitoArchivo, setRequisitoArchivo] = useState([]);
-  const urlDownloadRequisitoArchivo = `${process.env.REACT_APP_API}/licfunc/view/requisito-archivo/`;  
+  const urlDownloadRequisitoArchivo = `${process.env.REACT_APP_API}/licfunc/view/requisito-archivo/`;
   const urlViewFirmaArchivo = `${process.env.REACT_APP_API}/licfunc/view/firma-archivo/`;
-  const [refresfcarRequisitos, setrefresfcarRequisitos] = useState(true)
+  const [refresfcarRequisitos, setrefresfcarRequisitos] = useState(true);
 
   const verRequisitoArchivo = async () => {
     const reqArchivoTmp = await obtenerReqArchivoPorPrecalId("01", precalId);
     setRequisitoArchivo(reqArchivoTmp);
-
   };
 
   useEffect(() => {
     // setRequisitoArchivo([])
     verRequisitoArchivo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresfcarRequisitos, precalId]);
 
   // precalId, refresfcarRequisitos
-  
+
   return (
     <>
-      {requisitoArchivo.length > 0 && (
+      {requisitoArchivo.length > 0 ? (
         <div>
           <div
             className="mt-2 color-header1"
@@ -66,7 +64,7 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
                       N_FileFirma_Nombre,
                       N_FileFirma_Ruta,
                       idRequisitoArchivo,
-                      idRequisito
+                      idRequisito,
                     },
                     i
                   ) => (
@@ -74,14 +72,14 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
                       <td>
                         {N_ReqTup_descrip}
                         {idRequisitoArchivo && (
-                          <PreLicenciaReqArchSubirFirmaComponent 
+                          <PreLicenciaReqArchSubirFirmaComponent
                             C_FileFirma={C_FileFirma}
-                            urlViewFirmaArchivo = {urlViewFirmaArchivo}
-                            idRequisitoArchivo = {idRequisitoArchivo}
-                            N_FileFirma_Nombre = {N_FileFirma_Nombre} 
-                            setrefresfcarRequisitos = {setrefresfcarRequisitos} 
-                            idRequisito = {idRequisito}                        
-                      />                         
+                            urlViewFirmaArchivo={urlViewFirmaArchivo}
+                            idRequisitoArchivo={idRequisitoArchivo}
+                            N_FileFirma_Nombre={N_FileFirma_Nombre}
+                            setrefresfcarRequisitos={setrefresfcarRequisitos}
+                            idRequisito={idRequisito}
+                          />
                         )}
                       </td>
                       <td>{numeroFolio}</td>
@@ -110,6 +108,12 @@ export const PreLicenciaReqArchivoComponent = ({ precalId }) => {
           </div>
           <PreLicenciaVBComponent precalId={precalId} />
         </div>
+      ) : (
+        resultadoDL === 1 && (
+          <Alert key="warning" variant="warning" className="mt-2">
+            El ciudadano aún no carga requisitos.
+          </Alert>
+        )
       )}
     </>
   );

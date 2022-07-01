@@ -66,10 +66,10 @@ class PreLicenciaScrollComponent extends React.Component {
   };
 
   componentDidMount() {
-    console.log("componentDidMount");
+    // console.log("componentDidMount");
   }
   async componentDidUpdate() {
-    console.log("componentDidUpdate");
+    // console.log("componentDidUpdate");
 
     if (this.props.filtro.reload) {
       const URL = `${process.env.REACT_APP_API}/licfunc/giro-negocio-p?p=1&page_size=20`;     

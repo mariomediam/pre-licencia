@@ -19,7 +19,7 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
   const [textResulEvaluacion, settextResulEvaluacion] = useState("PENDIENTE");
   const [tasaLicencia, setTasaLicencia] = useState(0.0);
   const [show, setShow] = useState(false);
-
+  
   const selectResultEval = useRef();
   const inputObserv = useRef();
   const inputSoliciSimula = useRef();
@@ -46,7 +46,7 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
         let UsuarioTipoEvalTmp = [];
 
         if (userName) {
-          UsuarioTipoEvalTmp = await obtenerUsuarioTipoEval(userName, 1);
+          UsuarioTipoEvalTmp = await obtenerUsuarioTipoEval(userName, 3);
 
           if (UsuarioTipoEvalTmp && UsuarioTipoEvalTmp.length > 0) {
             setPuedeEvaluar(true);

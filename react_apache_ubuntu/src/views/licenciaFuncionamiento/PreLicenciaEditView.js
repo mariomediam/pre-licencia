@@ -25,10 +25,13 @@ export default function PreLicenciaEditView() {
 
   const [mostrarCU, setMostrarCU] = useState(false);
   const [mostarReq, setMostrarReq] = useState(false);
+  const [resultadoDL, setResultadoDL] = useState(0)
 
   const verPrecalificacion = async () => {
-    const { precalRiesgoEval, precalCompatCU } =
+    const { precalRiesgoEval, precalCompatCU, precalCompatDL } =
       await obtenerPrecalificacionPorId(precalId);
+
+    setResultadoDL(precalCompatDL)
 
     if (precalRiesgoEval === 1) {
       setMostrarCU(true);
@@ -166,7 +169,7 @@ export default function PreLicenciaEditView() {
               </div>
             </div>
 
-            <PreLicenciaReqArchivoComponent precalId={precalId}/>
+            <PreLicenciaReqArchivoComponent precalId={precalId} resultadoDL={resultadoDL}/>
           </div>
         </div>
       </div>
