@@ -1,6 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
+import UseAxios from "../utils/useAxios";
 
 const URL = `${process.env.REACT_APP_API}`;
 
@@ -45,23 +46,38 @@ const Login = async (usuario, password) => {
   }
 };
 
-// const login = async (usuario, password) => {
-//     let credenciales = {
-//         usuario:usuario,
-//         password:password
-//     }
+const obtenerMenues = async (usuario, sistema, opcion) => {
+  try {
+    let api = UseAxios();
 
-//     try {
-//         const headers = {
-//             "Content-Type": "application/json"
-//         }
-//         let { data: {data} } = await axios.post(`${URL}/login/`, credenciales, { headers })
+    let URLMenues = `${URL}/seguridad/menues?usuario=${usuario}&sistema=${sistema}&opcion=${opcion}`;
 
-//         return data[0]
+    let {
+      data: { content },
+    } = await api.get(`${URLMenues}`);
 
-//     } catch (error) {
-//         throw error
-//     }
-// }
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
 
-export { Login };
+const obtenerUserMenues = async (usuario, sistema, menu) => {
+  try {
+    let api = UseAxios();
+
+    let URLMenues = `${URL}/seguridad/usermenues?usuario=${usuario}&sistema=${sistema}&menu=${menu}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLMenues}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export { Login, obtenerMenues, obtenerUserMenues };

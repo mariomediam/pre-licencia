@@ -5,14 +5,19 @@ import PreLicenciaEditView from "../views/licenciaFuncionamiento/PreLicenciaEdit
 import { ViewPdf } from "../utils/ViewPdf";
 
 export const DashboardRoutes = () => {
-  return <>
-  <div className="container">
-      <Routes>
-      <Route path="/buscar_trabajador" element={<TrabajadorView />} />        
-        <Route path="/ver_pdf" element={<ViewPdf />} />        
-        <Route path="/pre_licencia" element={<PreLicenciaView />} />
-        <Route path="/pre_licencia_ver/:precalId" element={<PreLicenciaEditView />} />
-      </Routes>
-  </div>
-  </>;
+  return (
+    <>
+      <div className="container">        
+        <Routes>
+          <Route path="/buscar_trabajador" element={<TrabajadorView />} />
+          <Route path="/ver_pdf" element={<ViewPdf />} />
+          <Route path="/pre_licencia" element={<PreLicenciaView />} />
+          <Route
+            path="/pre_licencia_ver/:precalId"
+            element={<PreLicenciaEditView />}
+          />
+        </Routes>
+      </div>
+    </>
+  );
 };

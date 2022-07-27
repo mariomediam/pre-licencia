@@ -1,22 +1,67 @@
+import { useState, useContext, useEffect } from "react";
 import {
   Navbar,
   Container,
   Nav,
   NavDropdown,
   Breadcrumb,
+  ListGroup,
 } from "react-bootstrap";
-import { useContext } from "react";
-import imgEscudo from "../assets/images/escudo_muni.png";
+import Offcanvas from "react-bootstrap/Offcanvas";
 
+import imgEscudo from "../assets/images/escudo_muni.png";
 import AuthContext from "../context/AuthContext";
+import { obtenerMenues, obtenerUserMenues } from "../services/usuarioService";
 
 export default function Header() {
-    const { userName, logoutUser } = useContext(AuthContext);
-    
+  const { userName, logoutUser } = useContext(AuthContext);
+  const [menuPrincipal, setMenuPrincipal] = useState([]);
+  const [menuSecundario, setMenuSecundario] = useState([]);
+  const [mencodi, setMencodi] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const verMenusPrincipal = async () => {
+    if (userName) {
+      const menuesTmp = await obtenerMenues(userName, "36", "02");
+      setMenuPrincipal(menuesTmp);      
+    }
+  };
+
+  useEffect(() => {
+    verMenusPrincipal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userName]);
+
+  const verMenusSecundarios = async (e) => {
+    setMencodi(e.target.id);
+
+    if (userName) {
+      const menuesTmp = await obtenerUserMenues(
+        userName,
+        "36",
+        e.target.id.substring(0, 2)
+      );
+
+      const menuesSecundariosTmp = menuesTmp.filter(
+        (item) => item.menCodi !== e.target.id
+      );
+      console.table(menuesSecundariosTmp);
+      setMenuSecundario(menuesSecundariosTmp);
+    }
+
+    handleClose()
+  };
+
   return (
     <div>
       <Navbar className="color-nav" variant="dark" expand="lg">
         <Container fluid>
+          <Navbar.Text style={{ cursor: "pointer" }}>
+            <i className="fas fa-grip-vertical me-2" onClick={handleShow}></i>
+          </Navbar.Text>
           <Navbar.Brand href="#home">
             <img
               src={imgEscudo}
@@ -25,7 +70,7 @@ export default function Header() {
               className="d-inline-block align-top"
               alt=""
             />
-            &nbsp;SIGE
+            &nbsp;MPP
           </Navbar.Brand>
 
           {/* <Navbar.Brand href="#">Navbar scroll</Navbar.Brand> */}
@@ -36,12 +81,16 @@ export default function Header() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Nav.Link href="/pre_licencia">Pre licencia</Nav.Link>
-              {/* <Nav.Link href="#action2">Link</Nav.Link>
+              <Nav.Link href="/pre_licencia"> Pre licencia</Nav.Link>
+            
+              <NavDropdown title="Reportes" id="basic-nav-dropdown">
+                {menuSecundario.map(({ menCodi, menDesc, menProg }, i) => (
+                  <NavDropdown.Item key={menCodi} id={menCodi}>
+                    {menDesc}
+                  </NavDropdown.Item>
+                ))}
+              </NavDropdown>
 
-              <Nav.Link href="#" disabled>
-                Link
-              </Nav.Link> */}
               <NavDropdown title="Reportes" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/buscar_trabajador">
                   Buscar trabajador
@@ -60,9 +109,7 @@ export default function Header() {
             </Nav>
 
             <Nav className="justify-content-end">
-              <Navbar.Text>
-               { userName }
-              </Navbar.Text>
+              <Navbar.Text>{userName}</Navbar.Text>
               <NavDropdown
                 className="justify-content-end"
                 title="Gestionar tu cuenta"
@@ -91,8 +138,31 @@ export default function Header() {
         <Breadcrumb>
           <Breadcrumb.Item active>SIGE / Pre licencia</Breadcrumb.Item>
         </Breadcrumb>
-      </div>      
+      </div>
+      <Offcanvas show={show} onHide={handleClose}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Aplicaciones</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <ListGroup variant="flush">
+            {menuPrincipal.map(({ menCodi, menDesc, menProg }, i) => (
+              <ListGroup.Item
+                action
+                key={menCodi}
+                id={menCodi}
+                onClick={verMenusSecundarios}
+              >
+                <i
+                  className={
+                    menProg.length > 0 ? menProg : "fas fa-bookmark me-3"
+                  }
+                ></i>{" "}
+                {menDesc}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Offcanvas.Body>
+      </Offcanvas>
     </div>
   );
 }
-
