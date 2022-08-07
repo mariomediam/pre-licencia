@@ -8,7 +8,7 @@ import AuthContext from "../context/AuthContext";
 import jwt_decode from "jwt-decode";
 
 export default function LoginView() {
-  const { setUserName, setAuthTokens, setUser } = useContext(AuthContext);
+  const { setUserName, setAuthTokens, setUser, verMenusPrincipal } = useContext(AuthContext);
 
   const { handleSubmit } = useForm();
 
@@ -32,6 +32,7 @@ export default function LoginView() {
       setUserName(usuario.toUpperCase());
       setAuthTokens(JSON.parse(localStorage.getItem("authTokens")));
       setUser(jwt_decode(localStorage.getItem("authTokens")));
+      verMenusPrincipal();
       navigate("/pre_licencia");
     }
   };

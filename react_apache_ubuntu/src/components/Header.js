@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import {
   Navbar,
   Container,
@@ -11,48 +11,41 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 
 import imgEscudo from "../assets/images/escudo_muni.png";
 import AuthContext from "../context/AuthContext";
-import { obtenerMenues, obtenerUserMenues } from "../services/usuarioService";
+// import { obtenerMenues } from "../services/usuarioService";
 
 export default function Header() {
-  const { userName, logoutUser } = useContext(AuthContext);
-  const [menuPrincipal, setMenuPrincipal] = useState([]);
-  const [menuSecundario, setMenuSecundario] = useState([]);
-  const [mencodi, setMencodi] = useState("");
+  const { userName, logoutUser, menuSecundario, setMencodi, menuPrincipal } =
+    useContext(AuthContext);
+  // const [menuPrincipal, setMenuPrincipal] = useState([]);
+  // const [menuSecundario, setMenuSecundario] = useState([]);
+  // const [mencodi, setMencodi] = useState("");
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const verMenusPrincipal = async () => {
-    if (userName) {
-      const menuesTmp = await obtenerMenues(userName, "36", "02");
-      setMenuPrincipal(menuesTmp);      
-    }
-  };
+  // const verMenusPrincipal = async () => {
+  //   alert("verMenusPrincipal")
+  //   if (userName) {
+  //     const menuesTmp = await obtenerMenues(userName, "36", "02");
+  //     setMenuPrincipal(menuesTmp);
+      
+  //     if (menuesTmp.length > 0){        
+  //       setMencodi(menuesTmp[0].menCodi);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    verMenusPrincipal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userName]);
+  // useEffect(() => {
+  //   verMenusPrincipal();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [userName]);
 
-  const verMenusSecundarios = async (e) => {
+
+
+  const mostrarMenusSecundarios = async (e) => {
     setMencodi(e.target.id);
-
-    if (userName) {
-      const menuesTmp = await obtenerUserMenues(
-        userName,
-        "36",
-        e.target.id.substring(0, 2)
-      );
-
-      const menuesSecundariosTmp = menuesTmp.filter(
-        (item) => item.menCodi !== e.target.id
-      );
-      console.table(menuesSecundariosTmp);
-      setMenuSecundario(menuesSecundariosTmp);
-    }
-
-    handleClose()
+    handleClose();
   };
 
   return (
@@ -82,10 +75,10 @@ export default function Header() {
               navbarScroll
             >
               <Nav.Link href="/pre_licencia"> Pre licencia</Nav.Link>
-            
+
               <NavDropdown title="Reportes" id="basic-nav-dropdown">
                 {menuSecundario.map(({ menCodi, menDesc, menProg }, i) => (
-                  <NavDropdown.Item key={menCodi} id={menCodi}>
+                  <NavDropdown.Item key={menCodi} id={menCodi} href={menProg}>
                     {menDesc}
                   </NavDropdown.Item>
                 ))}
@@ -136,7 +129,7 @@ export default function Header() {
       </Navbar>
       <div className="ps-3">
         <Breadcrumb>
-          <Breadcrumb.Item active>SIGE / Pre licencia</Breadcrumb.Item>
+          <Breadcrumb.Item active>SIGE Pre licencia</Breadcrumb.Item>
         </Breadcrumb>
       </div>
       <Offcanvas show={show} onHide={handleClose}>
@@ -150,7 +143,7 @@ export default function Header() {
                 action
                 key={menCodi}
                 id={menCodi}
-                onClick={verMenusSecundarios}
+                onClick={mostrarMenusSecundarios}
               >
                 <i
                   className={

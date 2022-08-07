@@ -3,6 +3,7 @@ import TrabajadorView from "../views/TrabajadorView";
 import PreLicenciaView from "../views/licenciaFuncionamiento/PreLicenciaView";
 import PreLicenciaEditView from "../views/licenciaFuncionamiento/PreLicenciaEditView";
 import { ViewPdf } from "../utils/ViewPdf";
+import { ContribuyentesView } from "../views/contribuyentes/ContribuyentesView";
 
 export const DashboardRoutes = () => {
   return (
@@ -16,6 +17,7 @@ export const DashboardRoutes = () => {
             path="/pre_licencia_ver/:precalId"
             element={<PreLicenciaEditView />}
           />
+          <Route path="/contribuyente/ver_contribuyente" element={<ContribuyentesView />} />
         </Routes>
       </div>
     </>
