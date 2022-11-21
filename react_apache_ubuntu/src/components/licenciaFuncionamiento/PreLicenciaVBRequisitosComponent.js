@@ -32,13 +32,13 @@ export default function PreLicenciaVBRequisitosComponent({ precalId }) {
       precalDlVbEval,
       precalSoliciSimulacion,
       precalDlVbObs,
-      precalMonto,
+      soliciTasaCalculada,
     } = await obtenerPrecalificacionPorId(precalId);
 
     // setDlVbEval(precalDlVbEval);
     setDlVbObserv(precalDlVbObs || "");
     setDlVbSoliciSimula(precalSoliciSimulacion || "");
-    setTasaLicencia(precalMonto);
+    setTasaLicencia(soliciTasaCalculada);
 
     switch (precalDlVbEval) {
       case 0:

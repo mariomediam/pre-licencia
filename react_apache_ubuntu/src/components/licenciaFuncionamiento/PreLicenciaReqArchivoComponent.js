@@ -93,8 +93,7 @@ export const PreLicenciaReqArchivoComponent = ({ precalId, resultadoDL }) => {
                               size="sm"
                               title="Ver requisito"
                               target="_blank"
-                              rel="noreferrer"
-                            >
+                              rel="noreferrer"                            >
                               <i className="fas fa-eye"></i>
                             </Button>
                           </div>

@@ -7,6 +7,9 @@ import {
   Breadcrumb,
   ListGroup,
 } from "react-bootstrap";
+import { DropdownSubmenu, NavDropdownMenu } from "react-bootstrap-submenu";
+import "react-bootstrap-submenu/dist/index.css";
+
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 import imgEscudo from "../assets/images/escudo_muni.png";
@@ -52,9 +55,9 @@ export default function Header() {
     <div>
       <Navbar className="color-nav" variant="dark" expand="lg">
         <Container fluid>
-          <Navbar.Text style={{ cursor: "pointer" }}>
+          {/* <Navbar.Text style={{ cursor: "pointer" }}>
             <i className="fas fa-grip-vertical me-2" onClick={handleShow}></i>
-          </Navbar.Text>
+          </Navbar.Text> */}
           <Navbar.Brand href="#home">
             <img
               src={imgEscudo}
@@ -76,7 +79,7 @@ export default function Header() {
             >
               <Nav.Link href="/pre_licencia"> Pre licencia</Nav.Link>
 
-              <NavDropdown title="Reportes" id="basic-nav-dropdown">
+              {/* <NavDropdown title="Reportes" id="basic-nav-dropdown">
                 {menuSecundario.map(({ menCodi, menDesc, menProg }, i) => (
                   <NavDropdown.Item key={menCodi} id={menCodi} href={menProg}>
                     {menDesc}
@@ -99,7 +102,20 @@ export default function Header() {
                   Reporte 4
                 </NavDropdown.Item>
               </NavDropdown>
+              <NavDropdownMenu
+              title="Dropdown R"
+              id="collasible-nav-dropdown"            
+            >
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <DropdownSubmenu href="#action/3.7" title="Text to show">
+                <NavDropdown.Item href="#action/8.1">Sub 1</NavDropdown.Item>
+                <DropdownSubmenu href="#action/3.7" title="Text to show">
+                  <NavDropdown.Item href="#action/9.1">Sub 2</NavDropdown.Item>
+                </DropdownSubmenu>
+              </DropdownSubmenu>
+            </NavDropdownMenu> */}
             </Nav>
+
 
             <Nav className="justify-content-end">
               <Navbar.Text>{userName}</Navbar.Text>

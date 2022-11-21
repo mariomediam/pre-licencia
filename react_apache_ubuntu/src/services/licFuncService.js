@@ -192,14 +192,14 @@ const agregarEvaluacion = async (
     const headers = {
       "Content-Type": "application/json",
     };
+    
     let {
       data: { content },
     } = await api.post(`${URL}/precal-eval/${precalificacion}`, credenciales, {
       headers,
     });
-
     return content;
-  } catch (error) {
+  } catch (error) {    
     throw error;
   }
 };

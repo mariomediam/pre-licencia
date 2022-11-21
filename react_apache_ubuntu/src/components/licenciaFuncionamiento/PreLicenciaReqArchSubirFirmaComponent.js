@@ -52,7 +52,8 @@ export const PreLicenciaReqArchSubirFirmaComponent = ({
                   title="Descargar"
                   style={{ color: "#4169E1" }}
                 ></i>{" "}
-                Requisito {idRequisito}
+                Ver archivo                 
+                {/* {idRequisito} */}
               </a>
             </span>{" "}
             -

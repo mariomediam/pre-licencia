@@ -77,8 +77,8 @@ export default function PreLicenciaNRComponent({
     }
   };
 
-  const grabarEvaluacion = async () => {
-    setCargando(true);
+  const grabarEvaluacion = async () => {    
+    setCargando(true);    
     await agregarEvaluacion(
       precalId,
       1,
@@ -88,7 +88,7 @@ export default function PreLicenciaNRComponent({
       parseInt(selectResultEval.current.value),
       selectNivRie.current?.value || "0"
     );
-
+    
     verEvaluacion();
     setPuedeEvaluar(false);
     verPrecalificacion();
@@ -193,7 +193,7 @@ export default function PreLicenciaNRComponent({
 
               <Form.Group className="mb-3" controlId="modalTextArea">
                 <Form.Label className="fw-bold">Observaciones</Form.Label>
-                <Form.Control as="textarea" rows={3} ref={inputObserv} />
+                <Form.Control required as="textarea" rows={3} ref={inputObserv} defaultValue="" />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
