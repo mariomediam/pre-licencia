@@ -4,10 +4,9 @@ import {
   Container,
   Nav,
   NavDropdown,
-  Breadcrumb,
   ListGroup,
 } from "react-bootstrap";
-import { DropdownSubmenu, NavDropdownMenu } from "react-bootstrap-submenu";
+// import { DropdownSubmenu, NavDropdownMenu } from "react-bootstrap-submenu";
 import "react-bootstrap-submenu/dist/index.css";
 
 import Offcanvas from "react-bootstrap/Offcanvas";
@@ -17,15 +16,15 @@ import AuthContext from "../context/AuthContext";
 // import { obtenerMenues } from "../services/usuarioService";
 
 export default function Header() {
-  const { userName, logoutUser, menuSecundario, setMencodi, menuPrincipal } =
-    useContext(AuthContext);
+  const { userName, logoutUser, setMencodi, menuPrincipal } = useContext(AuthContext);
+  // const { userName, logoutUser, menuSecundario, setMencodi, menuPrincipal } = useContext(AuthContext);
   // const [menuPrincipal, setMenuPrincipal] = useState([]);
   // const [menuSecundario, setMenuSecundario] = useState([]);
   // const [mencodi, setMencodi] = useState("");
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleShow = () => setShow(true);
 
   // const verMenusPrincipal = async () => {
   //   alert("verMenusPrincipal")

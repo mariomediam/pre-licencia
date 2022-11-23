@@ -24,18 +24,10 @@ export default function BuscarContribuyentesView() {
   const inputFiltro = useRef();
 
   const listarBuscarContribuyente = async () => {
-    let valor = ""
-    let opcion = ""
+    let valor = ""    
     if (inputFiltro.current) {
       valor = inputFiltro.current.value
     }
-    // if (checkNombre.current.value === true){
-    //   opcion = "nombre"
-    // } else {
-    //   opcion = "codigo"
-    // }
-    console.log("checkNombre.current.checked")
-    console.log(checkNombre.current.checked)
     setFiltro({ "opcion":checkNombre.current.checked === true ? "nombre" : "codigo", "valor": valor, "items": [], "reload": true, "usuario": userName })
   };
 

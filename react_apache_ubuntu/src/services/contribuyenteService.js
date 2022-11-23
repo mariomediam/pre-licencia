@@ -1,6 +1,6 @@
 import UseAxios from "../utils/useAxios";
 
-const URL = `${process.env.REACT_APP_API}/contribuyente`;
+// const URL = `${process.env.REACT_APP_API}/contribuyente`;
 
 const obtenerContribuyentePagination = async (URLBuscarContribuyente) => {
   

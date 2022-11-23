@@ -1,6 +1,6 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Table, Button, ProgressBar } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 
 import { obtenerContribuyentePagination } from "../../services/contribuyenteService";
 
