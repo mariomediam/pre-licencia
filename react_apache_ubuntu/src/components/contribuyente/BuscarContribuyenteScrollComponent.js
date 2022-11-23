@@ -45,7 +45,7 @@ class BuscarContribuyenteScrollComponent extends React.Component {
         return;
       }
       
-      let URL = `${process.env.REACT_APP_API}/contribuyente/buscar-contribuyente-p?${this.props.filtro.opcion}=${this.props.filtro.valor}`;
+      let URL = encodeURI(`${process.env.REACT_APP_API}/contribuyente/buscar-contribuyente-p?${this.props.filtro.opcion}=${this.props.filtro.valor}`);
 
       const { next, results, count } = await obtenerContribuyentePagination(URL);
 
@@ -81,20 +81,22 @@ class BuscarContribuyenteScrollComponent extends React.Component {
             </p>
           }
         >
-          <div>
-            <Table bordered hover className="caption-top mb-1">
+          {/* <caption className="py-0">
+        {" "}
+        {this.state.countRecords} registro(s) encontrado(s)
+      </caption> */}
+      <small> {this.state.countRecords} registro(s) encontrado(s)</small>
+          <div style={{border: '1px solid lightgrey'}}>
+            <Table hover className="caption-top mb-1">
             {/* <Table className="caption-top mb-1"> */}
-              <caption className="py-0">
-                {" "}
-                {this.state.countRecords} registro(s) encontrado(s)
-              </caption>
+              
               <thead>
                 <tr className="color-header1 text-white">
                   <th className="text-center align-middle m-0 p-0">Código</th>
                   <th className="text-center align-middle m-0 p-0">
                     Nombre / Razón social
                   </th>
-                  <th className="text-center align-middle m-0 p-0">Domicilio</th>                  
+                  {/* <th className="text-center align-middle m-0 p-0">Domicilio</th>                   */}
                 </tr>
               </thead>
               <tbody>
@@ -103,8 +105,8 @@ class BuscarContribuyenteScrollComponent extends React.Component {
                           <td>
                             {contribuyente.Código}
                           </td>
-                          <td>{contribuyente.Identificación}</td>
-                          <td>{contribuyente.Dirección}</td>
+                          <td>{contribuyente.Identificación} <br/><small><small>{contribuyente.Dirección}</small></small></td>
+                          {/* <td>{contribuyente.Dirección}</td> */}
                           
                         </tr>
                       ))}
