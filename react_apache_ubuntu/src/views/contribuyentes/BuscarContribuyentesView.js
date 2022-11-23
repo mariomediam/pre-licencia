@@ -4,6 +4,7 @@ import {
   Form,
   InputGroup,
   FormControl,
+  Breadcrumb,
 } from "react-bootstrap";
 
 import AuthContext from "../../context/AuthContext";
@@ -55,7 +56,12 @@ export default function BuscarContribuyentesView() {
   return (
     <div>
       <Header />
-
+      <div className="ps-3">
+        <Breadcrumb>
+          <Breadcrumb.Item active>Contribuyente</Breadcrumb.Item>
+          <Breadcrumb.Item active>Buscar contribuyente</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
       <div>
         <div className="row justify-content-center">
           <div

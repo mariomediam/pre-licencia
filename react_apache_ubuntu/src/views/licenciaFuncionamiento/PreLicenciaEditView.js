@@ -17,6 +17,7 @@ import {
   Tabs,
   Tab,
   Button,
+  Breadcrumb,
 } from "react-bootstrap";
 
 export default function PreLicenciaEditView() {
@@ -70,6 +71,12 @@ export default function PreLicenciaEditView() {
   return (
     <div>
       <Header />
+      <div className="ps-3">
+        <Breadcrumb>
+          <Breadcrumb.Item active>Pre licencia</Breadcrumb.Item>
+          <Breadcrumb.Item active>Ver solicitud</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
 
       <div className="container">
         <div className="row justify-content-center">

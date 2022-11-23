@@ -6,6 +6,7 @@ import {
   InputGroup,
   FormControl,
   ProgressBar,
+  Breadcrumb,
   // Pagination,
 } from "react-bootstrap";
 
@@ -93,6 +94,12 @@ export default function PreLicenciaView() {
   return (
     <div>
       <Header />
+      <div className="ps-3">
+        <Breadcrumb>
+          <Breadcrumb.Item active>Pre licencia</Breadcrumb.Item>
+          <Breadcrumb.Item active>Ver solicitud</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
 
       <div className="container">
         <div className="row justify-content-center">

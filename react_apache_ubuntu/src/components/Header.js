@@ -144,11 +144,7 @@ export default function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <div className="ps-3">
-        <Breadcrumb>
-          <Breadcrumb.Item active>SIGE Pre licencia</Breadcrumb.Item>
-        </Breadcrumb>
-      </div>
+      
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Aplicaciones</Offcanvas.Title>
