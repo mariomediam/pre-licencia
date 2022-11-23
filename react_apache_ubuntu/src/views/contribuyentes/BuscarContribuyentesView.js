@@ -79,13 +79,15 @@ export default function BuscarContribuyentesView() {
                     label="Nombre / Razón social"
                     value="nombre"
                     ref={checkNombre}
+                    onChange={() => inputFiltro.current.select()}
                   />
                   <Form.Check                    
                     name="groupBusqueda"
                     type="radio"
                     label="Código de contribuyente"
                     id="chkCodigo"
-                    value="codigo"                    
+                    value="codigo"   
+                    onChange={() => inputFiltro.current.select()}                 
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -94,6 +96,7 @@ export default function BuscarContribuyentesView() {
                     <FormControl
                       // placeholder="Recipient's username"
                       // aria-label="Recipient's username"
+                      autoFocus
                       aria-describedby="basic-addon2"
                       ref={inputFiltro}
                       onKeyUp={inputKeyUp}
