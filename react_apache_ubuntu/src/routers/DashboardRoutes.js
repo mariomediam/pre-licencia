@@ -3,12 +3,12 @@ import TrabajadorView from "../views/TrabajadorView";
 import PreLicenciaView from "../views/licenciaFuncionamiento/PreLicenciaView";
 import PreLicenciaEditView from "../views/licenciaFuncionamiento/PreLicenciaEditView";
 import { ViewPdf } from "../utils/ViewPdf";
-import { ContribuyentesView } from "../views/contribuyentes/ContribuyentesView";
+import ContribuyentesView from "../views/contribuyentes/BuscarContribuyentesView";
 
 export const DashboardRoutes = () => {
   return (
     <>
-      <div className="container">        
+      <div>        
         <Routes>
           <Route path="/buscar_trabajador" element={<TrabajadorView />} />
           <Route path="/ver_pdf" element={<ViewPdf />} />

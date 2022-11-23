@@ -78,6 +78,7 @@ export default function Header() {
               navbarScroll
             >
               <Nav.Link href="/pre_licencia"> Pre licencia</Nav.Link>
+              <Nav.Link href="/contribuyente/ver_contribuyente"> Contribuyente</Nav.Link>
 
               {/* <NavDropdown title="Reportes" id="basic-nav-dropdown">
                 {menuSecundario.map(({ menCodi, menDesc, menProg }, i) => (
