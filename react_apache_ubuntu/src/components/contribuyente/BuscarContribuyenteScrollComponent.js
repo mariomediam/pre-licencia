@@ -1,9 +1,117 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Table, Tabs, Tab } from "react-bootstrap";
+import { Table, Tabs, Tab, Button } from "react-bootstrap";
 
 import { obtenerContribuyentePagination } from "../../services/contribuyenteService";
 import { DocumentosViewComponent } from "./DocumentosViewComponent";
+
+function DomicilioViewComponent(props) {
+  return (
+    <div className="ps-2">
+      <p className="text-muted pb-0 mb-0 mt-0">
+        <small className="mb-0">Lugar</small>
+      </p>
+      {props.contribuyente.C001Cod_Lug} {props.contribuyente.Lugar}{" "}
+      <small>
+        <small>
+          {props.contribuyente.C005Provincia} -{" "}
+          {props.contribuyente.C005Distrito}
+        </small>
+      </small>
+      <p className="text-muted pb-0 mb-0 mt-2">
+        <small className="mb-0">Calle</small>
+      </p>
+      {props.contribuyente.C001Cod_Calle} {props.contribuyente.Calle}
+      {props.contribuyente.Número.trim().length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0 pb-0">Número</small>
+          </p>
+          {props.contribuyente.Número.trim()}
+        </div>
+      )}
+      {props.contribuyente.Piso.trim().length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0 pb-0">Piso</small>
+          </p>
+          {props.contribuyente.Piso.trim()}
+        </div>
+      )}
+      {props.contribuyente.Mza.trim().length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0 pb-0">Manzana</small>
+          </p>
+          {props.contribuyente.Mza.trim()}
+        </div>
+      )}
+      {props.contribuyente.Lote.trim().length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0 pb-0">Lote</small>
+          </p>
+          {props.contribuyente.Lote.trim()}
+        </div>
+      )}
+      {props.contribuyente.Dpto.trim().length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0 pb-0">Departamento</small>
+          </p>
+          {props.contribuyente.Dpto.trim()}
+        </div>
+      )}
+      {props.contribuyente.C001Direc_Adic.trim().length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0 pb-0">Dirección adicional</small>
+          </p>
+          {props.contribuyente.C001Direc_Adic.trim()}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DatosPrincipalesViewComponent(props) {
+  return (
+    <div className="ps-2">
+      <p className="text-muted pb-0 mb-0 mt-0">
+        <small className="mb-0">Tipo de contribuyente</small>
+      </p>
+      {props.contribuyente.TipoCont}
+
+      {props.contribuyente.C001Tip_Cont === "01" && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0 pb-0">Sexo</small>
+          </p>
+          {props.contribuyente.C001Sexo.trim() === "M"
+            ? "MASCULINO"
+            : props.contribuyente.C001Sexo.trim() === "F"
+            ? "FEMENINO"
+            : "-"}
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0 pb-0">Fecha de nacimiento</small>
+          </p>
+          {props.contribuyente.D001FecNac.toString().substr(8, 2)}/
+          {props.contribuyente.D001FecNac.toString().substr(5, 2)}/
+          {props.contribuyente.D001FecNac.toString().substr(0, 4)}
+          <br />
+          {props.contribuyente.C001Motivo.trim().length > 0 && (
+            <div>
+              <p className="text-muted pb-0 mb-0 mt-2">
+                <small className="mb-0 pb-0">Observaciones</small>
+              </p>
+              {props.contribuyente.C001Motivo.trim()}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 class BuscarContribuyenteScrollComponent extends React.Component {
   state = {
@@ -12,8 +120,11 @@ class BuscarContribuyenteScrollComponent extends React.Component {
     filtro: this.props.filtro,
     pageNext: "",
     countRecords: 0,
-    codigoContribSelecc: ""
+    codigoContribSelecc: "",
+    showForm: 1,
   };
+
+  // showForm 1 = buscar contribuyente, 2 = agregar contribuyente, 3 editar contribuyente
 
   fetchMoreData = async () => {
     if (this.state.pageNext) {
@@ -68,18 +179,14 @@ class BuscarContribuyenteScrollComponent extends React.Component {
   }
 
   mostrarOtros = async (e) => {
+    if (e.substr(0, 2) === "ot") {
+      await this.setState({
+        ...this.state,
+        codigoContribSelecc: e.substr(3).trim(),
+      });
 
-    if (e.substr(0,2) === "ot"){
-     
-        await this.setState({
-          ...this.state,
-          codigoContribSelecc: e.substr(3).trim()
-        });
-     
-     
-      console.log(e.substr(3))
+      console.log(e.substr(3));
     }
-    
   };
 
   render() {
@@ -99,10 +206,6 @@ class BuscarContribuyenteScrollComponent extends React.Component {
             </p>
           }
         >
-          {/* <caption className="py-0">
-        {" "}
-        {this.state.countRecords} registro(s) encontrado(s)
-      </caption> */}
           <small> {this.state.countRecords} registro(s) encontrado(s)</small>
           <div style={{ border: "1px solid lightgrey" }}>
             <Table hover className="caption-top mb-1">
@@ -119,7 +222,6 @@ class BuscarContribuyenteScrollComponent extends React.Component {
                   <tr key={contribuyente.Código}>
                     <td>{contribuyente.Código}</td>
                     <td>
-                      {/* {contribuyente.Identificación} <br /><small><small>{contribuyente.Dirección}</small></small> */}
                       <div
                         className="p-0 m-0 accordion accordion-flush"
                         id={"accordion" + contribuyente.Código.trim()}
@@ -157,10 +259,11 @@ class BuscarContribuyenteScrollComponent extends React.Component {
                               "#accordion" + contribuyente.Código.trim()
                             }
                           >
-                            <div className="accordion-body">
-                              {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. */}
+                            <div className="accordion-body pt-1">
                               <Tabs
-                                defaultActiveKey={"dp_" + contribuyente.Código.trim()}
+                                defaultActiveKey={
+                                  "dp_" + contribuyente.Código.trim()
+                                }
                                 id={"tabs_" + contribuyente.Código.trim()}
                                 className="mb-3"
                                 fill
@@ -170,138 +273,41 @@ class BuscarContribuyenteScrollComponent extends React.Component {
                                   eventKey={"dp_" + contribuyente.Código.trim()}
                                   title="Datos principales"
                                 >
-                                  {/* <small className="ps-2 text-red">Tipo de contribuyente</small> */}
-
-                                  <div className="ps-2">
-                                    <p className="text-muted pb-0 mb-0 mt-0">
-                                      <small className="mb-0">
-                                        Tipo de contribuyente
-                                      </small>
-                                    </p>
-                                    {contribuyente.TipoCont}
-
-                                    {contribuyente.C001Tip_Cont === "01" && (
-                                      <div>
-                                        <p className="text-muted pb-0 mb-0 mt-2">
-                                          <small className="mb-0 pb-0">
-                                            Sexo
-                                          </small>
-                                        </p>
-                                        {contribuyente.C001Sexo.trim() === "M"
-                                          ? "MASCULINO"
-                                          : contribuyente.C001Sexo.trim() ===
-                                            "F"
-                                          ? "FEMENINO"
-                                          : "-"}
-                                        <p className="text-muted pb-0 mb-0 mt-2">
-                                          <small className="mb-0 pb-0">
-                                            Fecha de nacimiento
-                                          </small>
-                                        </p>
-                                        {contribuyente.D001FecNac.toString().substr(
-                                          8,
-                                          2
-                                        )}
-                                        /
-                                        {contribuyente.D001FecNac.toString().substr(
-                                          5,
-                                          2
-                                        )}
-                                        /
-                                        {contribuyente.D001FecNac.toString().substr(
-                                          0,
-                                          4
-                                        )}
-                                        <br />
-                                      </div>
-                                    )}
-                                  </div>
+                                  <DatosPrincipalesViewComponent
+                                    contribuyente={contribuyente}
+                                  ></DatosPrincipalesViewComponent>
                                 </Tab>
-                                <Tab eventKey={"do_" + contribuyente.Código.trim()} title="Domicilio">
-                                  <div className="ps-2">
-                                    <p className="text-muted pb-0 mb-0 mt-0">
-                                      <small className="mb-0">Lugar</small>
-                                    </p>
-                                    {contribuyente.C001Cod_Lug}{" "}
-                                    {contribuyente.Lugar}{" "}
-                                    <small>
-                                      <small>
-                                        {contribuyente.C005Provincia} -{" "}
-                                        {contribuyente.C005Distrito}
-                                      </small>
-                                    </small>
-                                    <p className="text-muted pb-0 mb-0 mt-2">
-                                      <small className="mb-0">Calle</small>
-                                    </p>
-                                    {contribuyente.C001Cod_Calle}{" "}
-                                    {contribuyente.Calle}
-                                    {contribuyente.Número.trim().length > 0 && (
-                                      <div>
-                                        <p className="text-muted pb-0 mb-0 mt-2">
-                                          <small className="mb-0 pb-0">
-                                            Número
-                                          </small>
-                                        </p>
-                                        {contribuyente.Número.trim()}
-                                      </div>
-                                    )}
-                                    {contribuyente.Piso.trim().length > 0 && (
-                                      <div>
-                                        <p className="text-muted pb-0 mb-0 mt-2">
-                                          <small className="mb-0 pb-0">
-                                            Piso
-                                          </small>
-                                        </p>
-                                        {contribuyente.Piso.trim()}
-                                      </div>
-                                    )}
-                                    {contribuyente.Mza.trim().length > 0 && (
-                                      <div>
-                                        <p className="text-muted pb-0 mb-0 mt-2">
-                                          <small className="mb-0 pb-0">
-                                            Manzana
-                                          </small>
-                                        </p>
-                                        {contribuyente.Mza.trim()}
-                                      </div>
-                                    )}
-                                    {contribuyente.Lote.trim().length > 0 && (
-                                      <div>
-                                        <p className="text-muted pb-0 mb-0 mt-2">
-                                          <small className="mb-0 pb-0">
-                                            Lote
-                                          </small>
-                                        </p>
-                                        {contribuyente.Lote.trim()}
-                                      </div>
-                                    )}
-                                    {contribuyente.Dpto.trim().length > 0 && (
-                                      <div>
-                                        <p className="text-muted pb-0 mb-0 mt-2">
-                                          <small className="mb-0 pb-0">
-                                            Departamento
-                                          </small>
-                                        </p>
-                                        {contribuyente.Dpto.trim()}
-                                      </div>
-                                    )}
-                                    {contribuyente.C001Direc_Adic.trim()
-                                      .length > 0 && (
-                                      <div>
-                                        <p className="text-muted pb-0 mb-0 mt-2">
-                                          <small className="mb-0 pb-0">
-                                            Dirección adicional
-                                          </small>
-                                        </p>
-                                        {contribuyente.C001Direc_Adic.trim()}
-                                      </div>
-                                    )}
-                                  </div>
+                                <Tab
+                                  eventKey={"do_" + contribuyente.Código.trim()}
+                                  title="Domicilio"
+                                >
+                                  <DomicilioViewComponent
+                                    contribuyente={contribuyente}
+                                  ></DomicilioViewComponent>
                                 </Tab>
-                                <Tab eventKey={"ot_" + contribuyente.Código.trim()} title="Otros" id={"tab_" + contribuyente.Código.trim()}>
-                                  <DocumentosViewComponent codigoContrib={contribuyente.Código.trim()} codigoContribSelecc={this.state.codigoContribSelecc}/>
+                                <Tab
+                                  eventKey={"ot_" + contribuyente.Código.trim()}
+                                  title="Otros"
+                                  id={"tab_" + contribuyente.Código.trim()}
+                                >
+                                  <DocumentosViewComponent
+                                    codigoContrib={contribuyente.Código.trim()}
+                                    codigoContribSelecc={
+                                      this.state.codigoContribSelecc
+                                    }
+                                  />
                                 </Tab>
                               </Tabs>
+                              <hr className="m-0" />
+                              <div className="d-flex justify-content-end">
+                                <Button
+                                  variant="light"
+                                  size="sm"
+                                  className="mt-0"
+                                >
+                                  <i className="far fa-save me-2"></i>Editar
+                                </Button>{" "}
+                              </div>
                             </div>
                           </div>
                         </div>

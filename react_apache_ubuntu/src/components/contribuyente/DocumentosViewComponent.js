@@ -49,38 +49,53 @@ export const DocumentosViewComponent = ({
 
   return (
     <div className="ps-2">
-      <p className="text-muted pb-0 mb-0 mt-0">
-        <small className="mb-0">Documentos</small>
-      </p>
-
-      {documentos.map((docum, i) => (
-        <div key={i}>
-          <small>{docum.Descripción}</small> {docum.Número}
+      {documentos.length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-0">
+            <small className="mb-0">Documentos</small>
+          </p>
+          {documentos.map((docum, i) => (
+            <div key={i}>
+              <small>{docum.Descripción}</small> {docum.Número}
+            </div>
+          ))}
         </div>
-      ))}
+      )}
 
-      <p className="text-muted pb-0 mb-0 mt-2">
-        <small className="mb-0">Teléfonos</small>
-      </p>
-      {telefonos.map((telefono, i) => (
-        <div key={i}>
-          <small>{telefono.TipTel}</small> {telefono.Número}
+      {telefonos.length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0">Teléfonos</small>
+          </p>
+          {telefonos.map((telefono, i) => (
+            <div key={i}>
+              <small>{telefono.TipTel}</small> {telefono.Número}
+            </div>
+          ))}
         </div>
-      ))}
+      )}
 
-      <p className="text-muted pb-0 mb-0 mt-2">
-        <small className="mb-0">Dirección electrónica</small>
-      </p>
-      {dirElect.map((dirElect, i) => (
-        <div key={i}>{dirElect.Dirección_Electrónica}</div>
-      ))}
+      {dirElect.length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0">Dirección electrónica</small>
+          </p>
+          {dirElect.map((dirElect, i) => (
+            <div key={i}>{dirElect.Dirección_Electrónica}</div>
+          ))}
+        </div>
+      )}
 
-      <p className="text-muted pb-0 mb-0 mt-2">
-        <small className="mb-0">Nacionalidad</small>
-      </p>
-      {nacion.map((nac, i) => (
-        <div key={i}>{nac.Gentilicio}</div>
-      ))}
+      {nacion.length > 0 && (
+        <div>
+          <p className="text-muted pb-0 mb-0 mt-2">
+            <small className="mb-0">Nacionalidad</small>
+          </p>
+          {nacion.map((nac, i) => (
+            <div key={i}>{nac.Gentilicio}</div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
