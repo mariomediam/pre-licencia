@@ -3,7 +3,7 @@ import TrabajadorView from "../views/TrabajadorView";
 import PreLicenciaView from "../views/licenciaFuncionamiento/PreLicenciaView";
 import PreLicenciaEditView from "../views/licenciaFuncionamiento/PreLicenciaEditView";
 import { ViewPdf } from "../utils/ViewPdf";
-import ContribuyentesView from "../views/contribuyentes/BuscarContribuyentesView";
+import { ContribuyentesView } from "../views/contribuyentes/ContribuyentesView";
 
 export const DashboardRoutes = () => {
   return (

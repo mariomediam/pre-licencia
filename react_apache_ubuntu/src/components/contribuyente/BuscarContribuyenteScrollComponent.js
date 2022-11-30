@@ -121,10 +121,10 @@ class BuscarContribuyenteScrollComponent extends React.Component {
     pageNext: "",
     countRecords: 0,
     codigoContribSelecc: "",
-    showForm: 1,
+    setShowForm: this.props.setShowForm,
   };
 
-  // showForm 1 = buscar contribuyente, 2 = agregar contribuyente, 3 editar contribuyente
+ 
 
   fetchMoreData = async () => {
     if (this.state.pageNext) {
@@ -304,6 +304,7 @@ class BuscarContribuyenteScrollComponent extends React.Component {
                                   variant="light"
                                   size="sm"
                                   className="mt-0"
+                                  onClick={ () => this.state.setShowForm(3)}
                                 >
                                   <i className="far fa-save me-2"></i>Editar
                                 </Button>{" "}
