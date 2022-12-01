@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Breadcrumb, Form } from "react-bootstrap";
+import { Breadcrumb } from "react-bootstrap";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
@@ -8,19 +8,37 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { obtenerTipoContribuyente } from "../../services/contribuyenteService";
-
 import { obtenerContribuyenteCodigo } from "../../services/contribuyenteService";
+import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 
 const steps = ["Datos principales", "Domicilio", "Otros"];
 
-export const ContribuyenteEditComponent = ({
-  contribEdit
-}) => {
+export const ContribuyenteEditComponent = ({ contribEdit }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [valores, setValores] = useState({
     codigoContrib: contribEdit,
     tipoContrib: "",
+    homonimo: "",
+    codigoAnt: "",
+    apePat: "",
+    apeMat: "",
     nombre: "",
+    sexo: "",
+    fecNac: "",
+    codigoLugar: "",
+    nombreLugar: "",
+    codigoCalle: "",
+    nombreCalle: "",
+    direccNro: "",
+    direccPiso: "",
+    direccDpto: "",
+    direccMzna: "",
+    direccLote: "",
+    direccAdic: "",
+    direccProv: "",
+    direccDist: "",
+    direccAdicio: "",
+    observ: "",
   });
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
@@ -71,13 +89,18 @@ export const ContribuyenteEditComponent = ({
 
   const verContribuyente = async () => {
     console.log("Ver contribuyente " + contribEdit);
-    if (
-      contribEdit &&
-      contribEdit.length > 0
-    ) {      
-      const contribuyenteTmp = await obtenerContribuyenteCodigo(
-        contribEdit
-      );
+    if (contribEdit && contribEdit.length > 0) {
+      const contribuyenteTmp = await obtenerContribuyenteCodigo(contribEdit);
+      setValores({
+        ...valores,
+        tipoContrib: contribuyenteTmp.C001Tip_Cont,
+        apePat: contribuyenteTmp.separa_pepat,
+        apeMat: contribuyenteTmp.separa_apemat,
+        nombre: contribuyenteTmp.separa_nombre,
+        sexo: contribuyenteTmp.C001Sexo,
+        fecNac: contribuyenteTmp.D001FecNac.toLocaleString().substr(0,10),
+        observ: contribuyenteTmp.C001Motivo
+      });
       // setDocumentos(documentosTmp);
       console.log(contribuyenteTmp);
     }
@@ -126,7 +149,7 @@ export const ContribuyenteEditComponent = ({
                 const labelProps = {};
                 if (isStepOptional(index)) {
                   labelProps.optional = (
-                    <Typography variant="caption">Optional</Typography>
+                    <Typography variant="caption" key={index}>Optional</Typography>
                   );
                 }
                 if (isStepSkipped(index)) {
@@ -134,7 +157,7 @@ export const ContribuyenteEditComponent = ({
                 }
                 return (
                   <Step key={label} {...stepProps}>
-                    <StepLabel {...labelProps}>{label}</StepLabel>
+                    <StepLabel {...labelProps}  key={index}>{label}</StepLabel>
                   </Step>
                 );
               })}
@@ -196,81 +219,70 @@ export const ContribuyenteEditComponent = ({
           </Box>
           {activeStep === 0 ? (
             <div>
-              <div className="col-lg-2">
-                <Form.Group
-                  md="6"
-                  controlId="id_codigoContrib"
-                  className="mt-2"
-                >
-                  <Form.Label className="text-muted mb-0">
-                    <small className="mb-0">Código nuevo</small>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Código"
-                    name="name_codigoContrib"
-                    value={valores.codigoContrib}
-                    readOnly
-                    // ref= { inputNombre }
-                    onChange={(e) =>
-                      setValores({ ...valores, codigoContrib: e.target.value })
-                    }
-                    // onChange={handleChange}
-                    // isInvalid={!!errors.city}
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {/* {errors.city} */}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </div>
-
-              <Form.Group md="6" controlId="id_tipoContrib" className="mt-2 col-lg-4">
-                <Form.Label className="text-muted mb-0">
-                  <small className="mb-0">Tipo de contribuyente</small>
-                </Form.Label>
-                <Form.Select
-                  aria-label="Tipo de contribuyente"
-                  value={valores.tipoContrib}
-                  onChange={(e) =>
-                    setValores({ ...valores, tipoContrib: e.target.value })
-                  }
-                >
-                  {tipoContribuyente.map(({ C004Tip_Cont, C004Nombre }, i) => (
-                    <option key={C004Tip_Cont} value={C004Tip_Cont}>
-                      {C004Nombre.trim()}
-                    </option>
-                  ))}
-                </Form.Select>
-
-                <Form.Control.Feedback type="invalid">
-                  {/* {errors.city} */}
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group md="6" controlId="id_nombre" className="mt-2">
-                <Form.Label className="text-muted mb-0">
-                  <small className="mb-0">Nombre</small>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Nombre"
-                  name="name_nombre"
-                  value={valores.nombre}
-                  // ref= { inputNombre }
-                  onChange={(e) =>
-                    setValores({ ...valores, nombre: e.target.value })
-                  }
-                  // onChange={handleChange}
-                  // isInvalid={!!errors.city}
-                />
-
-                <Form.Control.Feedback type="invalid">
-                  {/* {errors.city} */}
-                </Form.Control.Feedback>
-              </Form.Group>
+              <ContribEditDatPriComponent
+                valores={valores}
+                setValores={setValores}
+                tipoContribuyente={tipoContribuyente}
+                key = {valores.codigoContrib}
+              />
             </div>
           ) : null}
+          <Box sx={{ width: "100%" }} className="mt-4 mb-3">
+            {activeStep === steps.length ? (
+              <React.Fragment>
+                {/* <Typography sx={{ mt: 2, mb: 1 }}>
+                  All steps completed - you&apos;re finished
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  <Button onClick={handleReset}>Reset</Button>
+                </Box> */}
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {/* <Typography sx={{ mt: 2, mb: 1 }}>
+                  Step {activeStep + 1}
+                </Typography> */}
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                  <Button
+                    color="inherit"
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    sx={{ mr: 1 }}
+                    variant="contained"
+                    size="small"
+                  >
+                    <i className="fas fa-chevron-left me-2"></i> Regresar
+                  </Button>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  {isStepOptional(activeStep) && (
+                    <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                      Skip
+                    </Button>
+                  )}
+
+                  <Button
+                    onClick={handleNext}
+                    variant="contained"
+                    size="small"
+                    color={
+                      activeStep === steps.length - 1 ? "primary" : "success"
+                    }
+                  >
+                    {activeStep === steps.length - 1 ? (
+                      <div className="m-0 p-0">
+                        <i className="far fa-save"></i> Grabar
+                      </div>
+                    ) : (
+                      <div>
+                        Siguiente<i className="fas fa-chevron-right ms-2"></i>
+                      </div>
+                    )}
+                  </Button>
+                </Box>
+              </React.Fragment>
+            )}
+          </Box>
         </div>
       </div>
     </div>

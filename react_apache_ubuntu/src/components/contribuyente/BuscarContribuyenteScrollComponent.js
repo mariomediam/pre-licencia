@@ -5,6 +5,7 @@ import { Table, Tabs, Tab, Button } from "react-bootstrap";
 import { obtenerContribuyentePagination } from "../../services/contribuyenteService";
 import { DocumentosViewComponent } from "./DocumentosViewComponent";
 
+
 function DomicilioViewComponent(props) {
   return (
     <div className="ps-2">
