@@ -122,9 +122,8 @@ class BuscarContribuyenteScrollComponent extends React.Component {
     countRecords: 0,
     codigoContribSelecc: "",
     setShowForm: this.props.setShowForm,
+    setContribEdit: this.props.setContribEdit,
   };
-
- 
 
   fetchMoreData = async () => {
     if (this.state.pageNext) {
@@ -187,6 +186,15 @@ class BuscarContribuyenteScrollComponent extends React.Component {
 
       console.log(e.substr(3));
     }
+  };
+
+  mostrarFormEditar = (e) => {
+    console.log("mostrar boton");
+    console.log("e.target.id");
+    console.log(e.target.id);
+    console.log(e.target.id.substr(3));
+    this.state.setShowForm(3);
+    this.state.setContribEdit(e.target.id.substr(3));
   };
 
   render() {
@@ -304,9 +312,14 @@ class BuscarContribuyenteScrollComponent extends React.Component {
                                   variant="light"
                                   size="sm"
                                   className="mt-0"
-                                  onClick={ () => this.state.setShowForm(3)}
+                                  id={"be_" + contribuyente.Código.trim()}                                  
+                                  onClick={this.mostrarFormEditar}
                                 >
-                                  <i className="far fa-save me-2"></i>Editar
+                                  <i
+                                    className="far fa-save me-2"
+                                    id={"ic_" + contribuyente.Código.trim()}                                    
+                                  ></i>
+                                  Editar
                                 </Button>{" "}
                               </div>
                             </div>

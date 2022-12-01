@@ -12,6 +12,7 @@ import BuscarContribuyenteScrollComponent from "./BuscarContribuyenteScrollCompo
 export default function BuscarContribuyentesComponent({
   showForm,
   setShowForm,
+  setContribEdit,
 }) {
   const { userName } = useContext(AuthContext);
   const [filtro, setFiltro] = useState({
@@ -119,6 +120,7 @@ export default function BuscarContribuyentesComponent({
                     <BuscarContribuyenteScrollComponent
                       filtro={filtro}
                       setShowForm={setShowForm}
+                      setContribEdit={setContribEdit}
                     />
                   </div>
                 </div>

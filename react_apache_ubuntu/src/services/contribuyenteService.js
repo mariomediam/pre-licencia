@@ -84,12 +84,22 @@ const obtenerContribuyenteCodigo = async (codigoContrib) => {
 
     let URLContribCodigo = `${URL}/buscar-contribuyente-codigo?codigo=${codigoContrib}`;
 
+    // console.log("URLContribCodigo");
+    // console.log(URLContribCodigo);
+
     let {
       data: { content },
     } = await api.get(`${URLContribCodigo}`);
 
+    // console.log("content");
+    // console.log(content);
+    // console.log("content.length")
+    // console.log(content.length)
+    // console.log("content(0)")
+    // console.log(content[0])
+
     if (content.length > 0) {
-      return content(0);
+      return content[0];
     }
 
     return content;
@@ -97,6 +107,23 @@ const obtenerContribuyenteCodigo = async (codigoContrib) => {
     throw error;
   }
 };
+
+const obtenerTipoContribuyente = async () => {
+  try {
+    let api = UseAxios();
+
+    let URLTipoContrib = `${URL}/tipo-contribuyente`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLTipoContrib}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -104,4 +131,5 @@ export {
   obtenerContribuyenteDirElect,
   obtenerContribuyenteNacion,
   obtenerContribuyenteCodigo,
+  obtenerTipoContribuyente,
 };

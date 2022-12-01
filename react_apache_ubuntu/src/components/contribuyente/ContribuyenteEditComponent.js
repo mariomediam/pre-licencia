@@ -7,18 +7,25 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { obtenerTipoContribuyente } from "../../services/contribuyenteService";
 
 import { obtenerContribuyenteCodigo } from "../../services/contribuyenteService";
 
 const steps = ["Datos principales", "Domicilio", "Otros"];
 
 export const ContribuyenteEditComponent = ({
-  codigoContrib,
-  codigoContribSelecc,
+  contribEdit
 }) => {
   const [activeStep, setActiveStep] = useState(0);
-  // const [valores, setValores] = useState({activeStep : 0, nombre: ""})
+  const [valores, setValores] = useState({
+    codigoContrib: contribEdit,
+    tipoContrib: "",
+    nombre: "",
+  });
   const [skipped, setSkipped] = useState(new Set());
+  const [tipoContribuyente, setTipoContribuyente] = useState([]);
+
+  // const inputNombre = useRef();
 
   const isStepOptional = (step) => {
     return step === -1;
@@ -63,24 +70,36 @@ export const ContribuyenteEditComponent = ({
   // };
 
   const verContribuyente = async () => {
+    console.log("Ver contribuyente " + contribEdit);
     if (
-      codigoContrib &&
-      codigoContribSelecc &&
-      codigoContrib === codigoContribSelecc
-    ) {
-      console.log("Ver contribuyente " + codigoContribSelecc);
+      contribEdit &&
+      contribEdit.length > 0
+    ) {      
       const contribuyenteTmp = await obtenerContribuyenteCodigo(
-        codigoContribSelecc
+        contribEdit
       );
       // setDocumentos(documentosTmp);
       console.log(contribuyenteTmp);
     }
   };
 
+  const verTipoContribuyente = async () => {
+    console.log("Listar tipo de contribuyente");
+    const tipoContribTmp = await obtenerTipoContribuyente();
+    setTipoContribuyente(tipoContribTmp);
+    console.log(tipoContribTmp);
+  };
+
+  // useEffect(() => {
+  //   verContribuyente();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [codigoContribSelecc]);
+
   useEffect(() => {
+    verTipoContribuyente();
     verContribuyente();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [codigoContribSelecc]);
+  }, []);
 
   return (
     <div>
@@ -175,18 +194,73 @@ export const ContribuyenteEditComponent = ({
               </React.Fragment>
             )}
           </Box>
-          <p className="text-muted mb-0">
-            <small>Tipo de contribuyente</small>
-          </p>
           {activeStep === 0 ? (
             <div>
-              <Form.Group md="6" controlId="validationFormik03">
-                <Form.Label>City</Form.Label>
+              <div className="col-lg-2">
+                <Form.Group
+                  md="6"
+                  controlId="id_codigoContrib"
+                  className="mt-2"
+                >
+                  <Form.Label className="text-muted mb-0">
+                    <small className="mb-0">Código nuevo</small>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Código"
+                    name="name_codigoContrib"
+                    value={valores.codigoContrib}
+                    readOnly
+                    // ref= { inputNombre }
+                    onChange={(e) =>
+                      setValores({ ...valores, codigoContrib: e.target.value })
+                    }
+                    // onChange={handleChange}
+                    // isInvalid={!!errors.city}
+                  />
+
+                  <Form.Control.Feedback type="invalid">
+                    {/* {errors.city} */}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </div>
+
+              <Form.Group md="6" controlId="id_tipoContrib" className="mt-2 col-lg-4">
+                <Form.Label className="text-muted mb-0">
+                  <small className="mb-0">Tipo de contribuyente</small>
+                </Form.Label>
+                <Form.Select
+                  aria-label="Tipo de contribuyente"
+                  value={valores.tipoContrib}
+                  onChange={(e) =>
+                    setValores({ ...valores, tipoContrib: e.target.value })
+                  }
+                >
+                  {tipoContribuyente.map(({ C004Tip_Cont, C004Nombre }, i) => (
+                    <option key={C004Tip_Cont} value={C004Tip_Cont}>
+                      {C004Nombre.trim()}
+                    </option>
+                  ))}
+                </Form.Select>
+
+                <Form.Control.Feedback type="invalid">
+                  {/* {errors.city} */}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group md="6" controlId="id_nombre" className="mt-2">
+                <Form.Label className="text-muted mb-0">
+                  <small className="mb-0">Nombre</small>
+                </Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="City"
-                  name="city"
-                  // value={values.city}
+                  placeholder="Nombre"
+                  name="name_nombre"
+                  value={valores.nombre}
+                  // ref= { inputNombre }
+                  onChange={(e) =>
+                    setValores({ ...valores, nombre: e.target.value })
+                  }
                   // onChange={handleChange}
                   // isInvalid={!!errors.city}
                 />
@@ -196,9 +270,7 @@ export const ContribuyenteEditComponent = ({
                 </Form.Control.Feedback>
               </Form.Group>
             </div>
-          ) : (
-            null
-          )}
+          ) : null}
         </div>
       </div>
     </div>

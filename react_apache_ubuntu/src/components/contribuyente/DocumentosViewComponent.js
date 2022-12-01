@@ -20,8 +20,7 @@ export const DocumentosViewComponent = ({
       codigoContrib &&
       codigoContribSelecc &&
       codigoContrib === codigoContribSelecc
-    ) {
-      console.log("Lee otros");
+    ) {      
       const documentosTmp = await obtenerContribuyenteDocumento(
         codigoContribSelecc
       );
