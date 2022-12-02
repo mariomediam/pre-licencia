@@ -21,12 +21,21 @@ export default function BuscarContribuyentesComponent({
     reload: true,
     items: [],
   });
+  const [validated, setValidated] = useState(false);
 
   const checkNombre = useRef();
   const inputFiltro = useRef();
 
-  const listarBuscarContribuyente = async () => {
+  const listarBuscarContribuyente = async (event) => {
     let valor = "";
+    console.log(inputFiltro.current.checkValidity());
+
+    setValidated(!inputFiltro.current.checkValidity());
+
+    if (!inputFiltro.current.checkValidity()) {
+      console.log("entrooo");
+      console.log((inputFiltro.current.isInvalid = true));
+    }
     if (inputFiltro.current) {
       valor = inputFiltro.current.value;
     }
@@ -40,15 +49,19 @@ export default function BuscarContribuyentesComponent({
   };
 
   const inputKeyUp = (event) => {
+    console.log(inputFiltro.current.value.length);
+    if (inputFiltro.current.value.length > 0) {
+      setValidated(false);
+    }
     if (event.keyCode === 13) {
       listarBuscarContribuyente();
     }
   };
 
-  useEffect(() => {
-    listarBuscarContribuyente();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   listarBuscarContribuyente();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>
@@ -96,21 +109,28 @@ export default function BuscarContribuyentesComponent({
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label className="fw-bold">Valor buscado</Form.Label>
-                      <InputGroup className="mb-3">
+                      <InputGroup className="mb-3" hasValidation>
                         <FormControl
                           autoFocus
                           aria-describedby="basic-addon2"
+                          required
                           ref={inputFiltro}
                           onKeyUp={inputKeyUp}
+                          isInvalid={validated}
                         />
-                        <Button
-                          variant="outline-secondary"
-                          id="button-addon2"
-                          title="Buscar"
-                          onClick={listarBuscarContribuyente}
-                        >
-                          <i className="fas fa-search"></i>
-                        </Button>
+                        <Form.Control.Feedback type="invalid" className="mt-0">
+                          Ingresar valor buscado
+                        </Form.Control.Feedback>
+                        {!validated && (
+                          <Button
+                            variant="outline-secondary"
+                            id="button-addon2"
+                            title="Buscar"
+                            onClick={listarBuscarContribuyente}
+                          >
+                            <i className="fas fa-search"></i>
+                          </Button>
+                        )}
                       </InputGroup>
                     </Form.Group>
                   </div>
