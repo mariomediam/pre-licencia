@@ -1,10 +1,11 @@
-import { Form } from "react-bootstrap";
 import React from "react";
+import { Form } from "react-bootstrap";
 
 export const ContribEditDatPriComponent = ({
   valores,
-  setValores,
+  setField,
   tipoContribuyente,
+  errors,
 }) => {
   return (
     <div>
@@ -20,16 +21,12 @@ export const ContribEditDatPriComponent = ({
             name="name_codigoContrib"
             value={valores.codigoContrib}
             readOnly
-            // ref= { inputNombre }
-            onChange={(e) =>
-              setValores({ ...valores, codigoContrib: e.target.value })
-            }
-            // onChange={handleChange}
-            // isInvalid={!!errors.city}
+            onChange={(e) => setField("codigoContrib", e.target.value)}
+            isInvalid={!!errors.codigoContrib}
           />
 
           <Form.Control.Feedback type="invalid">
-            {/* {errors.city} */}
+            {errors.codigoContrib}
           </Form.Control.Feedback>
         </Form.Group>
       </div>
@@ -43,9 +40,8 @@ export const ContribEditDatPriComponent = ({
           aria-label="Tipo de contribuyente"
           value={valores.tipoContrib}
           disabled={valores.tipoContrib === "01" ? true : false}
-          onChange={(e) =>
-            setValores({ ...valores, tipoContrib: e.target.value })
-          }
+          isInvalid={!!errors.tipoContrib}
+          onChange={(e) => setField("tipoContrib", e.target.value)}
         >
           {tipoContribuyente.map(({ C004Tip_Cont, C004Nombre }, i) => (
             <React.Fragment key={i}>
@@ -60,7 +56,7 @@ export const ContribEditDatPriComponent = ({
         </Form.Select>
 
         <Form.Control.Feedback type="invalid">
-          {/* {errors.city} */}
+          {errors.tipoContrib}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -76,14 +72,12 @@ export const ContribEditDatPriComponent = ({
               placeholder="Apellido paterno"
               name="name_apepat"
               value={valores.apePat}
-              onChange={(e) =>
-                setValores({ ...valores, apePat: e.target.value })
-              }
-              // isInvalid={!!errors.city}
+              onChange={(e) => setField("apePat", e.target.value)}
+              isInvalid={!!errors.apePat}
             />
 
             <Form.Control.Feedback type="invalid">
-              {/* {errors.city} */}
+              {errors.apePat}
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -97,14 +91,12 @@ export const ContribEditDatPriComponent = ({
               placeholder="Apellido materno"
               name="name_apemat"
               value={valores.apeMat}
-              onChange={(e) =>
-                setValores({ ...valores, apeMat: e.target.value })
-              }
-              // isInvalid={!!errors.city}
+              onChange={(e) => setField("apeMat", e.target.value)}
+              isInvalid={!!errors.city}
             />
 
             <Form.Control.Feedback type="invalid">
-              {/* {errors.city} */}
+              {errors.apeMat}
             </Form.Control.Feedback>
           </Form.Group>
         </div>
@@ -122,14 +114,12 @@ export const ContribEditDatPriComponent = ({
           placeholder="Nombre"
           name="name_nombre"
           value={valores.nombre}
-          // ref= { inputNombre }
-          onChange={(e) => setValores({ ...valores, nombre: e.target.value })}
-          // onChange={handleChange}
-          // isInvalid={!!errors.city}
+          onChange={(e) => setField("nombre", e.target.value)}
+          isInvalid={!!errors.nombre}
         />
 
         <Form.Control.Feedback type="invalid">
-          {/* {errors.city} */}
+          {errors.nombre}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -143,14 +133,14 @@ export const ContribEditDatPriComponent = ({
             <Form.Select
               aria-label="sexo"
               value={valores.sexo}
-              onChange={(e) => setValores({ ...valores, sexo: e.target.value })}
+              onChange={(e) => setField("sexo", e.target.value)}
             >
               <option value="M">Masculino</option>
               <option value="F">Femenino</option>
             </Form.Select>
 
             <Form.Control.Feedback type="invalid">
-              {/* {errors.city} */}
+              {errors.sexo}
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -163,21 +153,16 @@ export const ContribEditDatPriComponent = ({
               type="date"
               name="name_fecNac"
               value={valores.fecNac}
-              // ref= { inputNombre }
-              onChange={(e) =>
-                setValores({ ...valores, fecNac: e.target.value })
-              }
-              // onChange={handleChange}
-              // isInvalid={!!errors.city}
+              onChange={(e) => setField("fecNac", e.target.value)}
+              isInvalid={!!errors.fecNac}
             />
 
             <Form.Control.Feedback type="invalid">
-              {/* {errors.city} */}
+              {errors.fecNac}
             </Form.Control.Feedback>
           </Form.Group>
         </div>
       )}
-
 
       {/* ------------------ OBSERVACIONES -------------------*/}
       <Form.Group md="6" controlId="id_observ" className="mt-2">
@@ -190,14 +175,12 @@ export const ContribEditDatPriComponent = ({
           rows={3}
           name="name_observ"
           value={valores.observ}
-          // ref= { inputNombre }
-          onChange={(e) => setValores({ ...valores, observ: e.target.value })}
-          // onChange={handleChange}
-          // isInvalid={!!errors.city}
+          onChange={(e) => setField("observ", e.target.value)}
+          isInvalid={!!errors.observ}
         />
 
         <Form.Control.Feedback type="invalid">
-          {/* {errors.city} */}
+          {errors.observ}
         </Form.Control.Feedback>
       </Form.Group>
     </div>

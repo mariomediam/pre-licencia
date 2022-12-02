@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import { obtenerTipoContribuyente } from "../../services/contribuyenteService";
 import { obtenerContribuyenteCodigo } from "../../services/contribuyenteService";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
+import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
 
 const steps = ["Datos principales", "Domicilio", "Otros"];
 
@@ -42,6 +43,8 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
   });
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
+  // const [form, setForm] = useState({});
+  const [errors, setErrors] = useState({});
 
   // const inputNombre = useRef();
 
@@ -55,13 +58,22 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
 
   const handleNext = () => {
     let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    const newErrors = findFormErrors();
+    // Conditional logic:
+    if (Object.keys(newErrors).length > 0) {
+      // We got errors!
+      setErrors(newErrors);
+    } else {
+      // No errors! Put any logic here for the form submission!
+      if (isStepSkipped(activeStep)) {
+        newSkipped = new Set(newSkipped.values());
+        newSkipped.delete(activeStep);
+      }
+
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setSkipped(newSkipped);
+    }
   };
 
   const handleBack = () => {
@@ -98,8 +110,20 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
         apeMat: contribuyenteTmp.separa_apemat,
         nombre: contribuyenteTmp.separa_nombre,
         sexo: contribuyenteTmp.C001Sexo,
-        fecNac: contribuyenteTmp.D001FecNac.toLocaleString().substr(0,10),
-        observ: contribuyenteTmp.C001Motivo
+        fecNac: contribuyenteTmp.D001FecNac.toLocaleString().substr(0, 10),
+        observ: contribuyenteTmp.C001Motivo,
+        codigoLugar: contribuyenteTmp.C001Cod_Lug,
+        nombreLugar: contribuyenteTmp.Lugar,
+        codigoCalle: contribuyenteTmp.C001Cod_Calle,
+        nombreCalle: contribuyenteTmp.Calle,
+        direccNro: contribuyenteTmp.Número,
+        direccPiso: contribuyenteTmp.Piso,
+        direccDpto: contribuyenteTmp.Dpto,
+        direccMzna: contribuyenteTmp.Mza,
+        direccLote: contribuyenteTmp.Lote,
+        direccAdic: contribuyenteTmp.C001Direc_Adic,
+        direccProv: contribuyenteTmp.C005Provincia,
+        direccDist: contribuyenteTmp.C005Distrito
       });
       // setDocumentos(documentosTmp);
       console.log(contribuyenteTmp);
@@ -123,6 +147,50 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
     verContribuyente();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const setField = (field, value) => {
+    setValores({
+      ...valores,
+      [field]: value,
+    });
+    // Check and see if errors exist, and remove them from the error object:
+    if (!!errors[field])
+      setErrors({
+        ...errors,
+        [field]: null,
+      });
+  };
+
+  const findFormErrors = () => {
+    const { codigoContrib, tipoContrib, apePat, nombre, observ } = valores;
+    const newErrors = {};
+
+    // codigoContrib errors
+    if (!codigoContrib || codigoContrib === "")
+      newErrors.codigoContrib = "Código no válido";
+
+    // tipoContrib errors
+    if (!tipoContrib || tipoContrib === "")
+      newErrors.codigoContrib = "Seleccione tipo de contribuyente";
+    else if (tipoContrib === "01" && (!apePat || apePat === ""))
+      newErrors.apePat = "Ingrese apellido paterno";
+
+    // nombre errors
+    if (!nombre || nombre === "")
+      newErrors.nombre = "Ingrese Nombre / Razón social";
+    else if (nombre.length > 150)
+      newErrors.nombre = "El nombre es demasiado largo!";
+
+    // observ errors
+    if (!observ || observ === "") newErrors.observ = "Ingrese observaciones";
+    else if (observ.length > 800)
+      newErrors.observ = "Las observaciones son demasiado largas";
+
+    console.log("newErrors");
+    console.log(newErrors);
+
+    return newErrors;
+  };
 
   return (
     <div>
@@ -149,7 +217,9 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
                 const labelProps = {};
                 if (isStepOptional(index)) {
                   labelProps.optional = (
-                    <Typography variant="caption" key={index}>Optional</Typography>
+                    <Typography variant="caption" key={index}>
+                      Optional
+                    </Typography>
                   );
                 }
                 if (isStepSkipped(index)) {
@@ -157,7 +227,9 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
                 }
                 return (
                   <Step key={label} {...stepProps}>
-                    <StepLabel {...labelProps}  key={index}>{label}</StepLabel>
+                    <StepLabel {...labelProps} key={index}>
+                      {label}
+                    </StepLabel>
                   </Step>
                 );
               })}
@@ -221,12 +293,29 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
             <div>
               <ContribEditDatPriComponent
                 valores={valores}
-                setValores={setValores}
+                setField={setField}
                 tipoContribuyente={tipoContribuyente}
-                key = {valores.codigoContrib}
+                key={valores.codigoContrib}
+                errors={errors}
               />
             </div>
-          ) : null}
+          ) : (
+            <div>
+              {activeStep === 1 ? (
+                <div>
+                  <ContribEditDomiciComponent
+                    valores={valores}
+                    setField={setField}
+                    tipoContribuyente={tipoContribuyente}
+                    key={valores.codigoContrib}
+                    errors={errors}
+                  />
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </div>
+          )}
           <Box sx={{ width: "100%" }} className="mt-4 mb-3">
             {activeStep === steps.length ? (
               <React.Fragment>
