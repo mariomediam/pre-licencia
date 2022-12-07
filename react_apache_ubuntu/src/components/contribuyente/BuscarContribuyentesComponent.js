@@ -135,7 +135,7 @@ export default function BuscarContribuyentesComponent({
                     </Form.Group>
                   </div>
                 </div>
-                <div className="table-responsive">
+                {/* <div className="table-responsive"> */}
                   <div>
                     <BuscarContribuyenteScrollComponent
                       filtro={filtro}
@@ -143,7 +143,7 @@ export default function BuscarContribuyentesComponent({
                       setContribEdit={setContribEdit}
                     />
                   </div>
-                </div>
+                {/* </div> */}
               </div>
             </div>
           </div>

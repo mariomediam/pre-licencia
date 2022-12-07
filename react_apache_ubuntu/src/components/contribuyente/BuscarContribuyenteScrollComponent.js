@@ -143,6 +143,7 @@ class BuscarContribuyenteScrollComponent extends React.Component {
   };
 
   async componentDidUpdate() {
+    
     if (this.props.filtro.reload) {
       if (!this.props.filtro.opcion) {
         return;

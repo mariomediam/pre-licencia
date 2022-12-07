@@ -111,19 +111,27 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
         nombre: contribuyenteTmp.separa_nombre,
         sexo: contribuyenteTmp.C001Sexo,
         fecNac: contribuyenteTmp.D001FecNac.toLocaleString().substr(0, 10),
-        observ: contribuyenteTmp.C001Motivo,
+        observ: contribuyenteTmp.C001Motivo.trim(),
         codigoLugar: contribuyenteTmp.C001Cod_Lug,
-        nombreLugar: contribuyenteTmp.Lugar,
+        nombreLugar: contribuyenteTmp.Lugar
+          ? contribuyenteTmp.Lugar.trim()
+          : "",
         codigoCalle: contribuyenteTmp.C001Cod_Calle,
-        nombreCalle: contribuyenteTmp.Calle,
-        direccNro: contribuyenteTmp.Número,
-        direccPiso: contribuyenteTmp.Piso,
-        direccDpto: contribuyenteTmp.Dpto,
-        direccMzna: contribuyenteTmp.Mza,
-        direccLote: contribuyenteTmp.Lote,
-        direccAdic: contribuyenteTmp.C001Direc_Adic,
-        direccProv: contribuyenteTmp.C005Provincia,
+        nombreCalle: contribuyenteTmp.Calle
+          ? contribuyenteTmp.Calle.trim()
+          : "",
+        direccNro: contribuyenteTmp.Número.trim(),
+        direccPiso: contribuyenteTmp.Piso.trim(),
+        direccDpto: contribuyenteTmp.Dpto.trim(),
+        direccMzna: contribuyenteTmp.Mza.trim(),
+        direccLote: contribuyenteTmp.Lote.trim(),
+        direccAdic: contribuyenteTmp.C001Direc_Adic.trim(),
+        direccProv: contribuyenteTmp.C005Provincia
+          ? contribuyenteTmp.C005Provincia.trim()
+          : "",
         direccDist: contribuyenteTmp.C005Distrito
+          ? contribuyenteTmp.C005Distrito.trim()
+          : "",
       });
       // setDocumentos(documentosTmp);
       console.log(contribuyenteTmp);
@@ -162,32 +170,102 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
   };
 
   const findFormErrors = () => {
-    const { codigoContrib, tipoContrib, apePat, nombre, observ } = valores;
+    const {
+      codigoContrib,
+      tipoContrib,
+      apePat,
+      nombre,
+      observ,
+      codigoLugar,
+      nombreLugar,
+      codigoCalle,
+      nombreCalle,
+      direccNro,
+      direccPiso,
+      direccDpto,
+      direccMzna,
+      direccLote,
+    } = valores;
     const newErrors = {};
 
-    // codigoContrib errors
-    if (!codigoContrib || codigoContrib === "")
-      newErrors.codigoContrib = "Código no válido";
+    if (activeStep === 0) {
+      // codigoContrib errors
+      if (!codigoContrib || codigoContrib === "")
+        newErrors.codigoContrib = "Código no válido";
 
-    // tipoContrib errors
-    if (!tipoContrib || tipoContrib === "")
-      newErrors.codigoContrib = "Seleccione tipo de contribuyente";
-    else if (tipoContrib === "01" && (!apePat || apePat === ""))
-      newErrors.apePat = "Ingrese apellido paterno";
+      // tipoContrib errors
+      if (!tipoContrib || tipoContrib === "")
+        newErrors.codigoContrib = "Seleccione tipo de contribuyente";
+      else if (tipoContrib === "01" && (!apePat || apePat === ""))
+        newErrors.apePat = "Ingrese apellido paterno";
 
-    // nombre errors
-    if (!nombre || nombre === "")
-      newErrors.nombre = "Ingrese Nombre / Razón social";
-    else if (nombre.length > 150)
-      newErrors.nombre = "El nombre es demasiado largo!";
+      // nombre errors
+      if (!nombre || nombre === "")
+        newErrors.nombre = "Ingrese Nombre / Razón social";
+      else if (nombre.length > 150)
+        newErrors.nombre = "El nombre es demasiado largo!";
 
-    // observ errors
-    if (!observ || observ === "") newErrors.observ = "Ingrese observaciones";
-    else if (observ.length > 800)
-      newErrors.observ = "Las observaciones son demasiado largas";
+      // observ errors
+      if (!observ || observ === "") newErrors.observ = "Ingrese observaciones";
+      else if (observ.length > 800)
+        newErrors.observ = "Las observaciones son demasiado largas";
+    } else if (activeStep === 1) {
+      // lugar errors
+      if (
+        !codigoLugar ||
+        codigoLugar === "" ||
+        !nombreLugar ||
+        nombreLugar === ""
+      )
+        newErrors.codigoLugar = "Ingrese lugar";
 
-    console.log("newErrors");
-    console.log(newErrors);
+      // calle errors
+      if (
+        !codigoCalle ||
+        codigoCalle === "" ||
+        !nombreCalle ||
+        nombreCalle === ""
+      )
+        newErrors.codigoCalle = "Ingrese calle";
+
+      // numero, piso, dpto, mzna, lote errors
+      if (
+        (!direccNro || direccNro === "") &&
+        (!direccPiso || direccPiso === "") &&
+        (!direccDpto || direccDpto === "") &&
+        (!direccMzna || direccMzna === "") &&
+        (!direccLote || direccLote === "")
+      )
+        newErrors.direccNro = "Ingrese número y/o piso y departamento y/o Manzana y lote";
+
+      // piso errors
+      if (        
+        (direccDpto && direccDpto.length > 0) &&
+        (!direccPiso || direccPiso === "") 
+      )
+        newErrors.direccPiso = "Si ingreso departamento debe ingresar piso";
+
+      // dpto errors
+      if (        
+        (direccPiso && direccPiso.length > 0) &&
+        (!direccDpto || direccDpto === "") 
+      )
+        newErrors.direccDpto = "Si ingreso piso debe ingresar departamento";
+
+      // direccMzna errors
+      if (        
+        (direccLote && direccLote.length > 0) &&
+        (!direccMzna || direccMzna === "") 
+      )
+        newErrors.direccMzna = "Si ingreso lote debe ingresar manzana";
+
+       // direccLote errors
+       if (        
+        (direccMzna && direccMzna.length > 0) &&
+        (!direccLote || direccLote === "") 
+      )
+        newErrors.direccLote = "Si ingreso manzana debe ingresar lote";
+    }
 
     return newErrors;
   };

@@ -84,19 +84,9 @@ const obtenerContribuyenteCodigo = async (codigoContrib) => {
 
     let URLContribCodigo = `${URL}/buscar-contribuyente-codigo?codigo=${codigoContrib}`;
 
-    // console.log("URLContribCodigo");
-    // console.log(URLContribCodigo);
-
     let {
       data: { content },
     } = await api.get(`${URLContribCodigo}`);
-
-    // console.log("content");
-    // console.log(content);
-    // console.log("content.length")
-    // console.log(content.length)
-    // console.log("content(0)")
-    // console.log(content[0])
 
     if (content.length > 0) {
       return content[0];
@@ -124,6 +114,81 @@ const obtenerTipoContribuyente = async () => {
   }
 };
 
+const obtenerLugarGeneral = async (
+  codigo,
+  nombre,
+  tipoLugar,
+  sector,
+  calificacion,
+  dpto,
+  prov,
+  dist
+) => {
+  try {
+    let api = UseAxios();
+
+    // let URLLugar = `${URL}/consultar-lugar-general?`;
+
+    let urlFiltro = "";
+
+    if (codigo && codigo.trim().length > 0) {
+      urlFiltro += `&codigo=${codigo}`;
+    }
+    if (nombre && nombre.trim().length > 0) {
+      urlFiltro += `&nombre=${nombre}`;
+    }
+    if (tipoLugar && tipoLugar.trim().length > 0) {
+      urlFiltro += `&tiplug=${tipoLugar}`;
+    }
+    if (sector && sector.trim().length > 0) {
+      urlFiltro += `&sector=${sector}`;
+    }
+    if (calificacion && calificacion.trim().length > 0) {
+      urlFiltro += `&calif=${calificacion}`;
+    }
+    if (dpto && dpto.trim().length > 0) {
+      urlFiltro += `&dpto=${dpto}`;
+    }
+    if (prov && prov.trim().length > 0) {
+      urlFiltro += `&prov=${prov}`;
+    }
+    if (dist && dist.trim().length > 0) {
+      urlFiltro += `&dist=${dist}`;
+    }
+    
+    if (urlFiltro.trim().length > 0) {
+      throw new Error("Debe ingresar filtros");
+    }
+    
+    let URLLugar = encodeURI(
+      `${URL}/consultar-lugar-general?${urlFiltro}`
+    );
+
+    console.log("URLLugar")
+    console.log(URLLugar)
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLLugar}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerLugarPagination = async (URLLugar) => {
+  try {
+    let api = UseAxios();
+
+    let { data } = await api.get(`${URLLugar}&page_size=20`);
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -132,4 +197,6 @@ export {
   obtenerContribuyenteNacion,
   obtenerContribuyenteCodigo,
   obtenerTipoContribuyente,
+  obtenerLugarGeneral,
+  obtenerLugarPagination,
 };
