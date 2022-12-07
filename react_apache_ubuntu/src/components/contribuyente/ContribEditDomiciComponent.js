@@ -222,7 +222,7 @@ export const ContribEditDomiciComponent = ({
           </Form.Control.Feedback>
         </Form.Group>
       </div>
-      <BuscarLugarComponent valores = { valores } show = { showBuscarLugar } handleClose = { handleBuscarLugarClose } />
+      <BuscarLugarComponent setField = { setField } show = { showBuscarLugar } handleClose = { handleBuscarLugarClose } />
     </div>
   );
 };

@@ -2,9 +2,11 @@ import { useRef, useState } from "react";
 import { Form, Button, Modal, InputGroup, FormControl } from "react-bootstrap";
 import BuscarLugarScrollComponent from "./BuscarLugarScrollComponent";
 
-export const BuscarLugarComponent = ({ valores, show, handleClose }) => {
+export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
   const inputFiltro = useRef();
   const checkNombre = useRef();
+
+  const [validated, setValidated] = useState(false);
   const [filtro, setFiltro] = useState({
     opcion: "",
     valor: "",
@@ -16,7 +18,7 @@ export const BuscarLugarComponent = ({ valores, show, handleClose }) => {
     let valor = "";
     // console.log(inputFiltro.current.checkValidity());
 
-    // setValidated(!inputFiltro.current.checkValidity());
+    setValidated(!inputFiltro.current.checkValidity());
 
     // if (!inputFiltro.current.checkValidity()) {
     //   console.log("entrooo");
@@ -31,6 +33,16 @@ export const BuscarLugarComponent = ({ valores, show, handleClose }) => {
       items: [],
       reload: true,
     });
+  };
+
+  const inputKeyUp = (event) => {
+    console.log(inputFiltro.current.value.length);
+    if (inputFiltro.current.value.length > 0) {
+      setValidated(false);
+    }
+    if (event.keyCode === 13) {
+      BuscarLugar();
+    }
   };
 
   return (
@@ -87,27 +99,26 @@ export const BuscarLugarComponent = ({ valores, show, handleClose }) => {
                       aria-describedby="basic-addon2"
                       required
                       ref={inputFiltro}
-                      //   onKeyUp={inputKeyUp}
-                      //   isInvalid={validated}
+                      onKeyUp={inputKeyUp}
+                      isInvalid={validated}
                     />
                     <Form.Control.Feedback type="invalid" className="mt-0">
                       Ingresar valor buscado
                     </Form.Control.Feedback>
-                    {/* {!validated && ( */}
-                    <Button
-                      variant="outline-secondary"
-                      id="button-addon2"
-                      title="Buscar"
-                      onClick={BuscarLugar}
-                    >
-                      <i className="fas fa-search"></i>
-                    </Button>
-                    {/* )} */}
+                    {!validated && (
+                      <Button
+                        variant="outline-secondary"
+                        id="button-addon2"
+                        title="Buscar"
+                        onClick={BuscarLugar}
+                      >
+                        <i className="fas fa-search"></i>
+                      </Button>
+                    )}
                   </InputGroup>
                 </Form.Group>
               </div>
             </div>
-            
           </Modal.Body>
 
           {/* <Modal.Footer>
@@ -123,12 +134,12 @@ export const BuscarLugarComponent = ({ valores, show, handleClose }) => {
             </Button>
           </Modal.Footer> */}
           <div>
-              <BuscarLugarScrollComponent
-                filtro={filtro}
-                // setShowForm={setShowForm}
-                // setContribEdit={setContribEdit}
-              />
-            </div>
+            <BuscarLugarScrollComponent
+              filtro={filtro}              
+              // setShowForm={setShowForm}
+              // setContribEdit={setContribEdit}
+            />
+          </div>
         </Modal>
       </div>
     </div>

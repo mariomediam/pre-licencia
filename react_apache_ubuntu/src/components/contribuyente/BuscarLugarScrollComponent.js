@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { obtenerLugarPagination } from "../../services/contribuyenteService";
-import { Table } from "react-bootstrap";
+import { Card, Table } from "react-bootstrap";
 
 export default class BuscarLugarScrollComponent extends Component {
   state = {
@@ -29,6 +29,7 @@ export default class BuscarLugarScrollComponent extends Component {
       });
     }
   };
+
 
   async componentDidUpdate() {
     console.log("entrooo");
@@ -102,7 +103,7 @@ export default class BuscarLugarScrollComponent extends Component {
               <tbody>
                 {this.state.items.map((lugar, i) => (
                   <tr key={lugar.C005Cod_Lug}>
-                    <td>{lugar.C005Cod_Lug}</td>
+                    <td><Card.Link href="#">{lugar.C005Cod_Lug}</Card.Link></td>
                     <td>{lugar.C005Nombre}</td>
                     <td>
                       {lugar.C005Departamento} / {lugar.C005Provincia} /{" "}
