@@ -157,16 +157,30 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
   }, []);
 
   const setField = (field, value) => {
-    setValores({
-      ...valores,
-      [field]: value,
-    });
-    // Check and see if errors exist, and remove them from the error object:
-    if (!!errors[field])
-      setErrors({
-        ...errors,
-        [field]: null,
+    if (typeof field === "string") {
+      setValores({
+        ...valores,
+        [field]: value,
       });
+      // Check and see if errors exist, and remove them from the error object:
+      if (!!errors[field])
+        setErrors({
+          ...errors,
+          [field]: null,
+        });
+    } else {
+      setValores({ ...valores, ...field });
+
+      let errorsTpm = {};
+
+      // Object.keys(field).forEach((key) => (field[key] = null));
+
+      Object.keys(field).forEach((key) =>
+        !!errors[key] ? (errorsTpm[key] = null) : field[key]
+      );
+
+      setErrors({...errors, ...errorsTpm})
+    }
   };
 
   const findFormErrors = () => {
@@ -236,33 +250,38 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
         (!direccMzna || direccMzna === "") &&
         (!direccLote || direccLote === "")
       )
-        newErrors.direccNro = "Ingrese número y/o piso y departamento y/o Manzana y lote";
+        newErrors.direccNro =
+          "Ingrese número y/o piso y departamento y/o Manzana y lote";
 
       // piso errors
-      if (        
-        (direccDpto && direccDpto.length > 0) &&
-        (!direccPiso || direccPiso === "") 
+      if (
+        direccDpto &&
+        direccDpto.length > 0 &&
+        (!direccPiso || direccPiso === "")
       )
         newErrors.direccPiso = "Si ingreso departamento debe ingresar piso";
 
       // dpto errors
-      if (        
-        (direccPiso && direccPiso.length > 0) &&
-        (!direccDpto || direccDpto === "") 
+      if (
+        direccPiso &&
+        direccPiso.length > 0 &&
+        (!direccDpto || direccDpto === "")
       )
         newErrors.direccDpto = "Si ingreso piso debe ingresar departamento";
 
       // direccMzna errors
-      if (        
-        (direccLote && direccLote.length > 0) &&
-        (!direccMzna || direccMzna === "") 
+      if (
+        direccLote &&
+        direccLote.length > 0 &&
+        (!direccMzna || direccMzna === "")
       )
         newErrors.direccMzna = "Si ingreso lote debe ingresar manzana";
 
-       // direccLote errors
-       if (        
-        (direccMzna && direccMzna.length > 0) &&
-        (!direccLote || direccLote === "") 
+      // direccLote errors
+      if (
+        direccMzna &&
+        direccMzna.length > 0 &&
+        (!direccLote || direccLote === "")
       )
         newErrors.direccLote = "Si ingreso manzana debe ingresar lote";
     }

@@ -135,7 +135,9 @@ export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
           </Modal.Footer> */}
           <div>
             <BuscarLugarScrollComponent
-              filtro={filtro}              
+              filtro={filtro}         
+              setField = {setField}    
+              handleClose = {handleClose} 
               // setShowForm={setShowForm}
               // setContribEdit={setContribEdit}
             />

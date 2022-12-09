@@ -5,11 +5,30 @@ import { Card, Table } from "react-bootstrap";
 
 export default class BuscarLugarScrollComponent extends Component {
   state = {
+    setField: this.props.setField,
+    handleClose: this.props.handleClose,
     items: this.props.filtro.items,
     hasMore: true,
     filtro: this.props.filtro,
     pageNext: "",
     countRecords: 0,
+  };
+
+  seleccionarLugar = (e) => {
+    const { C005Cod_Lug, C005Nombre, C005Provincia, C005Distrito } =
+      this.state.items
+        .filter((item) => item.C005Cod_Lug === e.target.id)
+        .shift();
+    const lugarSelecc = {"codigoLugar" : C005Cod_Lug, "nombreLugar" : C005Nombre ? C005Nombre.trim() : "", "direccProv" : C005Provincia ? C005Provincia.trim() : "", "direccDist" : C005Distrito ? C005Distrito.trim() : ""}
+    // console.log("C005Nombre " + C005Nombre);
+    // console.log("C005Provincia " + C005Provincia);
+    // console.log("C005Distrito " + C005Distrito);
+    // this.state.setField("codigoLugar", C005Cod_Lug);
+    // this.state.setField("nombreLugar", C005Nombre ? C005Nombre.trim() : "");
+    // this.state.setField("direccProv", C005Provincia);
+    this.state.setField(lugarSelecc, "");
+    this.state.handleClose();
+    // this.state.setField("direccDist", C005Distrito);
   };
 
   fetchMoreData = async () => {
@@ -29,7 +48,6 @@ export default class BuscarLugarScrollComponent extends Component {
       });
     }
   };
-
 
   async componentDidUpdate() {
     console.log("entrooo");
@@ -72,7 +90,15 @@ export default class BuscarLugarScrollComponent extends Component {
 
   render() {
     return (
-      <div id="scrollableDiv" style={{height: '500px', overflow: 'auto', marginLeft: '30px',  marginRight: '30px'}}>
+      <div
+        id="scrollableDiv"
+        style={{
+          height: "500px",
+          overflow: "auto",
+          marginLeft: "30px",
+          marginRight: "30px",
+        }}
+      >
         <InfiniteScroll
           dataLength={this.state.items.length}
           next={this.fetchMoreData}
@@ -103,7 +129,15 @@ export default class BuscarLugarScrollComponent extends Component {
               <tbody>
                 {this.state.items.map((lugar, i) => (
                   <tr key={lugar.C005Cod_Lug}>
-                    <td><Card.Link href="#">{lugar.C005Cod_Lug}</Card.Link></td>
+                    <td>
+                      <Card.Link
+                        href="#"
+                        id={lugar.C005Cod_Lug}
+                        onClick={this.seleccionarLugar}
+                      >
+                        {lugar.C005Cod_Lug}
+                      </Card.Link>
+                    </td>
                     <td>{lugar.C005Nombre}</td>
                     <td>
                       {lugar.C005Departamento} / {lugar.C005Provincia} /{" "}
