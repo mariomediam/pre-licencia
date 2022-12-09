@@ -127,8 +127,6 @@ const obtenerLugarGeneral = async (
   try {
     let api = UseAxios();
 
-    // let URLLugar = `${URL}/consultar-lugar-general?`;
-
     let urlFiltro = "";
 
     if (codigo && codigo.trim().length > 0) {
@@ -155,7 +153,7 @@ const obtenerLugarGeneral = async (
     if (dist && dist.trim().length > 0) {
       urlFiltro += `&dist=${dist}`;
     }
-    
+
     if (urlFiltro.trim().length > 0) {
       throw new Error("Debe ingresar filtros");
     }
@@ -163,9 +161,6 @@ const obtenerLugarGeneral = async (
     let URLLugar = encodeURI(
       `${URL}/consultar-lugar-general?${urlFiltro}`
     );
-
-    console.log("URLLugar")
-    console.log(URLLugar)
     
     let {
       data: { content },
@@ -189,6 +184,53 @@ const obtenerLugarPagination = async (URLLugar) => {
   }
 };
 
+const obtenerCalleGeneral = async (
+  codigo,
+  nombre
+) => {
+  try {
+    let api = UseAxios();
+
+    let urlFiltro = "";
+
+    if (codigo && codigo.trim().length > 0) {
+      urlFiltro += `&codigo=${codigo}`;
+    }
+    if (nombre && nombre.trim().length > 0) {
+      urlFiltro += `&nombre=${nombre}`;
+    }
+    
+
+    if (urlFiltro.trim().length > 0) {
+      throw new Error("Debe ingresar filtros");
+    }
+    
+    let URLLugar = encodeURI(
+      `${URL}/consultar-lugar-general?${urlFiltro}`
+    );
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLLugar}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerCallePagination = async (URLCalle) => {
+  try {
+    let api = UseAxios();
+
+    let { data } = await api.get(`${URLCalle}&page_size=20`);
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -199,4 +241,6 @@ export {
   obtenerTipoContribuyente,
   obtenerLugarGeneral,
   obtenerLugarPagination,
+  obtenerCalleGeneral,
+  obtenerCallePagination,
 };

@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import { BuscarLugarComponent } from "./BuscarLugarComponent";
+import { BuscarCalleComponent } from "./BuscarCalleComponent";
 
-export const ContribEditDomiciComponent = ({
-  valores,
-  setField,
-  errors,
-}) => {
-
+export const ContribEditDomiciComponent = ({ valores, setField, errors }) => {
   const [showBuscarLugar, setShowBuscarLugar] = useState(false);
+  const [showBuscarCalle, setShowBuscarCalle] = useState(false);
 
   const handleBuscarLugarClose = () => setShowBuscarLugar(false);
   const handleBuscarLugarShow = () => setShowBuscarLugar(true);
+
+  const handleBuscarCalleClose = () => setShowBuscarCalle(false);
+  const handleBuscarCalleShow = () => setShowBuscarCalle(true);
 
   return (
     <div>
@@ -27,7 +27,7 @@ export const ContribEditDomiciComponent = ({
               maxLength="9"
               placeholder="Código"
               name="name_codigoLugar"
-              value={valores.codigoLugar}              
+              value={valores.codigoLugar}
               onChange={(e) => setField("codigoLugar", e.target.value)}
               isInvalid={!!errors.codigoLugar}
             />
@@ -37,13 +37,13 @@ export const ContribEditDomiciComponent = ({
           </Form.Group>
         </div>
         <div className="col-12 col-sm-9 ms-0 ps-0">
-          <Form.Group className="mb-2" controlId="formBasicEmail">            
+          <Form.Group className="mb-2" controlId="formBasicEmail">
             <InputGroup>
               <FormControl
                 placeholder="Denominación del lugar"
                 aria-label="Denominación del lugar"
                 aria-describedby="Denominación del lugar"
-                value={`${valores.nombreLugar} / ${valores.direccProv} - ${valores.direccDist}` } 
+                value={`${valores.nombreLugar} / ${valores.direccProv} - ${valores.direccDist}`}
                 readOnly
               />
               <Button
@@ -71,7 +71,7 @@ export const ContribEditDomiciComponent = ({
               maxLength="4"
               placeholder="Código"
               name="name_codigoCalle"
-              value={ valores.codigoCalle } 
+              value={valores.codigoCalle}
               onChange={(e) => setField("codigoCalle", e.target.value)}
               isInvalid={!!errors.codigoCalle}
             />
@@ -81,20 +81,20 @@ export const ContribEditDomiciComponent = ({
           </Form.Group>
         </div>
         <div className="col-12 col-sm-9 ms-0 ps-0">
-          <Form.Group className="mb-2" controlId="formBasicEmail">            
+          <Form.Group className="mb-2" controlId="formBasicEmail">
             <InputGroup className="mb-0">
               <FormControl
                 placeholder="Denominación de calle"
                 aria-label="Denominación de calle"
                 aria-describedby="Denominación de calle"
-                value={valores.nombreCalle}   
+                value={valores.nombreCalle}
                 readOnly
               />
               <Button
                 variant="outline-secondary"
                 id="button-addon2"
                 title="Buscar"
-                // onClick={listarPrecalUsuEstado}
+                onClick={handleBuscarCalleShow}
               >
                 <i className="fas fa-search"></i>
               </Button>
@@ -111,9 +111,9 @@ export const ContribEditDomiciComponent = ({
           </Form.Label>
           <Form.Control
             type="text"
-            maxLength="4"            
+            maxLength="4"
             name="name_direccNro"
-            value={valores.direccNro}            
+            value={valores.direccNro}
             onChange={(e) => setField("direccNro", e.target.value)}
             isInvalid={!!errors.direccNro}
           />
@@ -131,9 +131,9 @@ export const ContribEditDomiciComponent = ({
           </Form.Label>
           <Form.Control
             type="text"
-            maxLength="2"            
+            maxLength="2"
             name="name_direccPiso"
-            value={valores.direccPiso}            
+            value={valores.direccPiso}
             onChange={(e) => setField("direccPiso", e.target.value)}
             isInvalid={!!errors.direccPiso}
           />
@@ -151,9 +151,9 @@ export const ContribEditDomiciComponent = ({
           </Form.Label>
           <Form.Control
             type="text"
-            maxLength="4"            
+            maxLength="4"
             name="name_direccDpto"
-            value={valores.direccDpto}            
+            value={valores.direccDpto}
             onChange={(e) => setField("direccDpto", e.target.value)}
             isInvalid={!!errors.direccDpto}
           />
@@ -171,9 +171,9 @@ export const ContribEditDomiciComponent = ({
           </Form.Label>
           <Form.Control
             type="text"
-            maxLength="4"            
+            maxLength="4"
             name="direccMzna"
-            value={valores.direccMzna}            
+            value={valores.direccMzna}
             onChange={(e) => setField("direccMzna", e.target.value)}
             isInvalid={!!errors.direccMzna}
           />
@@ -191,9 +191,9 @@ export const ContribEditDomiciComponent = ({
           </Form.Label>
           <Form.Control
             type="text"
-            maxLength="6"            
+            maxLength="6"
             name="direccLote"
-            value={valores.direccLote}            
+            value={valores.direccLote}
             onChange={(e) => setField("direccLote", e.target.value)}
             isInvalid={!!errors.direccLote}
           />
@@ -211,9 +211,9 @@ export const ContribEditDomiciComponent = ({
           </Form.Label>
           <Form.Control
             type="text"
-            maxLength="70"            
+            maxLength="70"
             name="direccAdic"
-            value={valores.direccAdic}            
+            value={valores.direccAdic}
             onChange={(e) => setField("direccAdic", e.target.value)}
             isInvalid={!!errors.direccAdic}
           />
@@ -222,7 +222,20 @@ export const ContribEditDomiciComponent = ({
           </Form.Control.Feedback>
         </Form.Group>
       </div>
-      <BuscarLugarComponent setField = { setField } show = { showBuscarLugar } handleClose = { handleBuscarLugarClose } />
+      <div>
+        <BuscarLugarComponent
+          setField={setField}
+          show={showBuscarLugar}
+          handleClose={handleBuscarLugarClose}
+        />
+      </div>
+      <div>
+        <BuscarCalleComponent
+          setField={setField}
+          show={showBuscarCalle}
+          handleClose={handleBuscarCalleClose}
+        />
+      </div>
     </div>
   );
 };

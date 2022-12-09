@@ -176,7 +176,7 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
       // Object.keys(field).forEach((key) => (field[key] = null));
 
       Object.keys(field).forEach((key) =>
-        !!errors[key] ? (errorsTpm[key] = null) : field[key]
+        !!errors[key] && (errorsTpm[key] = null)
       );
 
       setErrors({...errors, ...errorsTpm})

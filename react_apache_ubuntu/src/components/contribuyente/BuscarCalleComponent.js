@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
 import { Form, Button, Modal, InputGroup, FormControl } from "react-bootstrap";
-import BuscarLugarScrollComponent from "./BuscarLugarScrollComponent";
+import BuscarCalleScrollComponent from "./BuscarCalleScrollComponent";
 
-export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
+export const BuscarCalleComponent = ({ setField, show, handleClose }) => {
+
   const inputFiltro = useRef();
   const checkNombre = useRef();
 
@@ -14,7 +15,7 @@ export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
     items: [],
   });
 
-  const BuscarLugar = async (event) => {
+  const BuscarCalle = async (event) => {
     let valor = "";
 
     setValidated(!inputFiltro.current.checkValidity());
@@ -31,14 +32,15 @@ export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
   };
 
   const inputKeyUp = (event) => {
-    console.log(inputFiltro.current.value.length);
+    
     if (inputFiltro.current.value.length > 0) {
       setValidated(false);
     }
     if (event.keyCode === 13) {
-      BuscarLugar();
+      BuscarCalle();
     }
   };
+
 
   return (
     <div>
@@ -52,7 +54,7 @@ export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
         >
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fas fa-map-marker-alt me-2"></i>Buscar lugar
+              <i className="fas fa-road me-2"></i>Buscar calle
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -105,7 +107,7 @@ export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
                         variant="outline-secondary"
                         id="button-addon2"
                         title="Buscar"
-                        onClick={BuscarLugar}
+                        onClick={BuscarCalle}
                       >
                         <i className="fas fa-search"></i>
                       </Button>
@@ -116,7 +118,7 @@ export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
             </div>
           </Modal.Body>
           <div>
-            <BuscarLugarScrollComponent
+            <BuscarCalleScrollComponent
               filtro={filtro}         
               setField = {setField}    
               handleClose = {handleClose} 
@@ -125,5 +127,5 @@ export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
         </Modal>
       </div>
     </div>
-  );
-};
+  )
+}
