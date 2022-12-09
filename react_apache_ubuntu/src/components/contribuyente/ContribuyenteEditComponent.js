@@ -7,10 +7,10 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { obtenerTipoContribuyente } from "../../services/contribuyenteService";
-import { obtenerContribuyenteCodigo } from "../../services/contribuyenteService";
+import { obtenerTipoContribuyente, obtenerContribuyenteCodigo, obtenerContribuyenteDocumento } from "../../services/contribuyenteService";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
+import { ContribEditOtrosComponent } from "./ContribEditOtrosComponent";
 
 const steps = ["Datos principales", "Domicilio", "Otros"];
 
@@ -40,6 +40,7 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
     direccDist: "",
     direccAdicio: "",
     observ: "",
+    documentos: [],
   });
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
@@ -103,6 +104,7 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
     console.log("Ver contribuyente " + contribEdit);
     if (contribEdit && contribEdit.length > 0) {
       const contribuyenteTmp = await obtenerContribuyenteCodigo(contribEdit);
+      const documentosTmp = await obtenerContribuyenteDocumento(contribEdit);
       setValores({
         ...valores,
         tipoContrib: contribuyenteTmp.C001Tip_Cont,
@@ -112,11 +114,11 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
         sexo: contribuyenteTmp.C001Sexo,
         fecNac: contribuyenteTmp.D001FecNac.toLocaleString().substr(0, 10),
         observ: contribuyenteTmp.C001Motivo.trim(),
-        codigoLugar: contribuyenteTmp.C001Cod_Lug,
+        codigoLugar: contribuyenteTmp.C001Cod_Lug.trim(),
         nombreLugar: contribuyenteTmp.Lugar
           ? contribuyenteTmp.Lugar.trim()
           : "",
-        codigoCalle: contribuyenteTmp.C001Cod_Calle,
+        codigoCalle: contribuyenteTmp.C001Cod_Calle.trim(),
         nombreCalle: contribuyenteTmp.Calle
           ? contribuyenteTmp.Calle.trim()
           : "",
@@ -132,9 +134,11 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
         direccDist: contribuyenteTmp.C005Distrito
           ? contribuyenteTmp.C005Distrito.trim()
           : "",
+        documentos: documentosTmp,
       });
       // setDocumentos(documentosTmp);
-      console.log(contribuyenteTmp);
+      console.log("documentosTmp");
+      console.log(documentosTmp);
     }
   };
 
@@ -409,7 +413,12 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
                   />
                 </div>
               ) : (
-                <div></div>
+                <div><ContribEditOtrosComponent
+                valores={valores}
+                setField={setField}                
+                key={valores.codigoContrib}
+                errors={errors}
+              /></div>
               )}
             </div>
           )}
