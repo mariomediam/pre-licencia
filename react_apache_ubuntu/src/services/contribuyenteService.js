@@ -231,6 +231,22 @@ const obtenerCallePagination = async (URLCalle) => {
   }
 };
 
+const obtenerTipoDocumento = async () => {
+  try {
+    let api = UseAxios();
+
+    let URLTipoDocumento = `${URL}/tipo-documento`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLTipoDocumento}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -243,4 +259,5 @@ export {
   obtenerLugarPagination,
   obtenerCalleGeneral,
   obtenerCallePagination,
+  obtenerTipoDocumento,
 };
