@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import {
   Form,
   Table,
@@ -9,7 +9,7 @@ import {
   FormControl,
 } from "react-bootstrap";
 import Swal from "sweetalert2";
-import { obtenerTipoContribuyente } from "../../services/contribuyenteService";
+import { obtenerTipoDocumento } from "../../services/contribuyenteService";
 
 export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
   const [show, setShow] = useState(false);
@@ -17,6 +17,9 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const inputNroDoc = useRef();
+  const selectTipoDoc = useRef();
 
   const eliminarDocumento = (e) => {
     const docId = e.target.id.substring(6);
@@ -43,14 +46,32 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
   };
 
   const listarTipoDocumento = async () => {
-    const tipoDocumentoTmp = await obtenerTipoContribuyente();
-    setTipoDocumento(tipoDocumentoTmp);
+    handleShow();
+    const tipoDocumentoTmp = await obtenerTipoDocumento();
+    const tipoDocumentoFilter = tipoDocumentoTmp.filter(
+      (tipoDoc) =>
+        !valores.documentos
+          .map((contribDoc) => contribDoc.CodDoc)
+          .includes(tipoDoc.C003Cod_Doc)
+    );
+    setTipoDocumento(tipoDocumentoFilter);
   };
 
-  useEffect(() => {
-    listarTipoDocumento();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const agregarDocumento = (e) => {
+    const objDocSelect = tipoDocumento
+      .filter((tipoDoc) => tipoDoc.C003Cod_Doc === selectTipoDoc.current.value)
+      .shift();
+
+    let documentosNew = [...valores.documentos];
+    documentosNew.push({
+      CodDoc: selectTipoDoc.current.value,
+      Descripción: objDocSelect.C003Nombre,
+      Número: inputNroDoc.current.value.trim(),
+      "": "MM",
+    });
+    setField("documentos", documentosNew);
+    handleClose();
+  };
 
   return (
     <div>
@@ -64,7 +85,7 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
               variant="outline-dark"
               size="sm"
               title="Agregar documento"
-              onClick={handleShow}
+              onClick={listarTipoDocumento}
             >
               <i className="fas fa-plus"></i>
             </Button>
@@ -108,7 +129,6 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
       </div>
       <div>
         <Modal
-          size="lg"
           show={show}
           onHide={handleClose}
           backdrop="static"
@@ -120,34 +140,30 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="row justify-content-center">
+            <div className="d-flex justify-content-center col-sm-12">
               <div
-                className="align-items-center col-sm-12 col-lg-5"
+                className="align-items-center"
                 style={{ border: "0px solid black" }}
               >
                 {/* ------------------ TIPO DE DOCUMENTO -------------------*/}
-                <Form.Group
-                  md="6"
-                  controlId="id_tipoContrib"
-                  className="mt-2 col-lg-4"
-                >
+                <Form.Group md="6" controlId="id_tipoContrib" className="mt-2">
                   <Form.Label className="text-muted mb-0">
                     <small className="mb-0">Tipo de documento</small>
                   </Form.Label>
                   <Form.Select
                     aria-label="Tipo de documento"
-                    value={valores.tipoContrib}
-                    isInvalid={!!errors.tipoContrib}
+                    value={tipoDocumento.C003Cod_Doc}
+                    ref={selectTipoDoc}
+                    // isInvalid={!!errors.tipoContrib}
                     // onChange={(e) => setField("tipoContrib", e.target.value)}
                   >
-                    {tipoDocumento.map(({ C004Tip_Cont, C004Nombre }, i) => (
+                    {tipoDocumento.map(({ C003Cod_Doc, C003Nombre }, i) => (
                       <React.Fragment key={i}>
-                        {(valores.tipoContrib !== "01" &&
-                          C004Tip_Cont !== "01") ||
-                        (valores.tipoContrib === "01" &&
-                          C004Tip_Cont === "01") ? (
-                          <option key={C004Tip_Cont} value={C004Tip_Cont}>
-                            {C004Nombre.trim()}
+                        {valores.tipoContrib === "01" ||
+                        (valores.tipoContrib !== "01" &&
+                          ["05", "98", "00", "99"].includes(C003Cod_Doc)) ? (
+                          <option key={C003Cod_Doc} value={C003Cod_Doc}>
+                            {C003Nombre.trim()}
                           </option>
                         ) : null}
                       </React.Fragment>
@@ -167,7 +183,7 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
                       autoFocus
                       aria-describedby="basic-addon2"
                       required
-                      //   ref={inputFiltro}
+                      ref={inputNroDoc}
                       //   onKeyUp={inputKeyUp}
                       //   isInvalid={validated}
                     />
@@ -187,10 +203,7 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
               <i className="far fa-times-circle me-1"></i>
               Cerrar
             </Button>
-            <Button
-              variant="primary"
-              // onClick={grabarEvaluacion}
-            >
+            <Button variant="primary" onClick={agregarDocumento}>
               <i className="far fa-save me-2"></i>Grabar
             </Button>
           </Modal.Footer>
