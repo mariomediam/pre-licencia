@@ -7,15 +7,25 @@ import {
   Modal,
   InputGroup,
   FormControl,
+  Container,
+  Col,
 } from "react-bootstrap";
 import Swal from "sweetalert2";
-import { obtenerTipoDocumento } from "../../services/contribuyenteService";
+import {
+  obtenerTipoDocumento,
+  obtenerDocumentoTipoNro,
+} from "../../services/contribuyenteService";
 
 export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
   const [show, setShow] = useState(false);
   const [tipoDocumento, setTipoDocumento] = useState([]);
+  const [errorDocumento, setErrorDocumento] = useState("");
+  const [lengthCampo, setLengthCampo] = useState(0);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setErrorDocumento("");
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
 
   const inputNroDoc = useRef();
@@ -55,22 +65,71 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
           .includes(tipoDoc.C003Cod_Doc)
     );
     setTipoDocumento(tipoDocumentoFilter);
+    onSelectTipoDocChange();
   };
 
-  const agregarDocumento = (e) => {
+  const agregarDocumento = async (e) => {
+    const documentosTipoNro = await obtenerDocumentoTipoNro(
+      selectTipoDoc.current.value,
+      inputNroDoc.current.value.trim()
+    );
+
+    if (documentosTipoNro.length > 0) {
+      setErrorDocumento(
+        `El documento ya se encuentra registrado en el contribuyente ${documentosTipoNro[0].C002Cod_Cont.trim()} - ${documentosTipoNro[0].C001Nombre.trim()}`
+      );
+    } else {
+      const objDocSelect = tipoDocumento
+        .filter(
+          (tipoDoc) => tipoDoc.C003Cod_Doc === selectTipoDoc.current.value
+        )
+        .shift();
+
+      if (
+        objDocSelect.I003Longitud !== 0 &&
+        objDocSelect.I003Longitud !== inputNroDoc.current.value.trim().length
+      ) {
+        setErrorDocumento(
+          `El documento debe tener una longitud de ${objDocSelect.I003Longitud} caracteres.`
+        );
+      } else {
+        let documentosNew = [...valores.documentos];
+        documentosNew.push({
+          CodDoc: selectTipoDoc.current.value,
+          Descripción: objDocSelect.C003Nombre,
+          Número: inputNroDoc.current.value.trim(),
+          "": "MM",
+        });
+        setField("documentos", documentosNew);
+        handleClose();
+      }
+    }
+  };
+
+  const inputKeyUp = (event) => {
+    setErrorDocumento("");
+
+    if (event.keyCode === 13) {
+      agregarDocumento();
+    }
+  };
+
+  const onSelectTipoDocChange = () => {
     const objDocSelect = tipoDocumento
       .filter((tipoDoc) => tipoDoc.C003Cod_Doc === selectTipoDoc.current.value)
       .shift();
 
-    let documentosNew = [...valores.documentos];
-    documentosNew.push({
-      CodDoc: selectTipoDoc.current.value,
-      Descripción: objDocSelect.C003Nombre,
-      Número: inputNroDoc.current.value.trim(),
-      "": "MM",
-    });
-    setField("documentos", documentosNew);
-    handleClose();
+    if (
+      objDocSelect !== undefined &&
+      selectTipoDoc.current.value !== undefined &&
+      inputNroDoc.current.value !== undefined
+    ) {
+      inputNroDoc.current.value = inputNroDoc.current.value.substring(
+        0,
+        objDocSelect.I003Longitud
+      );
+      setLengthCampo(objDocSelect.I003Longitud);
+    }
   };
 
   return (
@@ -105,7 +164,6 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
                   <td>{documento.Número}</td>
                   <td className="d-flex justify-content-end">
                     <Button
-                      //   href={`/pre_licencia_ver/${soliciPrecalif.precalId}`}
                       id={`btdod_${documento.CodDoc}`}
                       onClick={eliminarDocumento}
                       variant="outline-danger"
@@ -140,63 +198,65 @@ export const ContribEditOtrosDocComponent = ({ valores, setField, errors }) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="d-flex justify-content-center col-sm-12">
-              <div
-                className="align-items-center"
-                style={{ border: "0px solid black" }}
-              >
-                {/* ------------------ TIPO DE DOCUMENTO -------------------*/}
-                <Form.Group md="6" controlId="id_tipoContrib" className="mt-2">
-                  <Form.Label className="text-muted mb-0">
-                    <small className="mb-0">Tipo de documento</small>
-                  </Form.Label>
-                  <Form.Select
-                    aria-label="Tipo de documento"
-                    value={tipoDocumento.C003Cod_Doc}
-                    ref={selectTipoDoc}
-                    // isInvalid={!!errors.tipoContrib}
-                    // onChange={(e) => setField("tipoContrib", e.target.value)}
+            <Container>
+              <Col md={{ span: 6, offset: 3 }}>
+                <div style={{ border: "0px solid black" }}>
+                  {/* ------------------ TIPO DE DOCUMENTO -------------------*/}
+                  <Form.Group
+                    md="6"
+                    controlId="id_tipoContrib"
+                    className="align-middle mt-2"
                   >
-                    {tipoDocumento.map(({ C003Cod_Doc, C003Nombre }, i) => (
-                      <React.Fragment key={i}>
-                        {valores.tipoContrib === "01" ||
-                        (valores.tipoContrib !== "01" &&
-                          ["05", "98", "00", "99"].includes(C003Cod_Doc)) ? (
-                          <option key={C003Cod_Doc} value={C003Cod_Doc}>
-                            {C003Nombre.trim()}
-                          </option>
-                        ) : null}
-                      </React.Fragment>
-                    ))}
-                  </Form.Select>
+                    <Form.Label className="text-muted mb-0">
+                      <small className="mb-0">Tipo de documento</small>
+                    </Form.Label>
+                    <Form.Select
+                      aria-label="Tipo de documento"
+                      value={tipoDocumento.C003Cod_Doc}
+                      ref={selectTipoDoc}
+                      onChange={onSelectTipoDocChange}
+                    >
+                      {tipoDocumento.map(({ C003Cod_Doc, C003Nombre }, i) => (
+                        <React.Fragment key={i}>
+                          {valores.tipoContrib === "01" ||
+                          (valores.tipoContrib !== "01" &&
+                            ["05", "98", "00", "99"].includes(C003Cod_Doc)) ? (
+                            <option key={C003Cod_Doc} value={C003Cod_Doc}>
+                              {C003Nombre.trim()}
+                            </option>
+                          ) : null}
+                        </React.Fragment>
+                      ))}
+                    </Form.Select>
 
-                  <Form.Control.Feedback type="invalid">
-                    {errors.tipoContrib}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
-                  <Form.Label className="text-muted mb-0 mt-0">
-                    <small className="mb-0">Número de documento</small>
-                  </Form.Label>
-                  <InputGroup className="mb-3" hasValidation>
-                    <FormControl
-                      autoFocus
-                      aria-describedby="basic-addon2"
-                      required
-                      ref={inputNroDoc}
-                      //   onKeyUp={inputKeyUp}
-                      //   isInvalid={validated}
-                    />
-                    <Form.Control.Feedback type="invalid" className="mt-0">
-                      Ingresar valor buscado
+                    <Form.Control.Feedback type="invalid">
+                      {errors.tipoContrib}
                     </Form.Control.Feedback>
-                    {/* {!validated && ( */}
+                  </Form.Group>
 
-                    {/* )} */}
-                  </InputGroup>
-                </Form.Group>
-              </div>
-            </div>
+                  {/* ------------------ NUMERO DE DOCUMENTO -------------------*/}
+                  <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
+                    <Form.Label className="text-muted mb-0 mt-0">
+                      <small className="mb-0">Número de documento</small>
+                    </Form.Label>
+                    <InputGroup className="mb-3" hasValidation>
+                      <FormControl
+                        autoFocus
+                        aria-describedby="basic-addon2"
+                        required
+                        ref={inputNroDoc}
+                        onKeyUp={inputKeyUp}
+                        isInvalid={errorDocumento}
+                        maxLength={lengthCampo === 0 ? 11 : lengthCampo}
+                      />
+                      <Form.Control.Feedback type="invalid" className="mt-0">
+                        <p align="justify">{errorDocumento} </p>
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
+                </div>
+              </Col>
+            </Container>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

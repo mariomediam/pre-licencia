@@ -39,8 +39,8 @@ const obtenerContribuyenteTelefono = async (codigoContrib) => {
     let {
       data: { content },
     } = await api.get(`${URLContribTelefono}`);
-
-    return content;
+    
+    return content.map(obj => ({ ...obj, telefId: obj.TipTel.trim() +  obj.Número.trim() }));
   } catch (error) {
     throw error;
   }
@@ -154,7 +154,7 @@ const obtenerLugarGeneral = async (
       urlFiltro += `&dist=${dist}`;
     }
 
-    if (urlFiltro.trim().length > 0) {
+    if (urlFiltro.trim().length === 0) {
       throw new Error("Debe ingresar filtros");
     }
     
@@ -201,7 +201,7 @@ const obtenerCalleGeneral = async (
     }
     
 
-    if (urlFiltro.trim().length > 0) {
+    if (urlFiltro.trim().length === 0) {
       throw new Error("Debe ingresar filtros");
     }
     
@@ -247,6 +247,72 @@ const obtenerTipoDocumento = async () => {
   }
 };
 
+const obtenerDocumentoTipoNro = async (
+  tipo,
+  numero
+) => {
+  try {
+    let api = UseAxios();
+
+    let urlFiltro = "";
+
+    if (tipo && tipo.trim().length > 0) {
+      urlFiltro += `&tipo=${tipo}`;
+    }
+    if (numero && numero.trim().length > 0) {
+      urlFiltro += `&numero=${numero}`;
+    }    
+
+    if (urlFiltro.trim().length === 0) {
+      throw new Error("Debe ingresar filtros");
+    }
+    
+    let URLLugar = encodeURI(
+      `${URL}/consultar-documento-tiponro?${urlFiltro}`
+    );
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLLugar}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerTipoTelefono = async () => {
+  try {
+    let api = UseAxios();
+
+    let URLTipoTelefono = `${URL}/tipo-telefono`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLTipoTelefono}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerTipoNacion = async () => {
+  try {
+    let api = UseAxios();
+
+    let URLNacion= `${URL}/tipo-nacion`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLNacion}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -260,4 +326,7 @@ export {
   obtenerCalleGeneral,
   obtenerCallePagination,
   obtenerTipoDocumento,
+  obtenerDocumentoTipoNro,
+  obtenerTipoTelefono,
+  obtenerTipoNacion
 };

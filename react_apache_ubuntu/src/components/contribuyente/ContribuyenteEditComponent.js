@@ -7,7 +7,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { obtenerTipoContribuyente, obtenerContribuyenteCodigo, obtenerContribuyenteDocumento } from "../../services/contribuyenteService";
+import { obtenerTipoContribuyente, obtenerContribuyenteCodigo, obtenerContribuyenteDocumento, obtenerContribuyenteTelefono, obtenerContribuyenteDirElect, obtenerContribuyenteNacion } from "../../services/contribuyenteService";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
 import { ContribEditOtrosComponent } from "./ContribEditOtrosComponent";
@@ -41,6 +41,9 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
     direccAdicio: "",
     observ: "",
     documentos: [],
+    telefonos: [],
+    emails: [],
+    naciones: []
   });
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
@@ -105,6 +108,9 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
     if (contribEdit && contribEdit.length > 0) {
       const contribuyenteTmp = await obtenerContribuyenteCodigo(contribEdit);
       const documentosTmp = await obtenerContribuyenteDocumento(contribEdit);
+      const telefonosTmp = await obtenerContribuyenteTelefono(contribEdit);
+      const emailTmp = await obtenerContribuyenteDirElect(contribEdit);
+      const nacionesTmp = await obtenerContribuyenteNacion(contribEdit)
       setValores({
         ...valores,
         tipoContrib: contribuyenteTmp.C001Tip_Cont,
@@ -135,18 +141,16 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
           ? contribuyenteTmp.C005Distrito.trim()
           : "",
         documentos: documentosTmp,
+        telefonos: telefonosTmp,
+        emails: emailTmp,
+        naciones: nacionesTmp,
       });
-      // setDocumentos(documentosTmp);
-      console.log("documentosTmp");
-      console.log(documentosTmp);
     }
   };
 
-  const verTipoContribuyente = async () => {
-    console.log("Listar tipo de contribuyente");
+  const verTipoContribuyente = async () => {    
     const tipoContribTmp = await obtenerTipoContribuyente();
-    setTipoContribuyente(tipoContribTmp);
-    console.log(tipoContribTmp);
+    setTipoContribuyente(tipoContribTmp);    
   };
 
   // useEffect(() => {
@@ -172,6 +176,8 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
           ...errors,
           [field]: null,
         });
+        console.log("valores.telefonos")
+        console.log(valores.telefonos)
     } else {
       setValores({ ...valores, ...field });
 
