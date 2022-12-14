@@ -8,7 +8,7 @@ import PreLicenciaCompatibComponent from "../../components/licenciaFuncionamient
 import PreLicenciaRequisitosComponent from "../../components/licenciaFuncionamiento/PreLicenciaRequisitosComponent";
 import { PreLicenciaReqArchivoComponent } from "../../components/licenciaFuncionamiento/PreLicenciaReqArchivoComponent";
 import { obtenerPrecalificacionPorId } from "../../services/licFuncService";
-import { useAccordionButton } from "react-bootstrap/AccordionButton";
+// import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import {
   Accordion,
   Card,
@@ -48,16 +48,15 @@ export default function PreLicenciaEditView() {
   }, [precalId]);
 
   function CustomToggle({ children, eventKey }) {
-    const decoratedOnClick = useAccordionButton(eventKey, () =>
-      console.log("")
-    );
+    // const decoratedOnClick = useAccordionButton(eventKey, () =>      
+    // );
 
     return (
       <Navbar
         expand="lg"
         className="color-header1"
         variant="dark"
-        onClick={decoratedOnClick}
+        // onClick={decoratedOnClick}
       >
         <Container fluid>
           <Navbar.Brand>

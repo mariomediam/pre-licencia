@@ -124,6 +124,7 @@ class BuscarContribuyenteScrollComponent extends React.Component {
     codigoContribSelecc: "",
     setShowForm: this.props.setShowForm,
     setContribEdit: this.props.setContribEdit,
+    setCodContribIni: this.props.setCodContribIni,
   };
 
   fetchMoreData = async () => {
@@ -184,17 +185,11 @@ class BuscarContribuyenteScrollComponent extends React.Component {
       await this.setState({
         ...this.state,
         codigoContribSelecc: e.substr(3).trim(),
-      });
-
-      console.log(e.substr(3));
+      });      
     }
   };
 
   mostrarFormEditar = (e) => {
-    console.log("mostrar boton");
-    console.log("e.target.id");
-    console.log(e.target.id);
-    console.log(e.target.id.substr(3));
     this.state.setShowForm(3);
     this.state.setContribEdit(e.target.id.substr(3));
   };

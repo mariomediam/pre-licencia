@@ -30,6 +30,7 @@ export const ContribEditDomiciComponent = ({ valores, setField, errors }) => {
               value={valores.codigoLugar}
               onChange={(e) => setField("codigoLugar", e.target.value)}
               isInvalid={!!errors.codigoLugar}
+              readOnly
             />
             <Form.Control.Feedback type="invalid">
               {errors.codigoLugar}
@@ -73,6 +74,7 @@ export const ContribEditDomiciComponent = ({ valores, setField, errors }) => {
               name="name_codigoCalle"
               value={valores.codigoCalle}
               onChange={(e) => setField("codigoCalle", e.target.value)}
+              readOnly
               isInvalid={!!errors.codigoCalle}
             />
             <Form.Control.Feedback type="invalid">
@@ -191,7 +193,7 @@ export const ContribEditDomiciComponent = ({ valores, setField, errors }) => {
           </Form.Label>
           <Form.Control
             type="text"
-            maxLength="6"
+            maxLength="4"
             name="direccLote"
             value={valores.direccLote}
             onChange={(e) => setField("direccLote", e.target.value)}

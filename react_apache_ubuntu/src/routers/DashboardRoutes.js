@@ -18,6 +18,7 @@ export const DashboardRoutes = () => {
             element={<PreLicenciaEditView />}
           />
           <Route path="/contribuyente/ver_contribuyente" element={<ContribuyentesView />} />
+          {/* <Route path="/contribuyente/ver_contribuyente/:codContribIni" element={<ContribuyentesView />} /> */}
         </Routes>
       </div>
     </>

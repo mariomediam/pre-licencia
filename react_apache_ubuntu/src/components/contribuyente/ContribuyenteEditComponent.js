@@ -7,6 +7,8 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Swal from "sweetalert2";
+import AuthContext from "../../context/AuthContext";
 import {
   obtenerTipoContribuyente,
   obtenerContribuyenteCodigo,
@@ -19,11 +21,13 @@ import {
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
 import { ContribEditOtrosComponent } from "./ContribEditOtrosComponent";
-import AuthContext from "../../context/AuthContext";
+import { Toast } from "../tools/PopMessage";
 
 const steps = ["Datos principales", "Domicilio", "Otros"];
 
-export const ContribuyenteEditComponent = ({ contribEdit }) => {
+export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setShowForm }) => {
+
+  
   const { userName } = useContext(AuthContext);
   const [activeStep, setActiveStep] = useState(0);
   const [valores, setValores] = useState({
@@ -70,7 +74,7 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
     return skipped.has(step);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     let newSkipped = skipped;
 
     const newErrors = findFormErrors();
@@ -80,20 +84,37 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
       setErrors(newErrors);
     } else {
       // No errors! Put any logic here for the form submission!
-      if (isStepSkipped(activeStep)) {
-        newSkipped = new Set(newSkipped.values());
-        newSkipped.delete(activeStep);
-      }
+      try {
+        if (activeStep === steps.length - 1) {          
+          await actualizarContribuyente();
+          Toast.fire({
+            icon: "success",
+            title: "El contribuyente se actualizo con éxito",
+            background: "#F4F6F6",
+            timer: 1500,
+          });
+          setTimeout(() => {
+            setCodContribIni(contribEdit);
+            setShowForm(1);
+          }, 1500)
+          
+        }        
 
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped(newSkipped);
-      console.log("activeStep");
-      console.log(activeStep);
-      console.log("steps.length");
-      console.log(steps.length);
-      if (activeStep === steps.length - 1) {
-        alert("se ejecuta");
-        actualizarContribuyente();
+        if (isStepSkipped(activeStep)) {
+          newSkipped = new Set(newSkipped.values());
+          newSkipped.delete(activeStep);
+        }
+
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+        
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error grabando contribuyente',
+          text: error.response.data.message
+        })
+        
       }
     }
   };
@@ -121,8 +142,7 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
   //   setActiveStep(0);
   // };
 
-  const verContribuyente = async () => {
-    console.log("Ver contribuyente " + contribEdit);
+  const verContribuyente = async () => {    
     if (contribEdit && contribEdit.length > 0) {
       const contribuyenteTmp = await obtenerContribuyenteCodigo(contribEdit);
       const documentosTmp = await obtenerContribuyenteDocumento(contribEdit);
@@ -178,7 +198,11 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
         ? `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
         : objContribuyente.nombre.trim();
     objContribuyente.responsable = userName;
-    await updateContribuyenteAll(objContribuyente.codigoContrib, objContribuyente);
+    await updateContribuyenteAll(
+      objContribuyente.codigoContrib,
+      objContribuyente
+    );
+   
   };
 
   // useEffect(() => {
@@ -204,8 +228,6 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
           ...errors,
           [field]: null,
         });
-      console.log("valores.telefonos");
-      console.log(valores.telefonos);
     } else {
       setValores({ ...valores, ...field });
 

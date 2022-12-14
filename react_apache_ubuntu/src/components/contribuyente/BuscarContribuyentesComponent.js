@@ -1,4 +1,4 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import {
   Button,
   Form,
@@ -13,6 +13,7 @@ export default function BuscarContribuyentesComponent({
   showForm,
   setShowForm,
   setContribEdit,
+  codContribIni,  
 }) {
   const { userName } = useContext(AuthContext);
   const [filtro, setFiltro] = useState({
@@ -24,18 +25,14 @@ export default function BuscarContribuyentesComponent({
   const [validated, setValidated] = useState(false);
 
   const checkNombre = useRef();
+  const checkCodigo = useRef();
   const inputFiltro = useRef();
 
   const listarBuscarContribuyente = async (event) => {
     let valor = "";
-    console.log(inputFiltro.current.checkValidity());
+    
 
-    setValidated(!inputFiltro.current.checkValidity());
-
-    if (!inputFiltro.current.checkValidity()) {
-      console.log("entrooo");
-      console.log((inputFiltro.current.isInvalid = true));
-    }
+    setValidated(!inputFiltro.current.checkValidity());    
     if (inputFiltro.current) {
       valor = inputFiltro.current.value;
     }
@@ -49,7 +46,7 @@ export default function BuscarContribuyentesComponent({
   };
 
   const inputKeyUp = (event) => {
-    console.log(inputFiltro.current.value.length);
+    
     if (inputFiltro.current.value.length > 0) {
       setValidated(false);
     }
@@ -58,10 +55,14 @@ export default function BuscarContribuyentesComponent({
     }
   };
 
-  // useEffect(() => {
-  //   listarBuscarContribuyente();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    if (codContribIni) {      
+      inputFiltro.current.value = codContribIni;
+      checkCodigo.current.checked = true;
+      listarBuscarContribuyente();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -104,6 +105,7 @@ export default function BuscarContribuyentesComponent({
                         label="Código de contribuyente"
                         id="chkCodigo"
                         value="codigo"
+                        ref={checkCodigo}
                         onChange={() => inputFiltro.current.select()}
                       />
                     </Form.Group>
@@ -136,13 +138,13 @@ export default function BuscarContribuyentesComponent({
                   </div>
                 </div>
                 {/* <div className="table-responsive"> */}
-                  <div>
-                    <BuscarContribuyenteScrollComponent
-                      filtro={filtro}
-                      setShowForm={setShowForm}
-                      setContribEdit={setContribEdit}
-                    />
-                  </div>
+                <div>
+                  <BuscarContribuyenteScrollComponent
+                    filtro={filtro}
+                    setShowForm={setShowForm}
+                    setContribEdit={setContribEdit}                    
+                  />
+                </div>
                 {/* </div> */}
               </div>
             </div>

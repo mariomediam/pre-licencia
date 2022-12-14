@@ -4,8 +4,10 @@ import BuscarContribuyentesComponent from "../../components/contribuyente/Buscar
 import { ContribuyenteEditComponent } from "../../components/contribuyente/ContribuyenteEditComponent";
 
 export const ContribuyentesView = () => {
+
   const [showForm, setShowForm] = useState(1); // showForm 1 = buscar contribuyente, 2 = agregar contribuyente, 3 editar contribuyente
   const [contribEdit, setContribEdit] = useState("")
+  const [codContribIni, setCodContribIni] = useState(undefined)
 
   return (
     <div>
@@ -15,9 +17,11 @@ export const ContribuyentesView = () => {
           showForm={showForm}
           setShowForm={setShowForm}
           setContribEdit = {setContribEdit}
+          codContribIni = {codContribIni}
+          
         />
       ) : (
-        <div>{showForm === 3 ? <ContribuyenteEditComponent contribEdit = {contribEdit} /> : <div></div>}</div>
+        <div>{showForm === 3 ? <ContribuyenteEditComponent contribEdit = {contribEdit} setCodContribIni = {setCodContribIni} setShowForm = {setShowForm}/> : <div></div>}</div>
       )}
     </div>
   );

@@ -39,8 +39,11 @@ const obtenerContribuyenteTelefono = async (codigoContrib) => {
     let {
       data: { content },
     } = await api.get(`${URLContribTelefono}`);
-    
-    return content.map(obj => ({ ...obj, telefId: obj.TipTel.trim() +  obj.Número.trim() }));
+
+    return content.map((obj) => ({
+      ...obj,
+      telefId: obj.TipTel.trim() + obj.Número.trim(),
+    }));
   } catch (error) {
     throw error;
   }
@@ -157,11 +160,9 @@ const obtenerLugarGeneral = async (
     if (urlFiltro.trim().length === 0) {
       throw new Error("Debe ingresar filtros");
     }
-    
-    let URLLugar = encodeURI(
-      `${URL}/consultar-lugar-general?${urlFiltro}`
-    );
-    
+
+    let URLLugar = encodeURI(`${URL}/consultar-lugar-general?${urlFiltro}`);
+
     let {
       data: { content },
     } = await api.get(`${URLLugar}`);
@@ -184,10 +185,7 @@ const obtenerLugarPagination = async (URLLugar) => {
   }
 };
 
-const obtenerCalleGeneral = async (
-  codigo,
-  nombre
-) => {
+const obtenerCalleGeneral = async (codigo, nombre) => {
   try {
     let api = UseAxios();
 
@@ -199,16 +197,13 @@ const obtenerCalleGeneral = async (
     if (nombre && nombre.trim().length > 0) {
       urlFiltro += `&nombre=${nombre}`;
     }
-    
 
     if (urlFiltro.trim().length === 0) {
       throw new Error("Debe ingresar filtros");
     }
-    
-    let URLLugar = encodeURI(
-      `${URL}/consultar-lugar-general?${urlFiltro}`
-    );
-    
+
+    let URLLugar = encodeURI(`${URL}/consultar-lugar-general?${urlFiltro}`);
+
     let {
       data: { content },
     } = await api.get(`${URLLugar}`);
@@ -247,10 +242,7 @@ const obtenerTipoDocumento = async () => {
   }
 };
 
-const obtenerDocumentoTipoNro = async (
-  tipo,
-  numero
-) => {
+const obtenerDocumentoTipoNro = async (tipo, numero) => {
   try {
     let api = UseAxios();
 
@@ -261,16 +253,14 @@ const obtenerDocumentoTipoNro = async (
     }
     if (numero && numero.trim().length > 0) {
       urlFiltro += `&numero=${numero}`;
-    }    
+    }
 
     if (urlFiltro.trim().length === 0) {
       throw new Error("Debe ingresar filtros");
     }
-    
-    let URLLugar = encodeURI(
-      `${URL}/consultar-documento-tiponro?${urlFiltro}`
-    );
-    
+
+    let URLLugar = encodeURI(`${URL}/consultar-documento-tiponro?${urlFiltro}`);
+
     let {
       data: { content },
     } = await api.get(`${URLLugar}`);
@@ -301,7 +291,7 @@ const obtenerTipoNacion = async () => {
   try {
     let api = UseAxios();
 
-    let URLNacion= `${URL}/tipo-nacion`;
+    let URLNacion = `${URL}/tipo-nacion`;
 
     let {
       data: { content },
@@ -313,26 +303,27 @@ const obtenerTipoNacion = async () => {
   }
 };
 
-const updateContribuyenteAll = async (
-  codigoContrib,
-  contribuyenteAll
-) => {
-  
-
+const updateContribuyenteAll = async (codigoContrib, contribuyenteAll) => {
   let api = UseAxios();
 
   try {
+
+    
     const headers = {
       "Content-Type": "application/json",
     };
-    
+
     let {
-      data: { content },
-    } = await api.post(`${URL}/actualizar-all/${codigoContrib}`, contribuyenteAll, {
-      headers,
-    });
+      data: { content }
+    } = await api.post(
+      `${URL}/actualizar-all/${codigoContrib}`,
+      contribuyenteAll,
+      {
+        headers,
+      }
+    );
     return content;
-  } catch (error) {    
+  } catch (error) {
     throw error;
   }
 };
@@ -353,5 +344,5 @@ export {
   obtenerDocumentoTipoNro,
   obtenerTipoTelefono,
   obtenerTipoNacion,
-  updateContribuyenteAll
+  updateContribuyenteAll,
 };

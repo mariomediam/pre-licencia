@@ -30,8 +30,7 @@ export const BuscarLugarComponent = ({ setField, show, handleClose }) => {
     });
   };
 
-  const inputKeyUp = (event) => {
-    console.log(inputFiltro.current.value.length);
+  const inputKeyUp = (event) => {    
     if (inputFiltro.current.value.length > 0) {
       setValidated(false);
     }

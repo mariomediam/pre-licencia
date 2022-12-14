@@ -29,11 +29,6 @@ export const ContribEditOtrosTelComponent = ({ valores, setField, errors }) => {
 
   const eliminarTelefono = (e) => {
     const telefId = e.target.id.substring(6);
-    console.log("eliminando")
-    console.log("valores.telefonos")
-    console.log(valores.telefonos)
-    console.log("telefId")
-    console.log(telefId)
     const { TipTel, Número } = valores.telefonos
       .filter((telContrib) => telContrib.telefId === telefId)
       .shift();
