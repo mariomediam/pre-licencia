@@ -313,6 +313,30 @@ const obtenerTipoNacion = async () => {
   }
 };
 
+const updateContribuyenteAll = async (
+  codigoContrib,
+  contribuyenteAll
+) => {
+  
+
+  let api = UseAxios();
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    
+    let {
+      data: { content },
+    } = await api.post(`${URL}/actualizar-all/${codigoContrib}`, contribuyenteAll, {
+      headers,
+    });
+    return content;
+  } catch (error) {    
+    throw error;
+  }
+};
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -328,5 +352,6 @@ export {
   obtenerTipoDocumento,
   obtenerDocumentoTipoNro,
   obtenerTipoTelefono,
-  obtenerTipoNacion
+  obtenerTipoNacion,
+  updateContribuyenteAll
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Breadcrumb } from "react-bootstrap";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -7,14 +7,24 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { obtenerTipoContribuyente, obtenerContribuyenteCodigo, obtenerContribuyenteDocumento, obtenerContribuyenteTelefono, obtenerContribuyenteDirElect, obtenerContribuyenteNacion } from "../../services/contribuyenteService";
+import {
+  obtenerTipoContribuyente,
+  obtenerContribuyenteCodigo,
+  obtenerContribuyenteDocumento,
+  obtenerContribuyenteTelefono,
+  obtenerContribuyenteDirElect,
+  obtenerContribuyenteNacion,
+  updateContribuyenteAll,
+} from "../../services/contribuyenteService";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
 import { ContribEditOtrosComponent } from "./ContribEditOtrosComponent";
+import AuthContext from "../../context/AuthContext";
 
 const steps = ["Datos principales", "Domicilio", "Otros"];
 
 export const ContribuyenteEditComponent = ({ contribEdit }) => {
+  const { userName } = useContext(AuthContext);
   const [activeStep, setActiveStep] = useState(0);
   const [valores, setValores] = useState({
     codigoContrib: contribEdit,
@@ -43,7 +53,7 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
     documentos: [],
     telefonos: [],
     emails: [],
-    naciones: []
+    naciones: [],
   });
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
@@ -77,6 +87,14 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
 
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
+      console.log("activeStep");
+      console.log(activeStep);
+      console.log("steps.length");
+      console.log(steps.length);
+      if (activeStep === steps.length - 1) {
+        alert("se ejecuta");
+        actualizarContribuyente();
+      }
     }
   };
 
@@ -110,7 +128,7 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
       const documentosTmp = await obtenerContribuyenteDocumento(contribEdit);
       const telefonosTmp = await obtenerContribuyenteTelefono(contribEdit);
       const emailTmp = await obtenerContribuyenteDirElect(contribEdit);
-      const nacionesTmp = await obtenerContribuyenteNacion(contribEdit)
+      const nacionesTmp = await obtenerContribuyenteNacion(contribEdit);
       setValores({
         ...valores,
         tipoContrib: contribuyenteTmp.C001Tip_Cont,
@@ -148,9 +166,19 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
     }
   };
 
-  const verTipoContribuyente = async () => {    
+  const verTipoContribuyente = async () => {
     const tipoContribTmp = await obtenerTipoContribuyente();
-    setTipoContribuyente(tipoContribTmp);    
+    setTipoContribuyente(tipoContribTmp);
+  };
+
+  const actualizarContribuyente = async () => {
+    let objContribuyente = { ...valores };
+    objContribuyente.nombreCompleto =
+      objContribuyente.tipoContrib === "01"
+        ? `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
+        : objContribuyente.nombre.trim();
+    objContribuyente.responsable = userName;
+    await updateContribuyenteAll(objContribuyente.codigoContrib, objContribuyente);
   };
 
   // useEffect(() => {
@@ -176,8 +204,8 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
           ...errors,
           [field]: null,
         });
-        console.log("valores.telefonos")
-        console.log(valores.telefonos)
+      console.log("valores.telefonos");
+      console.log(valores.telefonos);
     } else {
       setValores({ ...valores, ...field });
 
@@ -185,11 +213,11 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
 
       // Object.keys(field).forEach((key) => (field[key] = null));
 
-      Object.keys(field).forEach((key) =>
-        !!errors[key] && (errorsTpm[key] = null)
+      Object.keys(field).forEach(
+        (key) => !!errors[key] && (errorsTpm[key] = null)
       );
 
-      setErrors({...errors, ...errorsTpm})
+      setErrors({ ...errors, ...errorsTpm });
     }
   };
 
@@ -419,12 +447,14 @@ export const ContribuyenteEditComponent = ({ contribEdit }) => {
                   />
                 </div>
               ) : (
-                <div><ContribEditOtrosComponent
-                valores={valores}
-                setField={setField}                
-                key={valores.codigoContrib}
-                errors={errors}
-              /></div>
+                <div>
+                  <ContribEditOtrosComponent
+                    valores={valores}
+                    setField={setField}
+                    key={valores.codigoContrib}
+                    errors={errors}
+                  />
+                </div>
               )}
             </div>
           )}
