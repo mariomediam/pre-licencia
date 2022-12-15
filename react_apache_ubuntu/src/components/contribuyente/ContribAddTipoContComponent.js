@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Form } from "react-bootstrap";
 
 export const ContribAddTipoContComponent = ({
@@ -7,28 +7,51 @@ export const ContribAddTipoContComponent = ({
   tipoContribuyente,
   errors,
 }) => {
-  const [tipoContribyenteSelect, setTipoContribyenteSelect] = useState("PN");
-  const [tipoDocumento, setTipoDocumento] = useState("01");
-
   const inputNroDoc = useRef();
 
   const MostrarTipoDocumento = (e) => {
-    setTipoContribyenteSelect(e.target.value);
+    let tipoContribDocum = { "tipoAddContrib": e.target.value };
     if (e.target.value === "PN") {
-      setTipoDocumento("01");
+      tipoContribDocum = {
+        ...tipoContribDocum,
+        "tipoDocum": "01",
+        "tipoContrib": "01",
+        "codigoContrib" : "",
+      };
     } else if (e.target.value === "PJ") {
-      setTipoDocumento("05");
+      tipoContribDocum = {
+        ...tipoContribDocum,
+        "tipoDocum": "05",
+        "tipoContrib": "11",
+        "codigoContrib" : ""
+      };
     }
+    setField(tipoContribDocum, "");
     inputNroDoc.current.select();
   };
 
   const TipoDocumentoChange = (e) => {
-    setTipoDocumento(e.target.value);
+
+    let tipoContribDocum = { "tipoDocum": e.target.value }; 
+
     if (e.target.value === "06") {
-      inputNroDoc.current.value = "";
-    }
+      tipoContribDocum = {...tipoContribDocum, "codigoContrib" : ""}      
+    } 
+    setField(tipoContribDocum, "");
     inputNroDoc.current.select();
   };
+
+  const inputChangeNroDoc = (e) => {
+    setField("codigoContrib", e.target.value)
+  }
+
+  useEffect(() => {
+    inputNroDoc.current.select()
+    inputNroDoc.current.selectionStart = inputNroDoc.current.value.length;
+    inputNroDoc.current.selectionEnd = inputNroDoc.current.value.length;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <div className="row justify-content-center">
@@ -39,7 +62,6 @@ export const ContribAddTipoContComponent = ({
             <small className="mb-0">Tipo de contribuyente</small>
           </Form.Label>
           <Form.Check
-            defaultChecked
             name="groupTipoContribuyente"
             type="radio"
             id="chkPN"
@@ -47,6 +69,7 @@ export const ContribAddTipoContComponent = ({
             value="PN"
             // ref={checkNombre}
             // onChange={MostrarTipoDocumento("PN")}
+            checked={valores.tipoAddContrib === "PN"}
             onChange={MostrarTipoDocumento}
           />
           <Form.Check
@@ -55,6 +78,7 @@ export const ContribAddTipoContComponent = ({
             label="Persona jurídica"
             id="chkPJ"
             value="PJ"
+            checked={valores.tipoAddContrib === "PJ"}
             // ref={checkCodigo}
             onChange={MostrarTipoDocumento}
           />
@@ -64,22 +88,22 @@ export const ContribAddTipoContComponent = ({
         <Form.Group className="mb-2" controlId="formTipoDocumento">
           <Form.Label className="text-muted mb-0 mt-0">
             <small className="mb-0">
-              Tipo de documento {tipoContribuyente}
+              Tipo de documento
             </small>
           </Form.Label>
-          {tipoContribyenteSelect === "PJ" && (
+          {valores.tipoAddContrib === "PJ" && (
             <Form.Check
               name="groupTipoDocumento"
               type="radio"
               id="chkRUC"
               label="RUC"
               value="05"
-              checked={tipoDocumento === "05"}
+              checked={valores.tipoDocum === "05"}
               onChange={TipoDocumentoChange}
             />
           )}
 
-          {tipoContribyenteSelect === "PN" && (
+          {valores.tipoAddContrib === "PN" && (
             <div>
               <Form.Check
                 defaultChecked
@@ -88,7 +112,7 @@ export const ContribAddTipoContComponent = ({
                 label="DNI"
                 id="chkDNI"
                 value="01"
-                checked={tipoDocumento === "01"}
+                checked={valores.tipoDocum === "01"}
                 onChange={TipoDocumentoChange}
               />
               <Form.Check
@@ -97,7 +121,7 @@ export const ContribAddTipoContComponent = ({
                 label="Cód Int."
                 id="chkCIN"
                 value="06"
-                checked={tipoDocumento === "06"}
+                checked={valores.tipoDocum === "06"}
                 onChange={TipoDocumentoChange}
               />
             </div>
@@ -109,7 +133,21 @@ export const ContribAddTipoContComponent = ({
           <Form.Label className="text-muted mb-0 mt-0">
             <small className="mb-0">Número de documento</small>
           </Form.Label>
-          <Form.Control type="text" ref={inputNroDoc} autocomplete="off" readOnly = {tipoDocumento === "06"}/>
+          <Form.Control
+            key="inpNro"
+            id="inpNro"
+            type="text"
+            ref={inputNroDoc}
+            autocomplete="off"
+            readOnly={valores.tipoDocum === "06"}
+            value={valores.codigoContrib}            
+            onChange={inputChangeNroDoc}
+            isInvalid={!!errors.codigoContrib}
+            maxLength={valores.tipoDocum === "01" ? 8 : valores.tipoDocum === "05" ? 11 : 0}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.codigoContrib}
+          </Form.Control.Feedback>
         </Form.Group>
       </div>
     </div>

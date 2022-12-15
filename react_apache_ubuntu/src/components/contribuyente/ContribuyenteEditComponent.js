@@ -267,7 +267,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
 
       // tipoContrib errors
       if (!tipoContrib || tipoContrib === "")
-        newErrors.codigoContrib = "Seleccione tipo de contribuyente";
+        newErrors.tipoContrib = "Seleccione tipo de contribuyente";
       else if (tipoContrib === "01" && (!apePat || apePat === ""))
         newErrors.apePat = "Ingrese apellido paterno";
 

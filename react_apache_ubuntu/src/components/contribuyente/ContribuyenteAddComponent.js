@@ -11,12 +11,13 @@ import Swal from "sweetalert2";
 import AuthContext from "../../context/AuthContext";
 import {
   obtenerTipoContribuyente,
-//   obtenerContribuyenteCodigo,
-//   obtenerContribuyenteDocumento,
-//   obtenerContribuyenteTelefono,
-//   obtenerContribuyenteDirElect,
-//   obtenerContribuyenteNacion,
-//   insertContribuyenteAll,
+  consultarContribuyenteCodigo,
+  //   obtenerContribuyenteCodigo,
+  //   obtenerContribuyenteDocumento,
+  //   obtenerContribuyenteTelefono,
+  //   obtenerContribuyenteDirElect,
+  //   obtenerContribuyenteNacion,
+  //   insertContribuyenteAll,
 } from "../../services/contribuyenteService";
 import { ContribAddTipoContComponent } from "./ContribAddTipoContComponent";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
@@ -32,7 +33,6 @@ const steps = [
 ];
 
 export const ContribuyenteAddComponent = ({
-  contribEdit,
   setCodContribIni,
   setShowForm,
 }) => {
@@ -40,9 +40,10 @@ export const ContribuyenteAddComponent = ({
   const [activeStep, setActiveStep] = useState(0);
   const [valores, setValores] = useState({
     showForm: 3,
-    codigoContrib: contribEdit,
+    codigoContrib: "",
     tipoContrib: "",
-    tipoDocum: "",
+    tipoAddContrib: "PN",
+    tipoDocum: "01",
     homonimo: "",
     codigoAnt: "",
     apePat: "",
@@ -84,7 +85,7 @@ export const ContribuyenteAddComponent = ({
   const handleNext = async () => {
     let newSkipped = skipped;
 
-    const newErrors = findFormErrors();
+    const newErrors = await findFormErrors();
     // Conditional logic:
     if (Object.keys(newErrors).length > 0) {
       // We got errors!
@@ -101,7 +102,7 @@ export const ContribuyenteAddComponent = ({
             timer: 1500,
           });
           setTimeout(() => {
-            setCodContribIni(contribEdit);
+            setCodContribIni(valores.codigoContrib);
             setShowForm(1);
           }, 1500);
         }
@@ -143,7 +144,7 @@ export const ContribuyenteAddComponent = ({
   };
 
   const verTipoContribuyente = async () => {
-    console.log("verTipoContribuyente")
+    console.log("verTipoContribuyente");
     // const tipoContribTmp = await obtenerTipoContribuyente();
     // setTipoContribuyente(tipoContribTmp);
   };
@@ -195,7 +196,7 @@ export const ContribuyenteAddComponent = ({
     }
   };
 
-  const findFormErrors = () => {
+  const findFormErrors = async () => {
     const {
       codigoContrib,
       tipoContrib,
@@ -211,18 +212,39 @@ export const ContribuyenteAddComponent = ({
       direccDpto,
       direccMzna,
       direccLote,
+      tipoDocum,
     } = valores;
     const newErrors = {};
 
-    if (activeStep === 1) {
+    if (activeStep === 0) {
+    //   tipoContrib errors
+      if (!tipoContrib || tipoContrib === "")
+        newErrors.codigoContrib = "Seleccione tipo de contribuyente";
+
+      if (!codigoContrib || codigoContrib === "") {
+        newErrors.codigoContrib = "Ingrese número de documento";
+      } else {
+        if (tipoDocum === "01" && codigoContrib.trim().length !== 8){
+            newErrors.codigoContrib = "Número de documento debe tener 8 dígitos";
+        } else if (tipoDocum === "05" && codigoContrib.trim().length !== 11){
+            newErrors.codigoContrib = "Número de documento debe tener 11 dígitos";
+        } else {
+            const validaContrib = await consultarContribuyenteCodigo(codigoContrib);
+            if (Object.keys(validaContrib).length !== 0) {
+              const { C001Cod_Cont, C001Nombre } = validaContrib;
+              newErrors.codigoContrib = `Ya existe el código: ${C001Cod_Cont.trim()} para el contribuyente: ${C001Nombre.trim()}`;
+            }
+        }
+
+       
+      }
+    } else if (activeStep === 1) {
       // codigoContrib errors
       if (!codigoContrib || codigoContrib === "")
         newErrors.codigoContrib = "Código no válido";
 
-      // tipoContrib errors
-      if (!tipoContrib || tipoContrib === "")
-        newErrors.codigoContrib = "Seleccione tipo de contribuyente";
-      else if (tipoContrib === "01" && (!apePat || apePat === ""))
+      // apePat errors
+      if (tipoContrib === "01" && (!apePat || apePat === ""))
         newErrors.apePat = "Ingrese apellido paterno";
 
       // nombre errors

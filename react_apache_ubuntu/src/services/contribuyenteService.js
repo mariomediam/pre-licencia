@@ -353,6 +353,26 @@ const insertContribuyenteAll = async (codigoContrib, contribuyenteAll) => {
   }
 };
 
+const consultarContribuyenteCodigo = async (codigoContrib) => {
+  try {
+    let api = UseAxios();
+
+    let URLContribCodigo = `${URL}/consultar-contribuyente-codigo?codigo=${codigoContrib}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLContribCodigo}`);
+
+    if (content.length > 0) {
+      return content[0];
+    }
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -371,4 +391,5 @@ export {
   obtenerTipoNacion,
   updateContribuyenteAll,
   insertContribuyenteAll,
+  consultarContribuyenteCodigo,
 };
