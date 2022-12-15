@@ -328,6 +328,31 @@ const updateContribuyenteAll = async (codigoContrib, contribuyenteAll) => {
   }
 };
 
+const insertContribuyenteAll = async (codigoContrib, contribuyenteAll) => {
+  let api = UseAxios();
+
+  try {
+
+    
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let {
+      data: { content }
+    } = await api.post(
+      `${URL}/insertar-all/${codigoContrib}`,
+      contribuyenteAll,
+      {
+        headers,
+      }
+    );
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -345,4 +370,5 @@ export {
   obtenerTipoTelefono,
   obtenerTipoNacion,
   updateContribuyenteAll,
+  insertContribuyenteAll,
 };

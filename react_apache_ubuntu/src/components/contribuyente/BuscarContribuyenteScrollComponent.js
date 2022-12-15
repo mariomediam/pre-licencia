@@ -194,6 +194,11 @@ class BuscarContribuyenteScrollComponent extends React.Component {
     this.state.setContribEdit(e.target.id.substr(3));
   };
 
+  mostrarFormAgregar = (e) => {
+    this.state.setShowForm(2);
+    this.state.setContribEdit(e.target.id.substr(3));
+  };
+
   render() {
     return (
       <div>
@@ -212,6 +217,15 @@ class BuscarContribuyenteScrollComponent extends React.Component {
           }
         >
           <small> {this.state.countRecords} registro(s) encontrado(s)</small>
+          <Button
+              className="ms-2"
+              variant="outline-dark"
+              size="sm"
+              title="Agregar contribuyente"
+              onClick={this.mostrarFormAgregar}
+            >
+              <i className="fas fa-plus"></i>
+            </Button>
           <div style={{ border: "1px solid lightgrey" }}>
             <Table hover className="caption-top mb-1">
               <thead>

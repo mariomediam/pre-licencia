@@ -11,29 +11,38 @@ import Swal from "sweetalert2";
 import AuthContext from "../../context/AuthContext";
 import {
   obtenerTipoContribuyente,
-  obtenerContribuyenteCodigo,
-  obtenerContribuyenteDocumento,
-  obtenerContribuyenteTelefono,
-  obtenerContribuyenteDirElect,
-  obtenerContribuyenteNacion,
-  updateContribuyenteAll,
+//   obtenerContribuyenteCodigo,
+//   obtenerContribuyenteDocumento,
+//   obtenerContribuyenteTelefono,
+//   obtenerContribuyenteDirElect,
+//   obtenerContribuyenteNacion,
+//   insertContribuyenteAll,
 } from "../../services/contribuyenteService";
+import { ContribAddTipoContComponent } from "./ContribAddTipoContComponent";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
 import { ContribEditOtrosComponent } from "./ContribEditOtrosComponent";
 import { Toast } from "../tools/PopMessage";
 
-const steps = ["Datos principales", "Domicilio", "Otros"];
+const steps = [
+  "Tipo de contribuyente",
+  "Datos principales",
+  "Domicilio",
+  "Otros",
+];
 
-export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setShowForm }) => {
-
-  
+export const ContribuyenteAddComponent = ({
+  contribEdit,
+  setCodContribIni,
+  setShowForm,
+}) => {
   const { userName } = useContext(AuthContext);
   const [activeStep, setActiveStep] = useState(0);
   const [valores, setValores] = useState({
     showForm: 3,
     codigoContrib: contribEdit,
     tipoContrib: "",
+    tipoDocum: "",
     homonimo: "",
     codigoAnt: "",
     apePat: "",
@@ -83,20 +92,19 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
     } else {
       // No errors! Put any logic here for the form submission!
       try {
-        if (activeStep === steps.length - 1) {          
-          await actualizarContribuyente();
+        if (activeStep === steps.length - 1) {
+          await insertarContribuyente();
           Toast.fire({
             icon: "success",
-            title: "El contribuyente se actualizo con éxito",
+            title: "El contribuyente se registró con éxito",
             background: "#F4F6F6",
             timer: 1500,
           });
           setTimeout(() => {
             setCodContribIni(contribEdit);
             setShowForm(1);
-          }, 1500)
-          
-        }        
+          }, 1500);
+        }
 
         if (isStepSkipped(activeStep)) {
           newSkipped = new Set(newSkipped.values());
@@ -105,14 +113,12 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
 
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         setSkipped(newSkipped);
-        
       } catch (error) {
         Swal.fire({
-          icon: 'error',
-          title: 'Error grabando contribuyente',
-          text: error.response.data.message
-        })
-        
+          icon: "error",
+          title: "Error grabando contribuyente",
+          text: error.response.data.message,
+        });
       }
     }
   };
@@ -136,81 +142,29 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
     });
   };
 
-  // const handleReset = () => {
-  //   setActiveStep(0);
-  // };
-
-  const verContribuyente = async () => {    
-    if (contribEdit && contribEdit.length > 0) {
-      const contribuyenteTmp = await obtenerContribuyenteCodigo(contribEdit);
-      const documentosTmp = await obtenerContribuyenteDocumento(contribEdit);
-      const telefonosTmp = await obtenerContribuyenteTelefono(contribEdit);
-      const emailTmp = await obtenerContribuyenteDirElect(contribEdit);
-      const nacionesTmp = await obtenerContribuyenteNacion(contribEdit);
-      setValores({
-        ...valores,
-        tipoContrib: contribuyenteTmp.C001Tip_Cont,
-        apePat: contribuyenteTmp.separa_pepat,
-        apeMat: contribuyenteTmp.separa_apemat,
-        nombre: contribuyenteTmp.separa_nombre,
-        sexo: contribuyenteTmp.C001Sexo,
-        fecNac: contribuyenteTmp.D001FecNac.toLocaleString().substr(0, 10),
-        observ: contribuyenteTmp.C001Motivo.trim(),
-        codigoLugar: contribuyenteTmp.C001Cod_Lug.trim(),
-        nombreLugar: contribuyenteTmp.Lugar
-          ? contribuyenteTmp.Lugar.trim()
-          : "",
-        codigoCalle: contribuyenteTmp.C001Cod_Calle.trim(),
-        nombreCalle: contribuyenteTmp.Calle
-          ? contribuyenteTmp.Calle.trim()
-          : "",
-        direccNro: contribuyenteTmp.Número.trim(),
-        direccPiso: contribuyenteTmp.Piso.trim(),
-        direccDpto: contribuyenteTmp.Dpto.trim(),
-        direccMzna: contribuyenteTmp.Mza.trim(),
-        direccLote: contribuyenteTmp.Lote.trim(),
-        direccAdic: contribuyenteTmp.C001Direc_Adic.trim(),
-        direccProv: contribuyenteTmp.C005Provincia
-          ? contribuyenteTmp.C005Provincia.trim()
-          : "",
-        direccDist: contribuyenteTmp.C005Distrito
-          ? contribuyenteTmp.C005Distrito.trim()
-          : "",
-        documentos: documentosTmp,
-        telefonos: telefonosTmp,
-        emails: emailTmp,
-        naciones: nacionesTmp,
-      });
-    }
-  };
-
   const verTipoContribuyente = async () => {
-    const tipoContribTmp = await obtenerTipoContribuyente();
-    setTipoContribuyente(tipoContribTmp);
+    console.log("verTipoContribuyente")
+    // const tipoContribTmp = await obtenerTipoContribuyente();
+    // setTipoContribuyente(tipoContribTmp);
   };
 
-  const actualizarContribuyente = async () => {
-    let objContribuyente = { ...valores };
-    objContribuyente.nombreCompleto =
-      objContribuyente.tipoContrib === "01"
-        ? `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
-        : objContribuyente.nombre.trim();
-    objContribuyente.responsable = userName;
-    await updateContribuyenteAll(
-      objContribuyente.codigoContrib,
-      objContribuyente
-    );
-   
+  const insertarContribuyente = async () => {
+    console.log("insertarContribuyenteAll");
+    // let objContribuyente = { ...valores };
+    // objContribuyente.nombreCompleto =
+    //   objContribuyente.tipoContrib === "01"
+    //     ? `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
+    //     : objContribuyente.nombre.trim();
+    // objContribuyente.responsable = userName;
+    // await insertContribuyenteAll(
+    //   objContribuyente.codigoContrib,
+    //   objContribuyente
+    // );
   };
-
-  // useEffect(() => {
-  //   verContribuyente();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [codigoContribSelecc]);
 
   useEffect(() => {
     verTipoContribuyente();
-    verContribuyente();
+    // verContribuyente();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -260,7 +214,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
     } = valores;
     const newErrors = {};
 
-    if (activeStep === 0) {
+    if (activeStep === 1) {
       // codigoContrib errors
       if (!codigoContrib || codigoContrib === "")
         newErrors.codigoContrib = "Código no válido";
@@ -281,7 +235,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
       if (!observ || observ === "") newErrors.observ = "Ingrese observaciones";
       else if (observ.length > 800)
         newErrors.observ = "Las observaciones son demasiado largas";
-    } else if (activeStep === 1) {
+    } else if (activeStep === 2) {
       // lugar errors
       if (
         !codigoLugar ||
@@ -352,7 +306,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
       <div className="ps-3">
         <Breadcrumb>
           <Breadcrumb.Item active>Contribuyente</Breadcrumb.Item>
-          <Breadcrumb.Item active>Editar contribuyente</Breadcrumb.Item>
+          <Breadcrumb.Item active>Agregar contribuyente</Breadcrumb.Item>
         </Breadcrumb>
       </div>
       <div className="row justify-content-center">
@@ -362,7 +316,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
         >
           <h3 className="mt-0 text-center">
             <i className="fas fa-user-edit me-1"></i>
-            Editar contribuyente
+            Agregar contribuyente
           </h3>
 
           <Box sx={{ width: "100%" }} className="mt-4 mb-3">
@@ -392,18 +346,18 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
             {activeStep === steps.length ? (
               <React.Fragment>
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                  <Box sx={{ flex: "1 1 auto" }} />
-                  <Button onClick={handleReset}>Reset</Button>
-                </Box> */}
+              All steps completed - you&apos;re finished
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Box sx={{ flex: "1 1 auto" }} />
+              <Button onClick={handleReset}>Reset</Button>
+            </Box> */}
               </React.Fragment>
             ) : (
               <React.Fragment>
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
-                  Step {activeStep + 1}
-                </Typography> */}
+              Step {activeStep + 1}
+            </Typography> */}
                 <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                   <Button
                     color="inherit"
@@ -446,7 +400,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
           </Box>
           {activeStep === 0 ? (
             <div>
-              <ContribEditDatPriComponent
+              <ContribAddTipoContComponent
                 valores={valores}
                 setField={setField}
                 tipoContribuyente={tipoContribuyente}
@@ -458,7 +412,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
             <div>
               {activeStep === 1 ? (
                 <div>
-                  <ContribEditDomiciComponent
+                  <ContribEditDatPriComponent
                     valores={valores}
                     setField={setField}
                     tipoContribuyente={tipoContribuyente}
@@ -468,12 +422,26 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
                 </div>
               ) : (
                 <div>
-                  <ContribEditOtrosComponent
-                    valores={valores}
-                    setField={setField}
-                    key={valores.codigoContrib}
-                    errors={errors}
-                  />
+                  {activeStep === 2 ? (
+                    <div>
+                      <ContribEditDomiciComponent
+                        valores={valores}
+                        setField={setField}
+                        tipoContribuyente={tipoContribuyente}
+                        key={valores.codigoContrib}
+                        errors={errors}
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <ContribEditOtrosComponent
+                        valores={valores}
+                        setField={setField}
+                        key={valores.codigoContrib}
+                        errors={errors}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -482,18 +450,18 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
             {activeStep === steps.length ? (
               <React.Fragment>
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                  <Box sx={{ flex: "1 1 auto" }} />
-                  <Button onClick={handleReset}>Reset</Button>
-                </Box> */}
+              All steps completed - you&apos;re finished
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Box sx={{ flex: "1 1 auto" }} />
+              <Button onClick={handleReset}>Reset</Button>
+            </Box> */}
               </React.Fragment>
             ) : (
               <React.Fragment>
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
-                  Step {activeStep + 1}
-                </Typography> */}
+              Step {activeStep + 1}
+            </Typography> */}
                 <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                   <Button
                     color="inherit"

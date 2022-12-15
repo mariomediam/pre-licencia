@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "../../components/Header";
 import BuscarContribuyentesComponent from "../../components/contribuyente/BuscarContribuyentesComponent";
 import { ContribuyenteEditComponent } from "../../components/contribuyente/ContribuyenteEditComponent";
+import { ContribuyenteAddComponent } from "../../components/contribuyente/ContribuyenteAddComponent";
 
 export const ContribuyentesView = () => {
 
@@ -21,7 +22,7 @@ export const ContribuyentesView = () => {
           
         />
       ) : (
-        <div>{showForm === 3 ? <ContribuyenteEditComponent contribEdit = {contribEdit} setCodContribIni = {setCodContribIni} setShowForm = {setShowForm}/> : <div></div>}</div>
+        <div>{showForm === 3 ? <ContribuyenteEditComponent contribEdit = {contribEdit} setCodContribIni = {setCodContribIni} setShowForm = {setShowForm}/> : <ContribuyenteAddComponent contribEdit = {contribEdit} setCodContribIni = {setCodContribIni} setShowForm = {setShowForm}/>}</div>
       )}
     </div>
   );
