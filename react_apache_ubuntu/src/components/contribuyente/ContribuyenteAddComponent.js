@@ -12,6 +12,7 @@ import AuthContext from "../../context/AuthContext";
 import {
   obtenerTipoContribuyente,
   consultarContribuyenteCodigo,
+  obtenerDocumentoTipoNro,
   //   obtenerContribuyenteCodigo,
   //   obtenerContribuyenteDocumento,
   //   obtenerContribuyenteTelefono,
@@ -41,7 +42,7 @@ export const ContribuyenteAddComponent = ({
   const [valores, setValores] = useState({
     showForm: 3,
     codigoContrib: "",
-    tipoContrib: "",
+    tipoContrib: "01",
     tipoAddContrib: "PN",
     tipoDocum: "01",
     homonimo: "",
@@ -93,6 +94,43 @@ export const ContribuyenteAddComponent = ({
     } else {
       // No errors! Put any logic here for the form submission!
       try {
+        if (activeStep === 0) {
+          let nombreDocum = "";
+          if (valores.tipoDocum === "01") {
+            nombreDocum = "D.N.I.";
+          } else if (valores.tipoDocum === "05") {
+            nombreDocum = "RUC";
+          } else if (valores.tipoDocum === "06") {
+            nombreDocum = "COD. INT E";
+          }
+          let setDocumNacionNew = {
+            documentos: [
+              {
+                CodDoc: valores.tipoDocum,
+                Descripción: nombreDocum,
+                Número: valores.codigoContrib,
+                "": "NN",
+              },
+            ],
+          };
+
+          if (valores.tipoDocum === "01") {
+            setDocumNacionNew = {
+              ...setDocumNacionNew,
+              naciones: [
+                {
+                  Codigo: "051",
+                  Pais: "PERÚ",
+                  Gentilicio: "PERUANO",
+                  "": "NN",
+                },
+              ],
+            };
+          }
+
+          setField(setDocumNacionNew);
+        }
+
         if (activeStep === steps.length - 1) {
           await insertarContribuyente();
           Toast.fire({
@@ -144,9 +182,8 @@ export const ContribuyenteAddComponent = ({
   };
 
   const verTipoContribuyente = async () => {
-    console.log("verTipoContribuyente");
-    // const tipoContribTmp = await obtenerTipoContribuyente();
-    // setTipoContribuyente(tipoContribTmp);
+    const tipoContribTmp = await obtenerTipoContribuyente();
+    setTipoContribuyente(tipoContribTmp);
   };
 
   const insertarContribuyente = async () => {
@@ -217,26 +254,42 @@ export const ContribuyenteAddComponent = ({
     const newErrors = {};
 
     if (activeStep === 0) {
-    //   tipoContrib errors
+      //   tipoContrib errors
       if (!tipoContrib || tipoContrib === "")
         newErrors.codigoContrib = "Seleccione tipo de contribuyente";
 
-      if (!codigoContrib || codigoContrib === "") {
-        newErrors.codigoContrib = "Ingrese número de documento";
-      } else {
-        if (tipoDocum === "01" && codigoContrib.trim().length !== 8){
-            newErrors.codigoContrib = "Número de documento debe tener 8 dígitos";
-        } else if (tipoDocum === "05" && codigoContrib.trim().length !== 11){
-            newErrors.codigoContrib = "Número de documento debe tener 11 dígitos";
+      if (tipoDocum !== "06") {
+        if (!codigoContrib || codigoContrib === "") {
+          newErrors.codigoContrib = "Ingrese número de documento";
         } else {
-            const validaContrib = await consultarContribuyenteCodigo(codigoContrib);
+          if (tipoDocum === "01" && !/^[0-9]{8}$/.test(codigoContrib.trim())) {
+            newErrors.codigoContrib =
+              "Número de documento debe tener 8 dígitos";
+          } else if (
+            tipoDocum === "05" &&
+            !/^[0-9]{11}$/.test(codigoContrib.trim())
+          ) {
+            newErrors.codigoContrib =
+              "Número de documento debe tener 11 dígitos";
+          } else {
+            const validaContrib = await consultarContribuyenteCodigo(
+              codigoContrib
+            );
             if (Object.keys(validaContrib).length !== 0) {
               const { C001Cod_Cont, C001Nombre } = validaContrib;
               newErrors.codigoContrib = `Ya existe el código: ${C001Cod_Cont.trim()} para el contribuyente: ${C001Nombre.trim()}`;
+            } else {
+              const validaDocum = await obtenerDocumentoTipoNro(
+                tipoDocum,
+                codigoContrib
+              );
+              if (validaDocum.length > 0) {
+                const { C002Cod_Cont, C001Nombre } = validaDocum.shift();
+                newErrors.codigoContrib = `Ya existe el documento: ${codigoContrib.trim()} para el contribuyente: ${C002Cod_Cont} ${C001Nombre.trim()}`;
+              }
             }
+          }
         }
-
-       
       }
     } else if (activeStep === 1) {
       // codigoContrib errors
@@ -383,7 +436,7 @@ export const ContribuyenteAddComponent = ({
                 <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                   <Button
                     color="inherit"
-                    disabled={activeStep === 0}
+                    disabled={activeStep <= 1}
                     onClick={handleBack}
                     sx={{ mr: 1 }}
                     variant="contained"
@@ -487,7 +540,7 @@ export const ContribuyenteAddComponent = ({
                 <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                   <Button
                     color="inherit"
-                    disabled={activeStep === 0}
+                    disabled={activeStep <= 1}
                     onClick={handleBack}
                     sx={{ mr: 1 }}
                     variant="contained"
