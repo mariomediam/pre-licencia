@@ -373,6 +373,25 @@ const consultarContribuyenteCodigo = async (codigoContrib) => {
   }
 };
 
+const obtenerCorrelativoCodContribuyente = async () => {
+  try {
+    let api = UseAxios();
+
+    let URLCorrelativo = `${URL}/generar-correlativo`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLCorrelativo}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+
 export {
   obtenerContribuyentePagination,
   obtenerContribuyenteDocumento,
@@ -392,4 +411,5 @@ export {
   updateContribuyenteAll,
   insertContribuyenteAll,
   consultarContribuyenteCodigo,
+  obtenerCorrelativoCodContribuyente,
 };

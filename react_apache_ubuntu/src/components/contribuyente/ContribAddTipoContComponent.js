@@ -57,7 +57,7 @@ export const ContribAddTipoContComponent = ({
     <div className="row justify-content-center">
       <div className="row col-sm-12 col-lg-4 mt-0">
         {/* TIPO DE CONTRIBUYENTE */}
-        <Form.Group className="mb-2" controlId="formTipoContribuyente">
+        <Form.Group className="mb-2">
           <Form.Label className="text-muted mb-0 mt-0">
             <small className="mb-0">Tipo de contribuyente</small>
           </Form.Label>
@@ -85,7 +85,7 @@ export const ContribAddTipoContComponent = ({
         </Form.Group>
 
         {/* TIPO DE DOCUMENTO */}
-        <Form.Group className="mb-2" controlId="formTipoDocumento">
+        <Form.Group className="mb-2">
           <Form.Label className="text-muted mb-0 mt-0">
             <small className="mb-0">
               Tipo de documento
@@ -105,8 +105,7 @@ export const ContribAddTipoContComponent = ({
 
           {valores.tipoAddContrib === "PN" && (
             <div>
-              <Form.Check
-                defaultChecked
+              <Form.Check                
                 name="groupTipoDocumento"
                 type="radio"
                 label="DNI"
@@ -129,7 +128,7 @@ export const ContribAddTipoContComponent = ({
         </Form.Group>
 
         {/* NUMERO DE DOCUMENTO */}
-        <Form.Group controlId="formBasicEmail">
+        <Form.Group>
           <Form.Label className="text-muted mb-0 mt-0">
             <small className="mb-0">Número de documento</small>
           </Form.Label>
@@ -138,7 +137,7 @@ export const ContribAddTipoContComponent = ({
             id="inpNro"
             type="text"
             ref={inputNroDoc}
-            autocomplete="off"
+            autoComplete ="off"
             readOnly={valores.tipoDocum === "06"}
             value={valores.codigoContrib}            
             onChange={inputChangeNroDoc}

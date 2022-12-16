@@ -13,12 +13,8 @@ import {
   obtenerTipoContribuyente,
   consultarContribuyenteCodigo,
   obtenerDocumentoTipoNro,
-  //   obtenerContribuyenteCodigo,
-  //   obtenerContribuyenteDocumento,
-  //   obtenerContribuyenteTelefono,
-  //   obtenerContribuyenteDirElect,
-  //   obtenerContribuyenteNacion,
-  //   insertContribuyenteAll,
+  obtenerCorrelativoCodContribuyente,
+  insertContribuyenteAll,
 } from "../../services/contribuyenteService";
 import { ContribAddTipoContComponent } from "./ContribAddTipoContComponent";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
@@ -50,7 +46,7 @@ export const ContribuyenteAddComponent = ({
     apePat: "",
     apeMat: "",
     nombre: "",
-    sexo: "",
+    sexo: "M",
     fecNac: "",
     codigoLugar: "",
     nombreLugar: "",
@@ -95,20 +91,29 @@ export const ContribuyenteAddComponent = ({
       // No errors! Put any logic here for the form submission!
       try {
         if (activeStep === 0) {
-          let nombreDocum = "";
+          // GENERA DOCUMENTO Y NACIONALIDAD
+          let setDocumNacionNew = {};
+          let nombreDocum = "",
+            nroDocum = "";
           if (valores.tipoDocum === "01") {
             nombreDocum = "D.N.I.";
+            nroDocum = valores.codigoContrib;
           } else if (valores.tipoDocum === "05") {
             nombreDocum = "RUC";
+            nroDocum = valores.codigoContrib;
           } else if (valores.tipoDocum === "06") {
+            const { Codigo } = await obtenerCorrelativoCodContribuyente();
             nombreDocum = "COD. INT E";
+            nroDocum = Codigo;
+            setDocumNacionNew = { ...setDocumNacionNew, codigoContrib: Codigo };
           }
-          let setDocumNacionNew = {
+          setDocumNacionNew = {
+            ...setDocumNacionNew,
             documentos: [
               {
                 CodDoc: valores.tipoDocum,
                 Descripción: nombreDocum,
-                Número: valores.codigoContrib,
+                Número: nroDocum,
                 "": "NN",
               },
             ],
@@ -135,7 +140,7 @@ export const ContribuyenteAddComponent = ({
           await insertarContribuyente();
           Toast.fire({
             icon: "success",
-            title: "El contribuyente se registró con éxito",
+            title: "El contribuyente se agrego con éxito",
             background: "#F4F6F6",
             timer: 1500,
           });
@@ -186,18 +191,17 @@ export const ContribuyenteAddComponent = ({
     setTipoContribuyente(tipoContribTmp);
   };
 
-  const insertarContribuyente = async () => {
-    console.log("insertarContribuyenteAll");
-    // let objContribuyente = { ...valores };
-    // objContribuyente.nombreCompleto =
-    //   objContribuyente.tipoContrib === "01"
-    //     ? `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
-    //     : objContribuyente.nombre.trim();
-    // objContribuyente.responsable = userName;
-    // await insertContribuyenteAll(
-    //   objContribuyente.codigoContrib,
-    //   objContribuyente
-    // );
+  const insertarContribuyente = async () => {    
+    let objContribuyente = { ...valores };
+    objContribuyente.nombreCompleto =
+      objContribuyente.tipoContrib === "01"
+        ? `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
+        : objContribuyente.nombre.trim();
+    objContribuyente.responsable = userName;
+    await insertContribuyenteAll(
+      objContribuyente.codigoContrib,
+      objContribuyente
+    );
   };
 
   useEffect(() => {
