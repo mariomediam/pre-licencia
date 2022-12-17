@@ -70,8 +70,7 @@ export default function BuscarContribuyentesComponent({
         <div>
           <div className="ps-3">
             <Breadcrumb>
-              <Breadcrumb.Item active>Contribuyente</Breadcrumb.Item>
-              <Breadcrumb.Item active>Buscar contribuyente</Breadcrumb.Item>
+              <Breadcrumb.Item active>Contribuyente</Breadcrumb.Item>              
             </Breadcrumb>
           </div>
           <div>
@@ -81,8 +80,8 @@ export default function BuscarContribuyentesComponent({
                 style={{ border: "0px solid black" }}
               >
                 <h3 className="mt-0 text-center">
-                  <i className="fas fa-search me-1"></i>
-                  Buscar contribuyente
+                  <i className="fas fa-user me-1"></i>
+                  Contribuyente
                 </h3>
 
                 <div className="row justify-content-center">

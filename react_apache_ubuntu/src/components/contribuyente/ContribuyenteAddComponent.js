@@ -191,7 +191,7 @@ export const ContribuyenteAddComponent = ({
     setTipoContribuyente(tipoContribTmp);
   };
 
-  const insertarContribuyente = async () => {    
+  const insertarContribuyente = async () => {
     let objContribuyente = { ...valores };
     objContribuyente.nombreCompleto =
       objContribuyente.tipoContrib === "01"
@@ -384,17 +384,33 @@ export const ContribuyenteAddComponent = ({
     <div>
       <div className="ps-3">
         <Breadcrumb>
-          <Breadcrumb.Item active>Contribuyente</Breadcrumb.Item>
+          <Breadcrumb.Item href="/contribuyente/ver_contribuyente">
+            Contribuyente
+          </Breadcrumb.Item>
           <Breadcrumb.Item active>Agregar contribuyente</Breadcrumb.Item>
         </Breadcrumb>
       </div>
+
       <div className="row justify-content-center">
         <div
           className="align-items-center p-2 col-sm-12 col-lg-8"
           style={{ border: "0px solid black" }}
         >
-          <h3 className="mt-0 text-center">
-            <i className="fas fa-user-edit me-1"></i>
+          <div className="d-flex justify-content-end m-0 p-0">
+            <Button         
+            className="mb-0 pb-0"     
+              variant="outline-dark"
+              size="sm"
+              title="Cerrar"
+              onClick={() => window.location.reload(false)}
+            >
+              <h3 className="mb-0 pb-0"     >
+                <i className="fas fa-times"></i>
+              </h3>
+            </Button>
+          </div>          
+          <h3 className="mt-0 pt-0 text-center">
+            <i className="fas fa-user-plus me-2"></i>
             Agregar contribuyente
           </h3>
 

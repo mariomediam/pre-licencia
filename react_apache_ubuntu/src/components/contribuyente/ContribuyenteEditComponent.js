@@ -351,7 +351,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
     <div>
       <div className="ps-3">
         <Breadcrumb>
-          <Breadcrumb.Item active>Contribuyente</Breadcrumb.Item>
+          <Breadcrumb.Item href="/contribuyente/ver_contribuyente">Contribuyente</Breadcrumb.Item>
           <Breadcrumb.Item active>Editar contribuyente</Breadcrumb.Item>
         </Breadcrumb>
       </div>
@@ -360,6 +360,19 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
           className="align-items-center p-2 col-sm-12 col-lg-8"
           style={{ border: "0px solid black" }}
         >
+          <div className="d-flex justify-content-end m-0 p-0">
+            <Button         
+            className="mb-0 pb-0"     
+              variant="outline-dark"
+              size="lg"
+              title="Cerrar"
+              onClick={() => window.location.reload(false)}
+            >
+              <h3 className="mb-0 pb-0"     >
+                <i className="fas fa-times"></i>
+              </h3>
+            </Button>
+          </div>
           <h3 className="mt-0 text-center">
             <i className="fas fa-user-edit me-1"></i>
             Editar contribuyente
