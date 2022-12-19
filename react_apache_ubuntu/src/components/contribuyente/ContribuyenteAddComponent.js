@@ -437,7 +437,7 @@ export const ContribuyenteAddComponent = ({
                   </Step>
                 );
               })}
-            </Stepper>
+            </Stepper>            
             {activeStep === steps.length ? (
               <React.Fragment>
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
@@ -493,6 +493,7 @@ export const ContribuyenteAddComponent = ({
               </React.Fragment>
             )}
           </Box>
+          <hr/>
           {activeStep === 0 ? (
             <div>
               <ContribAddTipoContComponent
@@ -541,7 +542,8 @@ export const ContribuyenteAddComponent = ({
               )}
             </div>
           )}
-          <Box sx={{ width: "100%" }} className="mt-4 mb-3">
+          <hr/>
+          <Box sx={{ width: "100%" }} className="mt-0 mb-3">
             {activeStep === steps.length ? (
               <React.Fragment>
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
@@ -557,7 +559,8 @@ export const ContribuyenteAddComponent = ({
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
               Step {activeStep + 1}
             </Typography> */}
-                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 0 }}>
                   <Button
                     color="inherit"
                     disabled={activeStep <= 1}
