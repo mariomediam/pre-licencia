@@ -15,6 +15,7 @@ import {
   obtenerDocumentoTipoNro,
   obtenerCorrelativoCodContribuyente,
   insertContribuyenteAll,
+  verificaNombreContribuyente,
 } from "../../services/contribuyenteService";
 import { ContribAddTipoContComponent } from "./ContribAddTipoContComponent";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
@@ -192,11 +193,20 @@ export const ContribuyenteAddComponent = ({
   };
 
   const insertarContribuyente = async () => {
-    let objContribuyente = { ...valores };
-    objContribuyente.nombreCompleto =
-      objContribuyente.tipoContrib === "01"
-        ? `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
-        : objContribuyente.nombre.trim();
+    let objContribuyente = { ...valores };    
+    
+    // ELIMINO DOBLES ESPACIOS EN BLANCO
+    objContribuyente.nombre = objContribuyente.nombre.replace(/\s+/g, ' ').trim();
+    if (objContribuyente.tipoContrib === "01"){
+      objContribuyente.apePat = objContribuyente.apePat.replace(/\s+/g, ' ').trim();
+      objContribuyente.apeMat = objContribuyente.apeMat.replace(/\s+/g, ' ').trim();      
+      objContribuyente.nombreCompleto = `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
+    } else {
+      objContribuyente.apePat = "";
+      objContribuyente.apeMat = "";  
+      objContribuyente.nombreCompleto = objContribuyente.nombre.trim();
+    }
+   
     objContribuyente.responsable = userName;
     await insertContribuyenteAll(
       objContribuyente.codigoContrib,
@@ -212,6 +222,8 @@ export const ContribuyenteAddComponent = ({
 
   const setField = (field, value) => {
     if (typeof field === "string") {
+      
+
       setValores({
         ...valores,
         [field]: value,
@@ -242,6 +254,7 @@ export const ContribuyenteAddComponent = ({
       codigoContrib,
       tipoContrib,
       apePat,
+      apeMat,
       nombre,
       observ,
       codigoLugar,
@@ -301,14 +314,48 @@ export const ContribuyenteAddComponent = ({
         newErrors.codigoContrib = "Código no válido";
 
       // apePat errors
-      if (tipoContrib === "01" && (!apePat || apePat === ""))
-        newErrors.apePat = "Ingrese apellido paterno";
+      if (tipoContrib === "01") {
+        if (!apePat || apePat.trim() === "") {
+          newErrors.apePat = "Ingrese apellido paterno";
+        } else {
+          const { Var: verificaApepat } = await verificaNombreContribuyente(
+            tipoContrib,
+            apePat.trim()
+          );
+
+          if (verificaApepat === "F") {
+            newErrors.apePat = "Ingreso caracteres extraños";
+          }
+        }
+      }
+
+      // apeMat errors
+      if (tipoContrib === "01") {
+        if (apeMat && apeMat.trim() !== "") {
+          const { Var: verificaApeMat } = await verificaNombreContribuyente(
+            tipoContrib,
+            apeMat.trim()
+          );
+
+          if (verificaApeMat === "F") {
+            newErrors.apeMat = "Ingreso caracteres extraños";
+          }
+        }
+      }
 
       // nombre errors
-      if (!nombre || nombre === "")
+      if (!nombre || nombre.trim() === "")
         newErrors.nombre = "Ingrese Nombre / Razón social";
-      else if (nombre.length > 150)
-        newErrors.nombre = "El nombre es demasiado largo!";
+      else {
+        const { Var: verificaNombre } = await verificaNombreContribuyente(
+          tipoContrib,
+          nombre.trim()
+        );
+
+        if (verificaNombre === "F") {
+          newErrors.nombre = "Ingreso caracteres extraños";
+        }
+      }
 
       // observ errors
       if (!observ || observ === "") newErrors.observ = "Ingrese observaciones";
@@ -397,18 +444,18 @@ export const ContribuyenteAddComponent = ({
           style={{ border: "0px solid black" }}
         >
           <div className="d-flex justify-content-end m-0 p-0">
-            <Button         
-            className="mb-0 pb-0"     
+            <Button
+              className="mb-0 pb-0"
               variant="outline-dark"
               size="sm"
               title="Cerrar"
               onClick={() => window.location.reload(false)}
             >
-              <h3 className="mb-0 pb-0"     >
+              <h3 className="mb-0 pb-0">
                 <i className="fas fa-times"></i>
               </h3>
             </Button>
-          </div>          
+          </div>
           <h3 className="mt-0 pt-0 text-center">
             <i className="fas fa-user-plus me-2"></i>
             Agregar contribuyente
@@ -437,7 +484,7 @@ export const ContribuyenteAddComponent = ({
                   </Step>
                 );
               })}
-            </Stepper>            
+            </Stepper>
             {activeStep === steps.length ? (
               <React.Fragment>
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
@@ -493,7 +540,7 @@ export const ContribuyenteAddComponent = ({
               </React.Fragment>
             )}
           </Box>
-          <hr/>
+          <hr />
           {activeStep === 0 ? (
             <div>
               <ContribAddTipoContComponent
@@ -542,7 +589,7 @@ export const ContribuyenteAddComponent = ({
               )}
             </div>
           )}
-          <hr/>
+          <hr />
           <Box sx={{ width: "100%" }} className="mt-0 mb-3">
             {activeStep === steps.length ? (
               <React.Fragment>
@@ -559,7 +606,7 @@ export const ContribuyenteAddComponent = ({
                 {/* <Typography sx={{ mt: 2, mb: 1 }}>
               Step {activeStep + 1}
             </Typography> */}
-            
+
                 <Box sx={{ display: "flex", flexDirection: "row", pt: 0 }}>
                   <Button
                     color="inherit"

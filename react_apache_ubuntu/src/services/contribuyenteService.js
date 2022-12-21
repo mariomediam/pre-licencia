@@ -389,6 +389,38 @@ const obtenerCorrelativoCodContribuyente = async () => {
   }
 };
 
+const verificaNombreContribuyente = async (tipoContrib, nombreContrib) => {
+  try {
+    let api = UseAxios();
+
+    let credenciales = {
+      tipoContrib: tipoContrib,
+      nombreCompleto: nombreContrib
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let URLValidaNombre = `${URL}/verifica-contribuyente-nombre`;
+
+    let {
+      data: { content },
+    } = await api.post(
+      `${URLValidaNombre}`,
+      credenciales,
+      {
+        headers,
+      }
+    );
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 
 
 
@@ -412,4 +444,5 @@ export {
   insertContribuyenteAll,
   consultarContribuyenteCodigo,
   obtenerCorrelativoCodContribuyente,
+  verificaNombreContribuyente,
 };

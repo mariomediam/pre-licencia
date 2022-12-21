@@ -92,7 +92,7 @@ export const ContribEditDatPriComponent = ({
               name="name_apemat"
               value={valores.apeMat}
               onChange={(e) => setField("apeMat", e.target.value)}
-              isInvalid={!!errors.city}
+              isInvalid={!!errors.apeMat}
             />
 
             <Form.Control.Feedback type="invalid">

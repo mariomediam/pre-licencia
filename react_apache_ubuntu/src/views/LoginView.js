@@ -33,7 +33,7 @@ export default function LoginView() {
       setAuthTokens(JSON.parse(localStorage.getItem("authTokens")));
       setUser(jwt_decode(localStorage.getItem("authTokens")));
       verMenusPrincipal();
-      navigate("/pre_licencia");
+      navigate("/contribuyente/ver_contribuyente");
     }
   };
 

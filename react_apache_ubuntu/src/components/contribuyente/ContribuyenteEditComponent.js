@@ -17,6 +17,7 @@ import {
   obtenerContribuyenteDirElect,
   obtenerContribuyenteNacion,
   updateContribuyenteAll,
+  verificaNombreContribuyente,
 } from "../../services/contribuyenteService";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
@@ -75,7 +76,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
   const handleNext = async () => {
     let newSkipped = skipped;
 
-    const newErrors = findFormErrors();
+    const newErrors = await findFormErrors();
     // Conditional logic:
     if (Object.keys(newErrors).length > 0) {
       // We got errors!
@@ -191,10 +192,20 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
 
   const actualizarContribuyente = async () => {
     let objContribuyente = { ...valores };
-    objContribuyente.nombreCompleto =
-      objContribuyente.tipoContrib === "01"
-        ? `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
-        : objContribuyente.nombre.trim();
+    
+    // ELIMINO DOBLES ESPACIOS EN BLANCO
+    objContribuyente.nombre = objContribuyente.nombre.replace(/\s+/g, ' ').trim();
+
+    if (objContribuyente.tipoContrib === "01"){
+      objContribuyente.apePat = objContribuyente.apePat.replace(/\s+/g, ' ').trim();
+      objContribuyente.apeMat = objContribuyente.apeMat.replace(/\s+/g, ' ').trim();      
+      objContribuyente.nombreCompleto = `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
+    } else {
+      objContribuyente.apePat = "";
+      objContribuyente.apeMat = "";  
+      objContribuyente.nombreCompleto = objContribuyente.nombre.trim();
+    }
+
     objContribuyente.responsable = userName;
     await updateContribuyenteAll(
       objContribuyente.codigoContrib,
@@ -241,11 +252,12 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
     }
   };
 
-  const findFormErrors = () => {
+  const findFormErrors = async () => {
     const {
       codigoContrib,
       tipoContrib,
       apePat,
+      apeMat,
       nombre,
       observ,
       codigoLugar,
@@ -266,16 +278,52 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
         newErrors.codigoContrib = "Código no válido";
 
       // tipoContrib errors
-      if (!tipoContrib || tipoContrib === "")
+      if (!tipoContrib || tipoContrib.trim() === "")
         newErrors.tipoContrib = "Seleccione tipo de contribuyente";
-      else if (tipoContrib === "01" && (!apePat || apePat === ""))
-        newErrors.apePat = "Ingrese apellido paterno";
+      
+      // apePat errors
+      if (tipoContrib === "01") {
+        if (!apePat || apePat.trim() === "") {
+          newErrors.apePat = "Ingrese apellido paterno";
+        } else {
+          const { Var: verificaApepat } = await verificaNombreContribuyente(
+            tipoContrib,
+            apePat.trim()
+          );
+
+          if (verificaApepat === "F") {
+            newErrors.apePat = "Ingreso caracteres extraños";
+          }
+        }
+      }
+
+      // apeMat errors
+      if (tipoContrib === "01") {
+        if (apeMat && apeMat.trim() !== "") {
+          const { Var: verificaApeMat } = await verificaNombreContribuyente(
+            tipoContrib,
+            apeMat.trim()
+          );
+
+          if (verificaApeMat === "F") {
+            newErrors.apeMat = "Ingreso caracteres extraños";
+          }
+        }
+      }
 
       // nombre errors
-      if (!nombre || nombre === "")
+      if (!nombre || nombre.trim() === "")
         newErrors.nombre = "Ingrese Nombre / Razón social";
-      else if (nombre.length > 150)
-        newErrors.nombre = "El nombre es demasiado largo!";
+      else {
+        const { Var: verificaNombre } = await verificaNombreContribuyente(
+          tipoContrib,
+          nombre.trim()
+        );
+
+        if (verificaNombre === "F") {
+          newErrors.nombre = "Ingreso caracteres extraños";
+        }
+      }
 
       // observ errors
       if (!observ || observ === "") newErrors.observ = "Ingrese observaciones";
