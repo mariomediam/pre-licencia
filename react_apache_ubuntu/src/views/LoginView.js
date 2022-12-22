@@ -8,7 +8,7 @@ import AuthContext from "../context/AuthContext";
 import jwt_decode from "jwt-decode";
 
 export default function LoginView() {
-  const { setUserName, setAuthTokens, setUser, verMenusPrincipal } = useContext(AuthContext);
+  const { iniciaSesion } = useContext(AuthContext);
 
   const { handleSubmit } = useForm();
 
@@ -29,10 +29,7 @@ export default function LoginView() {
       setMsgError(resultado.estado.trim());
       setShowError(true);
     } else {
-      setUserName(usuario.toUpperCase());
-      setAuthTokens(JSON.parse(localStorage.getItem("authTokens")));
-      setUser(jwt_decode(localStorage.getItem("authTokens")));
-      verMenusPrincipal();
+      await iniciaSesion(usuario.toUpperCase(), JSON.parse(localStorage.getItem("authTokens")), jwt_decode(localStorage.getItem("authTokens")));
       navigate("/contribuyente/ver_contribuyente");
     }
   };

@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   localStorage.getItem("authTokens")
     ? jwt_decode(
       JSON.parse(localStorage.getItem("authTokens")).access
-    ).user_id
+    ).user_id.trim()
     : ""
 );
   let [authTokens, setAuthTokens] = useState(() =>
@@ -53,6 +53,19 @@ export const AuthProvider = ({ children }) => {
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
+
+  const iniciaSesion = async (pUserName, pAuthTokens, pUser) => {
+
+    await setUserName(pUserName.trim());
+    setAuthTokens(pAuthTokens);
+    setUser(pUser);
+    console.log("pUserName")
+    console.log(pUserName)
+    console.log("userName")
+    console.log(userName)
+    await verMenusPrincipal(pUserName);
+
+  }
 
   let tokenEsValido = () => {
     let valido = false;
@@ -105,11 +118,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const verMenusPrincipal = async () => {
+  const verMenusPrincipal = async (pUserName = undefined) => {
+
+    if (!pUserName) {
+      pUserName = userName
+    }
     
-    if (userName) {
-      const menuesPrincipalTmp = await obtenerMenues(userName, "36", "02");
-      // setMenuPrincipal(menuesTmp);
+    if (pUserName) {
+      const menuesPrincipalTmp = await obtenerMenues(pUserName, "36", "02");
       
       setVarMPP({ ...varMPP, menuPrincipal: menuesPrincipalTmp})
 
@@ -117,6 +133,8 @@ export const AuthProvider = ({ children }) => {
           "varMPP",
           JSON.stringify({ ...varMPP, menuPrincipal: menuesPrincipalTmp })
         );
+    } else {
+      setVarMPP({ ...varMPP, menuPrincipal: []})
     }
   };
 
@@ -141,6 +159,7 @@ export const AuthProvider = ({ children }) => {
     setMencodi: setMencodi,
     menuPrincipal: varMPP.menuPrincipal ? varMPP.menuPrincipal : [],
     verMenusPrincipal: verMenusPrincipal,
+    iniciaSesion: iniciaSesion
   };
 
   return (
