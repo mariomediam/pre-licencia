@@ -1,5 +1,5 @@
 import imgEscudo from "../assets/images/escudo_muni.jpg";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useRef, useState, useContext } from "react";
 import { Login } from "../services/usuarioService";
@@ -35,7 +35,7 @@ export default function LoginView() {
   };
 
   return (
-    <div>
+    <Container>
       <div className="d-flex justify-content-center">
         <div className="col-sm-12 col-md-6 col-lg-4">
           <div className="d-flex justify-content-center">
@@ -91,6 +91,6 @@ export default function LoginView() {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }

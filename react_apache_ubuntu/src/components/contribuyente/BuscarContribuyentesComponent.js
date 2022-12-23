@@ -5,6 +5,7 @@ import {
   InputGroup,
   FormControl,
   Breadcrumb,
+  Container,
 } from "react-bootstrap";
 import AuthContext from "../../context/AuthContext";
 import BuscarContribuyenteScrollComponent from "./BuscarContribuyenteScrollComponent";
@@ -67,7 +68,7 @@ export default function BuscarContribuyentesComponent({
   return (
     <>
       {showForm === 1 ? (
-        <div>
+        <Container>
           <div className="ps-3">
             <Breadcrumb>
               <Breadcrumb.Item active>Contribuyente</Breadcrumb.Item>              
@@ -148,7 +149,7 @@ export default function BuscarContribuyentesComponent({
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       ) : null}
     </>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Breadcrumb } from "react-bootstrap";
+import { Breadcrumb, Container } from "react-bootstrap";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
@@ -428,7 +428,7 @@ export const ContribuyenteAddComponent = ({
   };
 
   return (
-    <div>
+    <Container>
       <div className="ps-3">
         <Breadcrumb>
           <Breadcrumb.Item href="/contribuyente/ver_contribuyente">
@@ -649,6 +649,6 @@ export const ContribuyenteAddComponent = ({
           </Box>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };

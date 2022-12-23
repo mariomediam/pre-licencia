@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Breadcrumb } from "react-bootstrap";
+import { Breadcrumb, Container } from "react-bootstrap";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
@@ -396,7 +396,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
   };
 
   return (
-    <div>
+    <Container>
       <div className="ps-3">
         <Breadcrumb>
           <Breadcrumb.Item href="/contribuyente/ver_contribuyente">Contribuyente</Breadcrumb.Item>
@@ -599,6 +599,6 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
           </Box>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
