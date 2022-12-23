@@ -80,7 +80,7 @@ export default function PreLicenciaView() {
   };
 
   useEffect(() => {
-    listarPrecalUsuEstado();
+    listarPrecalUsuEstado();    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName]);
 

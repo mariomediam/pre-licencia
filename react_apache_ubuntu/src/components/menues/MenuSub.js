@@ -8,7 +8,6 @@ export const MenuSub = ({ menCodi, menues, menCodiFilter }) => {
       {menues
         .filter(
           (menu) =>
-            menu.menCodi.startsWith(menCodiFilter) &&
             menu.menCodi !== menCodi &&
             menu.menCodi.endsWith(
               "".padEnd(10 - (menCodiFilter.trim().length + 2), "0")
@@ -17,16 +16,19 @@ export const MenuSub = ({ menCodi, menues, menCodiFilter }) => {
         .map(({ menCodi, menDesc, menProg, menTipo }, i) => (
           <React.Fragment key={i}>
             {menTipo.trim() === "P" ? (
-              <NavDropdown.Item href={menProg}>
+              <NavDropdown.Item href={menProg} key={menCodi}>
                 {menDesc.trim()}
               </NavDropdown.Item>
             ) : (
-              <DropdownSubmenu
-                title={menDesc.trim()}
-              >
+              <DropdownSubmenu title={menDesc.trim()}>
                 <MenuSub
+                  key={menCodi}
                   menCodi={menCodi}
-                  menues={menues}
+                  menues={menues.filter((menu) =>
+                    menu.menCodi.startsWith(
+                      menCodi.substr(0, menCodiFilter.length + 2)
+                    )
+                  )}
                   menCodiFilter={menCodi.substr(0, menCodiFilter.length + 2)}
                 />
               </DropdownSubmenu>

@@ -6,6 +6,7 @@ import {
   NavDropdown,
   ListGroup,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { MenuHeader } from "./menues/MenuHeader";
 
 import "react-bootstrap-submenu/dist/index.css";
@@ -15,7 +16,9 @@ import AuthContext from "../context/AuthContext";
 import imgEscudo from "../assets/images/escudo_muni.png";
 
 export default function Header() {
-  const { userName, logoutUser, menuSecundario, setMencodi, menuPrincipal } =
+  const navigate = useNavigate();
+
+  const { userName, logoutUser, menuSecundario, setMencodi, menuPrincipal, mencodiPrincipal : menCodiSelec } =
     useContext(AuthContext);
   const [show, setShow] = useState(false);
 
@@ -25,6 +28,7 @@ export default function Header() {
   const mostrarMenusSecundarios = async (e) => {
     setMencodi(e.target.id);
     handleClose();
+    navigate("/inicio");
   };
 
   return (
@@ -52,17 +56,6 @@ export default function Header() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              {/* <Nav.Link href="/contribuyente/ver_contribuyente">
-                {" "}
-                Contribuyente
-              </Nav.Link>
-              <NavDropdown title="Reportes" id="basic-nav-dropdown">
-                {menuSecundario.map(({ menCodi, menDesc, menProg }, i) => (
-                  <NavDropdown.Item key={menCodi} id={menCodi} href={menProg}>
-                    {menDesc}
-                  </NavDropdown.Item>
-                ))}
-              </NavDropdown> */}
 
               {menuSecundario
                 .filter((menu) => menu.menCodi.substr(4, 6) === "000000")
@@ -74,7 +67,7 @@ export default function Header() {
                         menDesc={menDesc}
                         menProg={menProg}
                         menTipo={menTipo}
-                        menues={menuSecundario}
+                        menues={menuSecundario.filter(menu => menu.menCodi.startsWith(menCodi.substr(0, 4)))}
                         menCodiFilter={menCodi.substr(0, 4)}
                       />
                     ) : menTipo === "P" ? (
@@ -82,18 +75,6 @@ export default function Header() {
                     ) : null}
                   </React.Fragment>
                 ))}
-
-              {/* <NavDropdownMenu title="Dropdown R" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <DropdownSubmenu href="#action/3.7" title="Text to show">
-                  <NavDropdown.Item href="#action/8.1">Sub 1</NavDropdown.Item>
-                  <DropdownSubmenu href="#action/3.7" title="Text to show">
-                    <NavDropdown.Item href="#action/9.1">
-                      Sub 2
-                    </NavDropdown.Item>
-                  </DropdownSubmenu>
-                </DropdownSubmenu>
-              </NavDropdownMenu> */}
             </Nav>
 
             <Nav className="justify-content-end">
@@ -119,19 +100,20 @@ export default function Header() {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <ListGroup variant="flush">
-            {menuPrincipal.map(({ menCodi, menDesc, menProg }, i) => (
+            {menuPrincipal.map(({ menCodi, menDesc, menProg, acceso }, i) => (
               <ListGroup.Item
-                action
+                action                
+                variant = {menCodi === menCodiSelec ? "dark" : ""}                
                 key={menCodi}
                 id={menCodi}
-                onClick={mostrarMenusSecundarios}
+                onClick={mostrarMenusSecundarios}                
               >
                 <i
                   className={
                     menProg.length > 0 ? menProg : "fas fa-bookmark me-3"
                   }
                 ></i>{" "}
-                {menDesc}
+                {menDesc} 
               </ListGroup.Item>
             ))}
           </ListGroup>

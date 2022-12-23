@@ -30,14 +30,14 @@ export default function LoginView() {
       setShowError(true);
     } else {
       await iniciaSesion(usuario.toUpperCase(), JSON.parse(localStorage.getItem("authTokens")), jwt_decode(localStorage.getItem("authTokens")));
-      navigate("/contribuyente/ver_contribuyente");
+      navigate("/inicio");
     }
   };
 
   return (
     <div>
       <div className="d-flex justify-content-center">
-        <div className="col-sm-12 col-md-3">
+        <div className="col-sm-12 col-md-6 col-lg-4">
           <div className="d-flex justify-content-center">
             <img className="mt-5" src={imgEscudo} alt="imagen login" />
           </div>

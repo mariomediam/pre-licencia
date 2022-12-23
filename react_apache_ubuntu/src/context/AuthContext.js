@@ -59,10 +59,6 @@ export const AuthProvider = ({ children }) => {
     await setUserName(pUserName.trim());
     setAuthTokens(pAuthTokens);
     setUser(pUser);
-    console.log("pUserName")
-    console.log(pUserName)
-    console.log("userName")
-    console.log(userName)
     await verMenusPrincipal(pUserName);
 
   }
@@ -133,6 +129,10 @@ export const AuthProvider = ({ children }) => {
           "varMPP",
           JSON.stringify({ ...varMPP, menuPrincipal: menuesPrincipalTmp })
         );
+
+        if (menuesPrincipalTmp.length > 0){
+          setMencodi(menuesPrincipalTmp[0]["menCodi"]);
+        }
     } else {
       setVarMPP({ ...varMPP, menuPrincipal: []})
     }
@@ -159,7 +159,8 @@ export const AuthProvider = ({ children }) => {
     setMencodi: setMencodi,
     menuPrincipal: varMPP.menuPrincipal ? varMPP.menuPrincipal : [],
     verMenusPrincipal: verMenusPrincipal,
-    iniciaSesion: iniciaSesion
+    iniciaSesion: iniciaSesion,
+    mencodiPrincipal :  varMPP.mencodiPrincipal ? varMPP.mencodiPrincipal : ""
   };
 
   return (
