@@ -26,9 +26,11 @@ import { Toast } from "../tools/PopMessage";
 
 const steps = ["Datos principales", "Domicilio", "Otros"];
 
-export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setShowForm }) => {
-
-  
+export const ContribuyenteEditComponent = ({
+  contribEdit,
+  setCodContribIni,
+  setShowForm,
+}) => {
   const { userName } = useContext(AuthContext);
   const [activeStep, setActiveStep] = useState(0);
   const [valores, setValores] = useState({
@@ -84,7 +86,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
     } else {
       // No errors! Put any logic here for the form submission!
       try {
-        if (activeStep === steps.length - 1) {          
+        if (activeStep === steps.length - 1) {
           await actualizarContribuyente();
           Toast.fire({
             icon: "success",
@@ -95,9 +97,8 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
           setTimeout(() => {
             setCodContribIni(contribEdit);
             setShowForm(1);
-          }, 1500)
-          
-        }        
+          }, 1500);
+        }
 
         if (isStepSkipped(activeStep)) {
           newSkipped = new Set(newSkipped.values());
@@ -106,14 +107,12 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
 
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         setSkipped(newSkipped);
-        
       } catch (error) {
         Swal.fire({
-          icon: 'error',
-          title: 'Error grabando contribuyente',
-          text: error.response.data.message
-        })
-        
+          icon: "error",
+          title: "Error grabando contribuyente",
+          text: error.response.data.message,
+        });
       }
     }
   };
@@ -141,7 +140,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
   //   setActiveStep(0);
   // };
 
-  const verContribuyente = async () => {    
+  const verContribuyente = async () => {
     if (contribEdit && contribEdit.length > 0) {
       const contribuyenteTmp = await obtenerContribuyenteCodigo(contribEdit);
       const documentosTmp = await obtenerContribuyenteDocumento(contribEdit);
@@ -192,17 +191,23 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
 
   const actualizarContribuyente = async () => {
     let objContribuyente = { ...valores };
-    
-    // ELIMINO DOBLES ESPACIOS EN BLANCO
-    objContribuyente.nombre = objContribuyente.nombre.replace(/\s+/g, ' ').trim();
 
-    if (objContribuyente.tipoContrib === "01"){
-      objContribuyente.apePat = objContribuyente.apePat.replace(/\s+/g, ' ').trim();
-      objContribuyente.apeMat = objContribuyente.apeMat.replace(/\s+/g, ' ').trim();      
-      objContribuyente.nombreCompleto = `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`
+    // ELIMINO DOBLES ESPACIOS EN BLANCO
+    objContribuyente.nombre = objContribuyente.nombre
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (objContribuyente.tipoContrib === "01") {
+      objContribuyente.apePat = objContribuyente.apePat
+        .replace(/\s+/g, " ")
+        .trim();
+      objContribuyente.apeMat = objContribuyente.apeMat
+        .replace(/\s+/g, " ")
+        .trim();
+      objContribuyente.nombreCompleto = `${objContribuyente.apePat.trim()}  ${objContribuyente.apeMat.trim()}-${objContribuyente.nombre.trim()}`;
     } else {
       objContribuyente.apePat = "";
-      objContribuyente.apeMat = "";  
+      objContribuyente.apeMat = "";
       objContribuyente.nombreCompleto = objContribuyente.nombre.trim();
     }
 
@@ -211,7 +216,6 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
       objContribuyente.codigoContrib,
       objContribuyente
     );
-   
   };
 
   // useEffect(() => {
@@ -280,7 +284,7 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
       // tipoContrib errors
       if (!tipoContrib || tipoContrib.trim() === "")
         newErrors.tipoContrib = "Seleccione tipo de contribuyente";
-      
+
       // apePat errors
       if (tipoContrib === "01") {
         if (!apePat || apePat.trim() === "") {
@@ -396,209 +400,221 @@ export const ContribuyenteEditComponent = ({ contribEdit, setCodContribIni, setS
   };
 
   return (
-    <Container>
-      <div className="ps-3">
+    <>
+      <div className="ps-2">
         <Breadcrumb>
-          <Breadcrumb.Item href="/contribuyente/ver_contribuyente">Contribuyente</Breadcrumb.Item>
+          <Breadcrumb.Item href="/contribuyente/ver_contribuyente">
+            Contribuyente
+          </Breadcrumb.Item>
           <Breadcrumb.Item active>Editar contribuyente</Breadcrumb.Item>
         </Breadcrumb>
       </div>
-      <div className="row justify-content-center">
-        <div
-          className="align-items-center p-2 col-sm-12 col-lg-8"
-          style={{ border: "0px solid black" }}
-        >
-          <div className="d-flex justify-content-end m-0 p-0">
-            <Button         
-            className="mb-0 pb-0"     
-              variant="outline-dark"
-              size="lg"
-              title="Cerrar"
-              onClick={() => window.location.reload(false)}
-            >
-              <h3 className="mb-0 pb-0"     >
-                <i className="fas fa-times"></i>
-              </h3>
-            </Button>
-          </div>
-          <h3 className="mt-0 text-center">
-            <i className="fas fa-user-edit me-1"></i>
-            Editar contribuyente
-          </h3>
+      <Container>
+        <div className="row justify-content-center">
+          <div
+            className="align-items-center p-2 col-sm-12 col-lg-8"
+            style={{ border: "0px solid black" }}
+          >
+            <div className="d-flex justify-content-end m-0 p-0">
+              <Button
+                className="mb-0 pb-0"
+                variant="outline-dark"
+                size="lg"
+                title="Cerrar"
+                onClick={() => window.location.reload(false)}
+              >
+                <h3 className="mb-0 pb-0">
+                  <i className="fas fa-times"></i>
+                </h3>
+              </Button>
+            </div>
+            <h3 className="mt-0 text-center">
+              <i className="fas fa-user-edit me-1"></i>
+              Editar contribuyente
+            </h3>
 
-          <Box sx={{ width: "100%" }} className="mt-4 mb-3">
-            <Stepper activeStep={activeStep}>
-              {steps.map((label, index) => {
-                const stepProps = {};
-                const labelProps = {};
-                if (isStepOptional(index)) {
-                  labelProps.optional = (
-                    <Typography variant="caption" key={index}>
-                      Optional
-                    </Typography>
+            <Box sx={{ width: "100%" }} className="mt-4 mb-3">
+              <Stepper activeStep={activeStep}>
+                {steps.map((label, index) => {
+                  const stepProps = {};
+                  const labelProps = {};
+                  if (isStepOptional(index)) {
+                    labelProps.optional = (
+                      <Typography variant="caption" key={index}>
+                        Optional
+                      </Typography>
+                    );
+                  }
+                  if (isStepSkipped(index)) {
+                    stepProps.completed = false;
+                  }
+                  return (
+                    <Step key={label} {...stepProps}>
+                      <StepLabel {...labelProps} key={index}>
+                        {label}
+                      </StepLabel>
+                    </Step>
                   );
-                }
-                if (isStepSkipped(index)) {
-                  stepProps.completed = false;
-                }
-                return (
-                  <Step key={label} {...stepProps}>
-                    <StepLabel {...labelProps} key={index}>
-                      {label}
-                    </StepLabel>
-                  </Step>
-                );
-              })}
-            </Stepper>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>
+                })}
+              </Stepper>
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  {/* <Typography sx={{ mt: 2, mb: 1 }}>
                   All steps completed - you&apos;re finished
                 </Typography>
                 <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                   <Box sx={{ flex: "1 1 auto" }} />
                   <Button onClick={handleReset}>Reset</Button>
                 </Box> */}
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>
-                  Step {activeStep + 1}
-                </Typography> */}
-                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                  <Button
-                    color="inherit"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    sx={{ mr: 1 }}
-                    variant="contained"
-                    size="small"
-                  >
-                    <i className="fas fa-chevron-left me-2"></i> Regresar
-                  </Button>
-                  <Box sx={{ flex: "1 1 auto" }} />
-                  {isStepOptional(activeStep) && (
-                    <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                      Skip
-                    </Button>
-                  )}
-
-                  <Button
-                    onClick={handleNext}
-                    variant="contained"
-                    size="small"
-                    color={
-                      activeStep === steps.length - 1 ? "primary" : "success"
-                    }
-                  >
-                    {activeStep === steps.length - 1 ? (
-                      <div className="m-0 p-0">
-                        <i className="far fa-save"></i> Grabar
-                      </div>
-                    ) : (
-                      <div>
-                        Siguiente<i className="fas fa-chevron-right ms-2"></i>
-                      </div>
-                    )}
-                  </Button>
-                </Box>
-              </React.Fragment>
-            )}
-          </Box>
-          <hr/>
-          {activeStep === 0 ? (
-            <div>
-              <ContribEditDatPriComponent
-                valores={valores}
-                setField={setField}
-                tipoContribuyente={tipoContribuyente}
-                key={valores.codigoContrib}
-                errors={errors}
-              />
-            </div>
-          ) : (
-            <div>
-              {activeStep === 1 ? (
-                <div>
-                  <ContribEditDomiciComponent
-                    valores={valores}
-                    setField={setField}
-                    tipoContribuyente={tipoContribuyente}
-                    key={valores.codigoContrib}
-                    errors={errors}
-                  />
-                </div>
+                </React.Fragment>
               ) : (
-                <div>
-                  <ContribEditOtrosComponent
-                    valores={valores}
-                    setField={setField}
-                    key={valores.codigoContrib}
-                    errors={errors}
-                  />
-                </div>
+                <React.Fragment>
+                  {/* <Typography sx={{ mt: 2, mb: 1 }}>
+                  Step {activeStep + 1}
+                </Typography> */}
+                  <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                    <Button
+                      color="inherit"
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      sx={{ mr: 1 }}
+                      variant="contained"
+                      size="small"
+                    >
+                      <i className="fas fa-chevron-left me-2"></i> Regresar
+                    </Button>
+                    <Box sx={{ flex: "1 1 auto" }} />
+                    {isStepOptional(activeStep) && (
+                      <Button
+                        color="inherit"
+                        onClick={handleSkip}
+                        sx={{ mr: 1 }}
+                      >
+                        Skip
+                      </Button>
+                    )}
+
+                    <Button
+                      onClick={handleNext}
+                      variant="contained"
+                      size="small"
+                      color={
+                        activeStep === steps.length - 1 ? "primary" : "success"
+                      }
+                    >
+                      {activeStep === steps.length - 1 ? (
+                        <div className="m-0 p-0">
+                          <i className="far fa-save"></i> Grabar
+                        </div>
+                      ) : (
+                        <div>
+                          Siguiente<i className="fas fa-chevron-right ms-2"></i>
+                        </div>
+                      )}
+                    </Button>
+                  </Box>
+                </React.Fragment>
               )}
-            </div>
-          )}
-          <hr/>
-          <Box sx={{ width: "100%" }} className="mt-0 mb-3">
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>
+            </Box>
+            <hr />
+            {activeStep === 0 ? (
+              <div>
+                <ContribEditDatPriComponent
+                  valores={valores}
+                  setField={setField}
+                  tipoContribuyente={tipoContribuyente}
+                  key={valores.codigoContrib}
+                  errors={errors}
+                />
+              </div>
+            ) : (
+              <div>
+                {activeStep === 1 ? (
+                  <div>
+                    <ContribEditDomiciComponent
+                      valores={valores}
+                      setField={setField}
+                      tipoContribuyente={tipoContribuyente}
+                      key={valores.codigoContrib}
+                      errors={errors}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <ContribEditOtrosComponent
+                      valores={valores}
+                      setField={setField}
+                      key={valores.codigoContrib}
+                      errors={errors}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+            <hr />
+            <Box sx={{ width: "100%" }} className="mt-0 mb-3">
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  {/* <Typography sx={{ mt: 2, mb: 1 }}>
                   All steps completed - you&apos;re finished
                 </Typography>
                 <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                   <Box sx={{ flex: "1 1 auto" }} />
                   <Button onClick={handleReset}>Reset</Button>
                 </Box> */}
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {/* <Typography sx={{ mt: 2, mb: 1 }}>
                   Step {activeStep + 1}
                 </Typography> */}
-                <Box sx={{ display: "flex", flexDirection: "row", pt: 0 }}>
-                  <Button
-                    color="inherit"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    sx={{ mr: 1 }}
-                    variant="contained"
-                    size="small"
-                  >
-                    <i className="fas fa-chevron-left me-2"></i> Regresar
-                  </Button>
-                  <Box sx={{ flex: "1 1 auto" }} />
-                  {isStepOptional(activeStep) && (
-                    <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                      Skip
+                  <Box sx={{ display: "flex", flexDirection: "row", pt: 0 }}>
+                    <Button
+                      color="inherit"
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      sx={{ mr: 1 }}
+                      variant="contained"
+                      size="small"
+                    >
+                      <i className="fas fa-chevron-left me-2"></i> Regresar
                     </Button>
-                  )}
-
-                  <Button
-                    onClick={handleNext}
-                    variant="contained"
-                    size="small"
-                    color={
-                      activeStep === steps.length - 1 ? "primary" : "success"
-                    }
-                  >
-                    {activeStep === steps.length - 1 ? (
-                      <div className="m-0 p-0">
-                        <i className="far fa-save"></i> Grabar
-                      </div>
-                    ) : (
-                      <div>
-                        Siguiente<i className="fas fa-chevron-right ms-2"></i>
-                      </div>
+                    <Box sx={{ flex: "1 1 auto" }} />
+                    {isStepOptional(activeStep) && (
+                      <Button
+                        color="inherit"
+                        onClick={handleSkip}
+                        sx={{ mr: 1 }}
+                      >
+                        Skip
+                      </Button>
                     )}
-                  </Button>
-                </Box>
-              </React.Fragment>
-            )}
-          </Box>
+
+                    <Button
+                      onClick={handleNext}
+                      variant="contained"
+                      size="small"
+                      color={
+                        activeStep === steps.length - 1 ? "primary" : "success"
+                      }
+                    >
+                      {activeStep === steps.length - 1 ? (
+                        <div className="m-0 p-0">
+                          <i className="far fa-save"></i> Grabar
+                        </div>
+                      ) : (
+                        <div>
+                          Siguiente<i className="fas fa-chevron-right ms-2"></i>
+                        </div>
+                      )}
+                    </Button>
+                  </Box>
+                </React.Fragment>
+              )}
+            </Box>
+          </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 };
