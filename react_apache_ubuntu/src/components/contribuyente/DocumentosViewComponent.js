@@ -5,10 +5,13 @@ import {
   obtenerContribuyenteDirElect,
   obtenerContribuyenteNacion,
 } from "../../services/contribuyenteService";
+import { Button } from "react-bootstrap";
 
 export const DocumentosViewComponent = ({
   codigoContrib,
   codigoContribSelecc,
+  setShowForm,
+  setContribEdit,
 }) => {
   const [documentos, setDocumentos] = useState([]);
   const [telefonos, setTelefonos] = useState([]);
@@ -20,7 +23,7 @@ export const DocumentosViewComponent = ({
       codigoContrib &&
       codigoContribSelecc &&
       codigoContrib === codigoContribSelecc
-    ) {      
+    ) {
       const documentosTmp = await obtenerContribuyenteDocumento(
         codigoContribSelecc
       );
@@ -46,20 +49,37 @@ export const DocumentosViewComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codigoContribSelecc]);
 
+  const mostrarFormAgregarDocumento = (e) => {
+    setShowForm(4);
+    setContribEdit(e.target.id.substr(3));
+  };
+
   return (
     <div className="ps-2">
-      {documentos.length > 0 && (
-        <div>
-          <p className="text-muted pb-0 mb-0 mt-0">
-            <small className="mb-0">Documentos</small>
-          </p>
-          {documentos.map((docum, i) => (
-            <div key={i}>
-              <small>{docum.Descripción}</small> {docum.Número}
-            </div>
-          ))}
-        </div>
-      )}
+      <div>
+        <p className="text-muted pb-0 mb-0 mt-0">
+          <small className="mb-0">Documentos</small>
+          <Button
+            className="ms-2"
+            variant="outline-secondary"
+            size="sm"
+            title="Agregar documento"
+            onClick={mostrarFormAgregarDocumento}
+            id={"be_" + codigoContribSelecc.trim()}
+          >
+            <i className="fas fa-plus" id={"ie_" + codigoContribSelecc.trim()}></i>
+          </Button>
+        </p>
+        {documentos.length > 0 && (
+          <>
+            {documentos.map((docum, i) => (
+              <div key={i}>
+                <small>{docum.Descripción}</small> {docum.Número}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
 
       {telefonos.length > 0 && (
         <div>

@@ -199,6 +199,8 @@ class BuscarContribuyenteScrollComponent extends React.Component {
     this.state.setContribEdit(e.target.id.substr(3));
   };
 
+  
+
   render() {
     return (
       <div>
@@ -314,6 +316,9 @@ class BuscarContribuyenteScrollComponent extends React.Component {
                                     codigoContribSelecc={
                                       this.state.codigoContribSelecc
                                     }
+                                    setShowForm={this.state.setShowForm}
+                                    setContribEdit = {this.props.setContribEdit}
+
                                   />
                                 </Tab>
                               </Tabs>
