@@ -307,14 +307,12 @@ const updateContribuyenteAll = async (codigoContrib, contribuyenteAll) => {
   let api = UseAxios();
 
   try {
-
-    
     const headers = {
       "Content-Type": "application/json",
     };
 
     let {
-      data: { content }
+      data: { content },
     } = await api.post(
       `${URL}/actualizar-all/${codigoContrib}`,
       contribuyenteAll,
@@ -332,14 +330,12 @@ const insertContribuyenteAll = async (codigoContrib, contribuyenteAll) => {
   let api = UseAxios();
 
   try {
-
-    
     const headers = {
       "Content-Type": "application/json",
     };
 
     let {
-      data: { content }
+      data: { content },
     } = await api.post(
       `${URL}/insertar-all/${codigoContrib}`,
       contribuyenteAll,
@@ -395,7 +391,7 @@ const verificaNombreContribuyente = async (tipoContrib, nombreContrib) => {
 
     let credenciales = {
       tipoContrib: tipoContrib,
-      nombreCompleto: nombreContrib
+      nombreCompleto: nombreContrib,
     };
 
     const headers = {
@@ -406,13 +402,9 @@ const verificaNombreContribuyente = async (tipoContrib, nombreContrib) => {
 
     let {
       data: { content },
-    } = await api.post(
-      `${URLValidaNombre}`,
-      credenciales,
-      {
-        headers,
-      }
-    );
+    } = await api.post(`${URLValidaNombre}`, credenciales, {
+      headers,
+    });
 
     return content;
   } catch (error) {
@@ -420,9 +412,36 @@ const verificaNombreContribuyente = async (tipoContrib, nombreContrib) => {
   }
 };
 
+const AgregarContribDocumento = async (
+  codigoContrib,
+  codigoDocum,
+  numeroDocum
+) => {
+  let api = UseAxios();
 
+  const credenciales = {
+    codContrib: codigoContrib,
+    codDocum: codigoDocum,
+    numDocum: numeroDocum,
+  };
 
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    
+    let URLAgregaContribDocumento = `${URL}/insertar-documento`;
+    let {
+      data: { content },
+    } = await api.post(`${URLAgregaContribDocumento}`, credenciales, {
+      headers,
+    });
 
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export {
   obtenerContribuyentePagination,
@@ -445,4 +464,5 @@ export {
   consultarContribuyenteCodigo,
   obtenerCorrelativoCodContribuyente,
   verificaNombreContribuyente,
+  AgregarContribDocumento,
 };

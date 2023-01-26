@@ -228,9 +228,10 @@ export const ContribuyenteAddComponent = ({
 
   const setField = (field, value) => {
     if (typeof field === "string") {
+      
       setValores({
         ...valores,
-        [field]: value,
+        [field]: typeof value === "string" ? value.toUpperCase() : value,
       });
       // Check and see if errors exist, and remove them from the error object:
       if (!!errors[field])

@@ -42,7 +42,7 @@ export default function BuscarContribuyentesComponent({
 
     setValidated(!inputFiltro.current.checkValidity());
     if (inputFiltro.current) {
-      valor = inputFiltro.current.value;
+      valor = inputFiltro.current.value.trim();
       if (checkDocumento.current.checked) {
         valor = `${selectTipoDoc.current.value}-${valor.trim()}`;
       }

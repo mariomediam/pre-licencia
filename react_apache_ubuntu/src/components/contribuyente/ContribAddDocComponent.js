@@ -15,8 +15,10 @@ import {
   obtenerContribuyenteDocumento,
   obtenerContribuyenteCodigo,
   obtenerDocumentoTipoNro,
+  AgregarContribDocumento,
 } from "../../services/contribuyenteService";
 import Swal from "sweetalert2";
+import { Toast } from "../tools/PopMessage";
 
 export const ContribAddDocComponent = ({
   contribEdit,
@@ -124,7 +126,7 @@ export const ContribAddDocComponent = ({
           (tipoDoc) => tipoDoc.C003Cod_Doc === selectTipoDoc.current.value
         )
         .shift();
-
+      
       if (
         objDocSelect.I003Longitud !== 0 &&
         objDocSelect.I003Longitud !== inputNroDoc.current.value.trim().length
@@ -132,19 +134,20 @@ export const ContribAddDocComponent = ({
         setErrorDocumento(
           `El documento debe tener una longitud de ${objDocSelect.I003Longitud} caracteres.`
         );
-      }
-
-      else {
+      } else {
         const documentosTipoNro = await obtenerDocumentoTipoNro(
           selectTipoDoc.current.value,
           inputNroDoc.current.value.trim()
         );
-    
-        if (documentosTipoNro.length > 0) {
 
-          Swal.fire({
+        let isConfirmed = true;
+
+        if (documentosTipoNro.length > 0) {
+          await Swal.fire({
             // title: `El documento ya se encuentra registrado en el contribuyente ${documentosTipoNro[0].C002Cod_Cont.trim()} - ${documentosTipoNro[0].C001Nombre.trim()}.`,
-            text: `El documento ya se encuentra registrado en el contribuyente ${documentosTipoNro[0].C002Cod_Cont.trim()} - ${documentosTipoNro[0].C001Nombre.trim()}. ¿Desea trasladarlo al contribuyente ${valores.identificacion}?`,
+            text: `El ${objDocSelect.C003Nombre.trim()} ${inputNroDoc.current.value.trim()} ya se encuentra registrado en el contribuyente ${documentosTipoNro[0].C002Cod_Cont.trim()} - ${documentosTipoNro[0].C001Nombre.trim()}. ¿Desea trasladarlo al contribuyente ${
+              valores.identificacion
+            }?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -153,14 +156,40 @@ export const ContribAddDocComponent = ({
             cancelButtonText: "No",
             reverseButtons: true,
           }).then((result) => {
-            if (result.isConfirmed) {
-              alert("se graba")
+            if (result.isDismissed) {
+              isConfirmed = false;
+              return false;
             }
           });
         }
+
+        if (isConfirmed) {
+          try {
+            AgregarContribDocumento(
+              contribEdit,
+              selectTipoDoc.current.value,
+              inputNroDoc.current.value.trim()
+            );
+            Toast.fire({
+              icon: "success",
+              title: "El documento se agrego con éxito",
+              background: "#F4F6F6",
+              timer: 1500,
+            });
+            setTimeout(() => {
+              setCodContribIni(contribEdit);
+              setShowForm(1);
+            }, 1500);
+          } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Error grabando documento",
+              text: error.response.data.message,
+            });
+          }
+        }
       }
     }
-
   };
 
   const inputKeyUp = (event) => {
