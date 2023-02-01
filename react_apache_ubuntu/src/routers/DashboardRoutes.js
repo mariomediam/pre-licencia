@@ -5,16 +5,14 @@ import PreLicenciaEditView from "../views/licenciaFuncionamiento/PreLicenciaEdit
 import { ViewPdf } from "../utils/ViewPdf";
 import { ContribuyentesView } from "../views/contribuyentes/ContribuyentesView";
 import { DefaultView } from "../views/DefaultView";
+import { SolicitudCiiuView } from "../views/licenciaFuncionamiento/SolicitudCiiuView";
 
 export const DashboardRoutes = () => {
   return (
     <>
       <div>
         <Routes>
-          <Route
-            path="/inicio"
-            element={<DefaultView />}
-          />
+          <Route path="/inicio" element={<DefaultView />} />
           <Route
             path="/contribuyente/ver_contribuyente"
             element={<ContribuyentesView />}
@@ -26,6 +24,7 @@ export const DashboardRoutes = () => {
             path="/pre_licencia_ver/:precalId"
             element={<PreLicenciaEditView />}
           />
+          <Route path="/solicitud/agregar_ciiu" element={<SolicitudCiiuView />} />
           {/* <Route path="/contribuyente/ver_contribuyente/:codContribIni" element={<ContribuyentesView />} /> */}
         </Routes>
       </div>

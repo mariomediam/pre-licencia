@@ -256,7 +256,7 @@ export default function BuscarContribuyentesComponent({
             </div>
           </div>
         </Container>
-      ) : null}
+      ) : null}     
     </>
   );
 }
