@@ -17,6 +17,7 @@ import {
   insertContribuyenteAll,
   verificaNombreContribuyente,
 } from "../../services/contribuyenteService";
+import { obtenerConsultaReniec } from "../../services/consultaReniecService";
 import { ContribAddTipoContComponent } from "./ContribAddTipoContComponent";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
@@ -67,7 +68,12 @@ export const ContribuyenteAddComponent = ({
     telefonos: [],
     emails: [],
     naciones: [],
+    foto: "",
+    resultReniec: {},
   });
+
+  let consultaReniec = undefined;
+
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
   const [errors, setErrors] = useState({});
@@ -134,6 +140,24 @@ export const ContribuyenteAddComponent = ({
             };
           }
 
+          if (consultaReniec) {
+            setDocumNacionNew = {
+              ...setDocumNacionNew,
+              resultReniec: { coResultado: consultaReniec.coResultado, deResultado: consultaReniec.deResultado}
+            }
+
+            if (consultaReniec.coResultado === "0000"){
+              setDocumNacionNew = { 
+                ...setDocumNacionNew,
+                apePat: consultaReniec.datosPersona.apPrimer,
+                apeMat: consultaReniec.datosPersona.apSegundo,
+                nombre: consultaReniec.datosPersona.prenombres,
+                direccAdic: `${consultaReniec.datosPersona.direccion} ${consultaReniec.datosPersona.ubigeo}`,
+                foto: consultaReniec.datosPersona.foto,
+                observ: `ESTADO CIVIL: ${consultaReniec.datosPersona.estadoCivil}, RESTRICCIÓN: ${consultaReniec.datosPersona.restriccion}`,
+              };
+            }
+          }
           setField(setDocumNacionNew);
         }
 
@@ -228,7 +252,6 @@ export const ContribuyenteAddComponent = ({
 
   const setField = (field, value) => {
     if (typeof field === "string") {
-      
       setValores({
         ...valores,
         [field]: typeof value === "string" ? value.toUpperCase() : value,
@@ -308,6 +331,21 @@ export const ContribuyenteAddComponent = ({
               if (validaDocum.length > 0) {
                 const { C002Cod_Cont, C001Nombre } = validaDocum.shift();
                 newErrors.codigoContrib = `Ya existe el documento: ${codigoContrib.trim()} para el contribuyente: ${C002Cod_Cont} ${C001Nombre.trim()}`;
+              } else {
+                if (tipoDocum === "01") {
+                  const { coResultado, deResultado, datosPersona } =
+                    await obtenerConsultaReniec(codigoContrib);
+
+                  if (coResultado === "0999") {
+                    newErrors.codigoContrib = `RENIEC: ${deResultado} `;
+                  } else {
+                    consultaReniec = {
+                      coResultado,
+                      deResultado,
+                      datosPersona,
+                    };
+                  }
+                }
               }
             }
           }

@@ -62,6 +62,8 @@ export const ContribuyenteEditComponent = ({
     telefonos: [],
     emails: [],
     naciones: [],
+    foto: "",
+    resultReniec: {}
   });
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
