@@ -110,11 +110,7 @@ export const ContribEditDatPriComponent = ({
             {valores.tipoContrib === "01" && valores.tipoDocum === "01" && (
               <div className="d-flex justify-content-center mt-3 pt-3">
                 {valores.resultReniec.coResultado === "0000" ? (
-                  <img
-                    
-                    src={`data:image/jpeg;base64,${valores.foto}`}
-                    alt=""
-                  />
+                  <img src={`data:image/jpeg;base64,${valores.foto}`} alt="" />
                 ) : (
                   <Alert variant="warning">
                     {valores.resultReniec.deResultado}
@@ -122,6 +118,14 @@ export const ContribEditDatPriComponent = ({
                 )}
               </div>
             )}
+
+            {valores.tipoContrib !== "01" &&
+              valores.tipoDocum === "05" &&
+              valores.resultSunat.esActivo === false && (
+                <div className="d-flex justify-content-center mt-3 pt-3">
+                  <Alert variant="warning">RUC inactivo</Alert>
+                </div>
+              )}
           </Col>
         </Row>
       </Container>

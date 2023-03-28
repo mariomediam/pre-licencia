@@ -18,6 +18,7 @@ import {
   verificaNombreContribuyente,
 } from "../../services/contribuyenteService";
 import { obtenerConsultaReniec } from "../../services/consultaReniecService";
+import { obtenerConsultaSunat } from "../../services/consultaSunatService";
 import { ContribAddTipoContComponent } from "./ContribAddTipoContComponent";
 import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
@@ -70,9 +71,11 @@ export const ContribuyenteAddComponent = ({
     naciones: [],
     foto: "",
     resultReniec: {},
+    resultSunat: {},
   });
-
+  
   let consultaReniec = undefined;
+  let consultaSunat = undefined;
 
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
@@ -97,9 +100,13 @@ export const ContribuyenteAddComponent = ({
     } else {
       // No errors! Put any logic here for the form submission!
       try {
+        
+        
+        
         if (activeStep === 0) {
           // GENERA DOCUMENTO Y NACIONALIDAD
           let setDocumNacionNew = {};
+
           let nombreDocum = "",
             nroDocum = "";
           if (valores.tipoDocum === "01") {
@@ -143,11 +150,14 @@ export const ContribuyenteAddComponent = ({
           if (consultaReniec) {
             setDocumNacionNew = {
               ...setDocumNacionNew,
-              resultReniec: { coResultado: consultaReniec.coResultado, deResultado: consultaReniec.deResultado}
-            }
+              resultReniec: {
+                coResultado: consultaReniec.coResultado,
+                deResultado: consultaReniec.deResultado,
+              },
+            };
 
-            if (consultaReniec.coResultado === "0000"){
-              setDocumNacionNew = { 
+            if (consultaReniec.coResultado === "0000") {
+              setDocumNacionNew = {
                 ...setDocumNacionNew,
                 apePat: consultaReniec.datosPersona.apPrimer,
                 apeMat: consultaReniec.datosPersona.apSegundo,
@@ -158,6 +168,28 @@ export const ContribuyenteAddComponent = ({
               };
             }
           }
+
+          if (consultaSunat) {
+            setDocumNacionNew = {
+              resultSunat: {
+                existe: consultaSunat.existe,
+                esActivo: consultaSunat.esActivo,
+                esHabido: consultaSunat.esHabido,
+              },
+            };
+
+            if (consultaSunat.existe) {
+              setDocumNacionNew = {
+                ...setDocumNacionNew,
+                nombre: consultaSunat.ddp_nombre.trim(),
+                direccAdic: `${consultaSunat.ddp_nomzon.trim()} ${consultaSunat.desc_tipvia.trim()} ${consultaSunat.ddp_nomvia.trim()} ${consultaSunat.ddp_numer1
+                  .toString()
+                  .trim()} ${consultaSunat.ddp_refer1.trim()} ${consultaSunat.desc_dep.trim()}/${consultaSunat.desc_prov.trim()}/${consultaSunat.desc_dist.trim()}`,
+                observ: `TIPO DE CONTRIBUYENTE: ${consultaSunat.desc_identi.trim()}, DESCRIPCION: ${consultaSunat.desc_tpoemp.trim()}`,
+              };
+            }
+          }
+
           setField(setDocumNacionNew);
         }
 
@@ -186,9 +218,9 @@ export const ContribuyenteAddComponent = ({
         Swal.fire({
           icon: "error",
           title: "Error grabando contribuyente",
-          text: error.response.data.message,
+          text: error,
         });
-      }
+      } 
     }
   };
 
@@ -333,17 +365,41 @@ export const ContribuyenteAddComponent = ({
                 newErrors.codigoContrib = `Ya existe el documento: ${codigoContrib.trim()} para el contribuyente: ${C002Cod_Cont} ${C001Nombre.trim()}`;
               } else {
                 if (tipoDocum === "01") {
-                  const { coResultado, deResultado, datosPersona } =
-                    await obtenerConsultaReniec(codigoContrib);
+                  try {
+                    const { coResultado, deResultado, datosPersona } =
+                      await obtenerConsultaReniec(codigoContrib);
 
-                  if (coResultado === "0999") {
-                    newErrors.codigoContrib = `RENIEC: ${deResultado} `;
-                  } else {
-                    consultaReniec = {
-                      coResultado,
-                      deResultado,
-                      datosPersona,
-                    };
+                    if (coResultado === "0999") {
+                      newErrors.codigoContrib = `RENIEC: ${deResultado} `;
+                    } else {
+                      consultaReniec = {
+                        coResultado,
+                        deResultado,
+                        datosPersona,
+                      };
+                    }
+                  } catch (error) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Error validando DNI",
+                      text: error,
+                    });
+                  }
+                } else {
+                  if (tipoDocum === "05") {
+                    try {
+                      consultaSunat = await obtenerConsultaSunat(codigoContrib);
+
+                      if (!consultaSunat.existe) {
+                        newErrors.codigoContrib = "SUNAT: RUC no existe";
+                      }
+                    } catch (error) {
+                      Swal.fire({
+                        icon: "error",
+                        title: "No se pudo validar RUC",
+                        text: error,
+                      });
+                    }
                   }
                 }
               }
