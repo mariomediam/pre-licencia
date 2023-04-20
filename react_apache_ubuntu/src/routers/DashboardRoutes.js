@@ -6,6 +6,7 @@ import { ViewPdf } from "../utils/ViewPdf";
 import { ContribuyentesView } from "../views/contribuyentes/ContribuyentesView";
 import { DefaultView } from "../views/DefaultView";
 import { SolicitudCiiuView } from "../views/licenciaFuncionamiento/SolicitudCiiuView";
+import { GenerarBoletaView } from "../views/rrhh";
 
 export const DashboardRoutes = () => {
   return (
@@ -24,7 +25,8 @@ export const DashboardRoutes = () => {
             path="/pre_licencia_ver/:precalId"
             element={<PreLicenciaEditView />}
           />
-          <Route path="/solicitud/agregar_ciiu" element={<SolicitudCiiuView />} />
+          <Route path="/solicitud/agregar_ciiu" element={<SolicitudCiiuView />} />          
+          <Route path="/rrhh/remuneraciones/generar_boleta" element={<GenerarBoletaView />} />
           {/* <Route path="/contribuyente/ver_contribuyente/:codContribIni" element={<ContribuyentesView />} /> */}
         </Routes>
       </div>
