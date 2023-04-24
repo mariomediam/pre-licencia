@@ -1,8 +1,10 @@
+
 import { useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { Mes } from "../../../../utils";
 import { ListaBoletasGeneradas } from "./ListaBoletasGeneradas";
 import { AniosPlanillas } from "../../../../views/rrhh";
+import { useParams } from "react-router-dom";
 
 const anioActual = () => {
   const fecha = new Date();
@@ -15,8 +17,11 @@ const mesActual = () => {
 };
 
 export const GenerarBoletaComponent = () => {
-  const [selectedMonth, setSelectedMonth] = useState(mesActual());
-  const [selectedAnio, setSelectedAnio] = useState(anioActual());
+  
+  const { anio = anioActual(), mes  = mesActual()} = useParams();
+
+  const [selectedAnio, setSelectedAnio] = useState(anio);
+  const [selectedMonth, setSelectedMonth] = useState(mes);
 
   return (
     <>
