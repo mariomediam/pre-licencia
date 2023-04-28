@@ -35,7 +35,7 @@ export const ListaBoletasGeneradas = ({ anio = 0, mes = 0 }) => {
             </small>
 
             <div style={{ border: "1px solid lightgrey" }}>
-              <Table hover responsive className="caption-top mb-1">
+              <Table hover responsive className="caption-top mb-1 animate__animated animate__fadeIn animate__faster">
                 <thead>
                   <tr className="color-header1 text-white">
                     <th className="text-center align-middle m-0 p-0">
