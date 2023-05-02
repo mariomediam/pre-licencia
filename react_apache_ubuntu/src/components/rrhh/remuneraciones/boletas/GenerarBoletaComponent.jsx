@@ -1,10 +1,11 @@
 
-import { useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { Mes } from "../../../../utils";
 import { ListaBoletasGeneradas } from "./ListaBoletasGeneradas";
 import { AniosPlanillas } from "../../../../views/rrhh";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 
 const anioActual = () => {
   const fecha = new Date();
@@ -17,12 +18,23 @@ const mesActual = () => {
 };
 
 export const GenerarBoletaComponent = () => {
-  
-  const { anio = anioActual(), mes  = mesActual()} = useParams();
 
+  const navigate = useNavigate();
+  
+  let { anio = anioActual(), mes = mesActual() } = useParams();
+   
   const [selectedAnio, setSelectedAnio] = useState(anio);
   const [selectedMonth, setSelectedMonth] = useState(mes);
 
+  const memoizedListaBoletasGeneradas = useMemo(() => {
+    return <ListaBoletasGeneradas anio={selectedAnio} mes={selectedMonth} />;
+  }, [selectedAnio, selectedMonth]);
+
+  useEffect(() => {
+    navigate(`/rrhh/remuneraciones/generar_boleta/${selectedAnio}/${selectedMonth}`);
+  }, [navigate, selectedAnio, selectedMonth]);
+
+ 
   return (
     <>
       <div className="container">
@@ -57,8 +69,8 @@ export const GenerarBoletaComponent = () => {
           </div>
         </div>
       </div>
-      <hr />
-      <ListaBoletasGeneradas anio={selectedAnio} mes={selectedMonth} />
+      <hr />      
+      {memoizedListaBoletasGeneradas}
     </>
   );
 };

@@ -2,6 +2,7 @@ import { Button, Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 
 import { transformarFecha, obtenerNombreMes } from "../../../../utils/varios";
+import { generaBoletasPdf } from "../../../../services/rrhhService";
 
 export const CellGenerarBoleta = ({
   d_ano,
@@ -16,8 +17,10 @@ export const CellGenerarBoleta = ({
   setEstadoPlanillaBoleta,
 }) => {
   const onClicGenerarBoletas = async () => {
-    Swal.fire({
-      title: `¿Seguro de generar boletas de la planilla ${obtenerNombreMes(d_mes)} ${d_ano} - ${n_tippla_nombre} ${c_plani_nro}?`,
+    const result = await Swal.fire({
+      title: `¿Seguro de generar boletas de la planilla ${obtenerNombreMes(
+        d_mes
+      )} ${d_ano} - ${n_tippla_nombre} ${c_plani_nro}?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -25,12 +28,25 @@ export const CellGenerarBoleta = ({
       confirmButtonText: "Si",
       cancelButtonText: "No",
       reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Aqui llamar procedimiento de Marcos para generar boletas
-        setEstadoPlanillaBoleta((value) => ({ ...value, f_plani_estado: 0 }));
-      }
     });
+
+    if (result.isConfirmed) {
+      // Aqui llamar procedimiento de Marcos para generar boletas
+      setEstadoPlanillaBoleta((value) => ({ ...value, f_plani_estado: 0 }));
+      try {
+        await generaBoletasPdf(d_ano, d_mes, c_tippla_id, c_plani_nro);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error generando boletas",
+          text: error.response.data.message,
+        });
+        setEstadoPlanillaBoleta((value) => ({
+          ...value,
+          f_plani_estado: null,
+        }));
+      }
+    }
   };
 
   if (actual_estado === 0) {

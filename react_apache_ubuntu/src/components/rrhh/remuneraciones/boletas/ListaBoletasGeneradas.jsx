@@ -8,15 +8,17 @@ import { obtenerNombreMes } from "../../../../utils/varios";
 import { ItemBoletasGeneradas } from "./ItemBoletasGeneradas";
 
 export const ListaBoletasGeneradas = ({ anio = 0, mes = 0 }) => {
+
   const dispatch = useDispatch();
   const { boletasGeneradas, isLoading } = useSelector(
     (state) => state.boletasGeneradas
-  );
-
-  useEffect(() => {    
-    dispatch(getBoletasGeneradas(anio, mes));
-  }, [dispatch, anio, mes]);
-
+    );
+    
+    useEffect(() => {    
+      dispatch(getBoletasGeneradas(anio, mes));
+    }, [dispatch, anio, mes]);
+    
+    console.log(`se ejecuta el componente ListaBoletasGeneradas con anio ${anio} y mes ${mes}`);
   return (
     <div className="row justify-content-center">
       <div className="col-sm-12 col-lg-10 col-xl-6">

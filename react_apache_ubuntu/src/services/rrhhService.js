@@ -55,4 +55,37 @@ const obtenerPlanillaDetalle = async (anio, mes, tipo, numero) => {
     throw error;
   }
 };
-export { obtenerPlanillaBoleta, obtenerPlanillaDetalle };
+
+
+
+const generaBoletasPdf = async (anio, mes, tipo, numero) => {
+  try {
+    let api = UseAxios();
+
+    let credenciales = {
+     anio,
+     mes,
+      tipo,
+      numero,
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let URLGeneraBoletas = `${URL}/genera-boletas/`;
+
+    let {
+      data: { message },
+    } = await api.post(`${URLGeneraBoletas}`, credenciales, {
+      headers,
+    });
+
+    return message;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf };

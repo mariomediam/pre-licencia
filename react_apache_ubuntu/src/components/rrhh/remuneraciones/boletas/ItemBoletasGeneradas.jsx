@@ -49,7 +49,7 @@ export const ItemBoletasGeneradas = ({
         c_plani_nro
       );
 
-      if (planillaBoleta.f_plani_estado === 1) {
+      if (planillaBoleta.f_plani_estado !== 0) {
         setEstadoPlanillaBoleta({
           f_plani_estado: planillaBoleta.f_plani_estado,
           n_user_insert: planillaBoleta.n_user_insert,
