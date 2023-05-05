@@ -6,7 +6,7 @@ import { ViewPdf } from "../utils/ViewPdf";
 import { ContribuyentesView } from "../views/contribuyentes/ContribuyentesView";
 import { DefaultView } from "../views/DefaultView";
 import { SolicitudCiiuView } from "../views/licenciaFuncionamiento/SolicitudCiiuView";
-import { DetallePlanillaView, GenerarBoletaView } from "../views/rrhh";
+import { DetallePlanillaView, GenerarBoletaView, EnviarBoletaView } from "../views/rrhh";
 
 export const DashboardRoutes = () => {
   return (
@@ -37,6 +37,10 @@ export const DashboardRoutes = () => {
             path="/rrhh/remuneraciones/detalle_planilla/:anio/:mes/:tipo/:numero"
             element={<DetallePlanillaView />}
           />
+          <Route path="/rrhh/remuneraciones/enviar_boleta/">
+            <Route path=":anio/:mes" element={<EnviarBoletaView />} />
+            <Route path="" element={<EnviarBoletaView />} />
+          </Route>
         </Routes>
       </div>
     </>

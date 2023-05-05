@@ -3,22 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { Table } from "react-bootstrap";
 
 import Spinner from "react-bootstrap/Spinner";
-import { getBoletasGeneradas } from "../../../../store/slices/remuneraciones";
+import { getPlanillaBoletaYaGeneradas } from "../../../../store/slices/remuneraciones";
 import { obtenerNombreMes } from "../../../../utils/varios";
-import { ItemBoletasGeneradas } from "./ItemBoletasGeneradas";
+import { ItemBoletasEnviadas } from "./ItemBoletasEnviadas";
 
-export const ListaBoletasGeneradas = ({ anio = 0, mes = 0 }) => {
+export const ListaBoletasEnviadas = ({ anio = 0, mes = 0 }) => {
 
   const dispatch = useDispatch();
-  const { boletasGeneradas, isLoading } = useSelector(
+  const { boletasGeneradas = [], isLoading } = useSelector(
     (state) => state.boletasGeneradas
     );
     
     useEffect(() => {    
-      dispatch(getBoletasGeneradas(anio, mes));
+      dispatch(getPlanillaBoletaYaGeneradas(anio, mes, undefined, undefined));
     }, [dispatch, anio, mes]);
     
-    
+      
   return (
     <div className="row justify-content-center">
       <div className="col-sm-12 col-lg-10 col-xl-6">
@@ -60,7 +60,7 @@ export const ListaBoletasGeneradas = ({ anio = 0, mes = 0 }) => {
                         boleta.c_plani_nro.toString()
                       }
                     >
-                      <ItemBoletasGeneradas {...boleta} />
+                      <ItemBoletasEnviadas {...boleta} />
                     </tr>
                   ))}
                 </tbody>

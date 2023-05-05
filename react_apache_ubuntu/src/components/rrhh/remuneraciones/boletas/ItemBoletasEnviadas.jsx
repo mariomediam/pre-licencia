@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { obtenerPlanillaBoleta } from "../../../../services/rrhhService";
-import { CellGenerarBoleta } from "./CellGenerarBoleta";
+import { CellEnviarBoleta } from "./CellEnviarBoleta";
 
 const milisegundos = 5000;
 
-export const ItemBoletasGeneradas = ({
+export const ItemBoletasEnviadas = ({
   d_ano,
   d_mes,
   c_tippla_id,
@@ -16,19 +16,19 @@ export const ItemBoletasGeneradas = ({
   n_plani_carpeta,
   n_user_insert,
   d_datetime,
-  f_plani_estado,
+  f_plani_envio,
 }) => {
   const navigate = useNavigate();
 
   const [estadoPlanillaBoleta, setEstadoPlanillaBoleta] = useState({
-    f_plani_estado,
+    f_plani_envio,
     n_user_insert,
     d_datetime,
     n_plani_carpeta,
   });
 
   const {
-    f_plani_estado: actual_estado,
+    f_plani_envio: actual_envio,
     n_user_insert: actual_user,
     d_datetime: actual_datetime,
     n_plani_carpeta: actual_carpeta,
@@ -51,7 +51,7 @@ export const ItemBoletasGeneradas = ({
 
       if (planillaBoleta.f_plani_estado !== 0) {
         setEstadoPlanillaBoleta({
-          f_plani_estado: planillaBoleta.f_plani_estado,
+          f_plani_envio: planillaBoleta.f_plani_envio,
           n_user_insert: planillaBoleta.n_user_insert,
           d_datetime: planillaBoleta.d_datetime,
           n_plani_carpeta: planillaBoleta.n_plani_carpeta,
@@ -59,14 +59,14 @@ export const ItemBoletasGeneradas = ({
       }
     };
 
-    if (actual_estado === 0) {      
+    if (actual_envio === 0) {      
       const intervalId = setInterval(() => {
         getEstadoPlanilla();
       }, milisegundos);
 
       return () => clearInterval(intervalId);
     }
-  }, [actual_estado, d_ano, d_mes, c_tippla_id, c_plani_nro]);
+  }, [actual_envio, d_ano, d_mes, c_tippla_id, c_plani_nro]);
 
   return (
     <>
@@ -76,21 +76,21 @@ export const ItemBoletasGeneradas = ({
       <td className="text-center align-middle m-1 p-1">
         <Button variant="outline-primary" onClick={onClicVerDetalle}>
           {" "}
-          Ver detalle{" "}
+          Ver envios{" "}
         </Button>{" "}
       </td>
       <td
         className={`text-center align-middle m-1 p-1 ${
-          actual_estado !== f_plani_estado &&
+          actual_envio !== f_plani_envio &&
           "animate__animated animate__zoomIn"
         }`}
       >
-        <CellGenerarBoleta
+        <CellEnviarBoleta
           d_ano={d_ano}
           d_mes={d_mes}
           c_tippla_id={c_tippla_id}
           c_plani_nro={c_plani_nro}
-          actual_estado={actual_estado}
+          actual_envio={actual_envio}
           actual_user={actual_user}
           actual_datetime={actual_datetime}
           actual_carpeta={actual_carpeta}

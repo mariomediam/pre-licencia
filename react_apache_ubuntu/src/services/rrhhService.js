@@ -87,5 +87,44 @@ const generaBoletasPdf = async (anio, mes, tipo, numero) => {
   }
 };
 
+const obtenerPlanillaBoletasYaGeneradas = async (
+  anio,
+  mes,
+  tipo = undefined,
+  numero = undefined
+) => {
+  try {    
+    let api = UseAxios();
 
-export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf };
+    let URLPlanillas = `${URL}/lista-planilla-generado?anio=${anio}&mes=${mes}`;
+
+    if (tipo) {
+      URLPlanillas += `&tipo=${tipo}`;
+    }
+
+    if (numero) {
+      URLPlanillas += `&numero=${numero}`;
+    }
+
+    let {
+      data: { content },
+    } = await api.get(`${URLPlanillas}`);
+
+    if (tipo && numero) {      
+      if (content.length === 0) {
+        return {};
+      }
+      if (content.length === 1) {
+        return content[0];
+      }
+    }
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf, obtenerPlanillaBoletasYaGeneradas };

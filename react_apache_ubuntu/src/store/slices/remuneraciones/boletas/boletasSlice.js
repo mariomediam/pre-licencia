@@ -14,6 +14,8 @@ export const boletasSlice = createSlice({
             state.isLoading = false;            
             state.boletasGeneradas = payload.boletasGeneradas;
         }
+
+        
     }
 });
 
