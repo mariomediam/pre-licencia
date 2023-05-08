@@ -1,2 +1,2 @@
-export * from "./boletas";
 export * from "./DetallePlanillaView";
+export * from "./boletas";

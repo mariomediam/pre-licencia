@@ -125,6 +125,81 @@ const obtenerPlanillaBoletasYaGeneradas = async (
   }
 };
 
+const obtenerPlanillaCorreos = async (
+  anio,
+  mes,
+  tipo,
+  numero
+) => {
+  try {    
+    let api = UseAxios();
+
+    let URLPlanillasCorreo = `${URL}/lista-planilla-correo?anio=${anio}&mes=${mes}&tipo=${tipo}&numero=${numero}`;
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLPlanillasCorreo}`);
+   
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerTipoPlanillaXTipo = async (
+  tipo
+) => {
+  try {    
+    let api = UseAxios();
+
+    let URLTipoPlanilla = `${URL}/tipo-planilla-xtipo?tipo=${tipo}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLTipoPlanilla}`);
+   
+    if (content.length === 0) {
+      return {};
+    }
+    if (content.length === 1) {
+      return content[0];
+    }
+    return content
+  } catch (error) {
+    throw error;
+  }
+};
+
+const enviarBoletas = async (anio, mes, tipo, numero, destinatarios) => {
+  try {
+    let api = UseAxios();
+
+    let credenciales = {
+     anio,
+     mes,
+      tipo,
+      numero,
+      destinatarios,
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let URLEnviarBoletas = `${URL}/enviar-boletas/`;
+
+    let {
+      data: { message },
+    } = await api.post(`${URLEnviarBoletas}`, credenciales, {
+      headers,
+    });
+
+    return message;
+  } catch (error) {
+    throw error;
+  }
+};
 
 
-export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf, obtenerPlanillaBoletasYaGeneradas };
+
+export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf, obtenerPlanillaBoletasYaGeneradas, obtenerPlanillaCorreos, obtenerTipoPlanillaXTipo, enviarBoletas };
