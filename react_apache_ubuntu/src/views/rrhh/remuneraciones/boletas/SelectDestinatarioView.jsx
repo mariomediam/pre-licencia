@@ -54,10 +54,10 @@ export const SelectDestinarioView = () => {
             <div className="d-flex justify-content-end m-0 p-0">
           <CloseButton onClick={onClicBack}/>
         </div>
-            <h4 className="mt-0 text-center">
+            <h3 className="mt-0 text-center">
               <i className="fas fa-mail-bulk me-2"></i>
-              {`Enviar boletas de planilla ${obtenerNombreMes(mes)} ${anio} - ${nombrePlanilla} ${numero}`}
-            </h4>
+              Enviar boletas
+            </h3>
           </div>
         </div>
       </div>
@@ -65,6 +65,7 @@ export const SelectDestinarioView = () => {
         d_mes={mes}
         c_tippla_id={tipo}
         c_plani_nro={numero}
+        encabezado={`Planilla ${obtenerNombreMes(mes)} ${anio} - ${nombrePlanilla} ${numero}`}
         />  
     </div>
   );

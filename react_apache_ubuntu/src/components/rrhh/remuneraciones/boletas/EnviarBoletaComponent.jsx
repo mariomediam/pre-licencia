@@ -41,7 +41,7 @@ export const EnviarBoletaComponent = () => {
         <div className="row justify-content-center">
           <div className="col-12 col-md-3">
             <Form.Text id="passwordHelpBlock" muted>
-              Debe ingresar año y mes de la planilla a generar.
+              Debe ingresar año y mes de la planilla a enviar.
             </Form.Text>
             <br />
 

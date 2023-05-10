@@ -13,7 +13,7 @@ export const ItemBoletasGeneradas = ({
   n_tippla_nombre,
   c_plani_nro,
   q_trabajadores,
-  n_plani_carpeta,
+  n_plani_carpVista,
   n_user_insert,
   d_datetime,
   f_plani_estado,
@@ -24,14 +24,14 @@ export const ItemBoletasGeneradas = ({
     f_plani_estado,
     n_user_insert,
     d_datetime,
-    n_plani_carpeta,
+    n_plani_carpVista,
   });
 
   const {
     f_plani_estado: actual_estado,
     n_user_insert: actual_user,
     d_datetime: actual_datetime,
-    n_plani_carpeta: actual_carpeta,
+    n_plani_carpVista: actual_carpeta,
   } = { ...estadoPlanillaBoleta };
 
   const onClicVerDetalle = () => {
@@ -54,7 +54,7 @@ export const ItemBoletasGeneradas = ({
           f_plani_estado: planillaBoleta.f_plani_estado,
           n_user_insert: planillaBoleta.n_user_insert,
           d_datetime: planillaBoleta.d_datetime,
-          n_plani_carpeta: planillaBoleta.n_plani_carpeta,
+          n_plani_carpVista: planillaBoleta.n_plani_carpVista,
         });
       }
     };
@@ -76,7 +76,7 @@ export const ItemBoletasGeneradas = ({
       <td className="text-center align-middle m-1 p-1">
         <Button variant="outline-primary" onClick={onClicVerDetalle}>
           {" "}
-          Ver detalle{" "}
+          Ver planilla{" "}
         </Button>{" "}
       </td>
       <td

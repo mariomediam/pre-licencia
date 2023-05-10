@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import {
   Button as ButtonBootstrap,
   Container,
@@ -15,7 +16,10 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
-import { getPlanillasCorreo } from "../../../../store/slices/remuneraciones/planillaCorreos/thunks";
+import {
+  getPlanillasCorreo,
+  startSendingMails,
+} from "../../../../store/slices/remuneraciones/planillaCorreos/thunks";
 import { enviarBoletas } from "../../../../services/rrhhService";
 
 const not = (a, b) => {
@@ -31,10 +35,11 @@ export const SelectDestinatarioComponent = ({
   d_mes,
   c_tippla_id,
   c_plani_nro,
+  encabezado,
 }) => {
   const dispatch = useDispatch();
 
-  const { destinatarios, isLoading } = useSelector(
+  const { destinatarios, isLoading, isSendingMails } = useSelector(
     (state) => state.planillaCorreo
   );
 
@@ -43,16 +48,14 @@ export const SelectDestinatarioComponent = ({
   const [left, setLeft] = useState([]);
   const [right, setRight] = useState([]);
 
-  // Iniciando left
-  // Obtener destinatarios una vez al montar el componente
   useEffect(() => {
+    // Iniciando left
+    // Obtener destinatarios una vez al montar el componente
     dispatch(getPlanillasCorreo(d_ano, d_mes, c_tippla_id, c_plani_nro));
   }, [c_plani_nro, c_tippla_id, d_ano, d_mes, dispatch]);
 
-  // Actualizar el estado "left" cuando cambian los destinatarios
   useEffect(() => {
-    //del array de destinatarios, obtener solo los nombres
-
+    // Actualizar el estado "left" cuando cambian los destinatarios
     setLeft(
       destinatarios.map(
         (destinatario) =>
@@ -99,31 +102,60 @@ export const SelectDestinatarioComponent = ({
     setRight([]);
   };
 
-  const onClickSend = async  () => {
-    
+  const onClickSend = async () => {
+    try {
+      const dni = right.map((destinatario) => {
+        const valores = destinatario.split(" ");
 
-    const dni = right.map((destinatario) => {
-      const valores = destinatario.split(" ");
-      return {
-        c_traba_dni: destinatario.split("-")[0],
-        n_traba_correo: valores[valores.length - 1],
-      };
+        const n_traba_correo = valores[valores.length - 1];
+        const n_traba_nombre = destinatario.substring(
+          destinatario.indexOf("-") + 1,
+          destinatario.lastIndexOf(" ")
+        );
+        return {
+          c_traba_dni: destinatario.split("-")[0],
+          n_traba_correo: n_traba_correo,
+          n_traba_nombre: n_traba_nombre,
+        };
+      });
 
+      const result = await Swal.fire({
+        title: `¿Seguro de enviar boletas de ${encabezado}?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "No",
+        reverseButtons: true,
+      });
 
-      
-      // del array right obtener solo los correos
-      // const correos = right.map((destinatario) => {
-      //   const valores = destinatario.split(" ")
-      //   return valores[valores.length - 1]
-    });
+      if (result.isConfirmed) {
+        await dispatch(
+          startSendingMails(d_ano, d_mes, c_tippla_id, c_plani_nro, dni)
+        );
 
-    await enviarBoletas(d_ano, d_mes, c_tippla_id, c_plani_nro, dni)
+        const resultOk = await Swal.fire({
+          icon: "success",
+          title: "Enviar boletas",
+          text: "Boletas enviadas correctamente",
+        });
 
-    console.log(dni);
+        if (resultOk.isConfirmed) {
+          window.history.back();
+        }
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error generando boletas",
+        text: error.message,
+      });
+    }
   };
 
   const customList = (items) => (
-    <Paper sx={{ width: 350, height: 370, overflow: "auto" }}>
+    <Paper sx={{ width: 350, height: 340, overflow: "auto" }}>
       <List dense component="div" role="list">
         {items.map((value) => {
           const labelId = `transfer-list-item-${value}-label`;
@@ -164,6 +196,7 @@ export const SelectDestinatarioComponent = ({
         </div>
       ) : (
         <>
+          <p className="text-center">{encabezado}</p>
           {destinatarios.length === 0 ? (
             <Container className="text-center animate__animated animate__fadeIn animate__faster mt-3">
               <Alert variant="danger">
@@ -231,34 +264,27 @@ export const SelectDestinatarioComponent = ({
                 </Grid>
               </Grid>
               <Container className="text-center mt-4">
-                <ButtonBootstrap
-                  variant="primary"
-                  disabled={right.length < 1}
-                  onClick={onClickSend}
-                >
-                  Enviar correos
-                </ButtonBootstrap>
+                {isSendingMails ? (
+                  <div className="text-center">
+                    <Spinner animation="border" role="status" className="me-2">
+                      <span className="visually-hidden">Enviando...</span>
+                    </Spinner>
+                    Enviando
+                  </div>
+                ) : (
+                  <ButtonBootstrap
+                    variant="primary"
+                    disabled={right.length < 1 || isSendingMails}
+                    onClick={onClickSend}
+                  >
+                    Enviar boletas
+                  </ButtonBootstrap>
+                )}
               </Container>
             </div>
           )}
         </>
       )}
-
-      {/* {
-        left.length > 0 ? (
-          <Container className="text-center">
-        <ButtonBootstrap variant="primary" disabled={right.length < 1}>
-          Enviar correos
-        </ButtonBootstrap>
-      </Container>
-        ) : (
-          <Alert variant="danger">
-          This is a alert—check it out!
-        </Alert>
-          
-        )
-
-      } */}
     </div>
   );
 };

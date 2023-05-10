@@ -182,6 +182,8 @@ const enviarBoletas = async (anio, mes, tipo, numero, destinatarios) => {
       destinatarios,
     };
 
+    console.log({credenciales})
+
     const headers = {
       "Content-Type": "application/json",
     };
