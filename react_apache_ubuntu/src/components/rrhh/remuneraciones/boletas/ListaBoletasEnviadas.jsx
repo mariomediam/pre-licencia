@@ -1,74 +1,25 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Table } from "react-bootstrap";
+import React from "react";
+import { transformarFecha } from "../../../../utils/varios";
 
-import Spinner from "react-bootstrap/Spinner";
-import { getPlanillaBoletaYaGeneradas } from "../../../../store/slices/remuneraciones";
-import { obtenerNombreMes } from "../../../../utils/varios";
-import { ItemBoletasEnviadas } from "./ItemBoletasEnviadas";
-
-export const ListaBoletasEnviadas = ({ anio = 0, mes = 0 }) => {
-
-  const dispatch = useDispatch();
-  const { boletasGeneradas = [], isLoading } = useSelector(
-    (state) => state.boletasGeneradas
-    );
-    
-    useEffect(() => {    
-      dispatch(getPlanillaBoletaYaGeneradas(anio, mes, undefined, undefined));
-    }, [dispatch, anio, mes]);
-    
-      
+export const ListaBoletasEnviadas = ({
+  d_ano,
+  d_mes,
+  c_tippla_id,
+  c_plani_nro,
+  c_traba_dni,
+  n_nombre,
+  n_traba_correo,
+  d_datetime_insert,
+  n_user_insert,
+}) => {
   return (
-    <div className="row justify-content-center">
-      <div className="col-sm-12 col-lg-10 col-xl-6">
-        {isLoading ? (
-          <div className="text-center">
-            <Spinner animation="border" role="status" className="me-2">
-              <span className="visually-hidden">Cargando...</span>
-            </Spinner>
-            Cargando
-          </div>
-        ) : (
-          <>
-            <small>
-              {" "}
-              Planillas {obtenerNombreMes(mes)} {anio}
-            </small>
-
-            <div style={{ border: "1px solid lightgrey" }}>
-              <Table hover responsive className="caption-top mb-1 animate__animated animate__fadeIn animate__faster">
-                <thead>
-                  <tr className="color-header1 text-white">
-                    <th className="text-center align-middle m-0 p-0">
-                      Tipo planilla
-                    </th>
-                    <th className="text-center align-middle m-0 p-0">Número</th>
-                    <th className="text-center align-middle m-0 p-0">
-                      Colaboradores
-                    </th>
-                    <th className="text-center align-middle m-0 p-0"></th>
-                    <th className="text-center align-middle m-0 p-0"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {boletasGeneradas.map((boleta, i) => (
-                    <tr 
-                      key={
-                        boleta.c_tippla_id.toString() +
-                        "-" +
-                        boleta.c_plani_nro.toString()
-                      }
-                    >
-                      <ItemBoletasEnviadas {...boleta} />
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+    <>
+      <td className="align-middle m-1 p-1">
+        <small>{c_traba_dni} {n_nombre}</small>
+      </td>
+      <td className="text-right align-middle m-1 p-1"><small>{n_traba_correo}</small></td>
+      <td className="text-right align-middle m-1 p-1"><small>{transformarFecha( d_datetime_insert)}</small></td>
+      <td className=" m-1 p-1"><small>{n_user_insert}</small></td>
+    </>
   );
 };

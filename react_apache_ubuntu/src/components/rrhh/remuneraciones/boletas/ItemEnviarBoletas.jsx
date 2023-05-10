@@ -6,7 +6,7 @@ import { CellEnviarBoleta } from "./CellEnviarBoleta";
 
 const milisegundos = 5000;
 
-export const ItemBoletasEnviadas = ({
+export const ItemEnviarBoletas = ({
   d_ano,
   d_mes,
   c_tippla_id,
@@ -34,9 +34,9 @@ export const ItemBoletasEnviadas = ({
     n_plani_carpeta: actual_carpeta,
   } = { ...estadoPlanillaBoleta };
 
-  const onClicVerDetalle = () => {
+  const onClicVerEnvios = () => {
     navigate(
-      `/rrhh/remuneraciones/detalle_planilla/${d_ano}/${d_mes}/${c_tippla_id}/${c_plani_nro}`
+      `/rrhh/remuneraciones/boletas_enviadas/${d_ano}/${d_mes}/${c_tippla_id}/${c_plani_nro}`
     );
   };
 
@@ -74,7 +74,7 @@ export const ItemBoletasEnviadas = ({
       <td className="text-center align-middle m-1 p-1">{c_plani_nro}</td>
       <td className="text-center align-middle m-1 p-1">{q_trabajadores}</td>
       <td className="text-center align-middle m-1 p-1">
-        <Button variant="outline-primary" onClick={onClicVerDetalle}>
+        <Button variant="outline-primary" onClick={onClicVerEnvios}>
           {" "}
           Ver envios{" "}
         </Button>{" "}

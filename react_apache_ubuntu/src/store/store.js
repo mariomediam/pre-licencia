@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { counterSlice } from './slices/counter'
-import { boletasSlice, planillaCorreoSlice, planillaSlice } from './slices'
+import { boletasEnviadasSlice, boletasSlice, planillaCorreoSlice, planillaSlice } from './slices'
 
 export const store = configureStore({
   reducer: {
@@ -8,5 +8,6 @@ export const store = configureStore({
     boletasGeneradas: boletasSlice.reducer,
     planilla: planillaSlice.reducer,
     planillaCorreo: planillaCorreoSlice.reducer,
+    boletasEnviadas: boletasEnviadasSlice.reducer,
   },
 })

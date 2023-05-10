@@ -20,7 +20,7 @@ import {
   getPlanillasCorreo,
   startSendingMails,
 } from "../../../../store/slices/remuneraciones/planillaCorreos/thunks";
-import { enviarBoletas } from "../../../../services/rrhhService";
+
 
 const not = (a, b) => {
   return a.filter((value) => b.indexOf(value) === -1);

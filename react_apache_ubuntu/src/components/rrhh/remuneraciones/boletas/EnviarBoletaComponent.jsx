@@ -2,7 +2,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { Mes } from "../../../../utils";
-import { ListaBoletasEnviadas } from "./ListaBoletasEnviadas";
+import { ListaEnviarBoletas } from "./ListaEnviarBoletas";
 import { AniosPlanillas } from "../../../../views/rrhh";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -26,8 +26,8 @@ export const EnviarBoletaComponent = () => {
   const [selectedAnio, setSelectedAnio] = useState(anio);
   const [selectedMonth, setSelectedMonth] = useState(mes);
 
-  const memoizedListaBoletasEnviadas = useMemo(() => {
-    return <ListaBoletasEnviadas anio={selectedAnio} mes={selectedMonth} />;
+  const memoizedListaEnviarBoletas = useMemo(() => {
+    return <ListaEnviarBoletas anio={selectedAnio} mes={selectedMonth} />;
   }, [selectedAnio, selectedMonth]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const EnviarBoletaComponent = () => {
         </div>
       </div>
       <hr />      
-      {memoizedListaBoletasEnviadas}
+      {memoizedListaEnviarBoletas}
     </>
   );
 };

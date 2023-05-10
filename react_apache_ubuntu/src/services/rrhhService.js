@@ -202,6 +202,22 @@ const enviarBoletas = async (anio, mes, tipo, numero, destinatarios) => {
   }
 };
 
+const obtenerBoletaEnvio = async (anio, mes, tipo, numero) => {
+  try {
+    let api = UseAxios();
+
+    let URLBoletaEnvio = `${URL}/lista-boleta-envio?anio=${anio}&mes=${mes}&tipo=${tipo}&numero=${numero}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLBoletaEnvio}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
 
 
-export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf, obtenerPlanillaBoletasYaGeneradas, obtenerPlanillaCorreos, obtenerTipoPlanillaXTipo, enviarBoletas };
+
+export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf, obtenerPlanillaBoletasYaGeneradas, obtenerPlanillaCorreos, obtenerTipoPlanillaXTipo, enviarBoletas, obtenerBoletaEnvio };
