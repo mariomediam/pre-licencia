@@ -15,3 +15,15 @@ export const obtenerNombreMes = (numeroMes) => {
     const fechaTransformada = `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
     return fechaTransformada;
   }
+
+  export const validarEmail = (emailField) => {
+                    
+    // const validEmail =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+    const validEmail = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+  
+    if( validEmail.test(emailField) ){
+      return true;
+    }else{
+      return false;
+    }
+  } 

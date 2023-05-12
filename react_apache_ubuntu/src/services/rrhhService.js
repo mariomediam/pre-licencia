@@ -218,6 +218,35 @@ const obtenerBoletaEnvio = async (anio, mes, tipo, numero) => {
   }
 };
 
+const obtenerTrabajadorCorreoPagination = async (URLTrabajadorCorreo) => {
+  try {
+    let api = UseAxios();
+
+    let { data } = await api.get(`${URLTrabajadorCorreo}&page_size=20`);
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerTrabajadorCorreo = async (valor) => {
+  try {
+    let api = UseAxios();
+
+    let URLTrabajadorCorreo = `${URL}/lista-trabajador-correo?valor=${valor}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLTrabajadorCorreo}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
 
 
-export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf, obtenerPlanillaBoletasYaGeneradas, obtenerPlanillaCorreos, obtenerTipoPlanillaXTipo, enviarBoletas, obtenerBoletaEnvio };
+
+
+export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf, obtenerPlanillaBoletasYaGeneradas, obtenerPlanillaCorreos, obtenerTipoPlanillaXTipo, enviarBoletas, obtenerBoletaEnvio, obtenerTrabajadorCorreoPagination, obtenerTrabajadorCorreo };

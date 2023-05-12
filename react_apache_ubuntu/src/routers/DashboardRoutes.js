@@ -8,6 +8,7 @@ import { DefaultView } from "../views/DefaultView";
 import { SolicitudCiiuView } from "../views/licenciaFuncionamiento/SolicitudCiiuView";
 import { DetallePlanillaView, GenerarBoletaView, EnviarBoletaView, SelectDestinarioView } from "../views/rrhh";
 import { BoletasEnviadasView } from "../views/rrhh/remuneraciones/boletas/BoletasEnviadasView";
+import { TrabajadorCorreoView } from "../views/rrhh/remuneraciones/boletas/TrabajadorCorreoView";
 
 export const DashboardRoutes = () => {
   return (
@@ -50,6 +51,7 @@ export const DashboardRoutes = () => {
             path="/rrhh/remuneraciones/boletas_enviadas/:anio/:mes/:tipo/:numero"
             element={<BoletasEnviadasView />}
           />
+          <Route path="/rrhh/remuneraciones/correos_colaborador" element={<TrabajadorCorreoView />} />
 
         </Routes>
       </div>
