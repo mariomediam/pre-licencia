@@ -33,14 +33,10 @@ export const TrabajadorCorreoComponent = () => {
   const [filtro, setFiltro] = useState(initialStateFiltro);
 
   const onClickBuscar = () => {
-    console.log("Se ejecuta onClickBuscar");
+
     setFiltro({
       items: [],
       reload: true,
-      valor: valorBuscado,
-    });
-    console.log({
-      ...filtro,
       valor: valorBuscado,
     });
     navigate(`?q=${valorBuscado}`)

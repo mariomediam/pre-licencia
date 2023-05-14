@@ -12,25 +12,25 @@ export const TrabajadorCorreoComponent = () => {
 
   const dispatch = useDispatch();
 
-  const q = location.search.split("&")[0].replace("?q=", "").replaceAll("%20", " ");
+  const q = location.search
+    .split("&")[0]
+    .replace("?q=", "")
+    .replaceAll("%20", " ");
 
   const [valorBuscado, setvalorBuscado] = useState(q || "");
 
   useEffect(() => {
-    console.log("Se ejecuta getTrabajadorCorreo" + q);
     if (q === "") return;
     dispatch(startGetTrabajadorCorreo(q));
   }, [q, dispatch]);
 
   const onClickBuscar = () => {
-    console.log("Se ejecuta onClickBuscar");
     if (valorBuscado === "") return;
     navigate(`?q=${valorBuscado}`);
   };
 
   return (
-    <>
-      <div>TrabajadorCorreoComponent</div>
+    <>      
       <div className="row justify-content-center">
         <div className="col-12 col-md-5">
           <Form.Group className="mb-3" controlId="formBasicEmail">

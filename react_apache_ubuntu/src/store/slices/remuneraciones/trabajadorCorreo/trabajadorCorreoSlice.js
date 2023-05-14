@@ -7,8 +7,7 @@ export const trabajadorCorreoSlice = createSlice({
         trabajadorCorreo: [],
         isLoading: false,   
         isSaving: false,
-        active: null,     
-        messageSaved: '',
+        active: null,             
     },
     reducers: {
         startLoadingTrabajadorCorreo: (state) => {
@@ -18,17 +17,15 @@ export const trabajadorCorreoSlice = createSlice({
             state.isLoading = false
             state.trabajadorCorreo = payload.trabajadorCorreo
         },       
-        setActiveTrabajadorCorreo: (state, {payload}) => {
-            console.log({payload})
-            state.active = payload
-            state.messageSaved = '';
+        setActiveTrabajadorCorreo: (state, {payload}) => {            
+            state.active = payload            
         },
-        setSaving: (state ) => {
-            state.isSaving = true;
-            state.messageSaved = '';
+        setIsSaving: (state,{ payload} ) => {
+            state.isSaving = payload;
+            
         },
 
     }
 })
 
-export const { startLoadingTrabajadorCorreo, setTrabajadorCorreo, setActiveTrabajadorCorreo} = trabajadorCorreoSlice.actions   
+export const { startLoadingTrabajadorCorreo, setTrabajadorCorreo, setActiveTrabajadorCorreo, setIsSaving} = trabajadorCorreoSlice.actions   

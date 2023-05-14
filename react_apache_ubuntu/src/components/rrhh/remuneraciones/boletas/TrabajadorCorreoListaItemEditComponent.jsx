@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Modal, Button, Form } from "react-bootstrap";
+import Swal from "sweetalert2";
+
 import { validarEmail } from "../../../../utils/varios";
+import { startUpdateTrabajadorCorreo } from "../../../../store/slices";
 
 export const TrabajadorCorreoListaItemEditComponent = ({
   handleClose,
@@ -10,19 +15,33 @@ export const TrabajadorCorreoListaItemEditComponent = ({
   const [correo, setCorreo] = useState(active?.n_traba_correo || "");
   const [errors, setErrors] = useState({});
 
+  const { isSaving } = useSelector((state) => state.trabajadorCorreo);
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setCorreo(active?.n_traba_correo || "");
   }, [active]);
 
-  const onClickGrabarCorreo = () => {
+  const onClickGrabarCorreo = async () => {
     const newErrors = findFormErrors();
-    console.log(newErrors);
     if (Object.keys(newErrors).length > 0) {
-      // We got errors!
       setErrors(newErrors);
     } else {
-      handleClose();
-      console.log("Grabar correo")
+      try {
+        await dispatch(
+          startUpdateTrabajadorCorreo(active.c_traba_dni, correo)
+        );        
+        handleClose();
+        // Refresacar pagina actual
+        window.location.reload();
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error actualizando correo",
+          text: error.message,
+        });
+      }
     }
   };
 
@@ -44,8 +63,7 @@ export const TrabajadorCorreoListaItemEditComponent = ({
   const onChangeCorreo = (e) => {
     setCorreo(e.target.value);
     setErrors({});
-    };
-
+  };
 
   return (
     <>
@@ -96,10 +114,10 @@ export const TrabajadorCorreoListaItemEditComponent = ({
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onClickCancelar}>
+          <Button variant="secondary" onClick={onClickCancelar} disabled={isSaving}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={onClickGrabarCorreo}>
+          <Button variant="primary" onClick={onClickGrabarCorreo} disabled={isSaving}>
             Grabar
           </Button>
         </Modal.Footer>

@@ -25,7 +25,7 @@ const obtenerPlanillaBoleta = async (
       data: { content },
     } = await api.get(`${URLPlanillas}`);
 
-    if (tipo && numero) {      
+    if (tipo && numero) {
       if (content.length === 0) {
         return {};
       }
@@ -56,15 +56,13 @@ const obtenerPlanillaDetalle = async (anio, mes, tipo, numero) => {
   }
 };
 
-
-
 const generaBoletasPdf = async (anio, mes, tipo, numero) => {
   try {
     let api = UseAxios();
 
     let credenciales = {
-     anio,
-     mes,
+      anio,
+      mes,
       tipo,
       numero,
     };
@@ -93,7 +91,7 @@ const obtenerPlanillaBoletasYaGeneradas = async (
   tipo = undefined,
   numero = undefined
 ) => {
-  try {    
+  try {
     let api = UseAxios();
 
     let URLPlanillas = `${URL}/lista-planilla-generado?anio=${anio}&mes=${mes}`;
@@ -110,7 +108,7 @@ const obtenerPlanillaBoletasYaGeneradas = async (
       data: { content },
     } = await api.get(`${URLPlanillas}`);
 
-    if (tipo && numero) {      
+    if (tipo && numero) {
       if (content.length === 0) {
         return {};
       }
@@ -125,31 +123,24 @@ const obtenerPlanillaBoletasYaGeneradas = async (
   }
 };
 
-const obtenerPlanillaCorreos = async (
-  anio,
-  mes,
-  tipo,
-  numero
-) => {
-  try {    
+const obtenerPlanillaCorreos = async (anio, mes, tipo, numero) => {
+  try {
     let api = UseAxios();
 
     let URLPlanillasCorreo = `${URL}/lista-planilla-correo?anio=${anio}&mes=${mes}&tipo=${tipo}&numero=${numero}`;
-    
+
     let {
       data: { content },
     } = await api.get(`${URLPlanillasCorreo}`);
-   
+
     return content;
   } catch (error) {
     throw error;
   }
 };
 
-const obtenerTipoPlanillaXTipo = async (
-  tipo
-) => {
-  try {    
+const obtenerTipoPlanillaXTipo = async (tipo) => {
+  try {
     let api = UseAxios();
 
     let URLTipoPlanilla = `${URL}/tipo-planilla-xtipo?tipo=${tipo}`;
@@ -157,14 +148,14 @@ const obtenerTipoPlanillaXTipo = async (
     let {
       data: { content },
     } = await api.get(`${URLTipoPlanilla}`);
-   
+
     if (content.length === 0) {
       return {};
     }
     if (content.length === 1) {
       return content[0];
     }
-    return content
+    return content;
   } catch (error) {
     throw error;
   }
@@ -175,14 +166,12 @@ const enviarBoletas = async (anio, mes, tipo, numero, destinatarios) => {
     let api = UseAxios();
 
     let credenciales = {
-     anio,
-     mes,
+      anio,
+      mes,
       tipo,
       numero,
       destinatarios,
     };
-
-    console.log({credenciales})
 
     const headers = {
       "Content-Type": "application/json",
@@ -246,7 +235,60 @@ const obtenerTrabajadorCorreo = async (valor) => {
   }
 };
 
+const actualizarTrabajadorCorreo = async (dni, correo) => {
+  try {
+    let api = UseAxios();
 
+    let credenciales = {
+      dni,
+      correo,
+    };
 
+    const headers = {
+      "Content-Type": "application/json",
+    };
 
-export { obtenerPlanillaBoleta, obtenerPlanillaDetalle, generaBoletasPdf, obtenerPlanillaBoletasYaGeneradas, obtenerPlanillaCorreos, obtenerTipoPlanillaXTipo, enviarBoletas, obtenerBoletaEnvio, obtenerTrabajadorCorreoPagination, obtenerTrabajadorCorreo };
+    let URLUpdateTrabajadorCorreo = `${URL}/update-trabajador-correo/`;
+
+    let {
+      data: { message },
+    } = await api.post(`${URLUpdateTrabajadorCorreo}`, credenciales, {
+      headers,
+    });
+
+    return message;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const eliminarTrabajadorCorreo = async (dni) => {
+  try {
+    let api = UseAxios();
+
+    let URLDeleteTrabajadorCorreo = `${URL}/delete-trabajador-correo/${dni}}`;
+
+    let {
+      data: { message },
+    } = await api.delete(`${URLDeleteTrabajadorCorreo}`);
+
+    return message;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  obtenerPlanillaBoleta,
+  obtenerPlanillaDetalle,
+  generaBoletasPdf,
+  obtenerPlanillaBoletasYaGeneradas,
+  obtenerPlanillaCorreos,
+  obtenerTipoPlanillaXTipo,
+  enviarBoletas,
+  obtenerBoletaEnvio,
+  obtenerTrabajadorCorreoPagination,
+  obtenerTrabajadorCorreo,
+  actualizarTrabajadorCorreo,
+  eliminarTrabajadorCorreo,
+};

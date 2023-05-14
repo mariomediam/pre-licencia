@@ -43,7 +43,7 @@ export default class TrabajadorCorreoListaComponent extends Component {
   };
 
   async componentDidUpdate() {
-    console.log({ reload: this.props.filtro.reload})
+    
     if (this.props.filtro.reload) {
       //   if (!this.props.filtro.opcion) {
       //     return;
@@ -64,8 +64,7 @@ export default class TrabajadorCorreoListaComponent extends Component {
       let URL = encodeURI(
         `${process.env.REACT_APP_API}/rrhh/lista-trabajador-correo-p?valor=${this.props.filtro.valor}`
       );
-
-      console.log({ URL });
+      
       const { next, results, count } = await obtenerTrabajadorCorreoPagination(
         URL
       );

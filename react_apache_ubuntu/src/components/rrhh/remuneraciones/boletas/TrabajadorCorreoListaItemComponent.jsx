@@ -1,7 +1,12 @@
-import { Button } from "react-bootstrap";
-import { transformarFecha } from "../../../../utils/varios";
 import { useDispatch } from "react-redux";
-import { setActiveTrabajadorCorreo } from "../../../../store/slices";
+import Swal from "sweetalert2";
+import { Button } from "react-bootstrap";
+
+import { transformarFecha } from "../../../../utils/varios";
+import {
+  setActiveTrabajadorCorreo,
+  startDeleteTrabajadorCorreo,
+} from "../../../../store/slices";
 
 export const TrabajadorCorreoListaItemComponent = ({
   c_traba_dni,
@@ -15,7 +20,6 @@ export const TrabajadorCorreoListaItemComponent = ({
   const dispatch = useDispatch();
 
   const onClickEditar = () => {
-
     dispatch(
       setActiveTrabajadorCorreo({
         c_traba_dni,
@@ -25,6 +29,32 @@ export const TrabajadorCorreoListaItemComponent = ({
       })
     );
     handleShow();
+  };
+
+  const onClickEliminar = async () => {
+    const result = await Swal.fire({
+      title: `¿Seguro de eliminar el email ${n_traba_correo.trim()}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+      reverseButtons: true,
+    });
+
+    try {
+      if (result.isConfirmed) {
+        await dispatch(startDeleteTrabajadorCorreo(c_traba_dni));
+        window.location.reload();
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error eliminando correo",
+        text: error.message,
+      });
+    }
   };
 
   return (
@@ -49,7 +79,12 @@ export const TrabajadorCorreoListaItemComponent = ({
         </Button>
       </td>
       <td>
-        <Button size="sm" variant="outline-danger">
+        <Button
+          size="sm"
+          variant="outline-danger"
+          onClick={onClickEliminar}
+          disabled={!n_traba_correo}
+        >
           <i className="fas fa-trash-alt"></i>
           Eliminar
         </Button>
