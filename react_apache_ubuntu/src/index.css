@@ -4,7 +4,8 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;  
+  background-color: #fff5ff!important;
 }
 
 code {
@@ -19,31 +20,6 @@ code {
 .color-header1 {
   background-color: rgb(40, 116, 166) !important;
 }
-
-/* .panel-body {
-  border: 1px solid #dddddd;
-  background: #efefef;
-  color: #333333;
-  padding: 5px;
-  border-top: none;
-}
-
-.panel-wrap {
-  margin-bottom: 5px;
-}
-
-.panel-wrap.active-panel .panel-header {
-  background: #396ea5;
-}
-.panel-wrap.active-panel .panel-header button {
-  color: #ffffff;
-}
-
-.panel-header {
-  border: 1px solid #cccc;
-  font-weight: normal;
-  border-radius: 5px 5px 0px 0px;
-} */
 
 
 .bootstrap-select .dropdown-menu {
@@ -63,29 +39,6 @@ code {
   max-width: 100%;
   }
 
-  /* .pagination {
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-  
-  .page-item a,
-  .page-link:hover {
-    color: var(--dark);
-  }
-  
-  .page-item.active .page-link {
-    border-color: var(--dark);
-    background-color: var(--dark);
-  }
-  
-  .page-link:focus {
-    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
-  }
-     */
-
-/* .page-item .page-link{
-  background:  rgb(40, 116, 166);
-} */
 .page-item.active .page-link {
   background: yellow;
   background: yellowgreen;
@@ -95,11 +48,6 @@ code {
 .page-link:hover {
   color:  rgb(40, 116, 166)
 }
-
-/* .page-item.active .page-link {
-  border-color: var(--dark);
-  background-color: rgb(40, 116, 166)
-} */
 
 .page-item.active .page-link {
   z-index: 3;

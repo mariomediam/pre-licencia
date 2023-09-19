@@ -18,7 +18,7 @@ export const ContribuyentesView = () => {
           showForm={showForm}
           setShowForm={setShowForm}
           setContribEdit={setContribEdit}
-          codContribIni={codContribIni}
+          codContribIni={codContribIni}          
         />
       ) : (
         <div>

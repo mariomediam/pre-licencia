@@ -105,15 +105,15 @@ export default function BuscarContribuyentesComponent({
   };
 
   return (
-    <>
+    <div className="px-1">
       <div className="ps-2">
         <Breadcrumb>
           <Breadcrumb.Item active>Contribuyente</Breadcrumb.Item>
-        </Breadcrumb>
+        </Breadcrumb>        
       </div>
       {showForm === 1 ? (
-        <Container>
-          <div className="d-flex justify-content-end m-0 p-0">
+        <Container className="d-flex flex-column border bg-white col-lg-10 col-xl-8 justify-content-center p-0 shadow mb-1 bg-body-tertiary rounded">
+          <div className="d-flex justify-content-end m-0 p-2 bg-white">
             <small>
               <span style={{ color: "#4169E1" }}>
                 <a
@@ -132,10 +132,10 @@ export default function BuscarContribuyentesComponent({
             </small>
           </div>
 
-          <div>
-            <div className="row justify-content-center">
+          <div className="bg-white pb-5 ">
+            <div className="row justify-content-center p-0 m-0 ">
               <div
-                className="align-items-center p-2 col-sm-12 col-lg-8"
+                className="align-items-center px-0 py-2 col-sm-12 col-lg-10 col-xl-8 overflow-hidden"
                 style={{ border: "0px solid black" }}
               >
                 <h3 className="mt-0 text-center">
@@ -143,8 +143,8 @@ export default function BuscarContribuyentesComponent({
                   Contribuyente
                 </h3>
 
-                <div className="row justify-content-center">
-                  <div className="row col-sm-12 col-lg-8 mt-4">
+                <div className="row justify-content-center overflow-hidden">
+                  <div className="row col-sm-12 col-lg-10 col-xl-8 mt-4">
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label className="fw-bold">Buscar por</Form.Label>
                       <Form.Check
@@ -244,7 +244,7 @@ export default function BuscarContribuyentesComponent({
                   </div>
                 </div>
                 {/* <div className="table-responsive"> */}
-                <div>
+                <div className="overflow-hidden">
                   <BuscarContribuyenteScrollComponent
                     filtro={filtro}
                     setShowForm={setShowForm}
@@ -257,6 +257,6 @@ export default function BuscarContribuyentesComponent({
           </div>
         </Container>
       ) : null}     
-    </>
+    </div>
   );
 }

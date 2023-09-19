@@ -32,7 +32,7 @@ export default function Header() {
   };
 
   return (
-    <div>
+    <div className="shadow mb-1 bg-body-tertiary rounded">
       <Navbar className="color-nav" variant="dark" expand="lg">
         <Container fluid>
           <Navbar.Text style={{ cursor: "pointer" }}>

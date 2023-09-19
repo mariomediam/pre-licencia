@@ -413,9 +413,9 @@ export const ContribuyenteEditComponent = ({
         </Breadcrumb>
       </div>
       <Container>
-        <div className="row justify-content-center">
+        <div className="row justify-content-center border px-0 mx-0 bg-white shadow bg-body-tertiary mb-2 rounded">
           <div
-            className="align-items-center p-2 col-sm-12 col-lg-8"
+            className="align-items-center py-2 col-sm-12 col-lg-8"
             style={{ border: "0px solid black" }}
           >
             <div className="d-flex justify-content-end m-0 p-0">

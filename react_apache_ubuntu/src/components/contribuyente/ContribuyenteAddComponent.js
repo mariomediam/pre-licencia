@@ -363,7 +363,9 @@ export const ContribuyenteAddComponent = ({
               if (validaDocum.length > 0) {
                 const { C002Cod_Cont, C001Nombre } = validaDocum.shift();
                 newErrors.codigoContrib = `Ya existe el documento: ${codigoContrib.trim()} para el contribuyente: ${C002Cod_Cont} ${C001Nombre.trim()}`;
-              } else {
+                // Comentado hasta solicionar el problema de la consulta a la Sunat
+              } 
+              else {
                 if (tipoDocum === "01") {
                   try {
                     const { coResultado, deResultado, datosPersona } =
@@ -402,6 +404,7 @@ export const ContribuyenteAddComponent = ({
                     }
                   }
                 }
+                // Fin de comentarios
               }
             }
           }
@@ -537,7 +540,7 @@ export const ContribuyenteAddComponent = ({
         </Breadcrumb>
       </div>
       <Container>
-        <div className="row justify-content-center">
+        <div className="row justify-content-center border bg-white shadow bg-body-tertiary mb-2 rounded">
           <div
             className="align-items-center p-2 col-sm-12 col-lg-8"
             style={{ border: "0px solid black" }}
