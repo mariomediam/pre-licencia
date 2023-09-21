@@ -5,6 +5,7 @@ import {
   Nav,
   NavDropdown,
   ListGroup,
+  Button,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { MenuHeader } from "./menues/MenuHeader";
@@ -18,8 +19,14 @@ import imgEscudo from "../assets/images/escudo_muni.png";
 export default function Header() {
   const navigate = useNavigate();
 
-  const { userName, logoutUser, menuSecundario, setMencodi, menuPrincipal, mencodiPrincipal : menCodiSelec } =
-    useContext(AuthContext);
+  const {
+    userName,
+    logoutUser,
+    menuSecundario,
+    setMencodi,
+    menuPrincipal,
+    mencodiPrincipal: menCodiSelec,
+  } = useContext(AuthContext);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -35,9 +42,10 @@ export default function Header() {
     <div className="shadow mb-1 bg-body-tertiary rounded">
       <Navbar className="color-nav" variant="dark" expand="lg">
         <Container fluid>
-          <Navbar.Text style={{ cursor: "pointer" }}>
-            <i className="fas fa-grip-vertical me-2" onClick={handleShow}></i>
-          </Navbar.Text>
+          <Button variant="outline-light me-2" onClick={handleShow}>
+            {" "}
+            <i className="fas fa-grip-vertical " onClick={handleShow}></i>
+          </Button>
           <Navbar.Brand href="#home">
             <img
               src={imgEscudo}
@@ -56,7 +64,6 @@ export default function Header() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-
               {menuSecundario
                 .filter((menu) => menu.menCodi.substr(4, 6) === "000000")
                 .map(({ menCodi, menDesc, menProg, menTipo }, i) => (
@@ -67,7 +74,9 @@ export default function Header() {
                         menDesc={menDesc}
                         menProg={menProg}
                         menTipo={menTipo}
-                        menues={menuSecundario.filter(menu => menu.menCodi.startsWith(menCodi.substr(0, 4)))}
+                        menues={menuSecundario.filter((menu) =>
+                          menu.menCodi.startsWith(menCodi.substr(0, 4))
+                        )}
                         menCodiFilter={menCodi.substr(0, 4)}
                       />
                     ) : menTipo === "P" ? (
@@ -102,18 +111,18 @@ export default function Header() {
           <ListGroup variant="flush">
             {menuPrincipal.map(({ menCodi, menDesc, menProg, acceso }, i) => (
               <ListGroup.Item
-                action                
-                variant = {menCodi === menCodiSelec ? "dark" : ""}                
+                action
+                variant={menCodi === menCodiSelec ? "dark" : ""}
                 key={menCodi}
                 id={menCodi}
-                onClick={mostrarMenusSecundarios}                
+                onClick={mostrarMenusSecundarios}
               >
                 <i
                   className={
                     menProg.length > 0 ? menProg : "fas fa-bookmark me-3"
                   }
                 ></i>{" "}
-                {menDesc} 
+                {menDesc}
               </ListGroup.Item>
             ))}
           </ListGroup>
