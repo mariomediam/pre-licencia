@@ -9,6 +9,7 @@ import { SolicitudCiiuView } from "../views/licenciaFuncionamiento/SolicitudCiiu
 import { DetallePlanillaView, GenerarBoletaView, EnviarBoletaView, SelectDestinarioView } from "../views/rrhh";
 import { BoletasEnviadasView } from "../views/rrhh/remuneraciones/boletas/BoletasEnviadasView";
 import { TrabajadorCorreoView } from "../views/rrhh/remuneraciones/boletas/TrabajadorCorreoView";
+import { LicenciaProvisionalView } from "../views/licenciaFuncionamiento/licenciaProvisional/LicenciaProvisionalView";
 
 export const DashboardRoutes = () => {
   return (
@@ -52,6 +53,7 @@ export const DashboardRoutes = () => {
             element={<BoletasEnviadasView />}
           />
           <Route path="/rrhh/remuneraciones/correos_colaborador" element={<TrabajadorCorreoView />} />
+          <Route path="/licencia/provisional" element={<LicenciaProvisionalView />} />
 
         </Routes>
       </div>

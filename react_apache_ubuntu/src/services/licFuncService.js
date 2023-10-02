@@ -528,6 +528,22 @@ const agregarGiroSolicitud = async (
   }
 };
 
+const obtenerLicProvTipo = async (solicitud) => {
+  try {
+    let api = UseAxios();
+
+    let URLLicProvTipo = `${URL}/lic-prov-tipo`;
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLLicProvTipo}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerPrecalUsuEstado,
   obtenerPrecalificacionPorId,
@@ -550,4 +566,5 @@ export {
   obtenerGiroNegocioPorArea,
   obtenerSolicitud,
   agregarGiroSolicitud,
+  obtenerLicProvTipo,
 };
