@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { counterSlice } from './slices/counter'
-import { boletasEnviadasSlice, boletasSlice, planillaCorreoSlice, planillaSlice, trabajadorCorreoSlice } from './slices'
+import { boletasEnviadasSlice, boletasSlice, planillaCorreoSlice, planillaSlice, trabajadorCorreoSlice, licProvSlice } from './slices'
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +10,6 @@ export const store = configureStore({
     planillaCorreo: planillaCorreoSlice.reducer,
     boletasEnviadas: boletasEnviadasSlice.reducer,
     trabajadorCorreo: trabajadorCorreoSlice.reducer,
+    licProv: licProvSlice.reducer,
   },
 })

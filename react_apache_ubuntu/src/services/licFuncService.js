@@ -528,7 +528,7 @@ const agregarGiroSolicitud = async (
   }
 };
 
-const obtenerLicProvTipo = async (solicitud) => {
+const obtenerLicProvTipo = async () => {
   try {
     let api = UseAxios();
 
@@ -537,6 +537,40 @@ const obtenerLicProvTipo = async (solicitud) => {
     let {
       data: { content },
     } = await api.get(`${URLLicProvTipo}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerLicProv = async (tipo, campo, valor) => {
+  try {
+    let api = UseAxios();
+
+    let URLLicProv = `${URL}/lic-prov-buscar?tipo=${tipo}&campo=${campo}&valor=${valor}`;
+
+    console.log("URLLicProv", URLLicProv)
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLLicProv}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerLicProvCampos = async () => {
+  try {
+    let api = UseAxios();
+
+    let URLLicProvCampos = `${URL}/lic-prov-campos`;
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLLicProvCampos}`);
 
     return content;
   } catch (error) {
@@ -567,4 +601,6 @@ export {
   obtenerSolicitud,
   agregarGiroSolicitud,
   obtenerLicProvTipo,
+  obtenerLicProv,
+  obtenerLicProvCampos,
 };
