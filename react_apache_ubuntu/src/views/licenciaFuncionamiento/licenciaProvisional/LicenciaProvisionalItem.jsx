@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { flushSync } from "react-dom";
 import { Card, Col, Button } from "react-bootstrap";
 
 export const LicenciaProvisionalItem = ({
@@ -10,10 +11,18 @@ export const LicenciaProvisionalItem = ({
 
   const navigate = useNavigate();
 
-  const onClicIngresar = () => {
-    navigate(
-      `/licencia/provisional/listar/${licProvTipoId}`
-    );
+  const onClicIngresar = (event) => {
+
+    event.preventDefault();
+    document.startViewTransition(() => {
+      flushSync(() => {
+        navigate(
+          `/licencia/provisional/listar/${licProvTipoId}`
+        );
+      });
+    });
+
+    
   };
 
 
@@ -27,7 +36,7 @@ export const LicenciaProvisionalItem = ({
         />
         <Card.Body className="d-flex flex-column px-0">
           <Card.Title>{licProvNombre}</Card.Title>
-          <Card.Text className="text-break" >{licProvDescrip}</Card.Text>
+          <Card.Text className="text-break"  style={{ viewTransitionName: `tipo-lic-prov-${licProvTipoId}` }}>{licProvDescrip}</Card.Text>
           <div className="mt-auto">
             <Button variant="primary" className="d-flex align-items-center" onClick={onClicIngresar}>Ingresar <i className="ms-2 fas fa-arrow-right"></i></Button>
           </div>

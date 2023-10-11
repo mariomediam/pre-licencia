@@ -14,7 +14,7 @@ export const LicProvListaComponent = () => {
         licProv.map((lic) => (
           <LicProvListaItemComponent
             key={`${lic.C_LicProv_Tipo}-${lic.M_LicProv_Nro}`}
-            lic={lic}
+            lic={lic}            
           />
         )))}
     </div>

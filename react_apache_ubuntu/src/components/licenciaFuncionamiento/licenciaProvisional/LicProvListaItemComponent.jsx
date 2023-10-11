@@ -1,13 +1,13 @@
-import { useRef } from 'react';
-import { Accordion, Container, Row, Col } from "react-bootstrap";
+import { useRef, useState } from 'react';
+import { Accordion, Badge, Container, Row, Col } from "react-bootstrap";
+
 import { LicProvItemViewComponent } from "./LicProvItemViewComponent";
-import { useState } from "react";
 import { transformarFecha } from "../../../utils/varios";
 
 export const LicProvListaItemComponent = ({ lic }) => {
   const [collapsed, setCollapsed] = useState(true);
   
-  const { M_LicProv_Nro, permisos } = lic;
+  const { M_LicProv_Nro, permisos, F_LicProv_Anula } = lic;
 
   const { n_titular, N_Rubro_Descrip, C_Ubica_Codigo, N_Ubica_Descrip, D_LicProv_FecEmi, D_LicProv_FinVig } = permisos[0];
 
@@ -18,15 +18,17 @@ export const LicProvListaItemComponent = ({ lic }) => {
 
   const tagAccordion = useRef();
   return (
-    <div className="flex-fill py-3">
+    <div className="flex-fill py-3 animate__animated animate__fadeIn animate__faster">
       {" "}
-      <Accordion defaultActiveKey={["0"]} ref={tagAccordion}  onClick={onAccordionClick}>
+      <Accordion defaultActiveKey={["0"]} ref={tagAccordion}  >
 
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>{`Autorización Nº ${M_LicProv_Nro.toString().padStart(
+        <Accordion.Item eventKey="0" className= {!collapsed ? 'shadow  bg-body-tertiary rounded' : ""}>
+          <Accordion.Header onClick={onAccordionClick}>{`Autorización Nº ${M_LicProv_Nro.toString().padStart(
             4,
             "0"
-          )}`}</Accordion.Header>
+          )}`}
+          { F_LicProv_Anula && (<Badge bg="danger" className='mx-2'>Anulada</Badge>)} 
+          </Accordion.Header>
           {/* <Accordion.Collapse
             eventKey="0"
             appear
@@ -37,10 +39,11 @@ export const LicProvListaItemComponent = ({ lic }) => {
           </Accordion.Collapse> */}
           <Accordion.Body>
             <>
-              {permisos.map((permiso) => (
+              {permisos.map((permiso, index) => (
                 <LicProvItemViewComponent
                   key={`${permiso.C_LicProv}`}
-                  permiso={permiso}
+                  permiso={permiso}        
+                  index={index}                  
                 />
               ))}
             </>
@@ -51,7 +54,7 @@ export const LicProvListaItemComponent = ({ lic }) => {
       {collapsed && (
         <Container
         fluid
-          className="d-flex p-3 justify-content-between gap-3  flex-wrap"
+          className="d-flex p-3 justify-content-between gap-3  flex-wrap shadow bg-body-tertiary rounded"
           style={{
             backgroundColor: "#ffffff",
             borderColor: "#CED4DA",

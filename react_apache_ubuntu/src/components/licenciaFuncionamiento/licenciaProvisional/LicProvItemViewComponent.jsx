@@ -1,6 +1,8 @@
+import { Alert, Button } from "react-bootstrap";
+
 import { transformarFecha } from "../../../utils/varios";
 
-export const LicProvItemViewComponent = ({ permiso }) => {
+export const LicProvItemViewComponent = ({ permiso, index }) => {
   const {
     M_LicProv_Renov,
     n_titular,
@@ -19,10 +21,17 @@ export const LicProvItemViewComponent = ({ permiso }) => {
     N_LicProv_Formato,
     N_LicProv_CerGas,
     T_LicProv_Obs,
+    F_LicProv_Anula,
+    T_Anula_Motivo,
   } = permiso;
 
   return (
     <>
+
+    {F_LicProv_Anula && ( <Alert variant="danger">
+         {T_Anula_Motivo}
+        </Alert>)}
+     
       {M_LicProv_Renov ? (
         <>
         <h5>Renovación {M_LicProv_Renov.toString().padStart(4, "0")}</h5>        
@@ -134,6 +143,18 @@ export const LicProvItemViewComponent = ({ permiso }) => {
           {T_LicProv_Obs}
         </div>
       </div>
+
+      { !F_LicProv_Anula && index === 0 && (
+        <div className="d-flex justify-content-sm-start justify-content-center flex-wrap gap-2 my-4">
+          <Button variant="primary" onClick={() => console.log("aaaa")} >Editar <i className="fas fa-edit"></i></Button>
+          <Button variant="primary" >Renovar <i className="fas fa-sync-alt"></i></Button>
+          <Button variant="primary" > Imprimir <i className="fas fa-print"></i></Button>
+
+          <Button variant="outline-danger" >Anular <i className="fas fa-window-close"></i></Button>
+          <Button variant="outline-danger" >Eliminar <i className="fas fa-trash-alt"></i></Button>
+        </div>
+
+      )}
       {
         M_LicProv_Renov && (<hr className="pt-0 mt-0" />)        
       }

@@ -528,11 +528,15 @@ const agregarGiroSolicitud = async (
   }
 };
 
-const obtenerLicProvTipo = async () => {
+const obtenerLicProvTipo = async (tipo) => {
   try {
     let api = UseAxios();
 
     let URLLicProvTipo = `${URL}/lic-prov-tipo`;
+
+    if (tipo) {
+      URLLicProvTipo += `/${tipo}`;
+    }
     
     let {
       data: { content },

@@ -13,8 +13,12 @@ export const licProvSlice = createSlice({
         setLicProv: (state, { payload }) => {
             state.isLoading = false;            
             state.licProv = payload.licProv;
+        },
+        setResetValues: (state) => {
+            state.isLoading = false;
+            state.licProv = [];
         }
     }
 });
 
-export const { startLoadingLicProv, setLicProv } = licProvSlice.actions;
+export const { startLoadingLicProv, setLicProv, setResetValues } = licProvSlice.actions;
