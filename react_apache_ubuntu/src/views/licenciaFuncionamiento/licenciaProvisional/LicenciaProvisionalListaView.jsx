@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { flushSync } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -6,7 +7,6 @@ import { Breadcrumb } from "react-bootstrap";
 import Header from "../../../components/Header";
 import { LicProvListaNavComponent } from "../../../components/licenciaFuncionamiento/licenciaProvisional/LicProvListaNavComponent";
 import { LicProvListaComponent } from "../../../components/licenciaFuncionamiento/licenciaProvisional/LicProvListaComponent";
-import { useEffect } from "react";
 import { setResetLicProv } from "../../../store/slices";
 
 export const LicenciaProvisionalListaView = () => {

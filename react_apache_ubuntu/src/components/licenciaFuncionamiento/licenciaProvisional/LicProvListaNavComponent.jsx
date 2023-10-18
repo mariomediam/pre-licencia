@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Button, InputGroup, Form, Nav } from "react-bootstrap";
 
 import {
@@ -10,6 +10,9 @@ import {
 import { getBuscarLicProv } from "../../../store/slices";
 
 export const LicProvListaNavComponent = () => {  
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [camposBusqueda, setCamposBusqueda] = useState([]);
   const [datosTipo, setDatosTipo] = useState({
@@ -17,7 +20,6 @@ export const LicProvListaNavComponent = () => {
     licProvIcon: "",
   });
 
-  const dispatch = useDispatch();
   const selectCamposBuscar = useRef();
   const inputValorBuscar = useRef();
   const { tipo } = useParams();
@@ -36,6 +38,12 @@ export const LicProvListaNavComponent = () => {
       )
     );
   };
+
+  const onClicAgregar = (event) => {
+    event.preventDefault();
+    navigate(`/licencia/provisional/gestionar/${tipo}/1`);
+  };
+    
 
 
   useEffect(() => {
@@ -83,11 +91,11 @@ export const LicProvListaNavComponent = () => {
         <div className="d-flex flex-fill justify-content-center ms-3 ">
           <Nav
             activeKey="/home"
-            onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
+            // onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
             className="d-flex justify-content-center justify-content-sm-start"
           >
             <Nav.Item>
-              <Nav.Link href="/home">
+              <Nav.Link href="/home" onClick={onClicAgregar}>
                 <i className="fas fa-plus me-1"></i>Autorización
               </Nav.Link>
             </Nav.Item>

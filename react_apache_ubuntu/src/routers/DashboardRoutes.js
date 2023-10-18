@@ -6,11 +6,17 @@ import { ViewPdf } from "../utils/ViewPdf";
 import { ContribuyentesView } from "../views/contribuyentes/ContribuyentesView";
 import { DefaultView } from "../views/DefaultView";
 import { SolicitudCiiuView } from "../views/licenciaFuncionamiento/SolicitudCiiuView";
-import { DetallePlanillaView, GenerarBoletaView, EnviarBoletaView, SelectDestinarioView } from "../views/rrhh";
+import {
+  DetallePlanillaView,
+  GenerarBoletaView,
+  EnviarBoletaView,
+  SelectDestinarioView,
+} from "../views/rrhh";
 import { BoletasEnviadasView } from "../views/rrhh/remuneraciones/boletas/BoletasEnviadasView";
 import { TrabajadorCorreoView } from "../views/rrhh/remuneraciones/boletas/TrabajadorCorreoView";
 import { LicenciaProvisionalView } from "../views/licenciaFuncionamiento/licenciaProvisional/LicenciaProvisionalView";
 import { LicenciaProvisionalListaView } from "../views/licenciaFuncionamiento/licenciaProvisional/LicenciaProvisionalListaView";
+import { LicProvGestorComponent } from "../components/licenciaFuncionamiento/licenciaProvisional/LicProvGestorComponent";
 
 export const DashboardRoutes = () => {
   return (
@@ -53,10 +59,24 @@ export const DashboardRoutes = () => {
             path="/rrhh/remuneraciones/boletas_enviadas/:anio/:mes/:tipo/:numero"
             element={<BoletasEnviadasView />}
           />
-          <Route path="/rrhh/remuneraciones/correos_colaborador" element={<TrabajadorCorreoView />} />
-          <Route path="/licencia/provisional" element={<LicenciaProvisionalView />} />
-          <Route path="/licencia/provisional/listar/:tipo" element={<LicenciaProvisionalListaView />} />
-
+          <Route
+            path="/rrhh/remuneraciones/correos_colaborador"
+            element={<TrabajadorCorreoView />}
+          />
+          <Route
+            path="/licencia/provisional"
+            element={<LicenciaProvisionalView />}
+          />
+          <Route
+            path="/licencia/provisional/listar/:tipo"
+            element={<LicenciaProvisionalListaView />}
+          />
+          <Route
+            path="/licencia/provisional/gestionar/:tipo/"           
+          >
+            <Route path=":accion" element={<LicProvGestorComponent />} />
+            <Route path="" element={<LicProvGestorComponent />} />
+          </Route>          
         </Routes>
       </div>
     </>
