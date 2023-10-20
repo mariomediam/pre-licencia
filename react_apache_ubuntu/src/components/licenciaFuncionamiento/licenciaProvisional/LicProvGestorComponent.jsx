@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Breadcrumb, Button, CloseButton } from "react-bootstrap";
 
 import Header from "../../Header";
@@ -7,9 +8,16 @@ import { obtenerLicProvTipo } from "../../../services/licFuncService";
 import { LicProvGestorCabComponent } from "./LicProvGestorCabComponent";
 import { LicProvGestorTitularComponent } from "./LicProvGestorTitularComponent";
 import { LicProvGestorOtrosComponent } from "./LicProvGestorOtrosComponent";
+import { setCurrentLicProv, setResetCurrentLicProv } from "../../../store/slices";
 
 export const LicProvGestorComponent = () => {
-  const { tipo, accion : accionStr} = useParams();
+  const { tipo : tipoStr, accion : accionStr} = useParams();
+
+  const dispatch = useDispatch();
+
+  const { currentLicProv } = useSelector(
+    (state) => state.licProv
+  );
   
   const [licProvData, setLicProvData] = useState({
     C_Exped: undefined,
@@ -17,6 +25,7 @@ export const LicProvGestorComponent = () => {
     C_LicProv_TitCod: undefined
   })
 
+  const tipo = parseInt(tipoStr);
   const accion = parseInt(accionStr);
 
   const [datosTipo, setDatosTipo] = useState({
@@ -45,7 +54,13 @@ export const LicProvGestorComponent = () => {
       setDatosTipo({ licProvNombre, licProvIcon });
     };
     obtenerTipo();
+    dispatch(setResetCurrentLicProv())
+    dispatch(setCurrentLicProv({...currentLicProv, C_LicProv_Tipo: tipo}))
+
   }, [tipo]);
+
+
+
 
   return (
     <div>

@@ -582,6 +582,66 @@ const obtenerLicProvCampos = async () => {
   }
 };
 
+const obtenerLicProvRubros = async (filtros) => {
+  try {
+    let api = UseAxios();
+
+    let URLLicProvRubros = ""
+
+    if (Object.keys(filtros).length === 0) {
+      URLLicProvRubros = `${URL}/lic-prov-rubro`;
+    }
+
+    if (filtros.hasOwnProperty("id")) {
+      URLLicProvRubros = `${URL}/lic-prov-rubro/${filtros.id}`;
+    } else if (filtros.hasOwnProperty("tipo")) {
+      URLLicProvRubros = `${URL}/lic-prov-rubro-buscar/${filtros.tipo}`;
+      if (filtros.hasOwnProperty("orden")) {
+        URLLicProvRubros += `/${filtros.orden}`;
+      }
+    }
+
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLLicProvRubros}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerLicProvUbica = async (filtros) => {
+  try {
+    let api = UseAxios();
+
+    let URLLicProvUbica = ""
+
+    if (Object.keys(filtros).length === 0) {
+      URLLicProvUbica = `${URL}/lic-prov-ubica`;
+    }
+
+    if (filtros.hasOwnProperty("id")) {
+      URLLicProvUbica = `${URL}/lic-prov-ubica/${filtros.id}`;
+    } else if (filtros.hasOwnProperty("tipo")) {
+      URLLicProvUbica = `${URL}/lic-prov-ubica-buscar/${filtros.tipo}`;
+      if (filtros.hasOwnProperty("orden")) {
+        URLLicProvUbica += `/${filtros.orden}`;
+      }
+    }
+
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLLicProvUbica}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerPrecalUsuEstado,
   obtenerPrecalificacionPorId,
@@ -607,4 +667,6 @@ export {
   obtenerLicProvTipo,
   obtenerLicProv,
   obtenerLicProvCampos,
+  obtenerLicProvRubros,
+  obtenerLicProvUbica
 };

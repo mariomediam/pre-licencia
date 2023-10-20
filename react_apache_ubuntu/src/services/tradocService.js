@@ -13,6 +13,8 @@ const obtenerExpedientePorNroAnio = async (numero, anio) => {
       let {
         data: { content },
       } = await api.get(`${URLExpediente}`);
+
+      console.log("content", content)
   
       return content;
     } catch (error) {

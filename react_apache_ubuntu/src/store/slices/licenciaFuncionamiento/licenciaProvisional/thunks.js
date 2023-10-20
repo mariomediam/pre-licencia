@@ -1,5 +1,6 @@
 import { obtenerLicProv } from "../../../../services/licFuncService";
-import { setLicProv, startLoadingLicProv, setResetValues } from "./licProvSlice";
+import { obtenerExpedientePorNroAnio } from "../../../../services/tradocService";
+import { setLicProv, startLoadingLicProv, setResetValues, setCurrent, setResetCurrent } from "./licProvSlice";
 
 export const getBuscarLicProv = (tipo, campo, valor) => {
   return async (dispatch, getState) => {    
@@ -13,7 +14,34 @@ export const getBuscarLicProv = (tipo, campo, valor) => {
 export const setResetLicProv = () => {
   return (dispatch, getState) => {    
     dispatch(setResetValues());
-  };
-  
+  };  
 }
 
+export const setCurrentLicProv = (currentLicProv) => {
+  return (dispatch, getState) => {    
+    dispatch(setCurrent({ currentLicProv }));
+  };  
+}
+
+export const setExpedSolici = () => {
+  return async (dispatch, getState) => {
+    const currentLicProv = getState().licProv.currentLicProv   
+    const { C_Exped, C_Exped_Anio } = currentLicProv
+    const { ExpedSolici } = await obtenerExpedientePorNroAnio(C_Exped, C_Exped_Anio)
+    
+    dispatch(setCurrentLicProv({ ...currentLicProv, C_LicProv_TitCod: ExpedSolici?.trim() || "" }))
+
+  }
+}
+
+export const setResetCurrentLicProv = () => {
+  return (dispatch, getState) => {    
+    dispatch(setResetCurrent());
+  };  
+}
+
+
+
+
+
+  

@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ButtonGroup,
   Form,
@@ -8,36 +9,84 @@ import {
   Button,
   ToggleButton,
 } from "react-bootstrap";
-import { consultarContribuyenteCodigo, obtenerContribuyenteDocumento } from "../../../services/contribuyenteService";
-import { useState } from "react";
-import Loading from "../../Loading";
+import {
+  consultarContribuyenteCodigo,
+  obtenerContribuyenteDocumento,
+} from "../../../services/contribuyenteService";
 
+import Loading from "../../Loading";
+import { setCurrentLicProv } from "../../../store/slices";
 
 export const LicProvGestorTitularComponent = ({
   accion,
   licProvData,
   setLicProvData,
 }) => {
-  const [cargando, setCargando] = useState(false);
-  const [titDocumentos, setTitDocumentos] = useState([])
+  const dispatch = useDispatch();
 
-  const { C_LicProv_TitCod } = licProvData;
-  const inputTitCodigo = useRef("");
+  const [titDocumentos, setTitDocumentos] = useState([]);
+
+  const { currentLicProv, isLoading } = useSelector((state) => state.licProv);
+  const { C_LicProv_TitCod } = currentLicProv;
+
   const inputTitNombre = useRef("");
-  const selectTitDocumento = useRef("");
+  const inputTitImagen = useRef("");
 
-  const onClickGrabar = () => {
-    console.log(selectTitDocumento.current.value)
+  const onChangeSelectDocumento = (event) => {
+    const documento = event.target.value;
+    const [CodDoc, Número] = documento.split("|");
+    dispatch(
+      setCurrentLicProv({
+        ...currentLicProv,
+        C_LicProv_TitTipDoc: CodDoc,
+        M_LicProv_TitNroDoc: Número,
+      })
+    );
+  };
+
+  const onChangeInputFileImage = (event) => {
+    if (event.target.files[0]) {
+      const file = event.target.files[0];
+      const extension = file.name.split(".").pop().toLowerCase();
+  
+      if (extension === "jpg" || extension === "jpeg") {
+        const reader = new FileReader();
+  
+        reader.onload = () => {
+          const base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
+          dispatch(
+            setCurrentLicProv({
+              ...currentLicProv,
+              N_LicProv_TitImg: base64String
+            })
+          );
+        };
+  
+        reader.readAsDataURL(file);
+      } else {
+        alert("Solo se permiten archivos JPG");
+      }
+    }
+  };
+
+  const onClickBtnAddFileImage = () => {
+    inputTitImagen.current.click();
+  }
+
+  const onClickBtnDelFileImage = () => {
+    dispatch(
+      setCurrentLicProv({
+        ...currentLicProv,
+        N_LicProv_TitImg: ""
+      })
+    );
   }
 
   useEffect(() => {
     try {
-      
-      console.log(cargando)
-      inputTitCodigo.current.value = C_LicProv_TitCod || "";
-
+      inputTitNombre.current.value = "";
+      setTitDocumentos([]);
       const buscarDatosTitular = async () => {
-        setCargando(true);
         const { C001Nombre } = await consultarContribuyenteCodigo(
           C_LicProv_TitCod
         );
@@ -45,32 +94,50 @@ export const LicProvGestorTitularComponent = ({
       };
 
       const buscarDocumentosTitular = async () => {
-        const documentos = await obtenerContribuyenteDocumento(C_LicProv_TitCod);
+        const documentos = await obtenerContribuyenteDocumento(
+          C_LicProv_TitCod
+        );
         setTitDocumentos(documentos);
-      }
+      };
       if (C_LicProv_TitCod) {
         buscarDatosTitular();
         buscarDocumentosTitular();
       }
-    } catch (error) {
-    } finally {
-      setCargando(false);
-      console.log(cargando)
+    } catch (error) {}
+  }, [C_LicProv_TitCod]);
+
+  useEffect(() => {
+    if (titDocumentos.length > 0) {
+      const { CodDoc, Número } = titDocumentos[0];
+      dispatch(
+        setCurrentLicProv({
+          ...currentLicProv,
+          C_LicProv_TitTipDoc: CodDoc || "",
+          M_LicProv_TitNroDoc: Número?.trim() || "",
+        })
+      );
+    } else {
+      dispatch(
+        setCurrentLicProv({
+          ...currentLicProv,
+          C_LicProv_TitTipDoc: "",
+          M_LicProv_TitNroDoc: "",
+        })
+      );
     }
-  }, [C_LicProv_TitCod, cargando]);
-
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [titDocumentos]);
 
   return (
     <>
-      {cargando ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <>
           {/* ******************** Código ********************* */}
           <div className="col-12 col-sm-6">
             <Form.Label className="text-muted mb-1">
-              <small className="">Titular {cargando.toString()} aaaa</small>
+              <small className="">Titular</small>
             </Form.Label>
             <Form.Group className="mb-2" controlId="formBasicEmail">
               <InputGroup>
@@ -78,7 +145,7 @@ export const LicProvGestorTitularComponent = ({
                   placeholder="Código"
                   maxLength="11"
                   disabled
-                  ref={inputTitCodigo}
+                  value={C_LicProv_TitCod || ""}
                 />
 
                 <Button
@@ -117,18 +184,18 @@ export const LicProvGestorTitularComponent = ({
                 {" "}
                 <small>Documento</small>
               </Form.Label>
-              <Form.Select aria-label="Default select example" ref={selectTitDocumento}>
-
-              {titDocumentos.map(({CodDoc, Descripción, Número}) => (
-                <option key={`${CodDoc}-${Número.toString().trim()}`} value={`${CodDoc}-${Número.toString().trim()}`}>{Descripción.toString().trim()} {Número}</option>
-              ))}
-
-
-
-                {/* <option>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option> */}
+              <Form.Select
+                aria-label="Default select example"
+                onChange={onChangeSelectDocumento}
+              >
+                {titDocumentos.map(({ CodDoc, Descripción, Número }) => (
+                  <option
+                    key={`${CodDoc}|${Número.toString().trim()}`}
+                    value={`${CodDoc}|${Número.toString().trim()}`}
+                  >
+                    {Descripción.toString().trim()} {Número}
+                  </option>
+                ))}
               </Form.Select>
             </Form.Group>
           </div>
@@ -138,9 +205,11 @@ export const LicProvGestorTitularComponent = ({
             <Form.Label className="text-muted mb-1">
               {" "}
               <small>Imagen</small>
-            </Form.Label>
-            <Image
-              src="https://media.istockphoto.com/id/1268988213/vector/illustration-of-a-young-woman-in-a-suit-id-photo-size.jpg?s=612x612&w=0&k=20&c=XJwY7mrLPCF5hkGqcs_W_aNThDIBvfWXTDJ_vsX4GyY="
+            </Form.Label>           
+             <Image
+              src={currentLicProv.N_LicProv_TitImg.length > 0 ?
+                `data:image/jpeg;base64,${currentLicProv.N_LicProv_TitImg}` :
+              "/images/default-user.jpg"}
               thumbnail
             />
 
@@ -149,6 +218,7 @@ export const LicProvGestorTitularComponent = ({
                 type="button"
                 variant="primary"
                 name="radio"
+                onClick={onClickBtnAddFileImage}
                 // value={radio.value}
                 // checked={radioValue === radio.value}
                 // onChange={(e) => setRadioValue(e.currentTarget.value)}
@@ -159,15 +229,19 @@ export const LicProvGestorTitularComponent = ({
                 type="button"
                 variant="danger"
                 name="radio"
+                onClick={onClickBtnDelFileImage}
                 // value={radio.value}
                 // checked={radioValue === radio.value}
                 // onChange={(e) => setRadioValue(e.currentTarget.value)}
-                onClick={onClickGrabar}
+                
               >
                 <i className="fas fa-minus-square"></i>
               </ToggleButton>
             </ButtonGroup>
           </div>
+          <Form.Group controlId="formFile" className="d-none">            
+            <Form.Control ref={inputTitImagen} type="file" accept="image/jpeg" onChange={onChangeInputFileImage}/>
+          </Form.Group>
         </>
       )}
     </>

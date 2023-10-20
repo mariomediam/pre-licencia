@@ -1,28 +1,50 @@
-import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
-import { obtenerExpedientePorNroAnio } from "../../../services/tradocService";
+import { setCurrentLicProv, setExpedSolici } from "../../../store/slices";
 
-export const LicProvGestorCabComponent = ({ accion, licProvData, setLicProvData }) => {
-  const inputExpedNro = useRef();
-  const inputExpedAnio = useRef();
+export const LicProvGestorCabComponent = ({ accion }) => {
+  const dispatch = useDispatch();
+
+  const { currentLicProv } = useSelector((state) => state.licProv);
+
+  const { C_Exped, C_Exped_Anio } = currentLicProv;
+
+  const onChangeInputExpedNro = (event) => {
+    const expedNro = event.target.value;
+    dispatch(setCurrentLicProv({ ...currentLicProv, C_Exped: expedNro }));
+  };
+
+  const onBlurInpurExpedNro = (event) => {
+    const expedNro = event.target.value;
+    if (expedNro.length > 0) {
+      dispatch(
+        setCurrentLicProv({
+          ...currentLicProv,
+          C_Exped: expedNro.padStart(8, "0"),
+        })
+      );
+    }
+  };
+
+  const onChangeInputExpedAnio = (event) => {
+    const expedAnio = event.target.value;
+    dispatch(setCurrentLicProv({ ...currentLicProv, C_Exped_Anio: expedAnio }));
+  };
+
+  const onBlurInputExpedAnio = (event) => {
+    const expedAnio = event.target.value;
+    if (expedAnio.length > 0) {
+      dispatch(
+        setCurrentLicProv({
+          ...currentLicProv,
+          C_Exped_Anio: expedAnio.padStart(4, "0"),
+        })
+      );
+    }
+  };
 
   const onClicBuscarExpedSolici = async () => {
-    inputExpedNro.current.value = inputExpedNro.current.value
-      .trim()
-      .padStart(8, "0");
-    const expedNro = inputExpedNro.current.value;
-    const expedAnio = inputExpedAnio.current.value;
-
-    const { ExpedSolici } = await obtenerExpedientePorNroAnio(
-      expedNro,
-      expedAnio
-    );
-    setLicProvData((prevState) => ({
-      ...prevState,
-      C_Exped: expedNro,
-      C_Exped_Anio: expedAnio,
-      C_LicProv_TitCod: ExpedSolici,
-    }));
+    dispatch(setExpedSolici());
   };
 
   return (
@@ -50,9 +72,9 @@ export const LicProvGestorCabComponent = ({ accion, licProvData, setLicProvData 
                 placeholder="Número"
                 name="c_exped"
                 className="px-2 px-sm-3"
-                ref={inputExpedNro}
-                // value={valores.codigoLugar}
-                // onChange={(e) => setField("codigoLugar", e.target.value)}
+                onChange={onChangeInputExpedNro}
+                onBlur={onBlurInpurExpedNro}
+                value={C_Exped}
                 // isInvalid={!!errors.codigoLugar}
               />
               <Form.Control.Feedback type="invalid">
@@ -66,8 +88,9 @@ export const LicProvGestorCabComponent = ({ accion, licProvData, setLicProvData 
                 <FormControl
                   placeholder="Año"
                   maxLength="4"
-                  ref={inputExpedAnio}
-                  // value={`${valores.nombreLugar} / ${valores.direccProv} - ${valores.direccDist}`}
+                  onChange={onChangeInputExpedAnio}
+                  onBlur={onBlurInputExpedAnio}
+                  value={C_Exped_Anio}
                 />
                 {accion !== 3 && (
                   <Button
