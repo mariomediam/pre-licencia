@@ -1,4 +1,4 @@
-import { obtenerLicProv } from "../../../../services/licFuncService";
+import { obtenerLicProv, gestionarLicProv } from "../../../../services/licFuncService";
 import { obtenerExpedientePorNroAnio } from "../../../../services/tradocService";
 import { setLicProv, startLoadingLicProv, setResetValues, setCurrent, setResetCurrent } from "./licProvSlice";
 
@@ -17,19 +17,20 @@ export const setResetLicProv = () => {
   };  
 }
 
-export const setCurrentLicProv = (currentLicProv) => {
+export const setCurrentLicProv = (newValues) => {  
   return (dispatch, getState) => {    
-    dispatch(setCurrent({ currentLicProv }));
+    const currentLicProv = getState().licProv.currentLicProv 
+    dispatch(setCurrent({currentLicProv: { ...currentLicProv, ...newValues }}));
   };  
 }
 
 export const setExpedSolici = () => {
   return async (dispatch, getState) => {
     const currentLicProv = getState().licProv.currentLicProv   
-    const { C_Exped, C_Exped_Anio } = currentLicProv
-    const { ExpedSolici } = await obtenerExpedientePorNroAnio(C_Exped, C_Exped_Anio)
+    const { licProvExpNro, licProvExpAnio } = currentLicProv
+    const { ExpedSolici } = await obtenerExpedientePorNroAnio(licProvExpNro, licProvExpAnio)
     
-    dispatch(setCurrentLicProv({ ...currentLicProv, C_LicProv_TitCod: ExpedSolici?.trim() || "" }))
+    dispatch(setCurrentLicProv({ ...currentLicProv, licProvTitCod: ExpedSolici?.trim() || "" }))
 
   }
 }
@@ -40,8 +41,19 @@ export const setResetCurrentLicProv = () => {
   };  
 }
 
+export const saveCurrentLicProv = (accion) => {
+  return async (dispatch, getState) => {
+    try {
+      let currentLicProv = getState().licProv.currentLicProv;
+      currentLicProv = {...currentLicProv, accion: accion}      
+      const data = await gestionarLicProv(currentLicProv);      
+      const {licProvId, licProvNro, licProvRenov} = data
+      dispatch(setCurrent({"currentLicProv": { ...currentLicProv, ...data }}));  
+      return {licProvId, licProvNro, licProvRenov}      
+    } catch (error) {
 
-
-
-
-  
+      throw error;
+    }
+    
+  }
+}

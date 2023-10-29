@@ -1,34 +1,124 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
 import Select from "react-select";
-import { useEffect, useState } from "react";
-import { obtenerLicProvRubros } from "../../../services/licFuncService";
+
+import {
+  obtenerLicProvRubros,
+  obtenerLicProvUbica,
+} from "../../../services/licFuncService";
 import { setCurrentLicProv } from "../../../store/slices";
 
 export const LicProvGestorOtrosComponent = () => {
   const dispatch = useDispatch();
 
-  const { currentLicProv, isLoading } = useSelector((state) => state.licProv);
-  const { C_Rubro, C_LicProv_Tipo } = currentLicProv;
+  const { accion: accionStr } = useParams();
+  const accion = parseInt(accionStr);
+
+  const { currentLicProv } = useSelector((state) => state.licProv);
+  const {
+    licProvRubro,
+    licProvUbica,
+    licProvTipo,
+    licProvFecEmi,
+    licProvFinVig,
+    licProvHorAte,
+    licProvCerGas,
+    licProvObs,
+    licProvFormato,
+  } = currentLicProv;
 
   const [rubros, setRubros] = useState([]);
   const [optionsRubros, setOptionsRubros] = useState([]);
-  const [rubroSelected, setRubroSelected] = useState(0);
+  const [optionRubroSelected, setOptionRubroSelected] = useState(
+    optionsRubros[0]
+  );
   const [dimensiones, setDimensiones] = useState("");
 
-  const onChangeSelectRubro = () => {
-    console.log(event.target);
-    // const rubro = event.target.value;
-    // dispatch({...currentLicProv, C_Rubro: rubro});
+  const [ubicaciones, setUbicaciones] = useState([]);
+  const [optionsUbicaciones, setOptionsUbicaciones] = useState([]);
+  const [OptionUbicacionSelected, setOptionUbicacionSelected] = useState(optionsUbicaciones[0]);
+
+  // *************************** inicio  ok ***************************
+  const onChangeInputFecEmi = (event) => {
+    const fecEmi = event.target.value;
+    const fechaEmision = new Date(fecEmi);
+    fechaEmision.setFullYear(fechaEmision.getFullYear() + 1);
+    const fecFin = fechaEmision.toISOString().slice(0, 10);
+
+    dispatch(
+      setCurrentLicProv({
+        licProvFecEmi: fecEmi,
+        licProvIniVig: fecEmi,
+        licProvFinVig: fecFin,
+      })
+    );
   };
+
+  const onChangeInfutFecFin = (event) => {
+    const fecFin = event.target.value;
+    dispatch(
+      setCurrentLicProv({
+        D_LicProv_Fec: fecFin,
+      })
+    );
+  };
+
+  const onChangeInputHorAte = (event) => {
+    const horAte = event.target.value;
+    dispatch(
+      setCurrentLicProv({
+        licProvHorAte: horAte,
+      })
+    );
+  };
+
+  const onChangeInputCerGas = (event) => {
+    const cerGas = event.target.value;
+    dispatch(
+      setCurrentLicProv({
+        licProvCerGas: cerGas,
+      })
+    );
+  };
+
+  const onChangeInputObs = (event) => {
+    const obs = event.target.value;
+    dispatch(
+      setCurrentLicProv({
+        licProvObs: obs,
+      })
+    );
+  };
+
+  const onChangeInputFormato = (event) => {
+    const formato = event.target.value;
+    dispatch(
+      setCurrentLicProv({
+        licProvFormato: formato,
+      })
+    );
+  };
+
+  // *************************** fin  ok ***************************
 
   useEffect(() => {
     const obtenerRubros = async () => {
-      const rubrosTmp = await obtenerLicProvRubros({ tipo: C_LicProv_Tipo });
+      const rubrosTmp = await obtenerLicProvRubros({ tipo: licProvTipo });
       setRubros(rubrosTmp);
     };
+
+    const obtenerUbicaciones = async () => {
+      const ubicacionesTmp = await obtenerLicProvUbica({
+        tipo: licProvTipo,
+      });
+      setUbicaciones(ubicacionesTmp);
+    };
+
     obtenerRubros();
-  }, [C_LicProv_Tipo]);
+    obtenerUbicaciones();
+  }, [licProvTipo]);
 
   useEffect(() => {
     const options = rubros.map((rubro) => ({
@@ -40,32 +130,65 @@ export const LicProvGestorOtrosComponent = () => {
   }, [rubros]);
 
   useEffect(() => {
-    if (optionsRubros.length > 0) {
-      setRubroSelected(optionsRubros[0]);
+    const options = ubicaciones.map((ubicacion) => ({
+      value: ubicacion.ubicaId,
+      label: `${ubicacion.ubicaOrden} - ${ubicacion.ubicaDescrip} (${ubicacion.ubicaCodigo})`,
+    }));
+    setOptionsUbicaciones(options);
+  }, [ubicaciones]);
+
+  useEffect(() => {
+    if (accion===2 && optionsRubros.length>0){
+      setOptionRubroSelected(optionsRubros.filter((rubro) => rubro.value === licProvRubro)[0]);
     }
+    //eslint-disable-next-line
   }, [optionsRubros]);
 
   useEffect(() => {
-    dispatch(
-      setCurrentLicProv({
-        ...currentLicProv,
-        C_Rubro: rubroSelected?.value || 0,
-      })
-    );
-    const rubroFiltered = rubros.filter(
-      (rubro) => rubro.rubroId === rubroSelected.value
-    );
-    let dimensionesText = "";
-    if (rubroFiltered.length > 0) {
-      dimensionesText = rubroFiltered[0].rubroDimension;
+    if (accion===2 && optionsUbicaciones.length>0){
+      setOptionUbicacionSelected(optionsUbicaciones.filter((ubicacion) => ubicacion.value === licProvUbica)[0]);
     }
-    setDimensiones(dimensionesText);
-  }, [rubroSelected]);
+    //eslint-disable-next-line
+  }, [optionsUbicaciones]);
+
+  // **************************
+
+  useEffect(() => {    
+    if (optionRubroSelected) {
+      dispatch(
+        setCurrentLicProv({
+          licProvRubro: optionRubroSelected?.value || 0,
+        })
+      );
+      const rubroFiltered = rubros.filter(
+        (rubro) => rubro.rubroId === optionRubroSelected?.value
+      );
+      let dimensionesText = "";
+      if (rubroFiltered.length > 0) {
+        dimensionesText = rubroFiltered[0].rubroDimension;
+      }
+      setDimensiones(dimensionesText);
+    }
+  }, [optionRubroSelected, dispatch]);
+
+
+
+  useEffect(() => {
+    if (OptionUbicacionSelected){
+      dispatch(
+        setCurrentLicProv({
+          licProvUbica: OptionUbicacionSelected?.value || 0,
+        })
+      );
+    }
+    
+  }, [OptionUbicacionSelected, dispatch]);
 
   return (
     <>
       {/* ******************** Rubro ********************* */}
-      {/* {JSON.stringify(rubroSelected)}
+      {/* {JSON.stringify(optionRubroSelected)} */}
+      {/* <hr />
       <hr />
       {dimensiones} */}
       <Form.Group className="mt-3">
@@ -76,12 +199,12 @@ export const LicProvGestorOtrosComponent = () => {
         <Select
           className="basic-single"
           classNamePrefix="select"
-          value={rubroSelected}
+          value={optionRubroSelected}
           placeholder="Escoger rubro"
           // ref={selectGiros}
           noOptionsMessage={() => "Registro no encontrado"}
           name="optionsRubros"
-          onChange={setRubroSelected}
+          onChange={setOptionRubroSelected}
           options={optionsRubros}
         />
       </Form.Group>
@@ -93,15 +216,15 @@ export const LicProvGestorOtrosComponent = () => {
           <small>Ubicación</small>
         </Form.Label>
         <Select
+          className="basic-single"
+          classNamePrefix="select"
+          value={OptionUbicacionSelected}
           placeholder="Escoger ubicación"
           // ref={selectGiros}
           noOptionsMessage={() => "Registro no encontrado"}
-          isMulti
-          name="colors"
-          // onChange={setSelectedOption}
-          // options={giros}
-          className="basic-multi-select"
-          classNamePrefix="select"
+          name="optionsUbicacaiones"
+          onChange={setOptionUbicacionSelected}
+          options={optionsUbicaciones}
         />
       </Form.Group>
 
@@ -128,7 +251,12 @@ export const LicProvGestorOtrosComponent = () => {
             {" "}
             <small>Horario de atención</small>
           </Form.Label>
-          <Form.Control type="text" placeholder="" />
+          <Form.Control
+            type="text"
+            placeholder=""
+            onChange={onChangeInputHorAte}
+            value={licProvHorAte}
+          />
         </Form.Group>
       </div>
 
@@ -139,7 +267,12 @@ export const LicProvGestorOtrosComponent = () => {
             {" "}
             <small>Certificado de mantenimiento de gas</small>
           </Form.Label>
-          <Form.Control type="text" placeholder="" />
+          <Form.Control
+            type="text"
+            placeholder=""
+            onChange={onChangeInputCerGas}
+            value={licProvCerGas}
+          />
         </Form.Group>
       </div>
 
@@ -150,7 +283,13 @@ export const LicProvGestorOtrosComponent = () => {
             {" "}
             <small>Observaciones</small>
           </Form.Label>
-          <Form.Control as="textarea" placeholder="" rows={3} />
+          <Form.Control
+            as="textarea"
+            placeholder=""
+            rows={3}
+            onChange={onChangeInputObs}
+            value={licProvObs}
+          />
         </Form.Group>
       </div>
 
@@ -163,7 +302,10 @@ export const LicProvGestorOtrosComponent = () => {
           </Form.Label>
           <Form.Control
             type="date"
-            name="name_fecNac"
+            // ref={inputFecIni}
+            value={new Date(licProvFecEmi).toISOString().slice(0, 10)}
+            // value={licProvFecEmi.toISOString().slice(0, 10)}
+            onChange={onChangeInputFecEmi}
             //   value={valores.fecNac}
             //   onChange={(e) => setField("fecNac", e.target.value)}
             //   isInvalid={!!errors.fecNac}
@@ -185,6 +327,9 @@ export const LicProvGestorOtrosComponent = () => {
           <Form.Control
             type="date"
             name="name_fecNac"
+            disabled
+            value={new Date(licProvFinVig).toISOString().slice(0, 10)}
+            onChange={onChangeInfutFecFin}
             //   value={valores.fecNac}
             //   onChange={(e) => setField("fecNac", e.target.value)}
             //   isInvalid={!!errors.fecNac}
@@ -203,7 +348,12 @@ export const LicProvGestorOtrosComponent = () => {
             {" "}
             <small>Número de formato</small>
           </Form.Label>
-          <Form.Control type="text" placeholder="" />
+          <Form.Control
+            type="text"
+            placeholder=""
+            onChange={onChangeInputFormato}
+            value={licProvFormato}
+          />
         </Form.Group>
       </div>
     </>

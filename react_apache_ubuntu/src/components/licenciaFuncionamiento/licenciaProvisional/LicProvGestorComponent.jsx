@@ -1,29 +1,41 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
 import { Breadcrumb, Button, CloseButton } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 import Header from "../../Header";
+
 import { obtenerLicProvTipo } from "../../../services/licFuncService";
 import { LicProvGestorCabComponent } from "./LicProvGestorCabComponent";
 import { LicProvGestorTitularComponent } from "./LicProvGestorTitularComponent";
 import { LicProvGestorOtrosComponent } from "./LicProvGestorOtrosComponent";
-import { setCurrentLicProv, setResetCurrentLicProv } from "../../../store/slices";
+import {
+  setCurrentLicProv,
+  setResetCurrentLicProv,
+  saveCurrentLicProv,
+} from "../../../store/slices";
+import { Toast } from "../../tools/PopMessage";
 
 export const LicProvGestorComponent = () => {
-  const { tipo : tipoStr, accion : accionStr} = useParams();
+  const { tipo: tipoStr, accion: accionStr } = useParams();
+
+
+
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { currentLicProv } = useSelector(
-    (state) => state.licProv
-  );
-  
-  const [licProvData, setLicProvData] = useState({
-    C_Exped: undefined,
-    C_Exped_Anio: undefined,
-    C_LicProv_TitCod: undefined
-  })
+  // const { currentLicProv } = useSelector(
+  //   (state) => state.licProv
+  // );
+
+  // const [licProvData, setLicProvData] = useState({
+  //   licProvExpNro: undefined,
+  //   licProvExpAnio: undefined,
+  //   licProvTitCod: undefined
+  // })
 
   const tipo = parseInt(tipoStr);
   const accion = parseInt(accionStr);
@@ -40,12 +52,34 @@ export const LicProvGestorComponent = () => {
   };
 
   const onClicVolver = (event) => {
-    // event.preventDefault();
-    // document.startViewTransition(() => {
-    //   flushSync(() => {
-    //     navigate(`/licencia/provisional`);
-    //   });
-    // });
+    window.history.back();
+  };
+
+  const onClicBtnGRabar = async (event) => {
+    try {
+      event.preventDefault();
+
+      const {licProvNro} = await dispatch(saveCurrentLicProv(accion));
+      
+      Toast.fire({
+        icon: "success",
+        title: "Licencia provisional grabada correctamente",
+        background: "#F4F6F6",
+        timer: 1500,
+      });      
+      setTimeout(() => {
+        navigate(
+          `/licencia/provisional/listar/${tipo}/?campo=autoriza&valor=${licProvNro}`
+        );
+      }, 1500);
+    } catch (error) {
+      console.log(error)
+      Swal.fire({
+        icon: "error",
+        title: "Error grabando licencia provisional",
+        text: JSON.stringify(error?.response?.data?.message),
+      });
+    }
   };
 
   useEffect(() => {
@@ -54,13 +88,20 @@ export const LicProvGestorComponent = () => {
       setDatosTipo({ licProvNombre, licProvIcon });
     };
     obtenerTipo();
-    dispatch(setResetCurrentLicProv())
-    dispatch(setCurrentLicProv({...currentLicProv, C_LicProv_Tipo: tipo}))
+    if (accion === 1) {
+      dispatch(setResetCurrentLicProv());
+      dispatch(setCurrentLicProv({ licProvTipo: tipo }));
+    }
+  }, [tipo, dispatch]);
 
-  }, [tipo]);
+  useEffect(() => {
+    if (accion === 1){
+      dispatch(setResetCurrentLicProv());
+      dispatch(setCurrentLicProv({ licProvTipo: tipo }));
+    }
 
-
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -93,18 +134,17 @@ export const LicProvGestorComponent = () => {
               </h3>
             </div>
 
-            <LicProvGestorCabComponent accion={accion} licProvData={licProvData} setLicProvData={setLicProvData}/>
+            <LicProvGestorCabComponent accion={accion} />
             <hr />
-            <LicProvGestorTitularComponent accion={accion} licProvData={licProvData} setLicProvData={setLicProvData}/>
+            <LicProvGestorTitularComponent accion={accion} />
             <hr />
             <LicProvGestorOtrosComponent accion={accion} />
             <hr />
             <div className="d-flex justify-content-center">
-            <Button variant="primary" size="lg">
-              Grabar <i className="far fa-save ms-2"></i>
-            </Button>
-              </div>
-            
+              <Button variant="primary" size="lg" onClick={onClicBtnGRabar}>
+                Grabar <i className="far fa-save ms-2"></i>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

@@ -19,15 +19,13 @@ import { setCurrentLicProv } from "../../../store/slices";
 
 export const LicProvGestorTitularComponent = ({
   accion,
-  licProvData,
-  setLicProvData,
 }) => {
   const dispatch = useDispatch();
 
   const [titDocumentos, setTitDocumentos] = useState([]);
 
   const { currentLicProv, isLoading } = useSelector((state) => state.licProv);
-  const { C_LicProv_TitCod } = currentLicProv;
+  const { licProvTitCod } = currentLicProv;
 
   const inputTitNombre = useRef("");
   const inputTitImagen = useRef("");
@@ -36,10 +34,9 @@ export const LicProvGestorTitularComponent = ({
     const documento = event.target.value;
     const [CodDoc, Número] = documento.split("|");
     dispatch(
-      setCurrentLicProv({
-        ...currentLicProv,
-        C_LicProv_TitTipDoc: CodDoc,
-        M_LicProv_TitNroDoc: Número,
+      setCurrentLicProv({        
+        licProvTitTipCod: CodDoc,
+        licProvTitNroDoc: Número,
       })
     );
   };
@@ -55,9 +52,8 @@ export const LicProvGestorTitularComponent = ({
         reader.onload = () => {
           const base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
           dispatch(
-            setCurrentLicProv({
-              ...currentLicProv,
-              N_LicProv_TitImg: base64String
+            setCurrentLicProv({              
+              licProvTitImg: base64String
             })
           );
         };
@@ -75,9 +71,8 @@ export const LicProvGestorTitularComponent = ({
 
   const onClickBtnDelFileImage = () => {
     dispatch(
-      setCurrentLicProv({
-        ...currentLicProv,
-        N_LicProv_TitImg: ""
+      setCurrentLicProv({        
+        licProvTitImg: ""
       })
     );
   }
@@ -88,40 +83,38 @@ export const LicProvGestorTitularComponent = ({
       setTitDocumentos([]);
       const buscarDatosTitular = async () => {
         const { C001Nombre } = await consultarContribuyenteCodigo(
-          C_LicProv_TitCod
+          licProvTitCod
         );
         inputTitNombre.current.value = C001Nombre || "";
       };
 
       const buscarDocumentosTitular = async () => {
         const documentos = await obtenerContribuyenteDocumento(
-          C_LicProv_TitCod
+          licProvTitCod
         );
         setTitDocumentos(documentos);
       };
-      if (C_LicProv_TitCod) {
+      if (licProvTitCod) {
         buscarDatosTitular();
         buscarDocumentosTitular();
       }
     } catch (error) {}
-  }, [C_LicProv_TitCod]);
+  }, [licProvTitCod]);
 
   useEffect(() => {
     if (titDocumentos.length > 0) {
       const { CodDoc, Número } = titDocumentos[0];
       dispatch(
-        setCurrentLicProv({
-          ...currentLicProv,
-          C_LicProv_TitTipDoc: CodDoc || "",
-          M_LicProv_TitNroDoc: Número?.trim() || "",
+        setCurrentLicProv({          
+          licProvTitTipCod: CodDoc || "",
+          licProvTitNroDoc: Número?.trim() || "",
         })
       );
     } else {
       dispatch(
-        setCurrentLicProv({
-          ...currentLicProv,
-          C_LicProv_TitTipDoc: "",
-          M_LicProv_TitNroDoc: "",
+        setCurrentLicProv({          
+          licProvTitTipCod: "",
+          licProvTitNroDoc: "",
         })
       );
     }
@@ -145,7 +138,7 @@ export const LicProvGestorTitularComponent = ({
                   placeholder="Código"
                   maxLength="11"
                   disabled
-                  value={C_LicProv_TitCod || ""}
+                  value={licProvTitCod || ""}
                 />
 
                 <Button
@@ -207,8 +200,8 @@ export const LicProvGestorTitularComponent = ({
               <small>Imagen</small>
             </Form.Label>           
              <Image
-              src={currentLicProv.N_LicProv_TitImg.length > 0 ?
-                `data:image/jpeg;base64,${currentLicProv.N_LicProv_TitImg}` :
+              src={currentLicProv.licProvTitImg.length > 100 ?
+                `data:image/jpeg;base64,${currentLicProv.licProvTitImg}` :
               "/images/default-user.jpg"}
               thumbnail
             />

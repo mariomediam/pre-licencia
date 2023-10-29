@@ -553,8 +553,6 @@ const obtenerLicProv = async (tipo, campo, valor) => {
     let api = UseAxios();
 
     let URLLicProv = `${URL}/lic-prov-buscar?tipo=${tipo}&campo=${campo}&valor=${valor}`;
-
-    console.log("URLLicProv", URLLicProv)
     
     let {
       data: { content },
@@ -599,8 +597,7 @@ const obtenerLicProvRubros = async (filtros) => {
       if (filtros.hasOwnProperty("orden")) {
         URLLicProvRubros += `/${filtros.orden}`;
       }
-    }
-
+    }    
     
     let {
       data: { content },
@@ -642,6 +639,62 @@ const obtenerLicProvUbica = async (filtros) => {
   }
 };
 
+const gestionarLicProv = async (
+  currentLicProv,
+) => {
+  const credenciales = currentLicProv;
+
+  let api = UseAxios();
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let {
+      data: { content },
+    } = await api.post(`${URL}/lic-prov`, credenciales, {
+      headers,
+    });
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const obtenerLicProvPorId = async (licProvId) => {
+  try {
+    let api = UseAxios();
+
+    let URLLicProv = `${URL}/lic-prov/${licProvId}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLLicProv}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const imprimirLicProvPorId = async (licProvId) => {
+  try {
+    let api = UseAxios();
+
+    let URLLicProv = `${URL}/lic-prov-imprimir/${licProvId}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLLicProv}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export {
   obtenerPrecalUsuEstado,
   obtenerPrecalificacionPorId,
@@ -668,5 +721,11 @@ export {
   obtenerLicProv,
   obtenerLicProvCampos,
   obtenerLicProvRubros,
-  obtenerLicProvUbica
+  obtenerLicProvUbica,
+  gestionarLicProv,
+  obtenerLicProvPorId,
+  imprimirLicProvPorId,  
 };
+
+
+

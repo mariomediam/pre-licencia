@@ -5,7 +5,12 @@ export const obtenerNombreMes = (numeroMes) => {
   }
 
   export const transformarFecha = (fecha) => {
-    const fechaObjeto = new Date(fecha);
+    
+    if (typeof(fecha) === "string" && fecha.length === 10) {
+      fecha += " 00:00:00";
+    }
+
+    const  fechaObjeto = new Date(fecha);
     const dia = fechaObjeto.getDate().toString().padStart(2, "0");
     const mes = (fechaObjeto.getMonth() + 1).toString().padStart(2, "0");
     const anio = fechaObjeto.getFullYear().toString();

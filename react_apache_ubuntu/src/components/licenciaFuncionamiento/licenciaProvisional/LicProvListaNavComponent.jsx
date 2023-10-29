@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Button, InputGroup, Form, Nav } from "react-bootstrap";
 
 import {
@@ -9,8 +9,7 @@ import {
 } from "../../../services/licFuncService";
 import { getBuscarLicProv } from "../../../store/slices";
 
-export const LicProvListaNavComponent = () => {  
-  
+export const LicProvListaNavComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,35 +18,50 @@ export const LicProvListaNavComponent = () => {
     licProvNombre: "",
     licProvIcon: "",
   });
+  const [searchParams] = useSearchParams();
+  const [filtros, setFiltros] = useState({
+    campo: searchParams.get("campo") || "",
+    valor: searchParams.get("valor") || "",
+  });
 
-  const selectCamposBuscar = useRef();
-  const inputValorBuscar = useRef();
   const { tipo } = useParams();
+  const selectCamboPusqueda = useRef(null);
 
   const obtenerCamposBuscar = async () => {
     const data = await obtenerLicProvCampos();
     setCamposBusqueda(data);
+    if (filtros.campo.length === 0){
+     setFiltros({ ...filtros, campo: data[0].value });
+    }
+    
   };
 
-  const onClicBuscar = () => {
-    dispatch(
-      getBuscarLicProv(
-        tipo,
-        selectCamposBuscar.current.value,
-        inputValorBuscar.current.value
-      )
+  const onClicBuscar = async () => {
+      
+    navigate(
+      `/licencia/provisional/listar/${tipo}/?campo=${filtros.campo}&valor=${filtros.valor}`
     );
+    mostrarResultados();
+  };
+
+  const mostrarResultados = () => {
+    dispatch(getBuscarLicProv(tipo, filtros.campo, filtros.valor));
   };
 
   const onClicAgregar = (event) => {
     event.preventDefault();
     navigate(`/licencia/provisional/gestionar/${tipo}/1`);
   };
-    
-
 
   useEffect(() => {
     obtenerCamposBuscar();
+    if (filtros.campo) {
+      mostrarResultados();
+    }
+    
+    
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -60,8 +74,8 @@ export const LicProvListaNavComponent = () => {
 
   return (
     <nav className="px-3">
-      <div className="grid-nav-licprov" >
-      {/* <div className="d-flex justify-content-between  align-items-center gap-3 mx-1 flex-wrap px-4"> */}
+      <div className="grid-nav-licprov">
+        {/* <div className="d-flex justify-content-between  align-items-center gap-3 mx-1 flex-wrap px-4"> */}
         {/* <div className="d-flex flex-fill align-items-center" >
           <div className="" >
             <h1 className="text-end">
@@ -76,13 +90,16 @@ export const LicProvListaNavComponent = () => {
         </div> */}
 
         <div className="d-flex flex-fill align-items-center justify-content-center">
-        <div  >
+          <div>
             <h1 className="text-end">
-              <i className={`${datosTipo.licProvIcon} me-3`}></i>              
+              <i className={`${datosTipo.licProvIcon} me-3`}></i>
             </h1>
           </div>
           <div className="" style={{ maxWidth: "150px" }}>
-          <h3 className="text-start"  style={{ viewTransitionName: `tipo-lic-prov-${tipo}` }}>              
+            <h3
+              className="text-start"
+              style={{ viewTransitionName: `tipo-lic-prov-${tipo}` }}
+            >
               {datosTipo.licProvNombre}
             </h3>
           </div>
@@ -112,7 +129,9 @@ export const LicProvListaNavComponent = () => {
           <Form.Select
             size="sm"
             aria-label="Default select example"
-            ref={selectCamposBuscar}
+            ref = {selectCamboPusqueda}
+            value={filtros.campo}
+            onChange={(e) => setFiltros({ ...filtros, campo: e.target.value })}
           >
             {camposBusqueda.map((campo) => (
               <option key={campo.value} value={campo.value}>
@@ -125,7 +144,10 @@ export const LicProvListaNavComponent = () => {
               placeholder=""
               aria-label="Recipient's username"
               aria-describedby="basic-addon2"
-              ref={inputValorBuscar}
+              value={filtros.valor}
+              onChange={(e) =>
+                setFiltros({ ...filtros, valor: e.target.value })
+              }
             />
             <Button
               id="button-addon2"

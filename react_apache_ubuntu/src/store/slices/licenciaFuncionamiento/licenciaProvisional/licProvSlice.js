@@ -1,28 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const currentLicProvDefault = {
-    C_LicProv: undefined,
-    C_LicProv_Tipo: 0,
-    M_LicProv_Nro: 0,
-    M_LicProv_Renov: 0,
-    C_Exped: "",
-    C_Exped_Anio: "",
-    C_LicProv_TitCod: "",
-    C_LicProv_TitTipDoc: "",
-    M_LicProv_TitNroDoc: "",
-    N_LicProv_TitImg: "",
-    C_Rubro: 0,
-    C_Ubica: 0,
-    N_LicProv_HorAte: "",
-    N_LicProv_CerGas: "",
-    T_LicProv_Obs: "",
-    D_LicProv_FecEmi: "",
-    D_LicProv_IniVig: "",
-    D_LicProv_FinVig: "",
-    N_LicProv_Formato: "",
-    C_Usuari_Login: "",
-    D_LicProv_FecDig: "",
-    N_LicProv_PC: "",
+    licProvId: 0,
+    licProvTipo: 0,
+    licProvNro: 0,
+    licProvRenov: 0,
+    licProvExpNro: "",
+    licProvExpAnio: "",
+    licProvTitCod: "",
+    licProvTitTipCod: "",
+    licProvTitNroDoc: "",
+    licProvTitImg: "",
+    licProvRubro: 0,
+    licProvUbica: 0,
+    licProvHorAte: "",
+    licProvCerGas: "",
+    licProvObs: "",
+    licProvFecEmi: (new Date()).toISOString().slice(0, 10),
+    licProvIniVig: (new Date()).toISOString().slice(0, 10),
+    licProvFinVig: (new Date(new Date().setFullYear(new Date().getFullYear() + 1))).toISOString().slice(0, 10),
+    licProvFormato: "",
+    licProvLogin: "",
+    licProvDigitFecha: "",
+    licProvDigitPC: "",
     N_LicProv_TitNombre: "",
 }
 
@@ -46,7 +46,7 @@ export const licProvSlice = createSlice({
             state.licProv = [];
             state.currentLicProv = currentLicProvDefault;
         },
-        setCurrent: (state, { payload }) => {          
+        setCurrent: (state, { payload }) => {                   
             state.currentLicProv = payload.currentLicProv;
         },
         setResetCurrent: (state) => {
