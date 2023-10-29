@@ -169,6 +169,7 @@ export const LicProvGestorOtrosComponent = () => {
       }
       setDimensiones(dimensionesText);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionRubroSelected, dispatch]);
 
 

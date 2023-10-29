@@ -116,12 +116,12 @@ export const LicProvListaNavComponent = () => {
                 <i className="fas fa-plus me-1"></i>Autorización
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item>
+            {/* <Nav.Item>
               <Nav.Link eventKey="link-1">Rubro</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="link-2">Ubicaciones</Nav.Link>
-            </Nav.Item>
+            </Nav.Item> */}
           </Nav>
         </div>
 

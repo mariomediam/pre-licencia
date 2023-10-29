@@ -92,6 +92,7 @@ export const LicProvGestorComponent = () => {
       dispatch(setResetCurrentLicProv());
       dispatch(setCurrentLicProv({ licProvTipo: tipo }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tipo, dispatch]);
 
   useEffect(() => {
@@ -109,12 +110,13 @@ export const LicProvGestorComponent = () => {
       <div className="px-3 mb-0">
         <Breadcrumb>
           <Breadcrumb.Item>Licencias de funcionamiento</Breadcrumb.Item>
-          <Breadcrumb.Item>Autorizaciones provisionales</Breadcrumb.Item>
+          <Breadcrumb.Item href="/licencia/provisional">Autorizaciones provisionales</Breadcrumb.Item>
           <Breadcrumb.Item
             onClick={onClicVolver}
             className="text-decoration-underline "
           >
-            {TITULO_LICENCIA[accion]}
+            
+            {datosTipo.licProvNombre}
           </Breadcrumb.Item>
         </Breadcrumb>
 
@@ -127,12 +129,14 @@ export const LicProvGestorComponent = () => {
               <CloseButton onClick={onClicVolver} />
             </div>
 
-            <div className="d-flex justify-content-center mb-3">
+            <div className="d-flex justify-content-center">
               <h3>
                 <i className={`${datosTipo.licProvIcon} me-3`}></i>{" "}
                 {datosTipo.licProvNombre}{" "}
-              </h3>
+              </h3>                            
             </div>
+            <h6 className="d-flex justify-content-center mb-3">{TITULO_LICENCIA[accion]}</h6>
+            
 
             <LicProvGestorCabComponent accion={accion} />
             <hr />

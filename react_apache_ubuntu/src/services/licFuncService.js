@@ -678,21 +678,6 @@ const obtenerLicProvPorId = async (licProvId) => {
   }
 };
 
-const imprimirLicProvPorId = async (licProvId) => {
-  try {
-    let api = UseAxios();
-
-    let URLLicProv = `${URL}/lic-prov-imprimir/${licProvId}`;
-
-    let {
-      data: { content },
-    } = await api.get(`${URLLicProv}`);
-
-    return content;
-  } catch (error) {
-    throw error;
-  }
-};
 
 
 export {
@@ -723,8 +708,7 @@ export {
   obtenerLicProvRubros,
   obtenerLicProvUbica,
   gestionarLicProv,
-  obtenerLicProvPorId,
-  imprimirLicProvPorId,  
+  obtenerLicProvPorId
 };
 
 

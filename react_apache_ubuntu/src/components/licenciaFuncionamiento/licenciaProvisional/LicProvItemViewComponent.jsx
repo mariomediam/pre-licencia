@@ -35,7 +35,7 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
+  const urlDownloadLicProv = `${process.env.REACT_APP_API}/licfunc/lic-prov-imprimir/${C_LicProv}`;
 
   const onClicEditar = async (event) => {
     event.preventDefault();
@@ -44,6 +44,14 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
     dispatch(setCurrentLicProv(licProv));
     navigate(`/licencia/provisional/gestionar/${C_LicProv_Tipo}/2`);
   };
+
+  // const onClicImprimir = async (event) => {
+  //   event.preventDefault();
+    
+  //   const licProv = await m(C_LicProv);
+  //   dispatch(setCurrentLicProv(licProv));
+  //   navigate(`/licencia/provisional/gestionar/${C_LicProv_Tipo}/2`);
+  // };
 
   return (
     <>
@@ -166,12 +174,13 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
 
       { !F_LicProv_Anula && index === 0 && (
         <div className="d-flex justify-content-sm-start justify-content-center flex-wrap gap-2 my-4">
-          <Button variant="primary" onClick={onClicEditar} >Editar <i className="fas fa-edit"></i></Button>
-          <Button variant="primary" >Renovar <i className="fas fa-sync-alt"></i></Button>
-          <Button variant="primary" > Imprimir <i className="fas fa-print"></i></Button>
+          <Button variant="primary" onClick={onClicEditar} >Modificar <i className="fas fa-edit"></i></Button>
+          {/* <Button variant="primary" >Renovar <i className="fas fa-sync-alt"></i></Button> */}
+          <Button variant="primary" href={urlDownloadLicProv} target="_blank"
+          rel="noreferrer" > Imprimir <i className="fas fa-print"></i></Button>
 
-          <Button variant="outline-danger" >Anular <i className="fas fa-window-close"></i></Button>
-          <Button variant="outline-danger" >Eliminar <i className="fas fa-trash-alt"></i></Button>
+          {/* <Button variant="outline-danger" >Anular <i className="fas fa-window-close"></i></Button>
+          <Button variant="outline-danger" >Eliminar <i className="fas fa-trash-alt"></i></Button> */}
         </div>
 
       )}
