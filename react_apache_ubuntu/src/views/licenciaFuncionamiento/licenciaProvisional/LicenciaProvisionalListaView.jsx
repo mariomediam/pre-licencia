@@ -38,9 +38,11 @@ export const LicenciaProvisionalListaView = () => {
         </Breadcrumb>
       </div>
 
-      <div className="d-flex flex-fill justify-content-center mt-5">
+      <div className="d-flex flex-fill justify-content-center mt-2">
         <div style={{ maxWidth: "1100px" }}>
+          {/* <hr className="mb-0 pb-0"/> */}
             <LicProvListaNavComponent />
+            {/* <hr className="mt-0 pt-0"/> */}
             <LicProvListaComponent />
         </div>
       </div>

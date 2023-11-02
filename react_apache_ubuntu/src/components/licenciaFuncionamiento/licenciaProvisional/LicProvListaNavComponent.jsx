@@ -73,7 +73,8 @@ export const LicProvListaNavComponent = () => {
   }, [tipo]);
 
   return (
-    <nav className="px-3">
+    <nav className="px-5 border" style={{backgroundColor: "#F2E9F2"}}>
+      
       <div className="grid-nav-licprov">
         {/* <div className="d-flex justify-content-between  align-items-center gap-3 mx-1 flex-wrap px-4"> */}
         {/* <div className="d-flex flex-fill align-items-center" >
@@ -164,6 +165,7 @@ export const LicProvListaNavComponent = () => {
           </InputGroup>
         </div>
       </div>
+      
     </nav>
   );
 };
