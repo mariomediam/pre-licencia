@@ -16,6 +16,7 @@ import {
 
 import Loading from "../../Loading";
 import { setCurrentLicProv } from "../../../store/slices";
+import { BuscarContribuyenteModalComponent } from "../../contribuyente/BuscarContribuyenteModalComponent";
 
 export const LicProvGestorTitularComponent = ({
   accion,
@@ -23,6 +24,10 @@ export const LicProvGestorTitularComponent = ({
   const dispatch = useDispatch();
 
   const [titDocumentos, setTitDocumentos] = useState([]);
+  const [showBuscarContrib, setShowBuscarContrib] = useState(false);
+
+  const handleBuscarContribClose = () => setShowBuscarContrib(false);
+  const handleBuscarContribShow = () => setShowBuscarContrib(true);
 
   const { currentLicProv, isLoading } = useSelector((state) => state.licProv);
   const { licProvTitCod } = currentLicProv;
@@ -40,6 +45,15 @@ export const LicProvGestorTitularComponent = ({
       })
     );
   };
+
+  const setTitCodigo = (codigo) => {
+    dispatch(
+      setCurrentLicProv({
+        licProvTitCod: codigo,
+      })
+    );
+  };
+
 
   const onChangeInputFileImage = (event) => {
     if (event.target.files[0]) {
@@ -145,7 +159,7 @@ export const LicProvGestorTitularComponent = ({
                   variant="outline-primary"
                   id="button-addon2"
                   title="Buscar"
-                  // onClick={handleBuscarLugarShow}
+                  onClick={handleBuscarContribShow}
                 >
                   <i className="fas fa-search"></i>{" "}
                   {accion === 3 && "Cambiar por conyuge"}
@@ -235,6 +249,7 @@ export const LicProvGestorTitularComponent = ({
           <Form.Group controlId="formFile" className="d-none">            
             <Form.Control ref={inputTitImagen} type="file" accept="image/jpeg" onChange={onChangeInputFileImage}/>
           </Form.Group>
+          <BuscarContribuyenteModalComponent setField={setTitCodigo} show={showBuscarContrib} handleClose={handleBuscarContribClose} />
         </>
       )}
     </>

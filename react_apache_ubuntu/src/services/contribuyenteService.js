@@ -101,6 +101,22 @@ const obtenerContribuyenteCodigo = async (codigoContrib) => {
   }
 };
 
+const obtenerContribuyenteNombre = async (nombreContrib) => {
+  try {
+    let api = UseAxios();
+
+    let URLContribNombre = encodeURI(`${URL}/buscar-contribuyente-nombre?nombre=${nombreContrib}`);
+
+    let {
+      data: { content },
+    } = await api.get(`${URLContribNombre}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const obtenerTipoContribuyente = async () => {
   try {
     let api = UseAxios();
@@ -450,6 +466,7 @@ export {
   obtenerContribuyenteDirElect,
   obtenerContribuyenteNacion,
   obtenerContribuyenteCodigo,
+  obtenerContribuyenteNombre,
   obtenerTipoContribuyente,
   obtenerLugarGeneral,
   obtenerLugarPagination,
