@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Alert, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 import { transformarFecha } from "../../../utils/varios";
-import { obtenerLicProvPorId } from "../../../services/licFuncService";
+import { deleteLicProvPorId, obtenerLicProvPorId } from "../../../services/licFuncService";
 import { setCurrentLicProv } from "../../../store/slices";
 
 
@@ -11,6 +12,7 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
   const {
     C_LicProv, 
     C_LicProv_Tipo,
+    M_LicProv_Nro,
     M_LicProv_Renov,
     n_titular,
     N_Rubro_Descrip,
@@ -45,13 +47,41 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
     navigate(`/licencia/provisional/gestionar/${C_LicProv_Tipo}/2`);
   };
 
-  // const onClicImprimir = async (event) => {
-  //   event.preventDefault();
-    
-  //   const licProv = await m(C_LicProv);
-  //   dispatch(setCurrentLicProv(licProv));
-  //   navigate(`/licencia/provisional/gestionar/${C_LicProv_Tipo}/2`);
-  // };
+  const onClicDelete = async (event) => {
+    event.preventDefault();
+
+    let messageWarning = `¿Seguro de eliminar la licencia provisional ${M_LicProv_Nro.toString().padStart(4, "0")}?`;
+    if (M_LicProv_Renov){
+      messageWarning += `- Renovación ${M_LicProv_Renov.toString().padStart(4, "0")}`;
+    }
+
+    const result = await Swal.fire({
+      title: messageWarning,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
+      await deleteLicProvPorId(C_LicProv)
+
+      const resultOk = await Swal.fire({
+        icon: "success",
+        title: "Licencia provisional",
+        text: "Licencia provisional eliminada correctamente",
+      });
+
+      if (resultOk.isConfirmed) {        
+        window.location.reload();
+      }
+    }
+
+  };
+
 
   return (
     <>
@@ -179,8 +209,8 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
           <Button variant="primary" href={urlDownloadLicProv} target="_blank"
           rel="noreferrer" > Imprimir <i className="fas fa-print"></i></Button>
 
-          {/* <Button variant="outline-danger" >Anular <i className="fas fa-window-close"></i></Button>
-          <Button variant="outline-danger" >Eliminar <i className="fas fa-trash-alt"></i></Button> */}
+          {/* <Button variant="outline-danger" >Anular <i className="fas fa-window-close"></i></Button> */}
+          <Button variant="outline-danger" onClick={onClicDelete} >Eliminar <i className="fas fa-trash-alt"></i></Button>
         </div>
 
       )}

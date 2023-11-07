@@ -678,6 +678,21 @@ const obtenerLicProvPorId = async (licProvId) => {
   }
 };
 
+const deleteLicProvPorId = async (licProvId) => {
+  try {
+    let api = UseAxios();
+
+    let URLLicProv = `${URL}/lic-prov/${licProvId}`;
+
+    let {
+      data: { content },
+    } = await api.delete(`${URLLicProv}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
 
 
 export {
@@ -708,7 +723,8 @@ export {
   obtenerLicProvRubros,
   obtenerLicProvUbica,
   gestionarLicProv,
-  obtenerLicProvPorId
+  obtenerLicProvPorId,
+  deleteLicProvPorId
 };
 
 
