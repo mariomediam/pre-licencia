@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Alert, Button } from "react-bootstrap";
@@ -6,6 +7,7 @@ import Swal from "sweetalert2";
 import { transformarFecha } from "../../../utils/varios";
 import { deleteLicProvPorId, obtenerLicProvPorId } from "../../../services/licFuncService";
 import { setCurrentLicProv } from "../../../store/slices";
+import { LicProvAnulaComponent } from "./LicProvAnulaComponent";
 
 
 export const LicProvItemViewComponent = ({ permiso, index }) => {
@@ -34,6 +36,10 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
     T_Anula_Motivo
   } = permiso;
 
+  const [showAnulaLic, setShowBuscarContrib] = useState(false);
+
+  const handleAnulaLicClose = () => setShowBuscarContrib(false);
+  const handleAnulaLicShow = () => setShowBuscarContrib(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -45,6 +51,25 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
     const licProv = await obtenerLicProvPorId(C_LicProv);
     dispatch(setCurrentLicProv(licProv));
     navigate(`/licencia/provisional/gestionar/${C_LicProv_Tipo}/2`);
+  };
+
+  const onClicRenew = async (event) => {
+    event.preventDefault();
+    
+    let licProv = await obtenerLicProvPorId(C_LicProv);
+    licProv.licProvExpNro =""
+    licProv.licProvExpAnio =""
+    licProv.licProvCerGas = ""
+    licProv.licProvObs = ""
+    licProv.licProvFecEmi = (new Date()).toISOString().slice(0, 10)
+    licProv.licProvIniVig =  (new Date()).toISOString().slice(0, 10)
+    licProv.licProvFinVig = (new Date(new Date().setFullYear(new Date().getFullYear() + 1))).toISOString().slice(0, 10)
+    licProv.licProvFormato = ""
+    licProv.licProvLogin = ""
+    licProv.licProvDigitFecha = ""
+    licProv.licProvDigitPC = ""
+    dispatch(setCurrentLicProv(licProv));
+    navigate(`/licencia/provisional/gestionar/${C_LicProv_Tipo}/3`);
   };
 
   const onClicDelete = async (event) => {
@@ -124,7 +149,7 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
         <div>
           {" "}
           <p className="text-muted pb-0 mb-0 mt-2">
-            <small className="mb-0 pb-0">Fecha de emisión aaaa</small>
+            <small className="mb-0 pb-0">Fecha de emisión</small>
           </p>
           {transformarFecha(D_LicProv_FecEmi).substring(0, 10)}
         </div>
@@ -201,23 +226,26 @@ export const LicProvItemViewComponent = ({ permiso, index }) => {
           {T_LicProv_Obs}
         </div>
       </div>
-
-      { !F_LicProv_Anula && index === 0 && (
-        <div className="d-flex justify-content-sm-start justify-content-center flex-wrap gap-2 my-4">
-          <Button variant="primary" onClick={onClicEditar} >Modificar <i className="fas fa-edit"></i></Button>
-          {/* <Button variant="primary" >Renovar <i className="fas fa-sync-alt"></i></Button> */}
-          <Button variant="primary" href={urlDownloadLicProv} target="_blank"
+      <div className="d-flex justify-content-sm-start justify-content-center flex-wrap gap-2 my-4">
+      <Button variant="primary" href={urlDownloadLicProv} target="_blank"
           rel="noreferrer" > Imprimir <i className="fas fa-print"></i></Button>
 
-          {/* <Button variant="outline-danger" >Anular <i className="fas fa-window-close"></i></Button> */}
-          <Button variant="outline-danger" onClick={onClicDelete} >Eliminar <i className="fas fa-trash-alt"></i></Button>
-        </div>
+      { !F_LicProv_Anula && index === 0 && (
+        <>
+          <Button variant="primary" onClick={onClicEditar} >Modificar <i className="fas fa-edit"></i></Button>
+          <Button variant="primary" onClick={onClicRenew} >Renovar <i className="fas fa-sync-alt"></i></Button>
+          
 
-      )}
+          <Button variant="outline-danger" onClick={handleAnulaLicShow}>Anular <i className="fas fa-ban"></i></Button>
+          <Button variant="outline-danger" onClick={onClicDelete} >Eliminar <i className="fas fa-trash-alt"></i></Button>
+          </>
+          )}
+          </div>
       {
         M_LicProv_Renov && (<hr className="pt-0 mt-0" />)        
       }
       
+      <LicProvAnulaComponent show={showAnulaLic} handleClose={handleAnulaLicClose} licProv={{C_LicProv, M_LicProv_Nro}}/>
     </>
   );
 };

@@ -105,20 +105,28 @@ export const LicProvGestorOtrosComponent = () => {
 
   useEffect(() => {
     const obtenerRubros = async () => {
-      const rubrosTmp = await obtenerLicProvRubros({ tipo: licProvTipo });
+
+      let rubrosTmp = await obtenerLicProvRubros({ tipo: licProvTipo });
+      if (accion===3){
+        rubrosTmp = rubrosTmp.filter((rubro) => rubro.rubroId === licProvRubro);
+      }
       setRubros(rubrosTmp);
     };
 
     const obtenerUbicaciones = async () => {
-      const ubicacionesTmp = await obtenerLicProvUbica({
+      let ubicacionesTmp = await obtenerLicProvUbica({
         tipo: licProvTipo,
       });
+
+      if (accion===3){
+        ubicacionesTmp = ubicacionesTmp.filter((ubicacion) => ubicacion.ubicaId === licProvUbica);
+      }
       setUbicaciones(ubicacionesTmp);
     };
 
     obtenerRubros();
     obtenerUbicaciones();
-  }, [licProvTipo]);
+  }, [licProvTipo, licProvRubro, licProvUbica, accion]);
 
   useEffect(() => {
     const options = rubros.map((rubro) => ({
@@ -127,6 +135,7 @@ export const LicProvGestorOtrosComponent = () => {
     }));
 
     setOptionsRubros(options);
+    
   }, [rubros]);
 
   useEffect(() => {

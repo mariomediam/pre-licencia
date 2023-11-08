@@ -694,6 +694,34 @@ const deleteLicProvPorId = async (licProvId) => {
   }
 };
 
+const anulaLicProvPorId = async (
+  licProvId,
+  anulaMotivo
+) => {
+  const credenciales = {
+    licProv: licProvId,
+    anulaMotivo
+  };
+
+  let api = UseAxios();
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await api.post(`${URL}/lic-prov-anula`, credenciales, {
+      headers,
+    });
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 
 export {
   obtenerPrecalUsuEstado,
@@ -724,7 +752,8 @@ export {
   obtenerLicProvUbica,
   gestionarLicProv,
   obtenerLicProvPorId,
-  deleteLicProvPorId
+  deleteLicProvPorId,
+  anulaLicProvPorId,
 };
 
 
