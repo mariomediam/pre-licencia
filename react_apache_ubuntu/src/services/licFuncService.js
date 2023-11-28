@@ -721,6 +721,61 @@ const anulaLicProvPorId = async (
   }
 };
 
+const agregarLicProvUbica = async (ubicacion) => {
+  try {    
+    let api = UseAxios();    
+    const URLLicProvUbica = `${URL}/lic-prov-ubica`;    
+    const credenciales = {...ubicacion};    
+    const headers = {
+      "Content-Type": "application/json",
+    };    
+    let {
+      data: { content },
+    } = await api.post(URLLicProvUbica, credenciales, {
+      headers,
+    });    
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const actualizarLicProvUbica = async (ubicacion) => {
+  try {        
+    let api = UseAxios();    
+    const URLLicProvUbica = `${URL}/lic-prov-ubica/${ubicacion.ubicaId}`;    
+    const credenciales = {...ubicacion};        
+    const headers = {
+      "Content-Type": "application/json",
+    };    
+    let {
+      data: { content },
+    } = await api.put(URLLicProvUbica, credenciales, {
+      headers,
+    });       
+    return content;
+  } catch (error) {    
+    throw error;
+  }
+};
+
+const eliminarLicProvUbica = async (ubicaId) => {
+  try {
+    let api = UseAxios();
+
+    const URLLicProvUbica = `${URL}/lic-prov-ubica/${ubicaId}`;    
+
+    let {
+      data: { content },
+    } = await api.delete(`${URLLicProvUbica}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 
 
 export {
@@ -754,6 +809,9 @@ export {
   obtenerLicProvPorId,
   deleteLicProvPorId,
   anulaLicProvPorId,
+  agregarLicProvUbica,
+  actualizarLicProvUbica,
+  eliminarLicProvUbica,
 };
 
 

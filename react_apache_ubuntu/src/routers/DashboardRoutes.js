@@ -17,6 +17,7 @@ import { TrabajadorCorreoView } from "../views/rrhh/remuneraciones/boletas/Traba
 import { LicenciaProvisionalView } from "../views/licenciaFuncionamiento/licenciaProvisional/LicenciaProvisionalView";
 import { LicenciaProvisionalListaView } from "../views/licenciaFuncionamiento/licenciaProvisional/LicenciaProvisionalListaView";
 import { LicProvGestorComponent } from "../components/licenciaFuncionamiento/licenciaProvisional/LicProvGestorComponent";
+import { UbicacionView } from "../views/licenciaFuncionamiento/licenciaProvisional/UbicacionView";
 
 export const DashboardRoutes = () => {
   return (
@@ -76,7 +77,11 @@ export const DashboardRoutes = () => {
           >
             <Route path=":accion" element={<LicProvGestorComponent />} />
             <Route path="" element={<LicProvGestorComponent />} />
-          </Route>          
+          </Route> 
+          <Route
+            path="/licencia/provisional/ubica-listar/:tipo"
+            element={<UbicacionView />}
+          />         
         </Routes>
       </div>
     </>

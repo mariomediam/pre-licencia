@@ -10,7 +10,6 @@ import { LicProvListaComponent } from "../../../components/licenciaFuncionamient
 import { setResetLicProv } from "../../../store/slices";
 
 export const LicenciaProvisionalListaView = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -18,15 +17,14 @@ export const LicenciaProvisionalListaView = () => {
     event.preventDefault();
     document.startViewTransition(() => {
       flushSync(() => {
-        navigate(`/licencia/provisional`);        
+        navigate(`/licencia/provisional`);
       });
     });
   };
 
   useEffect(() => {
     dispatch(setResetLicProv());
-  }, [dispatch])
-
+  }, [dispatch]);
 
   return (
     <div>
@@ -34,16 +32,20 @@ export const LicenciaProvisionalListaView = () => {
       <div className="ps-3 mb-0">
         <Breadcrumb>
           <Breadcrumb.Item>Licencias de funcionamiento</Breadcrumb.Item>
-          <Breadcrumb.Item onClick={onClicVolver} className="text-decoration-underline ">Autorizaciones provisionales</Breadcrumb.Item>
+          <Breadcrumb.Item
+            onClick={onClicVolver}
+            className="text-decoration-underline "
+          >
+            Autorizaciones provisionales
+          </Breadcrumb.Item>
         </Breadcrumb>
       </div>
 
       <div className="d-flex flex-fill justify-content-center mt-2">
-        <div style={{ maxWidth: "1100px" }}>
-          {/* <hr className="mb-0 pb-0"/> */}
-            <LicProvListaNavComponent />
-            {/* <hr className="mt-0 pt-0"/> */}
-            <LicProvListaComponent />
+        <div style={{ maxWidth: "1100px" }}>          
+          <LicProvListaNavComponent />          
+          <LicProvListaComponent />
+          
         </div>
       </div>
     </div>
