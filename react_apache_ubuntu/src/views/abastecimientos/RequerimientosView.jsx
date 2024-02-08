@@ -9,6 +9,7 @@ import {
 } from "../../services/abastecService";
 
 import Header from "../../components/Header";
+import { RequeListaDepend } from "../../components/abastecimientos/requerimientos/RequeListaDepend";
 
 const anios = [];
 
@@ -35,11 +36,7 @@ export const RequerimientosView = () => {
 
   const [requerimientos, setRequerimientos] = useState([]);
 
-  
   useEffect(() => {
-    
-   
-    
     const getDependencias = async () => {
       if (aniosSelected) {
         controlSelectDepend.current.clearValue();
@@ -50,35 +47,30 @@ export const RequerimientosView = () => {
             label: `${C_depen} - ${N_dependencia_desc}`,
           };
         });
-        
+
         setDependencias(dependenciasTmp);
       }
     };
 
     getDependencias();
-    // const defaultValue = dependencias.filter( ({ value }) => value === dependSelected)[0]
-
-    // setRequerimientos([]);
   }, [aniosSelected]);
 
-  const onChangeControlSelectAnio = (e) => {    
+  const onChangeControlSelectAnio = (e) => {
     setDependSelected(undefined);
     setAniosSelected(e.value);
   };
 
-  const onChangeControlSelectDepend = (e) => {    
+  const onChangeControlSelectDepend = (e) => {
     if (e?.value) {
       setDependSelected(e.value);
     }
   };
 
-
-
   useEffect(() => {
     if (paramsDepend && dependencias.length > 0) {
       const defaultValue = dependencias.filter(
         ({ value }) => value === paramsDepend
-      )[0];      
+      )[0];
       if (defaultValue) {
         controlSelectDepend.current.setValue(defaultValue);
       }
@@ -87,26 +79,22 @@ export const RequerimientosView = () => {
   }, [dependencias, paramsDepend]);
 
   useEffect(() => {
-    
     const getRequerimientos = async () => {
-
-      console.log(dependSelected, aniosSelected)
       if (dependSelected && aniosSelected) {
-
         const lcTipoBieSer = "99";
-        const data = await obtenerRequeDepen(aniosSelected, dependSelected, lcTipoBieSer);
-        console.log("Se ejecuto obtenerRequeDepen con los valores dependSelected && aniosSelected", dependSelected, aniosSelected)
+        const data = await obtenerRequeDepen(
+          aniosSelected,
+          dependSelected,
+          lcTipoBieSer
+        );
         setRequerimientos(data);
-      }
-      else {
-        console.log("Se ejecuto  setRequerimientos([]);")
+      } else {
+        console.log("Se ejecuto  setRequerimientos([]);");
         setRequerimientos([]);
       }
     };
     getRequerimientos();
-    // setFiltros({ ...filtros, depend: dependSelected })
-  }, [dependSelected, aniosSelected])
-  
+  }, [dependSelected, aniosSelected]);
 
   return (
     <div>
@@ -157,19 +145,9 @@ export const RequerimientosView = () => {
               classNamePrefix="select"
             />
           </Form.Group>
+          <RequeListaDepend requerimientos={requerimientos} />
         </div>
       </div>
-      <ul>
-        {requerimientos.length > 0 ? (
-          requerimientos.map((requerimiento) => (
-            <li key={`${requerimiento.C_reque}-${requerimiento.C_biesertipo}`}>
-              {requerimiento.C_reque} - {requerimiento.T_reque_obs}
-            </li>
-          ))
-        ) : (
-          <li>No hay requerimientos</li>
-        )}
-      </ul>
     </div>
   );
 };

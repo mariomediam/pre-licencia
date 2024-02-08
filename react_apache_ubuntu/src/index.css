@@ -77,6 +77,13 @@ code {
   overflow: hidden;
 }
 
+.max-five-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
 .display-grid {
   display: grid; 
   grid-template-columns: 2fr 2fr 3fr 1fr 1fr;
