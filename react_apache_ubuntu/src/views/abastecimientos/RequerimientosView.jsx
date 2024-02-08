@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Breadcrumb, Form } from "react-bootstrap";
 import Select from "react-select";
@@ -17,21 +17,30 @@ for (let i = new Date().getFullYear(); i >= 1999; i--) {
 }
 
 export const RequerimientosView = () => {
-
   const [searchParams] = useSearchParams();
 
   const controlSelectAnio = useRef(null);
   const controlSelectDepend = useRef(null);
 
-  const [aniosSelected, setAniosSelected] = useState(searchParams.get("anio") || new Date().getFullYear().toString());
-  const [dependSelected, setDependSelected] = useState(searchParams.get("depend") || undefined)
+  const [aniosSelected, setAniosSelected] = useState(
+    searchParams.get("anio") || new Date().getFullYear().toString()
+  );
+  const [dependSelected, setDependSelected] = useState(undefined);
 
-  const [dependencias, setDependencias] = useState([])
+  const [paramsDepend, setParamsDepend] = useState(
+    searchParams.get("depend") || undefined
+  );
 
+  const [dependencias, setDependencias] = useState([]);
+
+  const [requerimientos, setRequerimientos] = useState([]);
+
+  
   useEffect(() => {
+    
+   
+    
     const getDependencias = async () => {
-      
-
       if (aniosSelected) {
         controlSelectDepend.current.clearValue();
         const data = await obtenerAccesoDepen(aniosSelected);
@@ -40,10 +49,8 @@ export const RequerimientosView = () => {
             value: C_depen,
             label: `${C_depen} - ${N_dependencia_desc}`,
           };
-         
         });
-
-        console.log(dependenciasTmp, 'dependenciasTmp')
+        
         setDependencias(dependenciasTmp);
       }
     };
@@ -52,29 +59,54 @@ export const RequerimientosView = () => {
     // const defaultValue = dependencias.filter( ({ value }) => value === dependSelected)[0]
 
     // setRequerimientos([]);
-    
   }, [aniosSelected]);
 
+  const onChangeControlSelectAnio = (e) => {    
+    setDependSelected(undefined);
+    setAniosSelected(e.value);
+  };
 
-  const onChangeControlSelectAnio = (e) => {
-    setAniosSelected(e.value)
-  }
-
-  const onChangeControlSelectDepend = (e) => {
+  const onChangeControlSelectDepend = (e) => {    
     if (e?.value) {
-
-      setDependSelected(e.value)
+      setDependSelected(e.value);
     }
-  }
+  };
+
+
 
   useEffect(() => {
-   console.log(dependSelected, 'dependSelected')
+    if (paramsDepend && dependencias.length > 0) {
+      const defaultValue = dependencias.filter(
+        ({ value }) => value === paramsDepend
+      )[0];      
+      if (defaultValue) {
+        controlSelectDepend.current.setValue(defaultValue);
+      }
+      setParamsDepend(undefined);
+    }
+  }, [dependencias, paramsDepend]);
+
+  useEffect(() => {
     
-  }, [dependSelected]);
-    
+    const getRequerimientos = async () => {
+
+      console.log(dependSelected, aniosSelected)
+      if (dependSelected && aniosSelected) {
+
+        const lcTipoBieSer = "99";
+        const data = await obtenerRequeDepen(aniosSelected, dependSelected, lcTipoBieSer);
+        console.log("Se ejecuto obtenerRequeDepen con los valores dependSelected && aniosSelected", dependSelected, aniosSelected)
+        setRequerimientos(data);
+      }
+      else {
+        console.log("Se ejecuto  setRequerimientos([]);")
+        setRequerimientos([]);
+      }
+    };
+    getRequerimientos();
+    // setFiltros({ ...filtros, depend: dependSelected })
+  }, [dependSelected, aniosSelected])
   
-
-
 
   return (
     <div>
@@ -96,7 +128,10 @@ export const RequerimientosView = () => {
             <Form.Label className="text-muted mb-0">Año</Form.Label>
             <Select
               placeholder="Seleccionar año"
-              defaultValue={{ value: aniosSelected?.toString(), label: aniosSelected }}
+              defaultValue={{
+                value: aniosSelected?.toString(),
+                label: aniosSelected,
+              }}
               ref={controlSelectAnio}
               noOptionsMessage={() => "Registro no encontrado"}
               name="anios"
@@ -113,7 +148,6 @@ export const RequerimientosView = () => {
             <Form.Label className="text-muted mb-0">Unidad Orgánica</Form.Label>
             <Select
               placeholder="Seleccionar unidad orgánica"
-              
               ref={controlSelectDepend}
               noOptionsMessage={() => "Registro no encontrado"}
               name="dependencias"
@@ -125,7 +159,7 @@ export const RequerimientosView = () => {
           </Form.Group>
         </div>
       </div>
-      {/* <ul>
+      <ul>
         {requerimientos.length > 0 ? (
           requerimientos.map((requerimiento) => (
             <li key={`${requerimiento.C_reque}-${requerimiento.C_biesertipo}`}>
@@ -135,7 +169,7 @@ export const RequerimientosView = () => {
         ) : (
           <li>No hay requerimientos</li>
         )}
-      </ul> */}
+      </ul>
     </div>
   );
 };

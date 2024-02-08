@@ -19,8 +19,7 @@ const obtenerAccesoDepen = async (anio, depen = undefined, filtro = undefined) =
 
     let {
       data: { content },
-    } = await api.get(`${URLAccesoDepen}`);
-    console.log(content)
+    } = await api.get(`${URLAccesoDepen}`);    
     return content;
   } catch (error) {
     throw error;
@@ -47,8 +46,7 @@ const obtenerRequeDepen = async (anio, sfDep, bieSerTipo, field = undefined, val
   
       let {
         data: { content },
-      } = await api.get(`${URLARequeDepen}`);
-      console.log(content)
+      } = await api.get(`${URLARequeDepen}`);      
       return content;
     } catch (error) {
       throw error;
