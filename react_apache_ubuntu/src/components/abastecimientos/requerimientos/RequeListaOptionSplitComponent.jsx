@@ -3,7 +3,11 @@ export const RequeListaOptionSplitComponent = ({
   C_reque,
   C_biesertipo,
   F_reque_estado,
+  Q_REQUE_TOTAL
 }) => {
+
+  const currentYear = new Date().getFullYear().toString();
+
   return (
     <div className="dropdown">
       <button
@@ -23,7 +27,7 @@ export const RequeListaOptionSplitComponent = ({
         </svg>
       </button>
       <ul className="dropdown-menu  ">
-        {F_reque_estado === "1" && (
+        {F_reque_estado === "1" && Q_REQUE_TOTAL > 0 && C_anipre === currentYear && (
           <li>
             <a className="d-flex align-items-center dropdown-item" href=".">
               <img
@@ -63,7 +67,7 @@ export const RequeListaOptionSplitComponent = ({
           </a>
         </li>
 
-        {F_reque_estado === "1" && (
+        {F_reque_estado === "1" && C_anipre === currentYear && (
           <>
             <li>
               <hr class="dropdown-divider" />
@@ -95,7 +99,7 @@ export const RequeListaOptionSplitComponent = ({
           </>
         )}
 
-        {F_reque_estado === "1" && (
+        {F_reque_estado === "1" && C_anipre === currentYear && (
           <>
             <li>
               <hr class="dropdown-divider" />

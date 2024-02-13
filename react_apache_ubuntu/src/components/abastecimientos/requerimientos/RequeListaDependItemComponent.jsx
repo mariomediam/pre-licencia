@@ -19,6 +19,7 @@ export const RequeListaDependItemComponent = ({ requerimiento }) => {
     Q_REQUE_TOTAL,
     N_ESTADO_NOMBRE,
     C_exp,
+    F_certif,
   } = requerimiento;
 
   const formattedRequeTotal = Q_REQUE_TOTAL.toLocaleString("en-US", {
@@ -41,11 +42,15 @@ export const RequeListaDependItemComponent = ({ requerimiento }) => {
         </div>
         <div>
           <span className={classBadge[F_reque_estado]}>
-            <small>
-              {F_reque_estado === "2"
-                ? `PRE COMPROMISO ${parseInt(C_exp, 10)}`
-                : N_ESTADO_NOMBRE}
-            </small>
+            <div>
+              <small>
+                {F_reque_estado === "2"
+                  ? `PRE COMPROMISO ${parseInt(C_exp, 10)}`
+                  : N_ESTADO_NOMBRE}
+              </small>
+            </div>
+            <small><small>{F_certif  && <div>CERTIFICADO</div>}</small></small>
+            
           </span>
         </div>
         <div></div>
@@ -55,8 +60,15 @@ export const RequeListaDependItemComponent = ({ requerimiento }) => {
       </td>
       <td className="text-end align-middle ">{formattedRequeTotal}</td>
       <td className="text-center align-middle ">
-        <RequeListaOptionSplitComponent C_anipre={C_anipre} C_reque={C_reque} C_biesertipo={C_biesertipo} F_reque_estado={F_reque_estado}/>
+        <RequeListaOptionSplitComponent
+          C_anipre={C_anipre}
+          C_reque={C_reque}
+          C_biesertipo={C_biesertipo}
+          F_reque_estado={F_reque_estado}
+          Q_REQUE_TOTAL={Q_REQUE_TOTAL}
+        />
       </td>
+      
     </>
   );
 };

@@ -1,8 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import { Spinner, Table } from "react-bootstrap";
 import { RequeListaDependItemComponent } from "./RequeListaDependItemComponent";
 
-export const RequeListaDepend = ( { requerimientos = []}) => {
+export const RequeListaDepend = ( { requerimientos = [], aniosSelected, dependSelected}) => {
+  const navigate = useNavigate();
+
     const isLoading = false;
+    const currentYear = new Date().getFullYear().toString();
+
+    
+
+
+    const onClicAgregar = (event) => {
+      event.preventDefault();
+      navigate(`/abastecimientos/requerimiento/gestionar`);
+    };
 
   return (
     <div className="mt-3">
@@ -21,7 +33,7 @@ export const RequeListaDepend = ( { requerimientos = []}) => {
             Requerimientos
           </small>
 
-          <div style={{ border: "1px solid lightgrey" }}>
+          <div style={{ border: "1px solid lightgrey" }} className="mb-5">
             <Table hover responsive className="caption-top mb-1 animate__animated animate__fadeIn animate__faster">
               <thead>
                 <tr className="color-header1 text-white">
@@ -47,6 +59,21 @@ export const RequeListaDepend = ( { requerimientos = []}) => {
                 ))}
               </tbody>
             </Table>
+          </div>
+          <div style={{ position: "relative" }}>
+            <div style={{ position: "absolute", right: "0px", width: "70px" }}>
+              <div style={{ position: "fixed", bottom: "25px" }}>
+                <button
+                  className="btn btn-primary rounded-circle"
+                  style={{ width: "70px", height: "70px" }}
+                  title="Agregar requerimiento"
+                  onClick={onClicAgregar}
+                  disabled={!aniosSelected || aniosSelected !== currentYear || !dependSelected}
+                >
+                  <i className="fas fa-plus"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </>
       )}

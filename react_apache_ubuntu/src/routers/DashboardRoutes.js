@@ -19,6 +19,7 @@ import { LicenciaProvisionalListaView } from "../views/licenciaFuncionamiento/li
 import { LicProvGestorComponent } from "../components/licenciaFuncionamiento/licenciaProvisional/LicProvGestorComponent";
 import { UbicacionView } from "../views/licenciaFuncionamiento/licenciaProvisional/UbicacionView";
 import { RequerimientosView } from "../views/abastecimientos/RequerimientosView";
+import { RequerimientoGestionView } from "../views/abastecimientos/RequerimientoGestionView";
 
 export const DashboardRoutes = () => {
   return (
@@ -85,7 +86,12 @@ export const DashboardRoutes = () => {
           />  
            <Route
             path="/abastecimientos/requerimientos"
-            element={<RequerimientosView />}
+            element={<RequerimientosView />}            
+          />       
+          <Route
+            path="/abastecimientos/requerimiento/gestionar"
+            element={<RequerimientoGestionView />}
+            
           />       
         </Routes>
        
