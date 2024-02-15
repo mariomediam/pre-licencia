@@ -20,7 +20,7 @@ export const RequeListaOptionSplitComponent = ({
           width="12"
           height="14"
           fill="currentColor"
-          class="bi bi-three-dots-vertical"
+          className="bi bi-three-dots-vertical"
           viewBox="0 0 16 16"
         >
           <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
@@ -70,7 +70,7 @@ export const RequeListaOptionSplitComponent = ({
         {F_reque_estado === "1" && C_anipre === currentYear && (
           <>
             <li>
-              <hr class="dropdown-divider" />
+              <hr className="dropdown-divider" />
             </li>
             <li className="text-primary">
               <a
@@ -102,7 +102,7 @@ export const RequeListaOptionSplitComponent = ({
         {F_reque_estado === "1" && C_anipre === currentYear && (
           <>
             <li>
-              <hr class="dropdown-divider" />
+              <hr className="dropdown-divider" />
             </li>
             <li className="text-danger">
               <a

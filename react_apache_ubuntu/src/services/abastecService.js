@@ -52,9 +52,43 @@ const obtenerRequeDepen = async (anio, sfDep, bieSerTipo, field = undefined, val
       throw error;
     }
   };
+
+  const obtenerRequeById = async (anio, numero, tipo) => {
+    try {
+      let api = UseAxios();
+  
+      let URLReque = `${URL}/reque?anio=${anio}&numero=${numero}&tipo=${tipo}`;
+  
+    
+      let {
+        data: { content },
+      } = await api.get(`${URLReque}`);      
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const obtenerAniosDepenById = async (anio, codDep) => {
+    try {
+      let api = UseAxios();
+  
+      let URLDependencia = `${URL}/depen-coddep?anio=${anio}&coddep=${codDep}`;
+  
+    
+      let {
+        data: { content },
+      } = await api.get(`${URLDependencia}`);      
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
   
 
 export {
     obtenerAccesoDepen,
-    obtenerRequeDepen
+    obtenerRequeDepen,
+    obtenerRequeById,
+    obtenerAniosDepenById
 }

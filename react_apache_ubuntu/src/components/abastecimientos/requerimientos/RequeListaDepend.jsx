@@ -1,18 +1,31 @@
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import { Spinner, Table } from "react-bootstrap";
+
+import { setCurrentRequerimiento, setResetCurrentRequerimiento } from "../../../store/slices";
 import { RequeListaDependItemComponent } from "./RequeListaDependItemComponent";
 
 export const RequeListaDepend = ( { requerimientos = [], aniosSelected, dependSelected}) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
     const isLoading = false;
     const currentYear = new Date().getFullYear().toString();
 
-    
-
-
     const onClicAgregar = (event) => {
       event.preventDefault();
+
+      dispatch(setResetCurrentRequerimiento());
+
+
+      dispatch(
+        setCurrentRequerimiento({
+          C_anipre: aniosSelected,          
+          C_sf_dep: dependSelected,
+        })
+      );
+
       navigate(`/abastecimientos/requerimiento/gestionar`);
     };
 
