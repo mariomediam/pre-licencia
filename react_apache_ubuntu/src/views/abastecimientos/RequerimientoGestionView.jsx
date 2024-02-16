@@ -1,32 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Breadcrumb, Alert, Form } from "react-bootstrap";
+import { Breadcrumb, Alert } from "react-bootstrap";
 
 import Header from "../../components/Header";
-import { RequeCardOptionComponent } from "../../components/abastecimientos/requerimientos/RequeCardOptionComponent";
 import { useState } from "react";
+import { RequeElaboraComponent } from "../../components/abastecimientos/requerimientos/RequeElaboraComponent";
 
-const tipoDeRequerimientos = [
-  {
-    id: "04",
-    descripcion: "Libre de servicios",
-    C_biesertipo: "02",
-    f_libre: "1",
-    pathImage: "/images/requerimientos/libre-servicios.svg",
-  },
-  {
-    id: "03",
-    descripcion: "Libre de bienes",
-    C_biesertipo: "01",
-    f_libre: "1",
-    pathImage: "/images/requerimientos/libre-bienes.svg",
-  },
-  { id: "02", descripcion: "Servicios", C_biesertipo: "02", f_libre: "0", pathImage: "/images/requerimientos/servicios.svg", },
-  
-  { id: "01", descripcion: "Bienes", C_biesertipo: "01", f_libre: "0", pathImage: "/images/requerimientos/bienes.svg" },
-  
-  
- 
-];
 
 export const RequerimientoGestionView = () => {
   const dispatch = useDispatch();
@@ -34,7 +12,7 @@ export const RequerimientoGestionView = () => {
   const { currentReque } = useSelector((state) => state.requerimiento);
   const { n_jefe_nombre, C_sf_dep, n_dependencia } = currentReque;
 
-  const [tipoRequeChecked, setTipoRequeChecked] = useState("04")
+  
 
   return (
     <>
@@ -72,18 +50,9 @@ export const RequerimientoGestionView = () => {
             </Alert>
           )}
           <hr />
-          <p><small className="mb-2 pb-2">Seleccionar tipo de requerimiento:</small></p>
-          <div>
-            <Form>
-              {tipoDeRequerimientos.map((tipoRequerimiento) => (
-                <RequeCardOptionComponent
-                  key={tipoRequerimiento.id}
-                  tipoRequerimiento={tipoRequerimiento}
-                  tipoRequeChecked = {tipoRequeChecked}
-                  setTipoRequeChecked = {setTipoRequeChecked}
-                />
-              ))}
-            </Form>
+          
+          <div className="">
+            <RequeElaboraComponent />            
           </div>
         </div>
       </div>

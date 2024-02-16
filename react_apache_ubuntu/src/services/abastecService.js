@@ -84,11 +84,32 @@ const obtenerRequeDepen = async (anio, sfDep, bieSerTipo, field = undefined, val
       throw error;
     }
   };
+
+  const obtenerRequeSaldoPresupDepen = async (anio, codDep, bieSerTipo, formato = undefined) => {
+    try {
+      let api = UseAxios();
+  
+      let URLSaldoDepen = `${URL}/saldo-depen?anio=${anio}&coddep=${codDep}&tipo=${bieSerTipo}`;
+  
+      if (formato) {
+        URLSaldoDepen += `&formato=${formato}`;
+      }
+  
+      
+      let {
+        data: { content },
+      } = await api.get(`${URLSaldoDepen}`);      
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
   
 
 export {
     obtenerAccesoDepen,
     obtenerRequeDepen,
     obtenerRequeById,
-    obtenerAniosDepenById
+    obtenerAniosDepenById,
+    obtenerRequeSaldoPresupDepen
 }

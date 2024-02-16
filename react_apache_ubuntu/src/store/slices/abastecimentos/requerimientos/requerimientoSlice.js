@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 const currentRequeDefault = {
+  accion: "NUEVO",
   C_reque: "",
   D_reque_fecha: new Date().toISOString().slice(0, 10),
   T_reque_obs: "",
