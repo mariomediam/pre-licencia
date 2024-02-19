@@ -49,7 +49,7 @@ export const RequeElaboraComponent = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
-        {/* <>
+      {/* <>
         <Typography sx={{ mb: 1 }}>
             <small className="text-muted">
               Paso {activeStep + 1} de {steps.length}
@@ -83,7 +83,7 @@ export const RequeElaboraComponent = () => {
         </>
       ) : (
         <>
-          <RequeElaboraSteppersComponent activeStep={activeStep}/>
+          <RequeElaboraSteppersComponent activeStep={activeStep} />
 
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
@@ -98,22 +98,32 @@ export const RequeElaboraComponent = () => {
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
 
-            <Button
-              onClick={handleNext}
-              variant="contained"
-              size="small"
-              color={activeStep === steps.length - 1 ? "primary" : "success"}
-            >
-              {activeStep === steps.length - 1 ? (
-                <div className="m-0 p-0">
-                  <i className="far fa-save"></i> Grabar
-                </div>
-              ) : (
-                <div>
-                  Siguiente<i className="fas fa-chevron-right ms-2"></i>
-                </div>
-              )}
-            </Button>
+            {/* <div style={{ position: "relative" }}>
+              <div
+                style={{ position: "absolute", right: "0px", width: "70px" }}
+              >
+                <div style={{ position: "fixed", bottom: "25px" }}> */}
+                  <Button
+                    onClick={handleNext}
+                    variant="contained"
+                    size="small"
+                    color={
+                      activeStep === steps.length - 1 ? "primary" : "success"
+                    }
+                  >
+                    {activeStep === steps.length - 1 ? (
+                      <div className="m-0 p-0">
+                        <i className="far fa-save"></i> Grabar
+                      </div>
+                    ) : (
+                      <div>
+                        Siguiente<i className="fas fa-chevron-right ms-2"></i>
+                      </div>
+                    )}
+                  </Button>
+                {/* </div>
+              </div>
+            </div> */}
           </Box>
         </>
       )}

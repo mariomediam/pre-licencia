@@ -90,8 +90,7 @@ export const DashboardRoutes = () => {
           />       
           <Route
             path="/abastecimientos/requerimiento/gestionar"
-            element={<RequerimientoGestionView />}
-            
+            element={<RequerimientoGestionView />}            
           />       
         </Routes>
        

@@ -15,7 +15,7 @@ export const RequerimientoGestionView = () => {
   
 
   return (
-    <>
+    <div className="" >
       <Header />
       <div className="ps-3 mb-0">
         <Breadcrumb>
@@ -30,8 +30,8 @@ export const RequerimientoGestionView = () => {
         Elaborar requerimiento de bienes y servicios
       </h3>
 
-      <div className="d-flex justify-content-center px-5 pt-4">
-        <div className="col-sm-12 col-lg-10 col-xl-6 p-4 shadow border rounded">
+      <div className="d-flex justify-content-center px-5 pt-4"  >
+        <div className="col-sm-12 col-lg-10 col-xl-6 p-4 shadow border rounded" >
           <small className="text-muted">Unidad orgánica:</small>
           <p className="mb-2">
             {C_sf_dep} - {n_dependencia}
@@ -51,11 +51,11 @@ export const RequerimientoGestionView = () => {
           )}
           <hr />
           
-          <div className="">
+          <div>
             <RequeElaboraComponent />            
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

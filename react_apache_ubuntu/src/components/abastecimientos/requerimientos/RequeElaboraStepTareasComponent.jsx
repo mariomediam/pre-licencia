@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 
 import { useSelector } from "react-redux";
 import { obtenerRequeSaldoPresupDepen } from "../../../services/abastecService";
-import { unstable_useId } from "@mui/material";
 import { RequeElaboraStepTareasItemComponent } from "./RequeElaboraStepTareasItemComponent";
 
 
@@ -20,7 +19,7 @@ export const RequeElaboraStepTareasComponent = () => {
     const obtenerTareas = async () => {
       const formato = "reque"
       const tareasTmp = await obtenerRequeSaldoPresupDepen(C_anipre, C_sf_dep, C_biesertipo, formato);
-      setTareas(tareasTmp);
+      setTareas(tareasTmp || []);
       
     };
 
@@ -33,7 +32,7 @@ export const RequeElaboraStepTareasComponent = () => {
     <div>
         {
           tareas.map((tarea, i) => (
-           <RequeElaboraStepTareasItemComponent key={i} tarea={tarea} />
+           <RequeElaboraStepTareasItemComponent key={i} tarea={tarea} active={i === 0}/>
           ))
         }
 
