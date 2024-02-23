@@ -10,6 +10,7 @@ import {
 
 import Header from "../../components/Header";
 import { RequeListaDepend } from "../../components/abastecimientos/requerimientos/RequeListaDepend";
+import Loading from "../../components/Loading";
 
 const anios = [];
 
@@ -18,7 +19,6 @@ for (let i = new Date().getFullYear(); i >= 1999; i--) {
 }
 
 export const RequerimientosView = () => {
-  
   const [searchParams] = useSearchParams();
 
   const controlSelectAnio = useRef(null);
@@ -39,8 +39,6 @@ export const RequerimientosView = () => {
 
   useEffect(() => {
     const getDependencias = async () => {
-
-      setIsLoading(true);
       if (aniosSelected) {
         controlSelectDepend.current.clearValue();
         const data = await obtenerAccesoDepen(aniosSelected);
@@ -53,9 +51,7 @@ export const RequerimientosView = () => {
 
         setDependencias(dependenciasTmp);
       }
-      setIsLoading(false);
     };
-
     getDependencias();
   }, [aniosSelected]);
 
@@ -82,93 +78,92 @@ export const RequerimientosView = () => {
     }
   }, [dependencias, paramsDepend]);
 
-  useEffect(() => {
+  useEffect(() => {    
+    setIsLoading(true);
     const getRequerimientos = async () => {
       if (dependSelected && aniosSelected) {
         const lcTipoBieSer = "99";
 
-        const data = await obtenerRequeDepen(aniosSelected, dependSelected, lcTipoBieSer);
+        const data = await obtenerRequeDepen(
+          aniosSelected,
+          dependSelected,
+          lcTipoBieSer
+        );
         setRequerimientos(data || []);
       } else {
         setRequerimientos([]);
       }
+      setIsLoading(false);
     };
     getRequerimientos();
   }, [dependSelected, aniosSelected]);
 
-  if (isLoading) {
-    return (
-      <div className="text-center">
-            {/* <Spinner animation="border" role="status" className="me-2"> */}
-              <span className="visually-hidden">Cargando...</span>
-            {/* </Spinner> */}
-            Cargando
-        </div>
-    )
-  }
-
-
-
   return (
     <>
-      
-        <Header />
-        <div className="ps-3 mb-0">
-          <Breadcrumb>
-            <Breadcrumb.Item active>Requerimientos</Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
-        <hr />
+      <Header />
+      <div className="ps-3 mb-0">
+        <Breadcrumb>
+          <Breadcrumb.Item active>Requerimientos</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
+      <hr />
 
-        <h3 className="mt-0 mb-3 text-center">
-          <i className="fas fa-box-open me-3"></i>
-          Elaborar requerimiento de bienes y servicios
-        </h3>
+      <h3 className="mt-0 mb-3 text-center">
+        <i className="fas fa-box-open me-3"></i>
+        Elaborar requerimiento de bienes y servicios
+      </h3>
 
-        <div className="d-flex justify-content-center px-5">
-          <div className="col-sm-12 col-lg-10 col-xl-6">
-            <div className="w-100">
-              <Form.Group className="mt-3" controlId="formBasicEmail">
-                <Form.Label className="text-muted mb-0">Año</Form.Label>
-                <Select
-                  placeholder="Seleccionar año"
-                  defaultValue={{
-                    value: aniosSelected?.toString(),
-                    label: aniosSelected,
-                  }}
-                  ref={controlSelectAnio}
-                  noOptionsMessage={() => "Registro no encontrado"}
-                  name="anios"
-                  onChange={onChangeControlSelectAnio}
-                  options={anios}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
-                />
-              </Form.Group>
-            </div>
-
-            <div className="w-100">
-              <Form.Group className="mt-3" controlId="formBasicEmail">
-                <Form.Label className="text-muted mb-0">
-                  Unidad Orgánica
-                </Form.Label>
-                <Select
-                  placeholder="Seleccionar unidad orgánica"
-                  ref={controlSelectDepend}
-                  noOptionsMessage={() => "Registro no encontrado"}
-                  name="dependencias"
-                  onChange={onChangeControlSelectDepend}
-                  options={dependencias}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
-                />
-              </Form.Group>
-            </div>
-
-            <RequeListaDepend requerimientos={requerimientos} aniosSelected = {aniosSelected} dependSelected = {dependSelected}/>
+      <div className="d-flex justify-content-center px-5">
+        <div className="col-sm-12 col-lg-10 col-xl-6">
+          <div className="w-100">
+            <Form.Group className="mt-3" controlId="formBasicEmail">
+              <Form.Label className="text-muted mb-0">Año</Form.Label>
+              <Select
+                placeholder="Seleccionar año"
+                defaultValue={{
+                  value: aniosSelected?.toString(),
+                  label: aniosSelected,
+                }}
+                ref={controlSelectAnio}
+                noOptionsMessage={() => "Registro no encontrado"}
+                name="anios"
+                onChange={onChangeControlSelectAnio}
+                options={anios}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+            </Form.Group>
           </div>
-        </div>
 
+          <div className="w-100">
+            <Form.Group className="mt-3" controlId="formBasicEmail">
+              <Form.Label className="text-muted mb-0">
+                Unidad Orgánica
+              </Form.Label>
+              <Select
+                placeholder="Seleccionar unidad orgánica"
+                ref={controlSelectDepend}
+                noOptionsMessage={() => "Registro no encontrado"}
+                name="dependencias"
+                onChange={onChangeControlSelectDepend}
+                options={dependencias}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+            </Form.Group>
+          </div>
+
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <RequeListaDepend
+              requerimientos={requerimientos}
+              aniosSelected={aniosSelected}
+              dependSelected={dependSelected}
+            />
+          )}
+        </div>
+      </div>
     </>
   );
 };
