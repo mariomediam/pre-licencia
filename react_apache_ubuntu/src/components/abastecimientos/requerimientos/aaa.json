@@ -1,0 +1,939 @@
+{
+    "message": null,
+    "content": [
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0001",
+            "N_metapresup_desc": "SALUD MATERNO NEONATAL",
+            "actividades": [
+                {
+                    "C_activpoi": "793",
+                    "N_activpoi_desc": "ACCIONES DE LOS MUNICIPIOS QUE PROMUEVEN LA SALUD SEXUAL Y REPRODUCTIVA CON ENFASIS EN MATERNIDAD SALUDABLE",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.5.9",
+                            "C_objpoi": "0007",
+                            "C_metapoi": "003",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 204336.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0002",
+            "N_metapresup_desc": "BRINDAR APOYO NUTRICIONAL A LAS PERSONAS AFECTADAS POR TUBERCULOSIS",
+            "actividades": [
+                {
+                    "C_activpoi": "669",
+                    "N_activpoi_desc": "ATENCION A BENEFICIARIOS EN SITUACION DE POBREZA Y POBREZA EXTREMA A TRAVEZ DEL PROGRAMA VASO DE LECHE",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "001",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "S ",
+                                    "Q_monto": 82321.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0076",
+            "N_metapresup_desc": "PERSONAS ADULTAS MAYORES RECIBEN SERVICIOS PARA PREVENIR CONDICIONES DE RIESGO",
+            "actividades": [
+                {
+                    "C_activpoi": "794",
+                    "N_activpoi_desc": "GESTION DEL CENTRO INTEGRAL DEL ADULTO MAYOR - CIAM ",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "015",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 17800.0
+                                },
+                                {
+                                    "C_fuefin": "09",
+                                    "C_recurso": "7 ",
+                                    "Q_monto": 1200.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0089",
+            "N_metapresup_desc": "ACCIONES DE LOS MUNICIPIOS QUE PROMUEVEN EL CUIDADO INFANTIL Y LA ADECUADA ALIMENTACION                                                                                                                                                                   ",
+            "actividades": [
+                {
+                    "C_activpoi": "792",
+                    "N_activpoi_desc": "PROGRAMA FAMILIA FELIZ",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0007",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 80000.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.5.9",
+                            "C_objpoi": "0007",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "..",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "793",
+                    "N_activpoi_desc": "ACCIONES DE LOS MUNICIPIOS QUE PROMUEVEN LA SALUD SEXUAL Y REPRODUCTIVA CON ENFASIS EN MATERNIDAD SALUDABLE",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.14.98",
+                            "C_objpoi": "0007",
+                            "C_metapoi": "003",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "794",
+                    "N_activpoi_desc": "GESTION DEL CENTRO INTEGRAL DEL ADULTO MAYOR - CIAM ",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "015",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": -60000.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0106",
+            "N_metapresup_desc": "ASISTENCIA AL CIUDADANO, FAMILIA Y AL DISCAPACITADO",
+            "actividades": [
+                {
+                    "C_activpoi": "694",
+                    "N_activpoi_desc": "GESTIONAR, MONITOREAR Y SUPERVISAR LA AYUDA SOCIAL A LA POBLACION VULNERABLE DE LA PROVINCIA DE PIURA",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "013",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 18626.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0120",
+            "N_metapresup_desc": "BRINDAR ASISTENCIA ALIMENTARIA",
+            "actividades": [
+                {
+                    "C_activpoi": "669",
+                    "N_activpoi_desc": "ATENCION A BENEFICIARIOS EN SITUACION DE POBREZA Y POBREZA EXTREMA A TRAVEZ DEL PROGRAMA VASO DE LECHE",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "001",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 38000.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "670",
+                    "N_activpoi_desc": "BRINDAR ASISTENCIA ALIMENTARIA A PACIENTES CON TUBERCULOSIS (TBC-VIH/SIDA)",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.2.1.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 30504.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 32196.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.2.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 5652.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.3.1.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "09",
+                                    "C_recurso": "7 ",
+                                    "Q_monto": 2400.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.4.2.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "09",
+                                    "C_recurso": "7 ",
+                                    "Q_monto": 2000.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.6.1.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "09",
+                                    "C_recurso": "7 ",
+                                    "Q_monto": 3000.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.11.6",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "09",
+                                    "C_recurso": "7 ",
+                                    "Q_monto": 3000.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "002",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "07",
+                                    "C_recurso": "A ",
+                                    "Q_monto": 3780.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0121",
+            "N_metapresup_desc": "BRINDAR ASISTENCIA ALIMENTARIA A COMEDORES",
+            "actividades": [
+                {
+                    "C_activpoi": "672",
+                    "N_activpoi_desc": "BRINDAR ASISTENCIA ALIMENTARIA A CENTROS DE ATENCION - PCAM",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.1.2.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "003",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "P ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "003",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "P ",
+                                    "Q_monto": 506284.0
+                                },
+                                {
+                                    "C_fuefin": "09",
+                                    "C_recurso": "7 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.14.98",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "003",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "P ",
+                                    "Q_monto": 25000.0
+                                },
+                                {
+                                    "C_fuefin": "08",
+                                    "C_recurso": "7 ",
+                                    "Q_monto": 7000.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "794",
+                    "N_activpoi_desc": "GESTION DEL CENTRO INTEGRAL DEL ADULTO MAYOR - CIAM ",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "015",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "P ",
+                                    "Q_monto": -11520.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0126",
+            "N_metapresup_desc": "PROTECCION SOCIAL-  CEDIF",
+            "actividades": [
+                {
+                    "C_activpoi": "678",
+                    "N_activpoi_desc": "PROTECCION SOCIA AL NIÑO Y AL ADOLESCENTE - CEDIF CASTILLA",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.1.2.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "006",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "006",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "006",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.2.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "006",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "006",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 93836.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.14.98",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "006",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 25000.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.5.4",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "006",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 7000.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "679",
+                    "N_activpoi_desc": "BRINDAR ASISTENCIA ALIMENTARIA A NIÑOS, NIÑAS Y ADOLESCENTES - CEDIF CHICLAYITO",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.5.4",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "007",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "683",
+                    "N_activpoi_desc": "PROTECCION SOCIAL AL NIÑO Y AL ADOLESCENTE - CEDIF CHICLAYITO ",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.1.2.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "009",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 100.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "009",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "009",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.2.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "009",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "009",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 20000.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.5.4",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "009",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 15219.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "685",
+                    "N_activpoi_desc": "BRINDAR ASISTENCIA ALIMENTARIA A NIÑOS, NIÑAS Y ADOLESCENTES - CEDIF MICAELA BASTIDAS",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.2.1.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "010",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "010",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "687",
+                    "N_activpoi_desc": "PROTECCION SOCIAL A NIÑOS Y ADOLESCENTES CEDIF MICAELA BASTIDAS",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.1.2.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "012",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "012",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "012",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.2.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "012",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "012",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 23100.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.14.98",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "012",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 1200.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.5.4",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "012",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "794",
+                    "N_activpoi_desc": "GESTION DEL CENTRO INTEGRAL DEL ADULTO MAYOR - CIAM ",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "015",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": -77404.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0129",
+            "N_metapresup_desc": "ASISTENCIA AL NIÑO Y AL ADOLESCENTE - CEDIF",
+            "actividades": [
+                {
+                    "C_activpoi": "679",
+                    "N_activpoi_desc": "BRINDAR ASISTENCIA ALIMENTARIA A NIÑOS, NIÑAS Y ADOLESCENTES - CEDIF CHICLAYITO",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "007",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 31648.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.5.4",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "007",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "685",
+                    "N_activpoi_desc": "BRINDAR ASISTENCIA ALIMENTARIA A NIÑOS, NIÑAS Y ADOLESCENTES - CEDIF MICAELA BASTIDAS",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.2.1.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "010",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.1.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "010",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.2.2.2",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "010",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "010",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 101.0
+                                }
+                            ],
+                            "selecc": false
+                        },
+                        {
+                            "C_clapre": "2.3.2.7.5.9",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "010",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 0.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                },
+                {
+                    "C_activpoi": "794",
+                    "N_activpoi_desc": "GESTION DEL CENTRO INTEGRAL DEL ADULTO MAYOR - CIAM ",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.7.11.99",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "015",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": -31749.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "C_anipre": "2024",
+            "C_secfun": "0131",
+            "N_metapresup_desc": "EMPADRONAMIENTO DE HOGARES PARA SU REGISTRO EN EL PADRON GENERAL DE HOGARES -SISFOH",
+            "actividades": [
+                {
+                    "C_activpoi": "797",
+                    "N_activpoi_desc": "GESTION DE LA UNIDAD LOCAL DE EMPADRONAMIENTO ",
+                    "C_depen": "110693",
+                    "clasificadores": [
+                        {
+                            "C_clapre": "2.3.2.9.1.1",
+                            "C_objpoi": "0009",
+                            "C_metapoi": "016",
+                            "saldos": [
+                                {
+                                    "C_fuefin": "00",
+                                    "C_recurso": "0 ",
+                                    "Q_monto": 203728.0
+                                }
+                            ],
+                            "selecc": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

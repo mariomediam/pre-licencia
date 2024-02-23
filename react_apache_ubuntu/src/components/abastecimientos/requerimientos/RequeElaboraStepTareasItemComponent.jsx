@@ -2,7 +2,7 @@ import { Accordion } from "react-bootstrap";
 import { RequeElaboraStepTareasItemSaldoComponent } from "./RequeElaboraStepTareasItemSaldoComponent";
 
 export const RequeElaboraStepTareasItemComponent = ({ tarea, active }) => {
-  const { C_secfun, N_metapresup_desc, actividades } = tarea;
+  const { C_secfun, N_metapresup_desc, actividades = []} = tarea;
   return (
     <div className="mb-4">
        
@@ -20,6 +20,7 @@ export const RequeElaboraStepTareasItemComponent = ({ tarea, active }) => {
             {actividades.map((actividad, i) => (
               <RequeElaboraStepTareasItemSaldoComponent
                 key={i}
+                C_secfun = {C_secfun}
                 actividad={actividad}                
               />
             ))}

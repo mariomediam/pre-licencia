@@ -1,45 +1,46 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+
 import { Card, Table } from "react-bootstrap";
 import { RequeElaboraStepTareasItemSaldoDetComponent } from "./RequeElaboraStepTareasItemSaldoDetComponent";
+import { useState } from "react";
 
-export const RequeElaboraStepTareasItemSaldoComponent = ({ actividad }) => {
-  const { C_activpoi, N_activpoi_desc, saldos } = actividad;
+export const RequeElaboraStepTareasItemSaldoComponent = ({
+  C_secfun,
+  actividad,
+}) => {
+  const { C_activpoi, N_activpoi_desc, C_depen, clasificadores } = actividad;
 
-  const originalData = {
-    saldos: saldos,
-  };
+  const { currentReque } = useSelector((state) => state.requerimiento);
+  const { requeClasificadores } = currentReque;
+  const [clasificadoresChecked, setClasificadoresChecked] =
+    useState(clasificadores);
 
-  const SaldosFormat = {
-    saldos: [],
-  };
+  useEffect(() => {
+    const clasificadoresTmp = clasificadores.map((clasificador, i) => {
+      const { C_clapre, C_objpoi, C_metapoi } = clasificador;
 
-  originalData.saldos.forEach((item) => {
-    const index = SaldosFormat.saldos.findIndex(
-      (i) =>
-        i.C_clapre === item.C_clapre &&
-        i.C_objpoi === item.C_objpoi &&
-        i.C_metapoi === item.C_metapoi
-    );
-    if (index !== -1) {
-      SaldosFormat.saldos[index].saldo.push({
-        C_fuefin: item.C_fuefin,
-        C_recurso: item.C_recurso,
-        Q_monto: item.Q_monto
-      });
-    } else {
-      SaldosFormat.saldos.push({
-        C_clapre: item.C_clapre,
-        C_objpoi: item.C_objpoi,
-        C_metapoi: item.C_metapoi,
-        saldo: [
-          {
-            C_fuefin: item.C_fuefin,
-            C_recurso: item.C_recurso,
-            Q_monto: item.Q_monto
-          },
-        ],
-      });
-    }
-  });
+      const elementoBuscado = {
+        C_clapre: C_clapre,
+        C_secfun: C_secfun,
+        C_depen: C_depen,
+        C_activpoi: C_activpoi,
+        C_objpoi: C_objpoi,
+        C_metapoi: C_metapoi,
+      };
+
+      const check = requeClasificadores.some(
+        (elemento) =>
+          JSON.stringify(elemento) === JSON.stringify(elementoBuscado)
+      );
+
+      clasificador.selecc = check;
+
+      return clasificador;
+    });
+    
+    setClasificadoresChecked(clasificadoresTmp);
+  }, [C_secfun, C_activpoi, C_depen, clasificadores, requeClasificadores]);
 
   return (
     <Card className="mb-4">
@@ -73,15 +74,18 @@ export const RequeElaboraStepTareasItemSaldoComponent = ({ actividad }) => {
                 <th>
                   <small className="text-muted text-end">Saldo</small>
                 </th>
-                <th>
-                    
-                </th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {SaldosFormat.saldos.map((s, i) => (
+              {clasificadoresChecked.map((clasificador, i) => (
                 <tr key={i}>
-                  <RequeElaboraStepTareasItemSaldoDetComponent saldos={s} />
+                  <RequeElaboraStepTareasItemSaldoDetComponent
+                    C_secfun={C_secfun}
+                    C_activpoi={C_activpoi}
+                    C_depen={C_depen}
+                    clasificador={clasificador}
+                  />
                 </tr>
               ))}
             </tbody>

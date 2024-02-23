@@ -25,6 +25,7 @@ const currentRequeDefault = {
   f_libre: "",
   n_dependencia: "",
   n_jefe_nombre: "",
+  requeClasificadores: []
 };
 
 export const requerimientoSlice = createSlice({
