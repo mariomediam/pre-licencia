@@ -48,7 +48,7 @@ export const requerimientoSlice = createSlice({
       state.requerimientos = [];
       state.currentReque = currentRequeDefault;
     },
-    setCurrent: (state, { payload }) => {
+    setCurrent: (state, { payload }) => {      
       state.currentReque = payload.currentReque;
     },
     setResetCurrent: (state) => {

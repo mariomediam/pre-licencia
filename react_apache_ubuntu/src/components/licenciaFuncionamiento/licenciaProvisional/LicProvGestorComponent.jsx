@@ -73,7 +73,7 @@ export const LicProvGestorComponent = () => {
         );
       }, 1500);
     } catch (error) {
-      console.log(error)
+      
       Swal.fire({
         icon: "error",
         title: "Error grabando licencia provisional",

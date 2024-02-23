@@ -13,8 +13,6 @@ const obtenerJefeDepen = async (anio, coddep) => {
         data: { content },
       } = await api.get(`${URLJefeDepen}`);
 
-      console.log("content", content)
-  
       return content;
     } catch (error) {
       throw error;

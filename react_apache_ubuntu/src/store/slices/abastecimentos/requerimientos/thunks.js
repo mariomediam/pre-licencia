@@ -30,6 +30,7 @@ export const setResetRequerimiento = () => {
 export const setCurrentRequerimiento = (newValues) => {
   return async (dispatch, getState) => {
 
+    
     const currentReque = getState().requerimiento.currentReque;
 
     if (newValues.C_anipre && newValues.C_sf_dep) {
@@ -37,7 +38,7 @@ export const setCurrentRequerimiento = (newValues) => {
         newValues.C_anipre,
         newValues.C_sf_dep
       );
-
+    
       const jefeDepen = await obtenerJefeDepen(
         newValues.C_anipre,
         newValues.C_sf_dep
@@ -62,8 +63,11 @@ export const setCurrentRequerimiento = (newValues) => {
         },
       })
     );
+    
   };
 };
+
+
 
 // export const setExpedSolici = () => {
 //   return async (dispatch, getState) => {

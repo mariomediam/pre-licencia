@@ -3,12 +3,17 @@ import { setCurrentRequerimiento } from "../../../store/slices";
 
 import { Form } from "react-bootstrap";
 
+
 export const RequeCardOptionComponent = ({ tipoRequerimiento, tipoRequeChecked, setTipoRequeChecked }) => {
   const dispatch = useDispatch();
 
   const { id, descripcion, C_biesertipo, f_libre, pathImage } = tipoRequerimiento;
 
+  
+
     const handleRadioChange = (e) => {
+
+      
       dispatch(
         setCurrentRequerimiento({
           C_biesertipo: C_biesertipo,     
@@ -19,6 +24,7 @@ export const RequeCardOptionComponent = ({ tipoRequerimiento, tipoRequeChecked, 
 
        
     }
+
          
   return (
     <div className="px-5">

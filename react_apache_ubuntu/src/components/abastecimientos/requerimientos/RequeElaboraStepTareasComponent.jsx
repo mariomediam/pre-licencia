@@ -17,9 +17,15 @@ export const RequeElaboraStepTareasComponent = () => {
   useEffect(() => {
 
     const obtenerTareas = async () => {
-      const formato = "reque"
-      const tareasTmp = await obtenerRequeSaldoPresupDepen(C_anipre, C_sf_dep, C_biesertipo, formato);
-      setTareas(tareasTmp || []);
+
+
+      
+      if (C_anipre && C_sf_dep && C_biesertipo) {
+        const formato = "reque"
+        const tareasTmp = await obtenerRequeSaldoPresupDepen(C_anipre, C_sf_dep, C_biesertipo, formato);
+        setTareas(tareasTmp || []);
+      }
+      
       
     };
 

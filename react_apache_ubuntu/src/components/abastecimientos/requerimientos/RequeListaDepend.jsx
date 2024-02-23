@@ -13,19 +13,22 @@ export const RequeListaDepend = ( { requerimientos = [], aniosSelected, dependSe
     const isLoading = false;
     const currentYear = new Date().getFullYear().toString();
 
-    const onClicAgregar = (event) => {
+    const onClicAgregar = async (event) => {
       event.preventDefault();
 
       dispatch(setResetCurrentRequerimiento());
 
-
-      dispatch(
+      
+      await dispatch(
         setCurrentRequerimiento({
           C_anipre: aniosSelected,          
           C_sf_dep: dependSelected,
+          C_biesertipo: "02",
+          f_libre: "1",
         })
       );
 
+      
       navigate(`/abastecimientos/requerimiento/gestionar`);
     };
 
