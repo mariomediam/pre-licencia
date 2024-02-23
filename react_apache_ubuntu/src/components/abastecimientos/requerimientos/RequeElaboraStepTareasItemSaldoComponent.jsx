@@ -38,7 +38,7 @@ export const RequeElaboraStepTareasItemSaldoComponent = ({
 
       return clasificador;
     });
-    
+
     setClasificadoresChecked(clasificadoresTmp);
   }, [C_secfun, C_activpoi, C_depen, clasificadores, requeClasificadores]);
 
@@ -53,44 +53,42 @@ export const RequeElaboraStepTareasItemSaldoComponent = ({
         </p>
       </Card.Header>
       <Card.Body>
-        <Card.Text>
-          <Table
-            hover
-            responsive
-            size="sm"
-            className="caption-top mb-1 animate__animated animate__fadeIn animate__faster "
-          >
-            <thead>
-              <tr className="">
-                <th className="align-middle m-0 p-0">
-                  <small className="text-muted">Clasificador</small>
-                </th>
-                <th>
-                  <small className="text-muted">Objetivo / Meta</small>
-                </th>
-                <th className="align-middle m-0 p-0">
-                  <small className="text-muted">Fuente / Recurso</small>
-                </th>
-                <th>
-                  <small className="text-muted text-end">Saldo</small>
-                </th>
-                <th></th>
+        <Table
+          hover
+          responsive
+          size="sm"
+          className="caption-top mb-1 animate__animated animate__fadeIn animate__faster"
+        >
+          <thead>
+            <tr className="">
+              <th className="align-middle m-0 p-0">
+                <small className="text-muted">Clasificador</small>
+              </th>
+              <th>
+                <small className="text-muted">Objetivo / Meta</small>
+              </th>
+              <th className="align-middle m-0 p-0">
+                <small className="text-muted">Fuente / Recurso</small>
+              </th>
+              <th>
+                <small className="text-muted text-end">Saldo</small>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {clasificadoresChecked.map((clasificador, i) => (
+              <tr key={i}>
+                <RequeElaboraStepTareasItemSaldoDetComponent
+                  C_secfun={C_secfun}
+                  C_activpoi={C_activpoi}
+                  C_depen={C_depen}
+                  clasificador={clasificador}
+                />
               </tr>
-            </thead>
-            <tbody>
-              {clasificadoresChecked.map((clasificador, i) => (
-                <tr key={i}>
-                  <RequeElaboraStepTareasItemSaldoDetComponent
-                    C_secfun={C_secfun}
-                    C_activpoi={C_activpoi}
-                    C_depen={C_depen}
-                    clasificador={clasificador}
-                  />
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Card.Text>
+            ))}
+          </tbody>
+        </Table>
       </Card.Body>
     </Card>
   );

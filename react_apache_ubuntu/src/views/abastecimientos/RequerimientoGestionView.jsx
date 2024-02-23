@@ -1,13 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Breadcrumb, Alert } from "react-bootstrap";
 
 import Header from "../../components/Header";
-import { useState } from "react";
 import { RequeElaboraComponent } from "../../components/abastecimientos/requerimientos/RequeElaboraComponent";
 
 
 export const RequerimientoGestionView = () => {
-  const dispatch = useDispatch();
 
   const { currentReque } = useSelector((state) => state.requerimiento);
   const { n_jefe_nombre, C_sf_dep, n_dependencia } = currentReque;

@@ -35,10 +35,12 @@ export const RequerimientosView = () => {
 
   const [dependencias, setDependencias] = useState([]);
   const [requerimientos, setRequerimientos] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getDependencias = async () => {
+
+      setIsLoading(true);
       if (aniosSelected) {
         controlSelectDepend.current.clearValue();
         const data = await obtenerAccesoDepen(aniosSelected);
@@ -51,6 +53,7 @@ export const RequerimientosView = () => {
 
         setDependencias(dependenciasTmp);
       }
+      setIsLoading(false);
     };
 
     getDependencias();
@@ -93,16 +96,16 @@ export const RequerimientosView = () => {
     getRequerimientos();
   }, [dependSelected, aniosSelected]);
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="text-center">
-  //           <Spinner animation="border" role="status" className="me-2">
-  //             <span className="visually-hidden">Cargando...</span>
-  //           </Spinner>
-  //           Cargando
-  //       </div>
-  //   )
-  // }
+  if (isLoading) {
+    return (
+      <div className="text-center">
+            {/* <Spinner animation="border" role="status" className="me-2"> */}
+              <span className="visually-hidden">Cargando...</span>
+            {/* </Spinner> */}
+            Cargando
+        </div>
+    )
+  }
 
 
 

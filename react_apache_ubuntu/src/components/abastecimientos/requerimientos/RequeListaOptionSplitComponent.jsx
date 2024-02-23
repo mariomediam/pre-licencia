@@ -32,8 +32,7 @@ export const RequeListaOptionSplitComponent = ({
             <a className="d-flex align-items-center dropdown-item" href=".">
               <img
                 src="/images/file-dollar.svg"
-                className="me-1"
-                thumbnail
+                className="me-1 thumbnail"                
                 alt="Precomprometer requerimiento"
               />
               Precomprometer
@@ -43,11 +42,10 @@ export const RequeListaOptionSplitComponent = ({
 
         {F_reque_estado === "2" && (
           <li>
-            <a className="d-flex align-items-center dropdown-item" href=".">
+            <a className="d-flex align-items-center dropdown-item" href="http://www.munipiura.gob.pe">
               <img
                 src="/images/printer.svg"
-                className="me-1"
-                thumbnail
+                className="me-1 thumbnail"                
                 alt="Imprimir requerimiento"
               />
               Imprimir
@@ -59,8 +57,7 @@ export const RequeListaOptionSplitComponent = ({
           <a className="d-flex align-items-center dropdown-item" href=".">
             <img
               src="/images/eye.svg"
-              className="me-1"
-              thumbnail
+              className="me-1 thumbnail"              
               alt="Ver requerimiento"
             />
             Ver
@@ -83,10 +80,10 @@ export const RequeListaOptionSplitComponent = ({
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                   fill="none"
-                  stroke-linecap="round"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 >
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -115,10 +112,10 @@ export const RequeListaOptionSplitComponent = ({
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                   fill="none"
-                  stroke-linecap="round"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 >
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />

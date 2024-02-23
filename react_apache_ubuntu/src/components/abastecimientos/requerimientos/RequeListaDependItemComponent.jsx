@@ -30,6 +30,7 @@ export const RequeListaDependItemComponent = ({ requerimiento }) => {
 
   return (
     <>
+      
       <td className="align-middle pe-3 ">
         <div>{C_reque}</div>
         <div>
@@ -68,7 +69,6 @@ export const RequeListaDependItemComponent = ({ requerimiento }) => {
           Q_REQUE_TOTAL={Q_REQUE_TOTAL}
         />
       </td>
-      
     </>
   );
 };

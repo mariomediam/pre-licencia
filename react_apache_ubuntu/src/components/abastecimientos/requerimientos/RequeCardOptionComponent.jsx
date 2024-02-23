@@ -42,8 +42,8 @@ export const RequeCardOptionComponent = ({ tipoRequerimiento, tipoRequeChecked, 
             />
             <img
                 src={pathImage}
-                className="ms-2"
-                thumbnail
+                className="ms-2 thumbnail"
+                
                 alt={`Elaborar requerimiento de ${descripcion}`}
                 
               />
