@@ -25,22 +25,35 @@ export const RequeElaboraStepTareasItemSaldoDetComponent = ({
       C_depen: C_depen,
       C_activpoi: C_activpoi,
       C_objpoi: C_objpoi,
-      C_metapoi: C_metapoi,
+      C_metapoi: C_metapoi,      
     };
 
     const existe = requeClasificadores.some(
-      (elemento) => JSON.stringify(elemento) === JSON.stringify(elementoBuscado)
+      (elemento) =>
+        elemento.C_clapre === elementoBuscado.C_clapre &&
+        elemento.C_secfun === elementoBuscado.C_secfun &&
+        elemento.C_depen === elementoBuscado.C_depen &&
+        elemento.C_activpoi === elementoBuscado.C_activpoi &&
+        elemento.C_objpoi === elementoBuscado.C_objpoi &&
+        elemento.C_metapoi === elementoBuscado.C_metapoi
     );
 
     let requeClasificadoresUpdate = [...requeClasificadores];
 
     if (checked && !existe) {
+      elementoBuscado["items"] = [];
       requeClasificadoresUpdate.push(elementoBuscado);
     } else if (!checked && existe) {
       const index = requeClasificadoresUpdate.findIndex(
         (elemento) =>
-          JSON.stringify(elemento) === JSON.stringify(elementoBuscado)
+        elemento.C_clapre === elementoBuscado.C_clapre &&
+        elemento.C_secfun === elementoBuscado.C_secfun &&
+        elemento.C_depen === elementoBuscado.C_depen &&
+        elemento.C_activpoi === elementoBuscado.C_activpoi &&
+        elemento.C_objpoi === elementoBuscado.C_objpoi &&
+        elemento.C_metapoi === elementoBuscado.C_metapoi
       );
+      console.log(index)
       requeClasificadoresUpdate.splice(index, 1);
     }
 

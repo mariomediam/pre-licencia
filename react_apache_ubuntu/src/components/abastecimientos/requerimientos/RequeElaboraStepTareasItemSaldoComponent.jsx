@@ -31,7 +31,12 @@ export const RequeElaboraStepTareasItemSaldoComponent = ({
 
       const check = requeClasificadores.some(
         (elemento) =>
-          JSON.stringify(elemento) === JSON.stringify(elementoBuscado)
+          elemento.C_clapre === elementoBuscado.C_clapre &&
+          elemento.C_secfun === elementoBuscado.C_secfun &&
+          elemento.C_depen === elementoBuscado.C_depen &&
+          elemento.C_activpoi === elementoBuscado.C_activpoi &&
+          elemento.C_objpoi === elementoBuscado.C_objpoi &&
+          elemento.C_metapoi === elementoBuscado.C_metapoi
       );
 
       clasificador.selecc = check;
