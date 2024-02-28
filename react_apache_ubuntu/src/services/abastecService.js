@@ -104,6 +104,30 @@ const obtenerRequeDepen = async (anio, sfDep, bieSerTipo, field = undefined, val
       throw error;
     }
   };
+
+  const obtenerBBSSDisponibleOrden = async (anio, secFun = undefined, codDep = undefined, bieSerTipo, file, valor) => {
+    try {
+      let api = UseAxios();
+  
+      let URLBbSs = `${URL}/bbss-disponible-orden?anio=${anio}&tipo=${bieSerTipo}&file=${file}&valor=${valor}`;
+  
+      if (secFun) {
+        URLBbSs += `&secfun=${secFun}`;
+      }
+
+      if (codDep) {
+        URLBbSs += `&coddep=${codDep}`;
+      }
+  
+      
+      let {
+        data: { content },
+      } = await api.get(`${URLBbSs}`);      
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
   
 
 export {
@@ -111,5 +135,6 @@ export {
     obtenerRequeDepen,
     obtenerRequeById,
     obtenerAniosDepenById,
-    obtenerRequeSaldoPresupDepen
+    obtenerRequeSaldoPresupDepen,
+    obtenerBBSSDisponibleOrden
 }
