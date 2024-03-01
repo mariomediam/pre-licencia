@@ -52,8 +52,7 @@ export const RequeElaboraStepTareasItemSaldoDetComponent = ({
         elemento.C_activpoi === elementoBuscado.C_activpoi &&
         elemento.C_objpoi === elementoBuscado.C_objpoi &&
         elemento.C_metapoi === elementoBuscado.C_metapoi
-      );
-      console.log(index)
+      );      
       requeClasificadoresUpdate.splice(index, 1);
     }
 

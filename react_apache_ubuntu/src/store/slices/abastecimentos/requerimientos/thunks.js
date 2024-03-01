@@ -29,8 +29,6 @@ export const setResetRequerimiento = () => {
 
 export const setCurrentRequerimiento = (newValues) => {
   return async (dispatch, getState) => {
-
-    
     const currentReque = getState().requerimiento.currentReque;
 
     if (newValues.C_anipre && newValues.C_sf_dep) {
@@ -38,7 +36,7 @@ export const setCurrentRequerimiento = (newValues) => {
         newValues.C_anipre,
         newValues.C_sf_dep
       );
-    
+
       const jefeDepen = await obtenerJefeDepen(
         newValues.C_anipre,
         newValues.C_sf_dep
@@ -51,23 +49,88 @@ export const setCurrentRequerimiento = (newValues) => {
       };
     }
 
-  
-    
-
     dispatch(
       setCurrent({
         currentReque: {
           ...currentReque,
           ...newValues,
-          
         },
       })
     );
-    
   };
 };
 
+export const setCurrentRequerimientoAddItem = (newValues) => {
+  return async (dispatch, getState) => {
+    const currentReque = getState().requerimiento.currentReque;
+    const { requeClasificadores } = currentReque;
 
+    const {
+      C_clapre,
+      C_secfun,
+      C_depen,
+      C_activpoi,
+      C_objpoi,
+      C_metapoi,
+      C_item = "",
+      Q_requedet_cant,
+      C_bieser_unimed,
+      C_biesertipo,
+      C_bieser,
+      Q_requedet_precio,
+      c_depen_aux = "",
+      N_cnespec_desc = "",
+      N_bieser_desc = "", 
+      N_unimed_desc = ""
+    } = newValues;
+
+    let requeClasificadoresUpdate = [...requeClasificadores];
+
+    const index = requeClasificadoresUpdate.findIndex(
+      (elemento) =>
+        elemento.C_clapre === C_clapre &&
+        elemento.C_secfun === C_secfun &&
+        elemento.C_depen === C_depen &&
+        elemento.C_activpoi === C_activpoi &&
+        elemento.C_objpoi === C_objpoi &&
+        elemento.C_metapoi === C_metapoi
+    );
+
+    if (index !== -1) {
+      const clapreSearched = requeClasificadoresUpdate[index];
+
+      const clapreUpdate = {
+        ...clapreSearched,
+        items: [
+          ...clapreSearched.items,
+          {
+            C_item,
+            Q_requedet_cant,
+            C_bieser_unimed,
+            C_biesertipo,
+            C_bieser,
+            Q_requedet_precio,
+            c_depen_aux,
+            N_cnespec_desc,
+            N_bieser_desc,
+            N_unimed_desc
+          },
+        ],
+      };
+
+      requeClasificadoresUpdate[index] = clapreUpdate;
+    }
+
+    dispatch(
+      setCurrent({
+        currentReque: {
+          ...currentReque,
+          requeClasificadores: requeClasificadoresUpdate,
+        },
+      })
+    );
+  };
+};
 
 // export const setExpedSolici = () => {
 //   return async (dispatch, getState) => {

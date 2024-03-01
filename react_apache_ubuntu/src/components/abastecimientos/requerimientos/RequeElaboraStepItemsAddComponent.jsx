@@ -1,8 +1,11 @@
 import { useEffect, useState, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Card, Form, Modal } from "react-bootstrap";
 import Select from "react-select";
 
+
 import { obtenerBBSSDisponibleOrden } from "../../../services/abastecService";
+import { setCurrentRequerimientoAddItem } from "../../../store/slices";
 
 export const RequeElaboraStepItemsAddComponent = ({
   show,
@@ -11,15 +14,21 @@ export const RequeElaboraStepItemsAddComponent = ({
   C_biesertipo,
   C_anipre,
 }) => {
+
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [bbss, setBbss] = useState([]);
   const [bbssSelected, setBbssSelected] = useState({});
   const [bbssOptions, setBbssOptions] = useState([]);
+  const [specifyBBSS, setSpecifyBBSS] = useState(false);
 
   const controlSelectBBSS = useRef(null);
   const controlInputPrecioUnit = useRef(null);
   const controlInputCantidad = useRef(null);
   const controlInputSubTotal = useRef(null);
+  const controlCheckSpecifyBBSS = useRef(null);
+  const controlInputSpecifyBBSS = useRef(null);
 
   const { C_clapre, C_secfun, C_depen, C_activpoi, C_objpoi, C_metapoi } =
     clasificador;
@@ -44,29 +53,33 @@ export const RequeElaboraStepItemsAddComponent = ({
   };
 
   const calculaSubTotal = () => {
-
     try {
-
-        if (controlInputPrecioUnit.current && controlInputCantidad.current) {
-            const precioUnit = controlInputPrecioUnit.current.value;
-            const cantidad = controlInputCantidad.current.value;
-            const subTotal = precioUnit * cantidad;
-            controlInputSubTotal.current.value = subTotal;
-        } else {
-
-            if (controlInputSubTotal.current) {
-                controlInputSubTotal.current.value = 0.0;
-            }
-        }
-        
-    } catch (error) {
+      if (controlInputPrecioUnit.current && controlInputCantidad.current) {
+        const precioUnit = controlInputPrecioUnit.current.value;
+        const cantidad = controlInputCantidad.current.value;
+        const subTotal = precioUnit * cantidad;
+        controlInputSubTotal.current.value = subTotal;
+      } else {
         if (controlInputSubTotal.current) {
-            controlInputSubTotal.current.value = 0.0;
+          controlInputSubTotal.current.value = 0.0;
         }
+      }
+    } catch (error) {
+      if (controlInputSubTotal.current) {
+        controlInputSubTotal.current.value = 0.0;
+      }
     }
-    
-  
-  }
+  };
+
+  const onChangeControlCheckSpecifyBBSS = (e) => {
+    setSpecifyBBSS(e.target.checked);
+  };
+
+  useEffect(() => {
+    if (specifyBBSS && controlInputSpecifyBBSS.current) {
+      controlInputSpecifyBBSS.current.focus();
+    }
+  }, [specifyBBSS]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -124,13 +137,39 @@ export const RequeElaboraStepItemsAddComponent = ({
     }
   }, [bbssSelected]);
 
+  const onCloseModal = () => {
+    setSpecifyBBSS(false);
+    handleClose();
+  }
+
+  const onClicSave = () => {
+    const C_item = "";
+    const Q_requedet_cant = C_biesertipo === "01" ? parseFloat(parseFloat(controlInputCantidad.current.value).toFixed(6)) : 1;
+    const C_bieser_unimed = bbssSelected.C_bieser_unimed;
+    const C_bieser = bbssSelected.C_BIESER;
+    const Q_requedet_precio = parseFloat(parseFloat(controlInputPrecioUnit.current.value).toFixed(7));
+    const c_depen_aux = "";
+    const N_cnespec_desc = specifyBBSS ? controlInputSpecifyBBSS.current.value : "";
+    const N_bieser_desc = bbssSelected.N_BIESER_DESC || "";
+    const N_unimed_desc = bbssSelected.N_UNIMED_DESC || "";
+
+    dispatch(
+      setCurrentRequerimientoAddItem({
+        C_clapre, C_secfun, C_depen, C_activpoi, C_objpoi, C_metapoi, C_item, Q_requedet_cant, C_bieser_unimed, C_biesertipo, C_bieser, Q_requedet_precio, c_depen_aux, N_cnespec_desc, N_bieser_desc, N_unimed_desc
+      })
+    );   
+    
+    onCloseModal();
+  }
+
+
   return (
     <div>
       <div>
         <Modal
           size="lg"
           show={show}
-          onHide={handleClose}
+          onHide={onCloseModal}
           backdrop="static"
           keyboard={false}
         >
@@ -194,11 +233,10 @@ export const RequeElaboraStepItemsAddComponent = ({
                   <Form.Group className="mb-2 col-md-3">
                     <Form.Label className="text-muted mb-0">
                       <small>
-                      {C_biesertipo === "01"
-                        ? "Precio unitario S/."
-                        : "Importe S/."}{" "}
+                        {C_biesertipo === "01"
+                          ? "Precio unitario S/."
+                          : "Importe S/."}{" "}
                       </small>
-                      
                     </Form.Label>
                     <Form.Control
                       type="number"
@@ -235,19 +273,45 @@ export const RequeElaboraStepItemsAddComponent = ({
                           <small> Sub total S/. </small>
                         </Form.Label>
                         <Form.Control
-                          type="number"                                                    
-                          className="text-end"                          
+                          type="number"
+                          className="text-end"
                           ref={controlInputSubTotal}
                           disabled
-
                         />
                       </Form.Group>
                     </>
                   )}
+
+                  <Form.Group className="mt-3">
+                    <Form.Check // prettier-ignore
+                      type="checkbox"
+                      label={`Especificar ${
+                        C_biesertipo === "01" ? "bien" : "servicio"
+                      }`}
+                      ref={controlCheckSpecifyBBSS}
+                      onChange={onChangeControlCheckSpecifyBBSS}
+                      value={specifyBBSS}
+                    />
+                    {specifyBBSS && (
+                      <Form.Control
+                        type="textarea"
+                        as="textarea"
+                        rows={2}
+                        name="name_specify_bbss"
+                        ref={controlInputSpecifyBBSS}
+                        // value={valores.observ}
+                        // onChange={(e) => setField("observ", e.target.value)}
+                        // isInvalid={!!errors.observ}
+                      />
+                    )}
+                  </Form.Group>
                 </Card.Body>
-                <Card.Footer className="text-center"><Button variant="primary">Grabar</Button></Card.Footer>
+                <Card.Footer className="text-center">
+                  <Button variant="primary" onClick={onClicSave}>Grabar</Button>
+                </Card.Footer>
               </Card>
             </div>
+            
           </Modal.Body>
         </Modal>
       </div>
