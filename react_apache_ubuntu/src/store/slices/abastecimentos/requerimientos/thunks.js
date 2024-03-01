@@ -196,6 +196,24 @@ export const setResetCurrentRequerimiento = () => {
   };
 };
 
+
+export const getTotalRequerimiento = () => {
+  return (dispatch, getState) => {
+    const currentReque = getState().requerimiento.currentReque;
+    const { requeClasificadores } = currentReque;
+
+    let total = 0;
+    requeClasificadores.forEach((clasificador) => {
+      clasificador.items.forEach((item) => {
+        total += item.Q_requedet_cant * item.Q_requedet_precio;
+      });
+    });
+    
+    return total
+    
+  };
+};
+
 // export const saveCurrentLicProv = (accion) => {
 //   return async (dispatch, getState) => {
 //     try {

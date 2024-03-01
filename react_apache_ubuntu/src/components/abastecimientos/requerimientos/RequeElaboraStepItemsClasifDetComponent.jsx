@@ -12,16 +12,15 @@ export const RequeElaboraStepItemsClasifDetComponent = ({
   C_activpoi,
   C_objpoi,
   C_metapoi,
-  C_depen
+  C_depen,
 }) => {
-
   const dispatch = useDispatch();
 
   const {
     C_item,
     Q_requedet_cant,
     C_bieser,
-    Q_requedet_precio,    
+    Q_requedet_precio,
     N_bieser_desc,
     N_unimed_desc,
   } = item;
@@ -38,14 +37,20 @@ export const RequeElaboraStepItemsClasifDetComponent = ({
   }
 
   const onClicRemove = () => {
-        
     dispatch(
       setCurrentRequerimientoRemoveItem({
-        C_depen, C_item, C_secfun, C_biesertipo, C_bieser, C_activpoi, C_metapoi, C_objpoi, C_clapre
+        C_depen,
+        C_item,
+        C_secfun,
+        C_biesertipo,
+        C_bieser,
+        C_activpoi,
+        C_metapoi,
+        C_objpoi,
+        C_clapre,
       })
-    );   
-
-  }
+    );
+  };
 
   return (
     <>
