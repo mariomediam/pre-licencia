@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Card, Form, Modal } from "react-bootstrap";
+import { v4 as uuidv4 } from 'uuid';
 import Select from "react-select";
 
 
@@ -143,7 +144,7 @@ export const RequeElaboraStepItemsAddComponent = ({
   }
 
   const onClicSave = () => {
-    const C_item = "";
+    const C_item = uuidv4(); 
     const Q_requedet_cant = C_biesertipo === "01" ? parseFloat(parseFloat(controlInputCantidad.current.value).toFixed(6)) : 1;
     const C_bieser_unimed = bbssSelected.C_bieser_unimed;
     const C_bieser = bbssSelected.C_BIESER;
@@ -153,6 +154,7 @@ export const RequeElaboraStepItemsAddComponent = ({
     const N_bieser_desc = bbssSelected.N_BIESER_DESC || "";
     const N_unimed_desc = bbssSelected.N_UNIMED_DESC || "";
 
+    console.log(C_item)
     dispatch(
       setCurrentRequerimientoAddItem({
         C_clapre, C_secfun, C_depen, C_activpoi, C_objpoi, C_metapoi, C_item, Q_requedet_cant, C_bieser_unimed, C_biesertipo, C_bieser, Q_requedet_precio, c_depen_aux, N_cnespec_desc, N_bieser_desc, N_unimed_desc

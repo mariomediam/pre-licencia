@@ -14,8 +14,21 @@ export const RequeElaboraStepItemsClasifComponent = ({
   const handleCloseAddItem = () => setShowAddItem(false);
   const handleShowAddItem = () => setShowAddItem(true);
 
-  const { C_clapre, C_secfun, C_activpoi, C_objpoi, C_metapoi, items } =
+  const { C_clapre, C_secfun, C_activpoi, C_objpoi, C_metapoi, C_depen, items } =
     clasificador;
+
+  const getTotal = () => {
+    // Obtener la suma de los subtotales de los items
+    let total = 0;
+    items.forEach((item) => {
+      total += item.Q_requedet_cant * item.Q_requedet_precio;
+    });
+    
+    return total.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
 
   return (
     <div>
@@ -54,14 +67,14 @@ export const RequeElaboraStepItemsClasifComponent = ({
                     {C_biesertipo === "01" ? "Bien" : "Servicio"}
                   </small>
                 </th>
-                <th>
+                <th className="text-end">
                   <small className="text-muted">Cantidad</small>
                 </th>
-                <th className="align-middle m-0 p-0">
-                  <small className="text-muted">Precio</small>
+                <th className="align-middle m-0 p-0 text-end">
+                  <small className="text-muted ">Precio</small>
                 </th>
-                <th>
-                  <small className="text-muted text-end">Sub total</small>
+                <th className="text-end">
+                  <small className="text-muted">Sub total</small>
                 </th>
                 <th></th>
                 <th></th>
@@ -74,6 +87,12 @@ export const RequeElaboraStepItemsClasifComponent = ({
                     item={item}
                     C_sf_dep={C_sf_dep}
                     C_biesertipo={C_biesertipo}
+                    C_clapre={C_clapre}
+                    C_secfun={C_secfun}
+                    C_activpoi={C_activpoi}
+                    C_objpoi={C_objpoi}
+                    C_metapoi={C_metapoi}
+                    C_depen = {C_depen}
                   />
                 </tr>
               ))}
@@ -82,9 +101,9 @@ export const RequeElaboraStepItemsClasifComponent = ({
                 <td></td>
                 <td></td>
                 <td className="align-middle">Total</td>
-                <td className="align-middle">0.0</td>
+                <td className="align-middle text-end">{getTotal()}</td>
                 <td></td>
-                <td>
+                <td className="text-end">
                   <button
                     className="btn btn-primary rounded-circle"
                     style={{ width: "45px", height: "45px" }}
@@ -105,9 +124,9 @@ export const RequeElaboraStepItemsClasifComponent = ({
         <RequeElaboraStepItemsAddComponent
           show={showAddItem}
           handleClose={handleCloseAddItem}
-          clasificador = {clasificador}
-          C_biesertipo = {C_biesertipo}
-          C_anipre = {C_anipre}
+          clasificador={clasificador}
+          C_biesertipo={C_biesertipo}
+          C_anipre={C_anipre}
         />
       </div>
     </div>

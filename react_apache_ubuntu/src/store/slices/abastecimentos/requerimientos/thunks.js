@@ -132,16 +132,63 @@ export const setCurrentRequerimientoAddItem = (newValues) => {
   };
 };
 
-// export const setExpedSolici = () => {
-//   return async (dispatch, getState) => {
-//     const currentLicProv = getState().licProv.currentLicProv
-//     const { licProvExpNro, licProvExpAnio } = currentLicProv
-//     const { ExpedSolici } = await obtenerExpedientePorNroAnio(licProvExpNro, licProvExpAnio)
 
-//     dispatch(setCurrentLicProv({ ...currentLicProv, licProvTitCod: ExpedSolici?.trim() || "" }))
 
-//   }
-// }
+export const setCurrentRequerimientoRemoveItem = (removeValues) => {
+
+  return async (dispatch, getState) => {
+    const currentReque = getState().requerimiento.currentReque;
+    const { requeClasificadores } = currentReque;
+
+    const {
+      C_depen, C_item, C_secfun, C_biesertipo, C_bieser, C_activpoi, C_metapoi, C_objpoi, C_clapre
+    } = removeValues;
+
+    let requeClasificadoresUpdate = [...requeClasificadores];
+
+    const index = requeClasificadoresUpdate.findIndex(
+      (elemento) =>
+        elemento.C_clapre === C_clapre &&
+        elemento.C_secfun === C_secfun &&
+        elemento.C_depen === C_depen &&
+        elemento.C_activpoi === C_activpoi &&
+        elemento.C_objpoi === C_objpoi &&
+        elemento.C_metapoi === C_metapoi
+    );
+
+    if (index !== -1) {
+      const clapreSearched = requeClasificadoresUpdate[index];
+
+      console.log(clapreSearched.items)
+      const items = clapreSearched.items.filter(
+        (item) =>
+          item.C_item !== C_item ||
+          item.C_biesertipo !== C_biesertipo ||
+          item.C_bieser !== C_bieser
+      );
+
+      console.log(items)
+
+      const clapreUpdate = {
+        ...clapreSearched,
+        items: items,
+      };
+
+      requeClasificadoresUpdate[index] = clapreUpdate;
+    }
+
+    dispatch(
+      setCurrent({
+        currentReque: {
+          ...currentReque,
+          requeClasificadores: requeClasificadoresUpdate,
+        },
+      })
+    );
+  };
+
+
+}
 
 export const setResetCurrentRequerimiento = () => {
   return (dispatch, getState) => {
