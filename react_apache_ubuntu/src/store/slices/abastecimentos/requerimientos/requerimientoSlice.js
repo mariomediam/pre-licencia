@@ -3,12 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const currentRequeDefault = {
   accion: "NUEVO",
-  C_reque: "",
+  C_reque: null,
   D_reque_fecha: new Date().toISOString().slice(0, 10),
   T_reque_obs: "",
   F_reque_estado: "",
   C_anipre: "",
-  C_tipogasto: "",
+  C_tipogasto: "1",
   C_sf_dep: "",
   C_biesertipo: "",
   C_paayc_version: "",

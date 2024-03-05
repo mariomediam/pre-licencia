@@ -13,6 +13,7 @@ export const RequeElaboraStepItemsClasifDetComponent = ({
   C_objpoi,
   C_metapoi,
   C_depen,
+  accion = "",
 }) => {
   const dispatch = useDispatch();
 
@@ -70,8 +71,11 @@ export const RequeElaboraStepItemsClasifDetComponent = ({
           maximumFractionDigits: 2,
         })}
       </td>
-      <td className="text-end">
-        {/* {" "}
+
+      {accion === "elaborar" && (
+        <>
+          <td className="text-end">
+            {/* {" "}
         <Button
           size="sm"
           variant="outline-primary"
@@ -80,18 +84,20 @@ export const RequeElaboraStepItemsClasifDetComponent = ({
           <i className="fas fa-edit"></i>
           Editar
         </Button> */}
-      </td>
-      <td className="text-end">
-        <Button
-          size="sm"
-          variant="outline-danger"
-          onClick={onClicRemove}
-          // disabled={!n_traba_correo}
-        >
-          <i className="fas fa-trash-alt me-1"></i>
-          Eliminar
-        </Button>
-      </td>
+          </td>
+          <td className="text-end">
+            <Button
+              size="sm"
+              variant="outline-danger"
+              onClick={onClicRemove}
+              // disabled={!n_traba_correo}
+            >
+              <i className="fas fa-trash-alt me-1"></i>
+              Eliminar
+            </Button>
+          </td>
+        </>
+      )}
     </>
   );
 };

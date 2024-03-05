@@ -11,7 +11,7 @@ export const RequeElaboraStepMotivoComponent = () => {
   const dispatch = useDispatch();
   const { currentReque } = useSelector((state) => state.requerimiento);
 
-  const { T_referencia_obs } = currentReque;
+  const { T_reque_obs } = currentReque;
 
   const getTotal = () => {
     // Obtener la suma de los subtotales de los items
@@ -36,7 +36,7 @@ export const RequeElaboraStepMotivoComponent = () => {
     const value = e.target.value;
     dispatch(
       setCurrentRequerimiento({
-        "T_referencia_obs": value,
+        "T_reque_obs": value,
       })
     );
   }
@@ -57,7 +57,7 @@ export const RequeElaboraStepMotivoComponent = () => {
           rows={4}
           name="name_observ"
           onChange={onChangeInputObservaciones}
-          value={T_referencia_obs}
+          value={T_reque_obs}
           // onChange={(e) => setField("observ", e.target.value)}
           // isInvalid={!!errors.observ}
         />

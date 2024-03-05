@@ -30,8 +30,8 @@ export const RequeElaboraStepItemsComponent = () => {
       </div>
       {requeClasificadores.map((clasificador, i) => {
         return (
-          <article key={i} className="pb-4">
-            <RequeElaboraStepItemsClasifComponent clasificador={clasificador} C_sf_dep={C_sf_dep} C_biesertipo={C_biesertipo} C_anipre={C_anipre}/>
+          <article key={i}>
+            <RequeElaboraStepItemsClasifComponent clasificador={clasificador} C_sf_dep={C_sf_dep} C_biesertipo={C_biesertipo} C_anipre={C_anipre} accion={"elaborar"}/>
           </article>
         );
       })}

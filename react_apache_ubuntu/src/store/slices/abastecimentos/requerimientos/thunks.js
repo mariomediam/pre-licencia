@@ -1,8 +1,10 @@
 import {
   obtenerRequeById,
   obtenerAniosDepenById,
+  agregarRequerimiento,
 } from "../../../../services/abastecService";
 import { obtenerJefeDepen } from "../../../../services/generalService";
+
 
 // import { obtenerExpedientePorNroAnio } from "../../../../services/tradocService";
 import {
@@ -214,19 +216,53 @@ export const getTotalRequerimiento = () => {
   };
 };
 
-// export const saveCurrentLicProv = (accion) => {
-//   return async (dispatch, getState) => {
-//     try {
-//       let currentLicProv = getState().licProv.currentLicProv;
-//       currentLicProv = {...currentLicProv, accion: accion}
-//       const data = await gestionarLicProv(currentLicProv);
-//       const {licProvId, licProvNro, licProvRenov} = data
-//       dispatch(setCurrent({"currentLicProv": { ...currentLicProv, ...data }}));
-//       return {licProvId, licProvNro, licProvRenov}
-//     } catch (error) {
+export const saveCurrentRequerimento = () => {
+  return async (dispatch, getState) => {
+    try {
+      const currentReque = getState().requerimiento.currentReque;
+      const { C_anipre, C_biesertipo } = currentReque;
+    
 
-//       throw error;
-//     }
+      const requeClasificadores = currentReque.requeClasificadores.map(
+        (clasificador) => {
+          const items = clasificador.items.map((item) => {
+            if (item["C_item"].length === 36) {
+              return {...item, "C_item": "0000"};
+            }
+            return item;
+          });
 
-//   }
-// }
+          return {
+            ...clasificador,
+            items,
+          };
+        }
+      );
+
+      const currentRequeUpdate = {
+        ...currentReque,
+        requeClasificadores,
+      };
+
+    
+    
+      const data = await agregarRequerimiento(C_anipre, C_biesertipo, currentRequeUpdate);
+      // const { C_reque } = data
+
+      dispatch(
+        setCurrent({
+          currentReque: {
+            ...currentReque,
+            ...data,
+          },
+        })
+      );
+      
+      return data
+    } catch (error) {
+
+      throw error;
+    }
+
+  }
+}

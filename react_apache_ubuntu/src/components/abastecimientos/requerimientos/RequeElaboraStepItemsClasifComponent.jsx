@@ -8,14 +8,22 @@ export const RequeElaboraStepItemsClasifComponent = ({
   C_sf_dep,
   C_biesertipo,
   C_anipre,
+  accion = "",
 }) => {
   const [showAddItem, setShowAddItem] = useState(false);
 
   const handleCloseAddItem = () => setShowAddItem(false);
   const handleShowAddItem = () => setShowAddItem(true);
 
-  const { C_clapre, C_secfun, C_activpoi, C_objpoi, C_metapoi, C_depen, items } =
-    clasificador;
+  const {
+    C_clapre,
+    C_secfun,
+    C_activpoi,
+    C_objpoi,
+    C_metapoi,
+    C_depen,
+    items = [],
+  } = clasificador;
 
   const getTotal = () => {
     // Obtener la suma de los subtotales de los items
@@ -23,15 +31,20 @@ export const RequeElaboraStepItemsClasifComponent = ({
     items.forEach((item) => {
       total += item.Q_requedet_cant * item.Q_requedet_precio;
     });
-    
-    return total.toLocaleString('en-US', {
+
+    return total.toLocaleString("en-US", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
   };
 
+  if (accion !== "elaborar" && items.length === 0) {
+    return <></>;
+  }
+
   return (
-    <div>
+
+    <div className="pb-4">
       <Card>
         <Card.Header>
           <div className="d-flex flex-wrap gap-3 justify-content-between">
@@ -76,8 +89,12 @@ export const RequeElaboraStepItemsClasifComponent = ({
                 <th className="text-end">
                   <small className="text-muted">Sub total</small>
                 </th>
-                <th></th>
-                <th></th>
+                {accion === "elaborar" && (
+                  <>
+                    <th></th>
+                    <th></th>
+                  </>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -92,7 +109,8 @@ export const RequeElaboraStepItemsClasifComponent = ({
                     C_activpoi={C_activpoi}
                     C_objpoi={C_objpoi}
                     C_metapoi={C_metapoi}
-                    C_depen = {C_depen}
+                    C_depen={C_depen}
+                    accion={accion}
                   />
                 </tr>
               ))}
@@ -102,20 +120,25 @@ export const RequeElaboraStepItemsClasifComponent = ({
                 <td></td>
                 <td className="align-middle">Total</td>
                 <td className="align-middle text-end">{getTotal()}</td>
-                <td></td>
-                <td className="text-end">
-                  <button
-                    className="btn btn-primary rounded-circle"
-                    style={{ width: "45px", height: "45px" }}
-                    title={`Agregar ${
-                      C_biesertipo === "01" ? "bien" : "servicio"
-                    }`}
-                    onClick={handleShowAddItem}
-                  >
-                    <i className="fas fa-plus"></i>
-                  </button>
-                </td>
+                {accion === "elaborar" && (
+                  <>
+                    <td></td>
+                    <td className="text-end">
+                      <button
+                        className="btn btn-primary rounded-circle"
+                        style={{ width: "45px", height: "45px" }}
+                        title={`Agregar ${
+                          C_biesertipo === "01" ? "bien" : "servicio"
+                        }`}
+                        onClick={handleShowAddItem}
+                      >
+                        <i className="fas fa-plus"></i>
+                      </button>
+                    </td>
+                  </>
+                )}
               </tr>
+
             </tbody>
           </Table>
         </Card.Body>

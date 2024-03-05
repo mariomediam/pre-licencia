@@ -128,6 +128,38 @@ const obtenerRequeDepen = async (anio, sfDep, bieSerTipo, field = undefined, val
       throw error;
     }
   };
+
+
+  const agregarRequerimiento = async (
+    anio,
+    C_biesertipo,
+    requerimiento
+  ) => {
+    const credenciales = {
+      requerimiento
+    };
+  
+    let api = UseAxios();
+  
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      let {
+        data: { content },
+      } = await api.post(`${URL}/reque/${anio}/00000/${C_biesertipo}`, credenciales, {
+        headers,
+      });
+
+      if (content?.length > 0) {
+        content = content[0];
+      }
+        
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
   
 
 export {
@@ -136,5 +168,6 @@ export {
     obtenerRequeById,
     obtenerAniosDepenById,
     obtenerRequeSaldoPresupDepen,
-    obtenerBBSSDisponibleOrden
+    obtenerBBSSDisponibleOrden,
+    agregarRequerimiento
 }
