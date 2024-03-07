@@ -1,3 +1,9 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { RequePreviewComponent } from "./RequePreviewComponent";
+import { getRequerimiento } from "../../../store/slices";
+
 export const RequeListaOptionSplitComponent = ({
   C_anipre,
   C_reque,
@@ -6,7 +12,25 @@ export const RequeListaOptionSplitComponent = ({
   Q_REQUE_TOTAL
 }) => {
 
+  const dispatch = useDispatch();
+
+  const [showAddItem, setShowAddItem] = useState(false);
+
+  const handleCloseAddItem = () => setShowAddItem(false);
+  const handleShowAddItem = () => setShowAddItem(true);
+
   const currentYear = new Date().getFullYear().toString();
+
+  const onClickShowPreview = async (e) => {
+    e.preventDefault();
+
+    
+    await dispatch(
+       getRequerimiento(C_anipre, C_reque, C_biesertipo)
+    );  
+    
+    handleShowAddItem();
+  };
 
   return (
     <div className="dropdown">
@@ -54,11 +78,12 @@ export const RequeListaOptionSplitComponent = ({
         )}
 
         <li>
-          <a className="d-flex align-items-center dropdown-item" href=".">
+          <a className="d-flex align-items-center dropdown-item" href="."  onClick={onClickShowPreview}>
             <img
               src="/images/eye.svg"
               className="me-1 thumbnail"              
               alt="Ver requerimiento"
+             
             />
             Ver
           </a>
@@ -128,6 +153,15 @@ export const RequeListaOptionSplitComponent = ({
           </>
         )}
       </ul>
+      <div>
+        <RequePreviewComponent
+          show={showAddItem}
+          handleClose={handleCloseAddItem}
+          C_anipre = {C_anipre}
+          C_reque = {C_reque}
+          C_biesertipo = {C_biesertipo}
+        />
+      </div>
     </div>
   );
 };

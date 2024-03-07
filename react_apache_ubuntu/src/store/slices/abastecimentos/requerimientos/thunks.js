@@ -1,10 +1,9 @@
 import {
-  obtenerRequeById,
+  obtenerRequerimiento,
   obtenerAniosDepenById,
   agregarRequerimiento,
 } from "../../../../services/abastecService";
 import { obtenerJefeDepen } from "../../../../services/generalService";
-
 
 // import { obtenerExpedientePorNroAnio } from "../../../../services/tradocService";
 import {
@@ -13,15 +12,8 @@ import {
   setResetValues,
   setCurrent,
   setResetCurrent,
+  finishLoadingReque,
 } from "./requerimientoSlice";
-
-// export const getBuscarLicProv = (tipo, campo, valor) => {
-//   return async (dispatch, getState) => {
-//     dispatch(startLoadingLicProv());
-//     const data = await obtenerLicProv(tipo, campo, valor)
-//     dispatch(setLicProv({ licProv: data }));
-//   };
-// };
 
 export const setResetRequerimiento = () => {
   return (dispatch, getState) => {
@@ -82,8 +74,8 @@ export const setCurrentRequerimientoAddItem = (newValues) => {
       Q_requedet_precio,
       c_depen_aux = "",
       N_cnespec_desc = "",
-      N_bieser_desc = "", 
-      N_unimed_desc = ""
+      N_bieser_desc = "",
+      N_unimed_desc = "",
     } = newValues;
 
     let requeClasificadoresUpdate = [...requeClasificadores];
@@ -115,7 +107,7 @@ export const setCurrentRequerimientoAddItem = (newValues) => {
             c_depen_aux,
             N_cnespec_desc,
             N_bieser_desc,
-            N_unimed_desc
+            N_unimed_desc,
           },
         ],
       };
@@ -134,16 +126,21 @@ export const setCurrentRequerimientoAddItem = (newValues) => {
   };
 };
 
-
-
 export const setCurrentRequerimientoRemoveItem = (removeValues) => {
-
   return async (dispatch, getState) => {
     const currentReque = getState().requerimiento.currentReque;
     const { requeClasificadores } = currentReque;
 
     const {
-      C_depen, C_item, C_secfun, C_biesertipo, C_bieser, C_activpoi, C_metapoi, C_objpoi, C_clapre
+      C_depen,
+      C_item,
+      C_secfun,
+      C_biesertipo,
+      C_bieser,
+      C_activpoi,
+      C_metapoi,
+      C_objpoi,
+      C_clapre,
     } = removeValues;
 
     let requeClasificadoresUpdate = [...requeClasificadores];
@@ -161,7 +158,7 @@ export const setCurrentRequerimientoRemoveItem = (removeValues) => {
     if (index !== -1) {
       const clapreSearched = requeClasificadoresUpdate[index];
 
-      console.log(clapreSearched.items)
+      console.log(clapreSearched.items);
       const items = clapreSearched.items.filter(
         (item) =>
           item.C_item !== C_item ||
@@ -169,7 +166,7 @@ export const setCurrentRequerimientoRemoveItem = (removeValues) => {
           item.C_bieser !== C_bieser
       );
 
-      console.log(items)
+      console.log(items);
 
       const clapreUpdate = {
         ...clapreSearched,
@@ -188,16 +185,13 @@ export const setCurrentRequerimientoRemoveItem = (removeValues) => {
       })
     );
   };
-
-
-}
+};
 
 export const setResetCurrentRequerimiento = () => {
   return (dispatch, getState) => {
     dispatch(setResetCurrent());
   };
 };
-
 
 export const getTotalRequerimiento = () => {
   return (dispatch, getState) => {
@@ -210,9 +204,8 @@ export const getTotalRequerimiento = () => {
         total += item.Q_requedet_cant * item.Q_requedet_precio;
       });
     });
-    
-    return total
-    
+
+    return total;
   };
 };
 
@@ -221,13 +214,12 @@ export const saveCurrentRequerimento = () => {
     try {
       const currentReque = getState().requerimiento.currentReque;
       const { C_anipre, C_biesertipo } = currentReque;
-    
 
       const requeClasificadores = currentReque.requeClasificadores.map(
         (clasificador) => {
           const items = clasificador.items.map((item) => {
             if (item["C_item"].length === 36) {
-              return {...item, "C_item": "0000"};
+              return { ...item, C_item: "0000" };
             }
             return item;
           });
@@ -244,9 +236,11 @@ export const saveCurrentRequerimento = () => {
         requeClasificadores,
       };
 
-    
-    
-      const data = await agregarRequerimiento(C_anipre, C_biesertipo, currentRequeUpdate);
+      const data = await agregarRequerimiento(
+        C_anipre,
+        C_biesertipo,
+        currentRequeUpdate
+      );
       // const { C_reque } = data
 
       dispatch(
@@ -257,12 +251,21 @@ export const saveCurrentRequerimento = () => {
           },
         })
       );
-      
-      return data
-    } catch (error) {
 
+      return data;
+    } catch (error) {
       throw error;
     }
+  };
+};
 
-  }
-}
+export const getRequerimiento = (anio, numero, tipo) => {
+  return async (dispatch, getState) => {
+    dispatch(setResetCurrent());
+    dispatch(startLoadingReque());
+    const data = await obtenerRequerimiento(anio, numero, tipo);
+
+    dispatch(setCurrentRequerimiento({ ...data, accion: "VER" }));
+    dispatch(finishLoadingReque());
+  };
+};

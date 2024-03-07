@@ -60,7 +60,7 @@ export const RequeListaDependItemComponent = ({ requerimiento }) => {
         <p className=" max-five-lines">{T_reque_obs}</p>
       </td>
       <td className="text-end align-middle ">{formattedRequeTotal}</td>
-      <td className="text-center align-middle ">
+      <td className="text-center align-middle " style={{ zIndex: "9000" }}>
         <RequeListaOptionSplitComponent
           C_anipre={C_anipre}
           C_reque={C_reque}

@@ -54,8 +54,11 @@ export const requerimientoSlice = createSlice({
     setResetCurrent: (state) => {
       state.currentReque = currentRequeDefault;
     },
+    finishLoadingReque: (state /* action */) => {
+      state.isLoading = true;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { startLoadingReque, setRequerimientos, setResetValues, setCurrent, setResetCurrent} = requerimientoSlice.actions;
+export const { startLoadingReque, setRequerimientos, setResetValues, setCurrent, setResetCurrent, finishLoadingReque} = requerimientoSlice.actions;
