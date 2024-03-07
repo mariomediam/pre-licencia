@@ -34,7 +34,7 @@ export const RequeElaboraStepTareasComponent = () => {
 
   return (
     <div>
-      {isLoading ? (
+      {(isLoading)? (
         <Loading />
       ) : (
         tareas.map((tarea, i) => (

@@ -179,14 +179,13 @@ const agregarRequerimiento = async (anio, C_biesertipo, requerimiento) => {
   }
 };
 
-const obtenerRequerimiento = async (anio, numero, tipo) => {
+const obtenerRequerimiento = async (anio, numero, tipo) => {  
   let api = UseAxios();
 
   try {
     let {
       data: { content },
     } = await api.get(`${URL}/reque/${anio}/${numero}/${tipo}`);
-
     return content;
   } catch (error) {
     throw error;

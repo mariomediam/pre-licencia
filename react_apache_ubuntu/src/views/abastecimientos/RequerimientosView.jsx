@@ -153,7 +153,7 @@ export const RequerimientosView = () => {
             </Form.Group>
           </div>
 
-          {isLoading ? (
+          {(isLoading) ? (
             <Loading />
           ) : (
             <RequeListaDepend

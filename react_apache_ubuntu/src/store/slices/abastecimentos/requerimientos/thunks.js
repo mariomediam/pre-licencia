@@ -261,11 +261,16 @@ export const saveCurrentRequerimento = () => {
 
 export const getRequerimiento = (anio, numero, tipo) => {
   return async (dispatch, getState) => {
+    
     dispatch(setResetCurrent());
-    dispatch(startLoadingReque());
+    
+    dispatch(startLoadingReque());    
+    
     const data = await obtenerRequerimiento(anio, numero, tipo);
-
-    dispatch(setCurrentRequerimiento({ ...data, accion: "VER" }));
-    dispatch(finishLoadingReque());
+    
+    await dispatch(setCurrentRequerimiento({ ...data, accion: "VER" }));    
+    
+    dispatch(finishLoadingReque());    
+    
   };
 };

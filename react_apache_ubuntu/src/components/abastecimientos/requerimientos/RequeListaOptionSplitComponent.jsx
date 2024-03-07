@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { RequePreviewComponent } from "./RequePreviewComponent";
+import Loading from "../../Loading";
 import { getRequerimiento } from "../../../store/slices";
 
 export const RequeListaOptionSplitComponent = ({
@@ -9,10 +10,11 @@ export const RequeListaOptionSplitComponent = ({
   C_reque,
   C_biesertipo,
   F_reque_estado,
-  Q_REQUE_TOTAL
+  Q_REQUE_TOTAL,
 }) => {
-
   const dispatch = useDispatch();
+
+  const { isLoading, currentReque } = useSelector((state) => state.requerimiento);
 
   const [showAddItem, setShowAddItem] = useState(false);
 
@@ -24,11 +26,8 @@ export const RequeListaOptionSplitComponent = ({
   const onClickShowPreview = async (e) => {
     e.preventDefault();
 
-    
-    await dispatch(
-       getRequerimiento(C_anipre, C_reque, C_biesertipo)
-    );  
-    
+    dispatch(await getRequerimiento(C_anipre, C_reque, C_biesertipo));
+
     handleShowAddItem();
   };
 
@@ -51,25 +50,30 @@ export const RequeListaOptionSplitComponent = ({
         </svg>
       </button>
       <ul className="dropdown-menu  ">
-        {F_reque_estado === "1" && Q_REQUE_TOTAL > 0 && C_anipre === currentYear && (
-          <li>
-            <a className="d-flex align-items-center dropdown-item" href=".">
-              <img
-                src="/images/file-dollar.svg"
-                className="me-1 thumbnail"                
-                alt="Precomprometer requerimiento"
-              />
-              Precomprometer
-            </a>
-          </li>
-        )}
+        {F_reque_estado === "1" &&
+          Q_REQUE_TOTAL > 0 &&
+          C_anipre === currentYear && (
+            <li>
+              <a className="d-flex align-items-center dropdown-item" href=".">
+                <img
+                  src="/images/file-dollar.svg"
+                  className="me-1 thumbnail"
+                  alt="Precomprometer requerimiento"
+                />
+                Precomprometer
+              </a>
+            </li>
+          )}
 
         {F_reque_estado === "2" && (
           <li>
-            <a className="d-flex align-items-center dropdown-item" href="http://www.munipiura.gob.pe">
+            <a
+              className="d-flex align-items-center dropdown-item"
+              href="http://www.munipiura.gob.pe"
+            >
               <img
                 src="/images/printer.svg"
-                className="me-1 thumbnail"                
+                className="me-1 thumbnail"
                 alt="Imprimir requerimiento"
               />
               Imprimir
@@ -78,12 +82,15 @@ export const RequeListaOptionSplitComponent = ({
         )}
 
         <li>
-          <a className="d-flex align-items-center dropdown-item" href="."  onClick={onClickShowPreview}>
+          <a
+            className="d-flex align-items-center dropdown-item"
+            href="."
+            onClick={onClickShowPreview}
+          >
             <img
               src="/images/eye.svg"
-              className="me-1 thumbnail"              
+              className="me-1 thumbnail"
               alt="Ver requerimiento"
-             
             />
             Ver
           </a>
@@ -154,13 +161,17 @@ export const RequeListaOptionSplitComponent = ({
         )}
       </ul>
       <div>
-        <RequePreviewComponent
-          show={showAddItem}
-          handleClose={handleCloseAddItem}
-          C_anipre = {C_anipre}
-          C_reque = {C_reque}
-          C_biesertipo = {C_biesertipo}
-        />
+        {(isLoading)  ? (
+          <Loading />
+        ) : (
+          <RequePreviewComponent
+            show={showAddItem}
+            handleClose={handleCloseAddItem}
+            C_anipre={C_anipre}
+            C_reque={C_reque}
+            C_biesertipo={C_biesertipo}
+          />
+        )}
       </div>
     </div>
   );

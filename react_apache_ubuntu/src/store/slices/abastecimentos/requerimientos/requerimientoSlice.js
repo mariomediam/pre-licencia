@@ -55,7 +55,7 @@ export const requerimientoSlice = createSlice({
       state.currentReque = currentRequeDefault;
     },
     finishLoadingReque: (state /* action */) => {
-      state.isLoading = true;
+      state.isLoading = false;
     },
   },
 });

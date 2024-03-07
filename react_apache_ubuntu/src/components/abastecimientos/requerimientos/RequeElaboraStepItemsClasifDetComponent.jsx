@@ -57,10 +57,8 @@ export const RequeElaboraStepItemsClasifDetComponent = ({
     <>
       <td>
         {N_bieser_desc}
-        {C_biesertipo === "01" && (
-          <p className="mb-0">
-            <small className="text-muted">{N_unimed_desc}</small>
-          </p>
+        {C_biesertipo === "01" && (          
+            <small className="ms-2 text-muted">{N_unimed_desc}</small>          
         )}
       </td>
       <td className="text-end">{formatNumber(Q_requedet_cant)}</td>
