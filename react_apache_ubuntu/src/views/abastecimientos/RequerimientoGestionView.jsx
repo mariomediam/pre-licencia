@@ -1,19 +1,73 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Breadcrumb, Alert } from "react-bootstrap";
+import { Breadcrumb, Alert, CloseButton } from "react-bootstrap";
 
 import Header from "../../components/Header";
 import { RequeElaboraComponent } from "../../components/abastecimientos/requerimientos/RequeElaboraComponent";
-
+import { tipoDeRequerimientos } from "../../utils/varios";
 
 export const RequerimientoGestionView = () => {
+  const navigate = useNavigate();
 
   const { currentReque } = useSelector((state) => state.requerimiento);
-  const { n_jefe_nombre, C_sf_dep, n_dependencia } = currentReque;
+  const {
+    n_jefe_nombre,
+    C_anipre,
+    C_sf_dep,
+    n_dependencia,
+    C_biesertipo,
+    f_libre,
+    accion,
+    C_reque,
+  } = currentReque;
 
-  console.log("14")
+  const [titleForm, setTitleForm] = useState(
+    "Elaborar requerimiento de bienes y servicios"
+  );
+
+  const onClicVolver = (event) => {
+    navigate(
+      `/abastecimientos/requerimientos?anio=${C_anipre}&depend=${C_sf_dep}`
+    );
+  };
+
+  useEffect(() => {    
+    const tipoRequerimientoSelected = tipoDeRequerimientos.find(
+      (tipoRequerimiento) => {
+        return (
+          tipoRequerimiento.C_biesertipo === C_biesertipo &&
+          tipoRequerimiento.f_libre === f_libre
+        );
+      }
+    );    
+
+    if (tipoRequerimientoSelected) {
+
+      let title = ""
+
+      if (accion === "NUEVO") {
+        title += "Elaborar requerimiento ";
+      } else {
+        title += "Modificar requerimiento ";
+      }
+
+      if (f_libre === "0") {
+        title += "de ";
+      }
+
+      title += tipoRequerimientoSelected.descripcion.toString().toLowerCase();
+
+      if (accion === "EDITAR") {
+        title += ` ${C_reque}-${C_anipre}`;
+      }
+
+      setTitleForm(title);
+    }
+  }, [C_biesertipo, f_libre, accion, C_reque, C_anipre]);
 
   return (
-    <div className="" >
+    <div className="">
       <Header />
       <div className="ps-3 mb-0">
         <Breadcrumb>
@@ -25,12 +79,15 @@ export const RequerimientoGestionView = () => {
 
       <h3 className="mt-0 mb-3 text-center">
         <i className="fas fa-box-open me-3"></i>
-        Elaborar requerimiento de bienes y servicios
+        {titleForm}
       </h3>
 
-      <div className="d-flex justify-content-center px-5 pt-4"  >
-        <div className="col-sm-12 col-lg-10 col-xl-6 p-4 shadow border rounded" >
-          <small className="text-muted">Unidad orgánica:</small>
+      <div className="d-flex justify-content-center px-5 pt-4">
+        <div className="col-sm-12 col-lg-10 col-xl-6 p-4 shadow border rounded">
+          <div className="d-flex justify-content-between ">
+            <small className="text-muted">Unidad orgánica:</small>
+            <CloseButton onClick={onClicVolver} />
+          </div>
           <p className="mb-2">
             {C_sf_dep} - {n_dependencia}
           </p>
@@ -48,9 +105,9 @@ export const RequerimientoGestionView = () => {
             </Alert>
           )}
           <hr />
-          
+
           <div>
-            <RequeElaboraComponent />            
+            <RequeElaboraComponent />
           </div>
         </div>
       </div>

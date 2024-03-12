@@ -110,7 +110,7 @@ export const RequerimientosView = () => {
 
       <h3 className="mt-0 mb-3 text-center">
         <i className="fas fa-box-open me-3"></i>
-        Elaborar requerimiento de bienes y servicios
+        Requerimientos de bienes y servicios
       </h3>
 
       <div className="d-flex justify-content-center px-5">

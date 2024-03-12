@@ -1,5 +1,4 @@
 import UseAxios from "../utils/useAxios";
-import { transformarFecha } from "../utils/varios";
 
 const URL = `${process.env.REACT_APP_API}/abastec`;
 
@@ -188,8 +187,6 @@ const obtenerRequerimiento = async (anio, numero, tipo) => {
       data: { content },
     } = await api.get(`${URL}/reque/${anio}/${numero}/${tipo}`);
 
-    console.log("7")
-    
     content["D_reque_fecha"] = content["D_reque_fecha"].toString().substring(0, 10);
     return content;
   } catch (error) {

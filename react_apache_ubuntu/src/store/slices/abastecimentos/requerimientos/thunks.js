@@ -7,8 +7,7 @@ import { obtenerJefeDepen } from "../../../../services/generalService";
 
 // import { obtenerExpedientePorNroAnio } from "../../../../services/tradocService";
 import {
-  startLoadingReque,
-  setRequerimientos,
+  startLoadingReque,  
   setResetValues,
   setCurrent,
   setResetCurrent,
@@ -22,8 +21,7 @@ export const setResetRequerimiento = () => {
 };
 
 export const setCurrentRequerimiento = (newValues) => {
-  return async (dispatch, getState) => {
-    console.log("9")
+  return async (dispatch, getState) => {    
     const currentReque = getState().requerimiento.currentReque;
 
     if (newValues.C_anipre && newValues.C_sf_dep) {
@@ -31,8 +29,6 @@ export const setCurrentRequerimiento = (newValues) => {
         newValues.C_anipre,
         newValues.C_sf_dep
       );
-
-      console.log("9.1")
 
       const jefeDepen = await obtenerJefeDepen(
         newValues.C_anipre,
@@ -44,11 +40,7 @@ export const setCurrentRequerimiento = (newValues) => {
         n_dependencia: aniosDependencias.n_dependencia_desc?.trim() || "",
         n_jefe_nombre: jefeDepen.N_TRABA_NOMBRE?.trim() || "",
       };
-
-      console.log("9.2")
     }
-
-    console.log("10")
 
     dispatch(
       setCurrent({
@@ -58,8 +50,6 @@ export const setCurrentRequerimiento = (newValues) => {
         },
       })
     );
-
-    console.log("12")
   };
 };
 
@@ -166,16 +156,13 @@ export const setCurrentRequerimientoRemoveItem = (removeValues) => {
 
     if (index !== -1) {
       const clapreSearched = requeClasificadoresUpdate[index];
-
-      console.log(clapreSearched.items);
+      
       const items = clapreSearched.items.filter(
         (item) =>
           item.C_item !== C_item ||
           item.C_biesertipo !== C_biesertipo ||
           item.C_bieser !== C_bieser
       );
-
-      console.log(items);
 
       const clapreUpdate = {
         ...clapreSearched,
@@ -272,22 +259,12 @@ export const saveCurrentRequerimento = () => {
 export const getRequerimiento = (anio, numero, tipo, accion = "VER") => {
   return async (dispatch, getState) => {
 
-    console.log("2")
-    
-    dispatch(setResetCurrent());
-
-    console.log("4")
-    
+    dispatch(setResetCurrent());    
     dispatch(startLoadingReque());    
 
-    console.log("6")
-    
     const data = await obtenerRequerimiento(anio, numero, tipo);
-
-    console.log("8")
     
-    await dispatch(setCurrentRequerimiento({ ...data, accion }));    
-    
+    await dispatch(setCurrentRequerimiento({ ...data, accion }));        
     dispatch(finishLoadingReque());    
     
   };

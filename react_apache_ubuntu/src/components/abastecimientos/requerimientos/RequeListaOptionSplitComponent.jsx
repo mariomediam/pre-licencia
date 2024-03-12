@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { RequePreviewComponent } from "./RequePreviewComponent";
 import Loading from "../../Loading";
-import { getRequerimiento, setCurrentRequerimiento } from "../../../store/slices";
+import { getRequerimiento } from "../../../store/slices";
 
 export const RequeListaOptionSplitComponent = ({
   C_anipre,
@@ -35,12 +35,8 @@ export const RequeListaOptionSplitComponent = ({
 
   const onClickEditRequerimiento = async (e) => {
     e.preventDefault();
-
-    console.log("1")
-    await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "EDITAR"));
-
-    console.log("13")
     
+    await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "EDITAR"));
 
     navigate(`/abastecimientos/requerimiento/gestionar`);
   }

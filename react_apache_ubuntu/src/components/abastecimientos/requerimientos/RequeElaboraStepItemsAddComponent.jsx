@@ -18,7 +18,7 @@ export const RequeElaboraStepItemsAddComponent = ({
 
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [bbss, setBbss] = useState([]);
   const [bbssSelected, setBbssSelected] = useState({});
   const [bbssOptions, setBbssOptions] = useState([]);
@@ -83,7 +83,7 @@ export const RequeElaboraStepItemsAddComponent = ({
   }, [specifyBBSS]);
 
   useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
     const getBBSS = async () => {
       if (C_anipre && C_depen && C_biesertipo && C_clapre) {
         if (controlSelectBBSS.current) {
@@ -100,7 +100,7 @@ export const RequeElaboraStepItemsAddComponent = ({
         );
         setBbss(data || []);
       }
-      setIsLoading(false);
+      // setIsLoading(false);
     };
     getBBSS();
   }, [C_anipre, C_depen, C_biesertipo, C_clapre]);
@@ -154,7 +154,7 @@ export const RequeElaboraStepItemsAddComponent = ({
     const N_bieser_desc = bbssSelected.N_BIESER_DESC || "";
     const N_unimed_desc = bbssSelected.N_UNIMED_DESC || "";
 
-    console.log(C_item)
+    
     dispatch(
       setCurrentRequerimientoAddItem({
         C_clapre, C_secfun, C_depen, C_activpoi, C_objpoi, C_metapoi, C_item, Q_requedet_cant, C_bieser_unimed, C_biesertipo, C_bieser, Q_requedet_precio, c_depen_aux, N_cnespec_desc, N_bieser_desc, N_unimed_desc
