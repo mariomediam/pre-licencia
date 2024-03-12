@@ -10,7 +10,7 @@ export const RequerimientoGestionView = () => {
   const { currentReque } = useSelector((state) => state.requerimiento);
   const { n_jefe_nombre, C_sf_dep, n_dependencia } = currentReque;
 
-  
+  console.log("14")
 
   return (
     <div className="" >

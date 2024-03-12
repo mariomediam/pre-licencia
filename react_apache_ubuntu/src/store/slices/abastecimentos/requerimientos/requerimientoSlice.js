@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const currentRequeDefault = {
   accion: "NUEVO",
-  C_reque: null,
+  C_reque: "00000",
   D_reque_fecha: new Date().toISOString().slice(0, 10),
   T_reque_obs: "",
   F_reque_estado: "",
@@ -37,6 +37,7 @@ export const requerimientoSlice = createSlice({
   },
   reducers: {
     startLoadingReque: (state /* action */) => {
+      console.log("5")
       state.isLoading = true;
     },
     setRequerimientos: (state, { payload }) => {
@@ -49,9 +50,11 @@ export const requerimientoSlice = createSlice({
       state.currentReque = currentRequeDefault;
     },
     setCurrent: (state, { payload }) => {      
+      console.log("11")
       state.currentReque = payload.currentReque;
     },
     setResetCurrent: (state) => {
+      console.log("3")
       state.currentReque = currentRequeDefault;
     },
     finishLoadingReque: (state /* action */) => {

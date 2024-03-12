@@ -1,4 +1,5 @@
 import UseAxios from "../utils/useAxios";
+import { transformarFecha } from "../utils/varios";
 
 const URL = `${process.env.REACT_APP_API}/abastec`;
 
@@ -148,7 +149,7 @@ const obtenerBBSSDisponibleOrden = async (
   }
 };
 
-const agregarRequerimiento = async (anio, C_biesertipo, requerimiento) => {
+const grabarRequerimiento = async (anio, numero, tipo, requerimiento) => {
   const credenciales = {
     requerimiento,
   };
@@ -162,7 +163,7 @@ const agregarRequerimiento = async (anio, C_biesertipo, requerimiento) => {
     let {
       data: { content },
     } = await api.post(
-      `${URL}/reque/${anio}/00000/${C_biesertipo}`,
+      `${URL}/reque/${anio}/${numero}/${tipo}`,
       credenciales,
       {
         headers,
@@ -186,6 +187,10 @@ const obtenerRequerimiento = async (anio, numero, tipo) => {
     let {
       data: { content },
     } = await api.get(`${URL}/reque/${anio}/${numero}/${tipo}`);
+
+    console.log("7")
+    
+    content["D_reque_fecha"] = content["D_reque_fecha"].toString().substring(0, 10);
     return content;
   } catch (error) {
     throw error;
@@ -199,6 +204,6 @@ export {
   obtenerAniosDepenById,
   obtenerRequeSaldoPresupDepen,
   obtenerBBSSDisponibleOrden,
-  agregarRequerimiento,
+  grabarRequerimiento,
   obtenerRequerimiento,
 };

@@ -1,7 +1,7 @@
 import {
   obtenerRequerimiento,
   obtenerAniosDepenById,
-  agregarRequerimiento,
+  grabarRequerimiento,
 } from "../../../../services/abastecService";
 import { obtenerJefeDepen } from "../../../../services/generalService";
 
@@ -23,6 +23,7 @@ export const setResetRequerimiento = () => {
 
 export const setCurrentRequerimiento = (newValues) => {
   return async (dispatch, getState) => {
+    console.log("9")
     const currentReque = getState().requerimiento.currentReque;
 
     if (newValues.C_anipre && newValues.C_sf_dep) {
@@ -30,6 +31,8 @@ export const setCurrentRequerimiento = (newValues) => {
         newValues.C_anipre,
         newValues.C_sf_dep
       );
+
+      console.log("9.1")
 
       const jefeDepen = await obtenerJefeDepen(
         newValues.C_anipre,
@@ -41,7 +44,11 @@ export const setCurrentRequerimiento = (newValues) => {
         n_dependencia: aniosDependencias.n_dependencia_desc?.trim() || "",
         n_jefe_nombre: jefeDepen.N_TRABA_NOMBRE?.trim() || "",
       };
+
+      console.log("9.2")
     }
+
+    console.log("10")
 
     dispatch(
       setCurrent({
@@ -51,6 +58,8 @@ export const setCurrentRequerimiento = (newValues) => {
         },
       })
     );
+
+    console.log("12")
   };
 };
 
@@ -213,7 +222,7 @@ export const saveCurrentRequerimento = () => {
   return async (dispatch, getState) => {
     try {
       const currentReque = getState().requerimiento.currentReque;
-      const { C_anipre, C_biesertipo } = currentReque;
+      const { C_anipre, C_reque, C_biesertipo } = currentReque;
 
       const requeClasificadores = currentReque.requeClasificadores.map(
         (clasificador) => {
@@ -236,8 +245,9 @@ export const saveCurrentRequerimento = () => {
         requeClasificadores,
       };
 
-      const data = await agregarRequerimiento(
+      const data = await grabarRequerimiento(
         C_anipre,
+        C_reque,
         C_biesertipo,
         currentRequeUpdate
       );
@@ -259,16 +269,24 @@ export const saveCurrentRequerimento = () => {
   };
 };
 
-export const getRequerimiento = (anio, numero, tipo) => {
+export const getRequerimiento = (anio, numero, tipo, accion = "VER") => {
   return async (dispatch, getState) => {
+
+    console.log("2")
     
     dispatch(setResetCurrent());
+
+    console.log("4")
     
     dispatch(startLoadingReque());    
+
+    console.log("6")
     
     const data = await obtenerRequerimiento(anio, numero, tipo);
+
+    console.log("8")
     
-    await dispatch(setCurrentRequerimiento({ ...data, accion: "VER" }));    
+    await dispatch(setCurrentRequerimiento({ ...data, accion }));    
     
     dispatch(finishLoadingReque());    
     

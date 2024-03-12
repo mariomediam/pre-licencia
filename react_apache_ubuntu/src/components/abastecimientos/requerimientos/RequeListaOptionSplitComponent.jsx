@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RequePreviewComponent } from "./RequePreviewComponent";
 import Loading from "../../Loading";
-import { getRequerimiento } from "../../../store/slices";
+import { getRequerimiento, setCurrentRequerimiento } from "../../../store/slices";
 
 export const RequeListaOptionSplitComponent = ({
   C_anipre,
@@ -13,8 +14,9 @@ export const RequeListaOptionSplitComponent = ({
   Q_REQUE_TOTAL,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { isLoading, currentReque } = useSelector((state) => state.requerimiento);
+  const { isLoading } = useSelector((state) => state.requerimiento);
 
   const [showAddItem, setShowAddItem] = useState(false);
 
@@ -26,10 +28,22 @@ export const RequeListaOptionSplitComponent = ({
   const onClickShowPreview = async (e) => {
     e.preventDefault();
 
-    dispatch(await getRequerimiento(C_anipre, C_reque, C_biesertipo));
+    dispatch(await getRequerimiento(C_anipre, C_reque, C_biesertipo, "VER"));
 
     handleShowAddItem();
   };
+
+  const onClickEditRequerimiento = async (e) => {
+    e.preventDefault();
+
+    console.log("1")
+    await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "EDITAR"));
+
+    console.log("13")
+    
+
+    navigate(`/abastecimientos/requerimiento/gestionar`);
+  }
 
   return (
     <div className="dropdown">
@@ -105,6 +119,7 @@ export const RequeListaOptionSplitComponent = ({
               <a
                 className="d-flex align-items-center text-primary dropdown-item"
                 href="."
+                onClick={onClickEditRequerimiento}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
