@@ -240,6 +240,26 @@ const obtenerRequeSaldoPresup = async (anio, numero, tipo) => {
   }
 };
 
+
+
+const obtenerRequeSaldoPresupItem = async (item) => {  
+
+  const {C_anipre, C_clapre, C_depen, C_secfun, C_objpoi, C_metapoi, C_activpoi} = item;
+
+  let api = UseAxios();
+
+  try {
+    let {
+      data: { content },
+    } = await api.get(`${URL}/reque-saldo-presup-item?anio=${C_anipre}&secfun=${C_secfun}&depen=${C_depen}&clasif=${C_clapre}&meta=${C_metapoi}&obj=${C_objpoi}&actividad=${C_activpoi}`);
+    
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export {
   obtenerAccesoDepen,
   obtenerRequeDepen,
@@ -250,4 +270,5 @@ export {
   grabarRequerimiento,
   obtenerRequerimiento,
   obtenerRequeSaldoPresup,
+  obtenerRequeSaldoPresupItem,
 };
