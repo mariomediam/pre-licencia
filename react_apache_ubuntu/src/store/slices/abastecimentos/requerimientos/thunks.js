@@ -2,6 +2,7 @@ import {
   obtenerRequerimiento,
   obtenerAniosDepenById,
   grabarRequerimiento,
+  obtenerRequeSaldoPresup,
 } from "../../../../services/abastecService";
 import { obtenerJefeDepen } from "../../../../services/generalService";
 
@@ -204,6 +205,52 @@ export const getTotalRequerimiento = () => {
     return total;
   };
 };
+
+export const getTotalClasifRequerimiento = () => {
+  return (dispatch, getState) => {
+    const currentReque = getState().requerimiento.currentReque;
+    const { requeClasificadores } = currentReque;
+
+
+    const clasifTotal = []
+    let total = 0;
+    requeClasificadores.forEach((clasificador) => {
+      total = 0;
+      clasificador.items.forEach((item) => {
+        total += item.Q_requedet_cant * item.Q_requedet_precio;
+      });
+      clasifTotal.push({
+        C_clapre: clasificador.C_clapre,
+        C_secfun: clasificador.C_secfun,    
+        C_depen: clasificador.C_depen,    
+        C_activpoi: clasificador.C_activpoi,    
+        C_objpoi: clasificador.C_objpoi,    
+        C_metapoi: clasificador.C_metapoi,        
+        total})
+    });
+
+    return clasifTotal;
+  };
+};
+
+
+export const getClasifToPresupuesto = () => {
+  return async (dispatch, getState) => {
+    const currentReque = getState().requerimiento.currentReque;
+      const { C_anipre, C_reque, C_biesertipo } = currentReque;
+
+      const requeSaldoPresup = await obtenerRequeSaldoPresup(
+        C_anipre,
+        C_reque,
+        C_biesertipo
+      );
+
+      return requeSaldoPresup;
+
+  }
+}
+
+
 
 export const saveCurrentRequerimento = () => {
   return async (dispatch, getState) => {

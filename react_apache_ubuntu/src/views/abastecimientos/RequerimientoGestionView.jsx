@@ -6,6 +6,7 @@ import { Breadcrumb, Alert, CloseButton } from "react-bootstrap";
 import Header from "../../components/Header";
 import { RequeElaboraComponent } from "../../components/abastecimientos/requerimientos/RequeElaboraComponent";
 import { tipoDeRequerimientos } from "../../utils/varios";
+import { RequeComprometeComponent } from "../../components/abastecimientos/requerimientos/RequeComprometeComponent";
 
 export const RequerimientoGestionView = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export const RequerimientoGestionView = () => {
     );
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     const tipoRequerimientoSelected = tipoDeRequerimientos.find(
       (tipoRequerimiento) => {
         return (
@@ -40,16 +41,21 @@ export const RequerimientoGestionView = () => {
           tipoRequerimiento.f_libre === f_libre
         );
       }
-    );    
+    );
 
     if (tipoRequerimientoSelected) {
-
-      let title = ""
+      let title = "";
 
       if (accion === "NUEVO") {
         title += "Elaborar requerimiento ";
-      } else {
+      }
+
+      if (accion === "EDITAR") {
         title += "Modificar requerimiento ";
+      }
+
+      if (accion === "PRECOMPROMETER") {
+        title += "Precomprometer requerimiento ";
       }
 
       if (f_libre === "0") {
@@ -58,7 +64,7 @@ export const RequerimientoGestionView = () => {
 
       title += tipoRequerimientoSelected.descripcion.toString().toLowerCase();
 
-      if (accion === "EDITAR") {
+      if (accion === "EDITAR" || accion === "PRECOMPROMETER") {
         title += ` ${C_reque}-${C_anipre}`;
       }
 
@@ -107,7 +113,11 @@ export const RequerimientoGestionView = () => {
           <hr />
 
           <div>
-            <RequeElaboraComponent />
+            {accion !== "PRECOMPROMETER" ? (
+              <RequeElaboraComponent />
+            ) : (
+              <RequeComprometeComponent />
+            )}
           </div>
         </div>
       </div>

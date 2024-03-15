@@ -1,6 +1,7 @@
-import { Card, Table } from "react-bootstrap";
-import { RequeElaboraStepItemsClasifDetComponent } from "./RequeElaboraStepItemsClasifDetComponent";
 import { useState } from "react";
+import { Card, Table } from "react-bootstrap";
+
+import { RequeElaboraStepItemsClasifDetComponent } from "./RequeElaboraStepItemsClasifDetComponent";
 import { RequeElaboraStepItemsAddComponent } from "./RequeElaboraStepItemsAddComponent";
 
 export const RequeElaboraStepItemsClasifComponent = ({
@@ -48,6 +49,10 @@ export const RequeElaboraStepItemsClasifComponent = ({
       <Card>
         <Card.Header>
           <div className="d-flex flex-wrap gap-3 justify-content-between">
+          <p className="m-0 p-0">
+              <small className="text-muted">Clasificador: </small>
+              {C_clapre}
+            </p>
             <p className="m-0 p-0">
               <small className="text-muted">Secuencia funcional: </small>
               {C_secfun}
@@ -56,10 +61,7 @@ export const RequeElaboraStepItemsClasifComponent = ({
               <small className="text-muted">Tarea operativa: </small>
               {C_activpoi}
             </p>
-            <p className="m-0 p-0">
-              <small className="text-muted">Clasificador: </small>
-              {C_clapre}
-            </p>
+           
             <p className="m-0 p-0">
               <small className="text-muted">Objetivo / Meta: </small>
               {C_objpoi} / {C_metapoi}

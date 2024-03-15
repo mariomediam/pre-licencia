@@ -41,6 +41,14 @@ export const RequeListaOptionSplitComponent = ({
     navigate(`/abastecimientos/requerimiento/gestionar`);
   }
 
+  const onClickPrecomprometerRequerimiento = async (e) => {
+    e.preventDefault();
+    
+    await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "PRECOMPROMETER"));
+
+    navigate(`/abastecimientos/requerimiento/gestionar`);
+  }
+
   return (
     <div className="dropdown">
       <button
@@ -64,7 +72,7 @@ export const RequeListaOptionSplitComponent = ({
           Q_REQUE_TOTAL > 0 &&
           C_anipre === currentYear && (
             <li>
-              <a className="d-flex align-items-center dropdown-item" href=".">
+              <a className="d-flex align-items-center dropdown-item" href="." onClick={onClickPrecomprometerRequerimiento}>
                 <img
                   src="/images/file-dollar.svg"
                   className="me-1 thumbnail"

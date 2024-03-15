@@ -194,6 +194,52 @@ const obtenerRequerimiento = async (anio, numero, tipo) => {
   }
 };
 
+const obtenerRequeSaldoPresup = async (anio, numero, tipo) => {
+  try {
+    let api = UseAxios();
+
+    let URLReque = `${URL}/reque-saldo-presup?anio=${anio}&numero=${numero}&tipo=${tipo}`;
+
+    let {
+      data: { content },
+    } = await api.get(`${URLReque}`);
+
+    let contentFormat = []
+
+    if (content?.length > 0) {
+      content.forEach(item => {
+        contentFormat.push({
+          "C_anipre": item.C_anipre,
+          "C_clapre": item.C_clapre,
+          "C_depen": item.C_depen,
+          "C_secfun": item.C_secfun,
+          "C_objpoi": item.C_objpoi,
+          "C_metapoi": item.C_metapoi,
+          "C_activpoi": item.C_activpoi,
+          "total_reque": parseFloat(item.total_reque),
+          "N_metapresup_desc": item.N_metapresup_desc,
+          "N_activpoi_desc": item.N_activpoi_desc,
+          "N_clapre_desc": item.N_clapre_desc,
+          "N_depend_Descripcion": item.N_depend_Descripcion,
+          "presupuesto" : [
+            {
+              "C_fuefin": item.C_fuefin,
+              "C_recurso": item.C_recurso,
+              "total_precompromiso": parseFloat(item.total_precompromiso ? item.total_precompromiso : 0)
+            }
+          ]}
+        )
+      }
+      )      
+    }
+
+
+    return contentFormat;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerAccesoDepen,
   obtenerRequeDepen,
@@ -203,4 +249,5 @@ export {
   obtenerBBSSDisponibleOrden,
   grabarRequerimiento,
   obtenerRequerimiento,
+  obtenerRequeSaldoPresup,
 };

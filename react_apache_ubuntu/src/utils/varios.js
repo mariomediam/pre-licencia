@@ -65,3 +65,17 @@ export const obtenerNombreMes = (numeroMes) => {
       pathImage: "/images/requerimientos/bienes.svg",
     },
   ];
+
+  export const formatNumber = (num)  => {
+
+    if (num === null || num === undefined || isNaN(num) ) {
+      return "";
+    }
+    const decimalPart = num.toString().split(".")[1];
+    const decimalLength = decimalPart ? decimalPart.length : 0;
+    const fixedLength = Math.max(2, decimalLength);
+    return num.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: fixedLength,
+    });
+  }
