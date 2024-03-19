@@ -1,18 +1,12 @@
-import { useState } from "react";
 import { Button } from "react-bootstrap";
 
 import { formatNumber } from "../../../utils/varios";
 import FileDollarIcon from "../../../icons/FileDollarIcon";
-import { RequeComprometeItemFuenteComponent } from "./RequeComprometeItemFuenteComponent";
-import { obtenerRequeSaldoPresupItem } from "../../../services/abastecService";
 
-export const RequeComprometeItemComponent = ({ requeGasto, i }) => {
-  const [saldoPresupItem, setSaldoPresupItem] = useState([])
-  const [showAddFuente, setShowAddFuente] = useState(false);
 
-  const handleCloseAddFuente = () => setShowAddFuente(false);
-  const handleShowAddFuente = () => setShowAddFuente(true);
 
+export const RequeComprometeItemComponent = ({ requeGasto, i, onClicSelectFuente }) => {
+  
   const {
     C_clapre,
     C_depen,
@@ -28,15 +22,7 @@ export const RequeComprometeItemComponent = ({ requeGasto, i }) => {
     N_activpoi_desc,
   } = requeGasto;
 
-  const onClicSelectFuente = async () => {
-    const saldos = await obtenerRequeSaldoPresupItem(requeGasto)
-    console.log(saldos)
-    setSaldoPresupItem(saldos)
-
-    handleShowAddFuente();
-  };
-
-  return (
+   return (
     <>
       <tr>
         <td className="align-middle pt-2">
@@ -81,7 +67,7 @@ export const RequeComprometeItemComponent = ({ requeGasto, i }) => {
             size="sm"
             variant="outline-primary"
             className="ps-1"
-            onClick={onClicSelectFuente}
+            onClick={ () => onClicSelectFuente(requeGasto)}
           >
             <FileDollarIcon className="me-1 thumbnail" />
             <small className="pt-1">Seleccionar fuente</small>
@@ -122,12 +108,6 @@ export const RequeComprometeItemComponent = ({ requeGasto, i }) => {
           </small>
         </td>
       </tr>
-      <RequeComprometeItemFuenteComponent
-        show={showAddFuente}
-        handleClose={handleCloseAddFuente}
-        requeGasto={requeGasto}
-        saldoPresupItem = {saldoPresupItem}
-      />
     </>
   );
 };

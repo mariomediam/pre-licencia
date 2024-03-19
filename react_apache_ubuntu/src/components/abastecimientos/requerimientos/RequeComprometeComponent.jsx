@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Table } from "react-bootstrap";
 
@@ -6,15 +6,35 @@ import {
   getTotalRequerimiento,
   getClasifToPresupuesto,
 } from "../../../store/slices";
-import { useState } from "react";
 import { RequeComprometeItemComponent } from "./RequeComprometeItemComponent";
+import { RequeComprometeItemFuenteComponent } from "./RequeComprometeItemFuenteComponent";
+import { obtenerRequeSaldoPresupItem } from "../../../services/abastecService";
 
 export const RequeComprometeComponent = () => {
   const dispatch = useDispatch();
 
   const { currentReque } = useSelector((state) => state.requerimiento);
-  const [requeGasto, setRequeGasto] = useState([]);
   const { T_reque_obs } = currentReque;
+
+  const [requeGasto, setRequeGasto] = useState([]);
+  
+  const [showAddFuente, setShowAddFuente] = useState(false);
+  const [saldoPresupItem, setSaldoPresupItem] = useState([])
+  const [selectItem, setSelectItem] = useState({})
+
+  const handleCloseAddFuente = () => setShowAddFuente(false);
+  const handleShowAddFuente = () => setShowAddFuente(true);
+
+  const onClicSelectFuente = async ( item ) => {
+    setSelectItem(item)
+    // const saldos = await obtenerRequeSaldoPresupItem(item)    
+    // await setSaldoPresupItem(saldos)
+
+    handleShowAddFuente();
+  };
+
+
+
 
   const getTotal = () => {
     // Obtener la suma de los subtotales de los items
@@ -25,6 +45,18 @@ export const RequeComprometeComponent = () => {
       maximumFractionDigits: 2,
     });
   };
+
+  useEffect(() => {
+    const obtenerItemFuente = async () => {
+      const saldos = await obtenerRequeSaldoPresupItem(selectItem)    
+      await setSaldoPresupItem(saldos)
+    }
+    
+    obtenerItemFuente()
+  
+    
+  }, [selectItem])
+  
 
   useEffect(() => {
     const getRequeGasto = async () => {
@@ -80,12 +112,23 @@ export const RequeComprometeComponent = () => {
           </thead>
           <tbody>
             {requeGasto.map((reque, i) => (              
-                <RequeComprometeItemComponent key={i} requeGasto={reque} i={i}/>              
+                <RequeComprometeItemComponent key={i} requeGasto={reque} i={i} onClicSelectFuente = {onClicSelectFuente}/>              
             ))}
           </tbody>
         </Table>
         </div>
       </small>
+
+      { selectItem && (
+        <RequeComprometeItemFuenteComponent
+        show={showAddFuente}
+        handleClose={handleCloseAddFuente}
+        selectItem={selectItem}
+        saldoPresupItem = {saldoPresupItem}       
+        setSaldoPresupItem = {setSaldoPresupItem} 
+      />
+      )}
+      
     </div>
   );
 };
