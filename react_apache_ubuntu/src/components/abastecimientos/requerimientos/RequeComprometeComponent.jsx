@@ -104,7 +104,7 @@ export const RequeComprometeComponent = () => {
                 Requerimiento
               </th>
               <th className="text-center align-middle m-0 p-0" colSpan="2">
-                FF/TR
+                FF/TR asignado
               </th>
 
               <th></th>

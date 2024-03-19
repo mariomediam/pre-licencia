@@ -90,6 +90,7 @@ export const RequeComprometeItemFuenteSaldoComponent = ({
             onChange={onChangeSaldo}
             onBlur={onBlurControlInputCantidad}
             onKeyPress={onKeyPressControlInputCantidad}
+            onFocus={(e) => e.target.select()}
             min="0"
             isInvalid={showFeedback}
             step={0.01}

@@ -1,4 +1,4 @@
-import { Form, Modal, Table } from "react-bootstrap";
+import { Button, Form, Modal, Table } from "react-bootstrap";
 
 import { formatNumber } from "../../../utils/varios";
 import { RequeComprometeItemFuenteSaldoComponent } from "./RequeComprometeItemFuenteSaldoComponent";
@@ -62,7 +62,7 @@ export const RequeComprometeItemFuenteComponent = ({
           <Modal.Title>
             <div className="d-flex align-items-center">
               <FileDollarIcon className="me-1 thumbnail" />
-              <p className="m-0 p-0">Seleccionar Fuente de financiamiento</p>
+              <p className="m-0 p-0">Asignar fuente de financiamiento</p>
             </div>
           </Modal.Title>
         </Modal.Header>
@@ -107,7 +107,7 @@ export const RequeComprometeItemFuenteComponent = ({
                       <th className="align-middle my py-0">FF/RR</th>
                       <th className="text-end align-middle m-0 p-0">Saldo</th>
                       <th className="text-end align-middle my py-0">
-                        Comprometer
+                        Monto asignado
                       </th>
                     </tr>
                   </thead>
@@ -138,10 +138,6 @@ export const RequeComprometeItemFuenteComponent = ({
                             />
                           </Form.Group>
                         </td>
-                        {/* <td className="mx-0 px-0"> 
-                        
-                        {getTotalPrecompromiso() === total_reque?.toFixed(2) && <CheckIcon />}
-                        </td> */}
                       </tr>
                     </>
                   </tbody>
@@ -161,6 +157,20 @@ export const RequeComprometeItemFuenteComponent = ({
             </div>
           </div>
         </Modal.Body>
+        <Modal.Footer>
+          <div className="mx-auto">
+            <Button
+              variant="primary"
+              size="sm"
+              className="d-flex align-items-center"
+              disabled={getTotalPrecompromiso() !== total_reque?.toFixed(2)}
+            >
+              {" "}
+              <FileDollarIcon className="me-1 thumbnail" />
+              <p className="m-0 p-0">Asignar fuente</p>
+            </Button>
+          </div>
+        </Modal.Footer>
       </Modal>
     </>
   );

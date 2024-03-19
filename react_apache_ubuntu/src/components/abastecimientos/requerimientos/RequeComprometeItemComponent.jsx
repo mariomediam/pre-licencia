@@ -44,7 +44,7 @@ export const RequeComprometeItemComponent = ({ requeGasto, i, onClicSelectFuente
         </td>
         <td className="text-end align-middle">
           {presupuesto.map((presup, i) => (
-            <p className="m-0 p-0" key={i}>
+            <p className="m-0 p-0 fw-bold" key={i}>
               {presup.total_precompromiso > 0 && (
                 <> 
                   {presup.C_fuefin}/{presup.C_recurso}
@@ -55,7 +55,7 @@ export const RequeComprometeItemComponent = ({ requeGasto, i, onClicSelectFuente
         </td>
         <td className="text-end align-middle">
           {presupuesto.map((presup) => (
-            <p className="m-0 p-0" key={i}>
+            <p className="m-0 p-0 fw-bold" key={i}>
               {presup.total_precompromiso > 0 && (
                 <>S/. {formatNumber(presup.total_precompromiso)}</>
               )}
@@ -70,7 +70,7 @@ export const RequeComprometeItemComponent = ({ requeGasto, i, onClicSelectFuente
             onClick={ () => onClicSelectFuente(requeGasto)}
           >
             <FileDollarIcon className="me-1 thumbnail" />
-            <small className="pt-1">Seleccionar fuente</small>
+            <small className="pt-1">Asignar fuente</small>
           </Button>
         </td>
       </tr>
