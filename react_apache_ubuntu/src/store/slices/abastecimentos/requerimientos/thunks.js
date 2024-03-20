@@ -40,6 +40,7 @@ export const setCurrentRequerimiento = (newValues) => {
         ...newValues,
         n_dependencia: aniosDependencias.n_dependencia_desc?.trim() || "",
         n_jefe_nombre: jefeDepen.N_TRABA_NOMBRE?.trim() || "",
+        c_traba_dni: jefeDepen.C_TRABA_DNI?.trim() || "",
       };
     }
 

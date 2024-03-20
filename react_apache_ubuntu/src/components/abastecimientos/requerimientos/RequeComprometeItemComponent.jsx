@@ -44,7 +44,7 @@ export const RequeComprometeItemComponent = ({ requeGasto, i, onClicSelectFuente
         </td>
         <td className="text-end align-middle">
           {presupuesto.map((presup, i) => (
-            <p className="m-0 p-0 fw-bold" key={i}>
+            <p className="m-0 p-0 fw-bold" key={`FR-${presup.C_fuefin}-${presup.C_recurso}`}>
               {presup.total_precompromiso > 0 && (
                 <> 
                   {presup.C_fuefin}/{presup.C_recurso}
@@ -55,14 +55,14 @@ export const RequeComprometeItemComponent = ({ requeGasto, i, onClicSelectFuente
         </td>
         <td className="text-end align-middle">
           {presupuesto.map((presup) => (
-            <p className="m-0 p-0 fw-bold" key={i}>
+            <p className="m-0 p-0 fw-bold" key={`MONTO-${presup.C_fuefin}-${presup.C_recurso}`}>
               {presup.total_precompromiso > 0 && (
                 <>S/. {formatNumber(presup.total_precompromiso)}</>
               )}
             </p>
           ))}
         </td>
-        <td className="text-end">
+        <td className="text-end align-middle">
           <Button
             size="sm"
             variant="outline-primary"

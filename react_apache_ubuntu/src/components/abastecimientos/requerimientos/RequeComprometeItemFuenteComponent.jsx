@@ -11,6 +11,8 @@ export const RequeComprometeItemFuenteComponent = ({
   selectItem,
   saldoPresupItem,
   setSaldoPresupItem,
+  requeGasto,
+  setRequeGasto,
 }) => {
   const {
     C_clapre,
@@ -30,6 +32,8 @@ export const RequeComprometeItemFuenteComponent = ({
     handleClose();
   };
 
+  
+
   const getTotalPrecompromiso = () => {
     let total = 0;
     try {
@@ -43,10 +47,44 @@ export const RequeComprometeItemFuenteComponent = ({
       total = 0;
     }
 
-    console.log(total.toFixed(2));
-    console.log(total_reque);
-    console.log(total.toFixed(2) === total_reque);
     return total.toFixed(2);
+  };
+
+  const onClicAsignarFuente = (e) => {
+    e.preventDefault();
+
+    const selectedFuentes = saldoPresupItem
+      .filter((item) => item.monto_precompromiso > 0)
+      .map((item) => ({
+        C_fuefin: item.C_fuefin,
+        C_recurso: item.C_recurso,
+        total_precompromiso: item.monto_precompromiso,
+      }));
+  
+    const newRequeGasto = requeGasto.map((item) => {
+      if (
+        item.C_clapre === C_clapre &&
+        item.C_secfun === C_secfun &&
+        item.C_depen === C_depen &&
+        item.C_activpoi === C_activpoi &&
+        item.C_objpoi === C_objpoi &&
+        item.C_metapoi === C_metapoi
+      ) {
+        item.presupuesto = selectedFuentes;
+      }
+  
+      return item;
+    });
+  
+    setRequeGasto(newRequeGasto);
+    onCloseModal();
+  };
+
+  const validateAsignarFuente = () => {
+
+    const montosInvalidos = saldoPresupItem.filter(({q_saldo, monto_precompromiso}) => monto_precompromiso > q_saldo || monto_precompromiso < 0)
+    
+    return montosInvalidos.length === 0 && getTotalPrecompromiso() === total_reque?.toFixed(2);
   };
 
   return (
@@ -143,7 +181,7 @@ export const RequeComprometeItemFuenteComponent = ({
                   </tbody>
                 </Table>
               </small>
-              {getTotalPrecompromiso() === total_reque?.toFixed(2) && (
+              {validateAsignarFuente() && (
                 <div
                   style={{
                     position: "absolute",
@@ -163,7 +201,8 @@ export const RequeComprometeItemFuenteComponent = ({
               variant="primary"
               size="sm"
               className="d-flex align-items-center"
-              disabled={getTotalPrecompromiso() !== total_reque?.toFixed(2)}
+              disabled={!validateAsignarFuente()}
+              onClick={onClicAsignarFuente}
             >
               {" "}
               <FileDollarIcon className="me-1 thumbnail" />
