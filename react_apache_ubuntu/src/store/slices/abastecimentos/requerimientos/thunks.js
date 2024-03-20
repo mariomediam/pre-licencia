@@ -8,7 +8,7 @@ import { obtenerJefeDepen } from "../../../../services/generalService";
 
 // import { obtenerExpedientePorNroAnio } from "../../../../services/tradocService";
 import {
-  startLoadingReque,  
+  startLoadingReque,
   setResetValues,
   setCurrent,
   setResetCurrent,
@@ -22,7 +22,7 @@ export const setResetRequerimiento = () => {
 };
 
 export const setCurrentRequerimiento = (newValues) => {
-  return async (dispatch, getState) => {    
+  return async (dispatch, getState) => {
     const currentReque = getState().requerimiento.currentReque;
 
     if (newValues.C_anipre && newValues.C_sf_dep) {
@@ -158,7 +158,7 @@ export const setCurrentRequerimientoRemoveItem = (removeValues) => {
 
     if (index !== -1) {
       const clapreSearched = requeClasificadoresUpdate[index];
-      
+
       const items = clapreSearched.items.filter(
         (item) =>
           item.C_item !== C_item ||
@@ -212,8 +212,7 @@ export const getTotalClasifRequerimiento = () => {
     const currentReque = getState().requerimiento.currentReque;
     const { requeClasificadores } = currentReque;
 
-
-    const clasifTotal = []
+    const clasifTotal = [];
     let total = 0;
     requeClasificadores.forEach((clasificador) => {
       total = 0;
@@ -222,36 +221,33 @@ export const getTotalClasifRequerimiento = () => {
       });
       clasifTotal.push({
         C_clapre: clasificador.C_clapre,
-        C_secfun: clasificador.C_secfun,    
-        C_depen: clasificador.C_depen,    
-        C_activpoi: clasificador.C_activpoi,    
-        C_objpoi: clasificador.C_objpoi,    
-        C_metapoi: clasificador.C_metapoi,        
-        total})
+        C_secfun: clasificador.C_secfun,
+        C_depen: clasificador.C_depen,
+        C_activpoi: clasificador.C_activpoi,
+        C_objpoi: clasificador.C_objpoi,
+        C_metapoi: clasificador.C_metapoi,
+        total,
+      });
     });
 
     return clasifTotal;
   };
 };
 
-
 export const getClasifToPresupuesto = () => {
   return async (dispatch, getState) => {
     const currentReque = getState().requerimiento.currentReque;
-      const { C_anipre, C_reque, C_biesertipo } = currentReque;
+    const { C_anipre, C_reque, C_biesertipo } = currentReque;
 
-      const requeSaldoPresup = await obtenerRequeSaldoPresup(
-        C_anipre,
-        C_reque,
-        C_biesertipo
-      );
+    const requeSaldoPresup = await obtenerRequeSaldoPresup(
+      C_anipre,
+      C_reque,
+      C_biesertipo
+    );
 
-      return requeSaldoPresup;
-
-  }
-}
-
-
+    return requeSaldoPresup;
+  };
+};
 
 export const saveCurrentRequerimento = () => {
   return async (dispatch, getState) => {
@@ -306,14 +302,13 @@ export const saveCurrentRequerimento = () => {
 
 export const getRequerimiento = (anio, numero, tipo, accion = "VER") => {
   return async (dispatch, getState) => {
-
-    dispatch(setResetCurrent());    
-    dispatch(startLoadingReque());    
+    dispatch(setResetCurrent());
+    dispatch(startLoadingReque());
 
     const data = await obtenerRequerimiento(anio, numero, tipo);
-    
-    await dispatch(setCurrentRequerimiento({ ...data, accion }));        
-    dispatch(finishLoadingReque());    
-    
+
+    await dispatch(setCurrentRequerimiento({ ...data, accion }));
+    dispatch(finishLoadingReque());
   };
 };
+

@@ -260,6 +260,42 @@ const obtenerRequeSaldoPresupItem = async (item) => {
 };
 
 
+const precomprometerRequerimiento = async (anio, numero, tipo, gastos) => {
+
+
+  console.log("05")
+  const credenciales = {
+    ...gastos,
+  };
+
+  let api = UseAxios();
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await api.post(
+      `${URL}/reque-precompromete/${anio}/${numero}/${tipo}`,
+      credenciales,
+      {
+        headers,
+      }
+    );
+
+    if (content?.length > 0) {
+      content = content[0];
+    }
+
+    console.log("06")
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export {
   obtenerAccesoDepen,
   obtenerRequeDepen,
@@ -271,4 +307,5 @@ export {
   obtenerRequerimiento,
   obtenerRequeSaldoPresup,
   obtenerRequeSaldoPresupItem,
+  precomprometerRequerimiento,
 };
