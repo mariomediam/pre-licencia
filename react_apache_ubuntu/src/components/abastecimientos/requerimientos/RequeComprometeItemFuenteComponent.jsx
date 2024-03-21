@@ -42,8 +42,7 @@ export const RequeComprometeItemFuenteComponent = ({
           total += parseFloat(item.monto_precompromiso);
         }
       });
-    } catch (error) {
-      console.log(error.message);
+    } catch (error) {      
       total = 0;
     }
 

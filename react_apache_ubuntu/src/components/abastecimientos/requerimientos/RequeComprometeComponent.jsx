@@ -61,8 +61,7 @@ export const RequeComprometeComponent = () => {
 
   useEffect(() => {
     const obtenerItemFuente = async () => {
-      const saldos = await obtenerRequeSaldoPresupItem(selectItem);
-      console.log(saldos);
+      const saldos = await obtenerRequeSaldoPresupItem(selectItem);      
       await setSaldoPresupItem(saldos.filter((item) => item.q_saldo >= 0));
     };
 
@@ -139,22 +138,12 @@ export const RequeComprometeComponent = () => {
           gastos: gastos,
         };
 
-        // console.log(dataPrecomprometer);
-        console.log("01")
-
         await precomprometerRequerimiento(
           C_anipre,
           C_reque,
           C_biesertipo,
           dataPrecomprometer
         );
-
-        console.log("04")
-
-
-        // await dispatch(savePrecompromiso(C_anipre, C_reque, C_biesertipo, dataPrecomprometer));
-
-        // console.log("10")
 
         Toast.fire({
           icon: "success",

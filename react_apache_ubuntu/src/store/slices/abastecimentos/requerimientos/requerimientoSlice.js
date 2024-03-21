@@ -36,8 +36,7 @@ export const requerimientoSlice = createSlice({
     currentReque: currentRequeDefault,
   },
   reducers: {
-    startLoadingReque: (state /* action */) => {
-      console.log("03")
+    startLoadingReque: (state /* action */) => {      
       state.isLoading = true;
     },
     setRequerimientos: (state, { payload }) => {
@@ -55,8 +54,7 @@ export const requerimientoSlice = createSlice({
     setResetCurrent: (state) => {      
       state.currentReque = currentRequeDefault;
     },
-    finishLoadingReque: (state /* action */) => {
-      console.log("08")
+    finishLoadingReque: (state /* action */) => {      
       state.isLoading = false;
     },
   },

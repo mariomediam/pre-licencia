@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RequePreviewComponent } from "./RequePreviewComponent";
 import Loading from "../../Loading";
 import { getRequerimiento } from "../../../store/slices";
+import { RequeAnulaComponent } from "./RequeAnulaComponent";
 
 export const RequeListaOptionSplitComponent = ({
   C_anipre,
@@ -19,19 +20,32 @@ export const RequeListaOptionSplitComponent = ({
   const { isLoading } = useSelector((state) => state.requerimiento);
 
   const [showAddItem, setShowAddItem] = useState(false);
-
   const handleCloseAddItem = () => setShowAddItem(false);
   const handleShowAddItem = () => setShowAddItem(true);
+
+  const [showAnulaReque, setShowAnulaReque] = useState(false)
+  const handleCloseAnulaReque = () => setShowAnulaReque(false)
+  const handleShowAnulaReque = () => setShowAnulaReque(true)
+
 
   const currentYear = new Date().getFullYear().toString();
 
   const onClickShowPreview = async (e) => {
     e.preventDefault();
 
-    dispatch(await getRequerimiento(C_anipre, C_reque, C_biesertipo, "VER"));
+    await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "VER"));
 
     handleShowAddItem();
   };
+
+  const onClickAnulaRequerimiento = async (e) => {
+    e.preventDefault();
+
+    await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "ANULAR"));
+
+    handleShowAnulaReque();
+  }
+
 
   const onClickEditRequerimiento = async (e) => {
     e.preventDefault();
@@ -156,6 +170,7 @@ export const RequeListaOptionSplitComponent = ({
               <a
                 className="d-flex align-items-center text-danger dropdown-item"
                 href="."
+                onClick={onClickAnulaRequerimiento}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -183,6 +198,7 @@ export const RequeListaOptionSplitComponent = ({
         {(isLoading)  ? (
           <Loading />
         ) : (
+          <>
           <RequePreviewComponent
             show={showAddItem}
             handleClose={handleCloseAddItem}
@@ -190,6 +206,16 @@ export const RequeListaOptionSplitComponent = ({
             C_reque={C_reque}
             C_biesertipo={C_biesertipo}
           />
+
+          <RequeAnulaComponent
+            show={showAnulaReque}
+            handleClose={handleCloseAnulaReque}
+            C_anipre={C_anipre}
+            C_reque={C_reque}
+            C_biesertipo={C_biesertipo}
+          />
+          </>
+          
         )}
       </div>
     </div>
