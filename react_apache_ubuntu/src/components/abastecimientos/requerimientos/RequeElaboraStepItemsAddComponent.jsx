@@ -309,7 +309,7 @@ export const RequeElaboraStepItemsAddComponent = ({
                   </Form.Group>
                 </Card.Body>
                 <Card.Footer className="text-center">
-                  <Button variant="primary" onClick={onClicSave}>Grabar</Button>
+                  <Button variant="primary" onClick={onClicSave}>{`Agregar ${C_biesertipo === "01" ? "bien" : "servicio"}`}</Button>
                 </Card.Footer>
               </Card>
             </div>
