@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { Spinner } from "react-bootstrap";
 
 import { RequePreviewComponent } from "./RequePreviewComponent";
 import Loading from "../../Loading";
 import { getRequerimiento } from "../../../store/slices";
 import { RequeAnulaComponent } from "./RequeAnulaComponent";
+import { imprimirRequerimiento } from "../../../services/abastecService";
 
 export const RequeListaOptionSplitComponent = ({
   C_anipre,
@@ -19,14 +21,15 @@ export const RequeListaOptionSplitComponent = ({
 
   const { isLoading } = useSelector((state) => state.requerimiento);
 
+  const [isPrinting, setIsPrinting] = useState(false);
+
   const [showAddItem, setShowAddItem] = useState(false);
   const handleCloseAddItem = () => setShowAddItem(false);
   const handleShowAddItem = () => setShowAddItem(true);
 
-  const [showAnulaReque, setShowAnulaReque] = useState(false)
-  const handleCloseAnulaReque = () => setShowAnulaReque(false)
-  const handleShowAnulaReque = () => setShowAnulaReque(true)
-
+  const [showAnulaReque, setShowAnulaReque] = useState(false);
+  const handleCloseAnulaReque = () => setShowAnulaReque(false);
+  const handleShowAnulaReque = () => setShowAnulaReque(true);
 
   const currentYear = new Date().getFullYear().toString();
 
@@ -44,26 +47,57 @@ export const RequeListaOptionSplitComponent = ({
     await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "ANULAR"));
 
     handleShowAnulaReque();
-  }
-
+  };
 
   const onClickEditRequerimiento = async (e) => {
     e.preventDefault();
-    
+
     await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "EDITAR"));
 
     navigate(`/abastecimientos/requerimiento/gestionar`);
-  }
+  };
 
   const onClickPrecomprometerRequerimiento = async (e) => {
     e.preventDefault();
-    
-    await dispatch(getRequerimiento(C_anipre, C_reque, C_biesertipo, "PRECOMPROMETER"));
+
+    await dispatch(
+      getRequerimiento(C_anipre, C_reque, C_biesertipo, "PRECOMPROMETER")
+    );
 
     navigate(`/abastecimientos/requerimiento/gestionar`);
-  }
+  };
+
+  const onClickImprimirRequerimiento = async (e) => {
+    e.preventDefault();
+
+    try {
+      setIsPrinting(true);
+
+      const requeDownloadPDF = await imprimirRequerimiento(
+        C_anipre,
+        C_reque,
+        C_biesertipo
+      );
+      // const url = URL.createObjectURL(requeDownloadPDF);
+      // window.open(url, '_blank');
+
+      const url = URL.createObjectURL(requeDownloadPDF);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "nombre_del_archivo.pdf"; // Aquí puedes especificar el nombre del archivo
+      link.target = "_blank";
+      link.click();
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsPrinting(false);
+    }
+  };
 
   return (
+
+    
+
     <div className="dropdown">
       <button
         className="btn"
@@ -86,7 +120,11 @@ export const RequeListaOptionSplitComponent = ({
           Q_REQUE_TOTAL > 0 &&
           C_anipre === currentYear && (
             <li>
-              <a className="d-flex align-items-center dropdown-item" href="." onClick={onClickPrecomprometerRequerimiento}>
+              <a
+                className="d-flex align-items-center dropdown-item"
+                href="."
+                onClick={onClickPrecomprometerRequerimiento}
+              >
                 <img
                   src="/images/file-dollar.svg"
                   className="me-1 thumbnail"
@@ -99,17 +137,32 @@ export const RequeListaOptionSplitComponent = ({
 
         {F_reque_estado === "2" && (
           <li>
-            <a
-              className="d-flex align-items-center dropdown-item"
-              href="http://www.munipiura.gob.pe"
-            >
-              <img
-                src="/images/printer.svg"
-                className="me-1 thumbnail"
-                alt="Imprimir requerimiento"
-              />
-              Imprimir
-            </a>
+            {isPrinting ? (
+              <>
+                <Spinner
+                  animation="border"
+                  role="status"
+                  size="sm"
+                  className="ms-3 me-1"
+                >
+                  <span className="visually-hidden">Imprimiendo...</span>
+                </Spinner>
+                Imprimiendo...
+              </>
+            ) : (
+              <a
+                className="d-flex align-items-center dropdown-item"
+                href="."
+                onClick={onClickImprimirRequerimiento}
+              >
+                <img
+                  src="/images/printer.svg"
+                  className="me-1 thumbnail"
+                  alt="Imprimir requerimiento"
+                />
+                Imprimir
+              </a>
+            )}
           </li>
         )}
 
@@ -195,27 +248,26 @@ export const RequeListaOptionSplitComponent = ({
         )}
       </ul>
       <div>
-        {(isLoading)  ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <>
-          <RequePreviewComponent
-            show={showAddItem}
-            handleClose={handleCloseAddItem}
-            C_anipre={C_anipre}
-            C_reque={C_reque}
-            C_biesertipo={C_biesertipo}
-          />
+            <RequePreviewComponent
+              show={showAddItem}
+              handleClose={handleCloseAddItem}
+              C_anipre={C_anipre}
+              C_reque={C_reque}
+              C_biesertipo={C_biesertipo}
+            />
 
-          <RequeAnulaComponent
-            show={showAnulaReque}
-            handleClose={handleCloseAnulaReque}
-            C_anipre={C_anipre}
-            C_reque={C_reque}
-            C_biesertipo={C_biesertipo}
-          />
+            <RequeAnulaComponent
+              show={showAnulaReque}
+              handleClose={handleCloseAnulaReque}
+              C_anipre={C_anipre}
+              C_reque={C_reque}
+              C_biesertipo={C_biesertipo}
+            />
           </>
-          
         )}
       </div>
     </div>

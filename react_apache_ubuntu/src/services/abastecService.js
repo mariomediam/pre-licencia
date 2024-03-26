@@ -324,6 +324,20 @@ const anularRequerimiento = async (anio, numero, tipo, observaciones) => {
   }
 };
 
+const imprimirRequerimiento = async (anio, numero, tipo) => {
+  try {
+    let api = UseAxios();
+
+    let URLReque = `${URL}/reque-imprime/${anio}/${numero}/${tipo}`;
+    const response =  await api.get(`${URLReque}`, { responseType: 'blob' });
+    const file = new Blob([response.data], { type: 'application/pdf' });
+    return file;
+
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 export {
   obtenerAccesoDepen,
@@ -337,5 +351,6 @@ export {
   obtenerRequeSaldoPresup,
   obtenerRequeSaldoPresupItem,
   precomprometerRequerimiento,
-  anularRequerimiento
+  anularRequerimiento,
+  imprimirRequerimiento
 };
