@@ -78,7 +78,7 @@ export const RequerimientosView = () => {
     }
   }, [dependencias, paramsDepend]);
 
-  useEffect(() => {    
+  useEffect(() => {
     setIsLoading(true);
     const getRequerimientos = async () => {
       if (dependSelected && aniosSelected) {
@@ -114,9 +114,28 @@ export const RequerimientosView = () => {
       </h3>
 
       <div className="d-flex justify-content-center px-5">
+        
         <div className="col-sm-12 col-lg-10 col-xl-6">
+        <div className="d-flex justify-content-end">
+          <small>
+            <span style={{ color: "#4169E1" }}>
+              <a
+                href={`${process.env.REACT_APP_API}/download-file/abastec/manual_requerimientos.pdf`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i
+                  className="fas fa-download"
+                  title="Descargar"
+                  style={{ color: "#4169E1" }}
+                ></i>{" "}
+                Manual de usuario
+              </a>
+            </span>{" "}
+          </small>
+        </div>
           <div className="w-100">
-            <Form.Group className="mt-3" controlId="formBasicEmail">
+            <Form.Group className="mt-0" controlId="formBasicEmail">
               <Form.Label className="text-muted mb-0">Año</Form.Label>
               <Select
                 placeholder="Seleccionar año"
@@ -153,7 +172,7 @@ export const RequerimientosView = () => {
             </Form.Group>
           </div>
 
-          {(isLoading) ? (
+          {isLoading ? (
             <Loading />
           ) : (
             <RequeListaDepend
