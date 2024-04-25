@@ -110,6 +110,7 @@ export const RequePreviewComponent = ({
                       C_biesertipo={C_biesertipo}
                       C_anipre={C_anipre}
                       accion={"preview"}
+                      f_libre={f_libre}
                     />
                   </article>
                 );

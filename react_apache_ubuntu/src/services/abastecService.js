@@ -338,6 +338,54 @@ const imprimirRequerimiento = async (anio, numero, tipo) => {
   }
 };
 
+// anio = request.query_params.get("anio")
+// cod_dep = request.query_params.get("coddep")
+// bie_ser_tipo = request.query_params.get("tipo")
+// mes = request.query_params.get("mes")
+// file = request.query_params.get("file", "")
+// bieser = request.query_params.get("bieser")
+// clapre = request.query_params.get("clapre")
+const obtenerBBSSDisponibleCuadro = async (
+  params
+) => {
+
+  const {anio, codDep = undefined, bieSerTipo = undefined, mes, file = undefined, bieser = undefined, clapre = undefined} = params;
+  try {
+    let api = UseAxios();
+
+    let URLBbSs = `${URL}/bbss-disponible-cuadro?anio=${anio}&mes=${mes}`;
+
+    if (codDep) {
+      URLBbSs += `&coddep=${codDep}`;
+    }
+
+    if (bieSerTipo) {
+      URLBbSs += `&tipo=${bieSerTipo}`;
+    }
+
+    if (file) {
+      URLBbSs += `&file=${file}`;
+    }
+
+    if (bieser !== undefined) {
+      URLBbSs += `&bieser=${bieser}`;
+    } else {
+      URLBbSs += `&bieser=`;
+    }
+
+    if (clapre) {
+      URLBbSs += `&clapre=${clapre}`;
+    }
+
+    let {
+      data: { content },
+    } = await api.get(`${URLBbSs}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 export {
   obtenerAccesoDepen,
@@ -352,5 +400,6 @@ export {
   obtenerRequeSaldoPresupItem,
   precomprometerRequerimiento,
   anularRequerimiento,
-  imprimirRequerimiento
+  imprimirRequerimiento,
+  obtenerBBSSDisponibleCuadro
 };

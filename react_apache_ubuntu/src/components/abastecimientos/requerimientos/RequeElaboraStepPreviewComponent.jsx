@@ -13,6 +13,7 @@ export const RequeElaboraStepPreviewComponent = () => {
     C_biesertipo,
     C_anipre,
     T_reque_obs,
+    f_libre,
   } = currentReque;
 
   const getTotal = () => {
@@ -40,6 +41,7 @@ export const RequeElaboraStepPreviewComponent = () => {
               C_biesertipo={C_biesertipo}
               C_anipre={C_anipre}
               accion={"preview"}
+              f_libre={f_libre}
             />
           </article>
         );

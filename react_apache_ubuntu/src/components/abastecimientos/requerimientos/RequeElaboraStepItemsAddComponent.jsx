@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Select from "react-select";
 
 
-import { obtenerBBSSDisponibleOrden } from "../../../services/abastecService";
+import { obtenerBBSSDisponibleOrden, obtenerBBSSDisponibleCuadro } from "../../../services/abastecService";
 import { setCurrentRequerimientoAddItem } from "../../../store/slices";
 
 export const RequeElaboraStepItemsAddComponent = ({
@@ -14,6 +14,7 @@ export const RequeElaboraStepItemsAddComponent = ({
   clasificador,
   C_biesertipo,
   C_anipre,
+  f_libre = "",
 }) => {
 
   const dispatch = useDispatch();
@@ -89,21 +90,54 @@ export const RequeElaboraStepItemsAddComponent = ({
         if (controlSelectBBSS.current) {
           controlSelectBBSS.current.clearValue();
         }
-        const file = "codigo";
-        const data = await obtenerBBSSDisponibleOrden(
-          C_anipre,
-          "",
-          C_depen,
-          C_biesertipo,
-          file,
-          C_clapre
-        );
+
+        if (f_libre.toString().trim().length === 0) {
+          return
+        }
+
+        let data = []
+
+        if (f_libre.toString().trim() === "1") {
+          // REQUERIMIENTO LIBRE
+          const file = "codigo";
+            data = await obtenerBBSSDisponibleOrden(
+            C_anipre,
+            "",
+            C_depen,
+            C_biesertipo,
+            file,
+            C_clapre
+          );
+        }
+
+        if (f_libre.toString().trim() === "0") {
+          // REQUERIMIENTO DE CUADRO DE NECESIDADES
+          const date = new Date();
+          let currentMonth = (date.getMonth() + 1).toString();
+          currentMonth = currentMonth.padStart(2, '0');
+          
+          const bbssCuadro = await obtenerBBSSDisponibleCuadro(
+            {
+              anio: C_anipre,              
+              codDep: C_depen,
+              bieSerTipo : C_biesertipo,
+              mes: currentMonth,
+              file: "descrip",
+              bieser: "",
+              clapre: undefined
+            }
+          );
+
+          data = bbssCuadro.filter((bbss) => bbss.C_biesertipo === C_biesertipo && bbss.c_clapre.toString().trim() === C_clapre.toString().trim() && bbss.C_objpoi === C_objpoi && bbss.C_metapoi === C_metapoi && bbss.C_activpoi === C_activpoi)
+        
+        }
+
         setBbss(data || []);
       }
       // setIsLoading(false);
     };
     getBBSS();
-  }, [C_anipre, C_depen, C_biesertipo, C_clapre]);
+  }, [C_anipre, C_depen, C_biesertipo, C_clapre, f_libre, C_activpoi, C_objpoi, C_metapoi]);
 
   useEffect(() => {
     if (bbss.length > 0) {

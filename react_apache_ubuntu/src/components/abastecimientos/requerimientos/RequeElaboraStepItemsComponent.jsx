@@ -8,7 +8,7 @@ export const RequeElaboraStepItemsComponent = () => {
   const dispatch = useDispatch();
 
   const { currentReque } = useSelector((state) => state.requerimiento);
-  const { requeClasificadores = [], C_sf_dep, C_biesertipo, C_anipre } = currentReque;
+  const { requeClasificadores = [], C_sf_dep, C_biesertipo, C_anipre, f_libre } = currentReque;
 
 
   const getTotal = () => {
@@ -31,7 +31,7 @@ export const RequeElaboraStepItemsComponent = () => {
       {requeClasificadores.map((clasificador, i) => {
         return (
           <article key={i}>
-            <RequeElaboraStepItemsClasifComponent clasificador={clasificador} C_sf_dep={C_sf_dep} C_biesertipo={C_biesertipo} C_anipre={C_anipre} accion={"elaborar"}/>
+            <RequeElaboraStepItemsClasifComponent clasificador={clasificador} C_sf_dep={C_sf_dep} C_biesertipo={C_biesertipo} C_anipre={C_anipre} accion={"elaborar"} f_libre={f_libre}/>
           </article>
         );
       })}

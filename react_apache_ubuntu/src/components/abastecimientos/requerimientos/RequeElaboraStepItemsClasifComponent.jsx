@@ -10,6 +10,7 @@ export const RequeElaboraStepItemsClasifComponent = ({
   C_biesertipo,
   C_anipre,
   accion = "",
+  f_libre = ""
 }) => {
   const [showAddItem, setShowAddItem] = useState(false);
 
@@ -152,6 +153,7 @@ export const RequeElaboraStepItemsClasifComponent = ({
           clasificador={clasificador}
           C_biesertipo={C_biesertipo}
           C_anipre={C_anipre}
+          f_libre={f_libre}
         />
       </div>
     </div>
