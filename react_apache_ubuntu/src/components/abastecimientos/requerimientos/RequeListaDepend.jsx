@@ -13,6 +13,7 @@ export const RequeListaDepend = ({
   requerimientos = [],
   aniosSelected,
   dependSelected,
+  dependTipo
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ export const RequeListaDepend = ({
         C_sf_dep: dependSelected,
         C_biesertipo: "02",
         f_libre: "1",
+        tipo_dependencia: dependTipo,
       })
     );
 

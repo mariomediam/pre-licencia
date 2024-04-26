@@ -21,6 +21,7 @@ export const RequerimientoGestionView = () => {
     f_libre,
     accion,
     C_reque,
+    tipo_dependencia,
   } = currentReque;
 
   const [titleForm, setTitleForm] = useState(
@@ -98,18 +99,23 @@ export const RequerimientoGestionView = () => {
             {C_sf_dep} - {n_dependencia}
           </p>
 
-          <small className="text-muted">Encargado:</small>
+          {tipo_dependencia === 0 && (
+            <>
+              <small className="text-muted">Encargado:</small>
 
-          {n_jefe_nombre && n_jefe_nombre.trim().length > 0 ? (
-            <p>{n_jefe_nombre}</p>
-          ) : (
-            <Alert variant="danger">
-              <small>
-                No se encontro el jefe de dependencia, por favor contacte la
-                Oficina de Procesos Técnicos y Bienestar Social
-              </small>
-            </Alert>
+              {n_jefe_nombre && n_jefe_nombre.trim().length > 0 ? (
+                <p>{n_jefe_nombre}</p>
+              ) : (
+                <Alert variant="danger">
+                  <small>
+                    No se encontro el jefe de dependencia, por favor contacte la
+                    Oficina de Procesos Técnicos y Bienestar Social
+                  </small>
+                </Alert>
+              )}
+            </>
           )}
+
           <hr />
 
           <div>

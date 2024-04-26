@@ -7,13 +7,15 @@ import Swal from "sweetalert2";
 
 import {
   getTotalRequerimiento,
-  getClasifToPresupuesto,  
+  getClasifToPresupuesto,
 } from "../../../store/slices";
 import { RequeComprometeItemComponent } from "./RequeComprometeItemComponent";
 import { RequeComprometeItemFuenteComponent } from "./RequeComprometeItemFuenteComponent";
 import {
-  obtenerRequeSaldoPresupItem, precomprometerRequerimiento,
+  obtenerRequeSaldoPresupItem,
+  precomprometerRequerimiento,
 } from "../../../services/abastecService";
+import { DependJefeComponent } from "../DependJefeComponent";
 
 export const RequeComprometeComponent = () => {
   const dispatch = useDispatch();
@@ -28,6 +30,7 @@ export const RequeComprometeComponent = () => {
     C_sf_dep,
     c_traba_dni,
     f_libre,
+    tipo_dependencia,
   } = currentReque;
 
   const [requeGasto, setRequeGasto] = useState([]);
@@ -36,7 +39,13 @@ export const RequeComprometeComponent = () => {
   const [saldoPresupItem, setSaldoPresupItem] = useState([]);
   const [selectItem, setSelectItem] = useState({});
 
-  const [isLoadingPrecompromete, setIsLoadingPrecompromete] = useState(false)
+  const [isLoadingPrecompromete, setIsLoadingPrecompromete] = useState(false);
+
+  const [dependSelected, setDependSelected] = useState(undefined);
+  const [currentDependJefe, setCurrentDependJefe] = useState({})
+
+  
+
 
   const handleCloseAddFuente = () => setShowAddFuente(false);
   const handleShowAddFuente = () => setShowAddFuente(true);
@@ -61,7 +70,7 @@ export const RequeComprometeComponent = () => {
 
   useEffect(() => {
     const obtenerItemFuente = async () => {
-      const saldos = await obtenerRequeSaldoPresupItem(selectItem);      
+      const saldos = await obtenerRequeSaldoPresupItem(selectItem);
       await setSaldoPresupItem(saldos.filter((item) => item.q_saldo >= 0));
     };
 
@@ -94,6 +103,15 @@ export const RequeComprometeComponent = () => {
       }
     });
 
+    if (tipo_dependencia === 1 && !dependSelected) {
+      return false;
+    }
+
+    if (tipo_dependencia === 1 && !currentDependJefe.C_TRABA_DNI) {
+      return false;
+    }
+
+
     if (totalPreCompro <= 0) {
       return false;
     }
@@ -106,8 +124,7 @@ export const RequeComprometeComponent = () => {
 
     try {
       if (validatePrecomprometer()) {
-
-        setIsLoadingPrecompromete(true)
+        setIsLoadingPrecompromete(true);
 
         let gastos = requeGasto.map((item) => {
           const presupuesto = item.presupuesto.map((presup) => {
@@ -131,9 +148,12 @@ export const RequeComprometeComponent = () => {
 
         gastos = gastos.flat();
 
+        const dependPreComp = tipo_dependencia === 0 ? C_sf_dep : dependSelected
+        const dependJefeDni = tipo_dependencia === 0 ? c_traba_dni : currentDependJefe.C_TRABA_DNI
+
         const dataPrecomprometer = {
-          C_sf_dep,
-          c_traba_dni,
+          "C_sf_dep": dependPreComp,
+          "c_traba_dni": dependJefeDni,
           f_libre,
           gastos: gastos,
         };
@@ -164,12 +184,22 @@ export const RequeComprometeComponent = () => {
         text: JSON.stringify(error?.response?.data?.message),
       });
 
-      setIsLoadingPrecompromete(false)
+      setIsLoadingPrecompromete(false);
     }
   };
 
   return (
     <div>
+      {tipo_dependencia === 1 && (
+        <>
+          <div>
+            <DependJefeComponent dependSelected={dependSelected} setDependSelected={setDependSelected} 
+            currentDependJefe={currentDependJefe} setCurrentDependJefe={setCurrentDependJefe} titleDepend="Entidad solicitante" />
+          </div>
+          <hr />
+        </>
+      )}
+
       <div className="d-flex justify-content-between">
         <div className="d-flex flex-column justify-content-end">
           <h6 className="text-muted mb-0 pb-0">Observaciones</h6>
@@ -243,9 +273,13 @@ export const RequeComprometeComponent = () => {
         >
           {" "}
           {/* <FileDollarIcon className="me-1 thumbnail" /> */}
-          <p className="m-0 p-0">{ isLoadingPrecompromete ? "Precomprometiendo..." : "Precomprometer"}</p>
+          <p className="m-0 p-0">
+            {isLoadingPrecompromete ? "Precomprometiendo..." : "Precomprometer"}
+          </p>
         </Button>
       </div>
+      <p>Depedencia seleccionada: {dependSelected}</p>
+      <p>Jefe encargado: {currentDependJefe.C_TRABA_DNI} - {currentDependJefe.N_TRABA_NOMBRE}</p>
     </div>
   );
 };

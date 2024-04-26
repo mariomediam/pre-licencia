@@ -3,6 +3,7 @@ import {
   obtenerAniosDepenById,
   grabarRequerimiento,
   obtenerRequeSaldoPresup,
+  obtenerMetas,
 } from "../../../../services/abastecService";
 import { obtenerJefeDepen } from "../../../../services/generalService";
 
@@ -25,22 +26,43 @@ export const setCurrentRequerimiento = (newValues) => {
   return async (dispatch, getState) => {
     const currentReque = getState().requerimiento.currentReque;
 
-    if (newValues.C_anipre && newValues.C_sf_dep) {
-      const aniosDependencias = await obtenerAniosDepenById(
-        newValues.C_anipre,
-        newValues.C_sf_dep
-      );
+    let n_dependencia = "";
+    let n_jefe_nombre = "";
+    let c_traba_dni = "";
 
-      const jefeDepen = await obtenerJefeDepen(
-        newValues.C_anipre,
-        newValues.C_sf_dep
-      );
+    if (newValues.C_anipre && newValues.C_sf_dep) {
+      if (newValues.tipo_dependencia === 0) {
+        const aniosDependencias = await obtenerAniosDepenById(
+          newValues.C_anipre,
+          newValues.C_sf_dep
+        );
+
+        n_dependencia = aniosDependencias.n_dependencia_desc?.trim() || "";
+
+        const jefeDepen = await obtenerJefeDepen(
+          newValues.C_anipre,
+          newValues.C_sf_dep
+        );
+
+        n_jefe_nombre = jefeDepen.N_TRABA_NOMBRE?.trim() || "";
+        c_traba_dni = jefeDepen.C_TRABA_DNI?.trim() || "";
+      } else {
+        const metas = await obtenerMetas({
+          anio: newValues.C_anipre,
+          field: "SECFUN",
+          valor: newValues.C_sf_dep,
+        });
+
+        if (metas.length > 0) {
+          n_dependencia = metas[0].N_metapresup_desc?.trim() || "";
+        }
+      }
 
       newValues = {
         ...newValues,
-        n_dependencia: aniosDependencias.n_dependencia_desc?.trim() || "",
-        n_jefe_nombre: jefeDepen.N_TRABA_NOMBRE?.trim() || "",
-        c_traba_dni: jefeDepen.C_TRABA_DNI?.trim() || "",
+        n_dependencia: n_dependencia,
+        n_jefe_nombre: n_jefe_nombre,
+        c_traba_dni: c_traba_dni,
       };
     }
 
@@ -311,4 +333,3 @@ export const getRequerimiento = (anio, numero, tipo, accion = "VER") => {
     dispatch(finishLoadingReque());
   };
 };
-

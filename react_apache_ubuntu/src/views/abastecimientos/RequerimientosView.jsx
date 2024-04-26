@@ -36,16 +36,18 @@ export const RequerimientosView = () => {
   const [dependencias, setDependencias] = useState([]);
   const [requerimientos, setRequerimientos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [dependTipo, setDependTipo] = useState(undefined)
 
   useEffect(() => {
     const getDependencias = async () => {
       if (aniosSelected) {
         controlSelectDepend.current.clearValue();
-        const data = await obtenerAccesoDepen(aniosSelected);
-        const dependenciasTmp = data.map(({ C_depen, N_dependencia_desc }) => {
+        const data = await obtenerAccesoDepen(aniosSelected);        
+        const dependenciasTmp = data.map(({ C_depen, N_dependencia_desc, t }) => {
           return {
             value: C_depen,
             label: `${C_depen} - ${N_dependencia_desc}`,
+            tipo: t,
           };
         });
 
@@ -61,7 +63,7 @@ export const RequerimientosView = () => {
   };
 
   const onChangeControlSelectDepend = (e) => {
-    if (e?.value) {
+    if (e?.value) {      
       setDependSelected(e.value);
     }
   };
@@ -93,10 +95,13 @@ export const RequerimientosView = () => {
       } else {
         setRequerimientos([]);
       }
+      const dependTipoTmp = dependencias.find(depend => depend.value === dependSelected)
+      setDependTipo(dependTipoTmp?.tipo)
+
       setIsLoading(false);
     };
     getRequerimientos();
-  }, [dependSelected, aniosSelected]);
+  }, [dependSelected, aniosSelected, dependencias]);
 
   return (
     <>
@@ -179,6 +184,7 @@ export const RequerimientosView = () => {
               requerimientos={requerimientos}
               aniosSelected={aniosSelected}
               dependSelected={dependSelected}
+              dependTipo={dependTipo}
             />
           )}
         </div>

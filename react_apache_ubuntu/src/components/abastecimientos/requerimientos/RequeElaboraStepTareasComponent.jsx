@@ -9,19 +9,25 @@ export const RequeElaboraStepTareasComponent = () => {
   const [tareas, setTareas] = useState([]);
 
   const { currentReque } = useSelector((state) => state.requerimiento);
-  const { C_anipre, C_sf_dep, C_biesertipo } = currentReque;
+  const { C_anipre, C_sf_dep, C_biesertipo, tipo_dependencia} = currentReque;
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     const obtenerTareas = async () => {
       if (C_anipre && C_sf_dep && C_biesertipo) {
+
         const formato = "reque";
+        const c_secfun = tipo_dependencia === 1 ? C_sf_dep : undefined;
+
+        console.log("************ tipo_dependencia ************")
+        console.log(tipo_dependencia)
         const tareasTmp = await obtenerRequeSaldoPresupDepen(
           C_anipre,
           C_sf_dep,
           C_biesertipo,
-          formato
+          formato,
+          c_secfun
         );
         setTareas(tareasTmp || []);
       }
@@ -30,7 +36,7 @@ export const RequeElaboraStepTareasComponent = () => {
     };
 
     obtenerTareas();
-  }, [C_anipre, C_sf_dep, C_biesertipo]);
+  }, [C_anipre, C_sf_dep, C_biesertipo, tipo_dependencia]);
 
   return (
     <div>

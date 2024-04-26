@@ -96,14 +96,23 @@ const obtenerAniosDepenById = async (anio, codDep) => {
 
 const obtenerRequeSaldoPresupDepen = async (
   anio,
-  codDep,
+  codDep = undefined,
   bieSerTipo,
-  formato = undefined
+  formato = undefined,
+  secfun = undefined
 ) => {
   try {
     let api = UseAxios();
 
-    let URLSaldoDepen = `${URL}/saldo-depen?anio=${anio}&coddep=${codDep}&tipo=${bieSerTipo}`;
+    let URLSaldoDepen = `${URL}/saldo-depen?anio=${anio}&tipo=${bieSerTipo}`;
+
+    if (codDep) {
+      URLSaldoDepen += `&coddep=${codDep}`;
+    }
+
+    if (secfun) {
+      URLSaldoDepen += `&secfun=${secfun}`;
+    }
 
     if (formato) {
       URLSaldoDepen += `&formato=${formato}`;
@@ -338,13 +347,6 @@ const imprimirRequerimiento = async (anio, numero, tipo) => {
   }
 };
 
-// anio = request.query_params.get("anio")
-// cod_dep = request.query_params.get("coddep")
-// bie_ser_tipo = request.query_params.get("tipo")
-// mes = request.query_params.get("mes")
-// file = request.query_params.get("file", "")
-// bieser = request.query_params.get("bieser")
-// clapre = request.query_params.get("clapre")
 const obtenerBBSSDisponibleCuadro = async (
   params
 ) => {
@@ -386,6 +388,38 @@ const obtenerBBSSDisponibleCuadro = async (
   }
 };
 
+const obtenerMetas = async (
+  params
+) => {
+
+  const {anio, field = undefined, valor = undefined, valorAux = undefined} = params;
+  try {
+    let api = UseAxios();
+
+    let URLMetas = `${URL}/metas?anio=${anio}`;
+
+    if (field) {
+      URLMetas += `&field=${field}`;
+    }
+
+    if (valor) {
+      URLMetas += `&valor=${valor}`;
+    }
+
+    if (valorAux) {
+      URLMetas += `&valoraux=${valorAux}`;
+    }
+    
+
+    let {
+      data: { content },
+    } = await api.get(`${URLMetas}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 export {
   obtenerAccesoDepen,
@@ -401,5 +435,6 @@ export {
   precomprometerRequerimiento,
   anularRequerimiento,
   imprimirRequerimiento,
-  obtenerBBSSDisponibleCuadro
+  obtenerBBSSDisponibleCuadro,
+  obtenerMetas
 };
