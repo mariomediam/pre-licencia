@@ -9,13 +9,17 @@ export const RequeElaboraStepTareasItemSaldoDetComponent = ({
   C_activpoi,
   C_depen,
   clasificador,
+  N_metapresup_desc,
+  N_activpoi_desc,
 }) => {
   const dispatch = useDispatch();
 
   const { currentReque } = useSelector((state) => state.requerimiento);
   const { requeClasificadores } = currentReque;
 
-  const { C_clapre, C_objpoi, C_metapoi, selecc, saldos = []} = clasificador;
+  console.log(clasificador);
+
+  const { C_clapre, C_objpoi, C_metapoi, selecc, saldos = [], N_clapre_desc} = clasificador;
   
   const onChangeChecked = (e) => {
     const checked = e.target.checked;
@@ -25,7 +29,11 @@ export const RequeElaboraStepTareasItemSaldoDetComponent = ({
       C_depen: C_depen,
       C_activpoi: C_activpoi,
       C_objpoi: C_objpoi,
-      C_metapoi: C_metapoi,      
+      C_metapoi: C_metapoi,  
+      N_metapresup_desc: N_metapresup_desc,
+      N_activpoi_desc: N_activpoi_desc,
+      N_clapre_desc: N_clapre_desc,
+
     };
 
     const existe = requeClasificadores.some(
@@ -65,11 +73,14 @@ export const RequeElaboraStepTareasItemSaldoDetComponent = ({
 
   return (
     <>
-      <td className="align-middle pe-3 ">{C_clapre}</td>
-      <td className="align-middle ">
+      <td>
+      <p className="m-0 p-0">{C_clapre} </p>
+      <small className="text-muted m-0 p-0"><small><small>{N_clapre_desc}</small></small></small></td>
+      
+      <td>
         {C_objpoi} - {C_metapoi}
       </td>
-      <td className="align-middle">
+      <td>
         {saldos.map((s, i) => (
           <div key={i}>
             <p className="m-0 p-0 text-truncate">
@@ -81,7 +92,7 @@ export const RequeElaboraStepTareasItemSaldoDetComponent = ({
         ))}
       </td>
 
-      <td className="align-middle ">
+      <td>
         <>
           {saldos.map((s, i) => (
             <p key={i} className="m-0 p-0 text-end">

@@ -25,6 +25,9 @@ export const RequeElaboraStepItemsClasifComponent = ({
     C_metapoi,
     C_depen,
     items = [],
+    N_clapre_desc,
+    N_metapresup_desc,
+    N_activpoi_desc,
   } = clasificador;
 
   const getTotal = () => {
@@ -49,23 +52,23 @@ export const RequeElaboraStepItemsClasifComponent = ({
     <div className="pb-4">
       <Card>
         <Card.Header>
-          <div className="d-flex flex-wrap gap-3 justify-content-between">
+          <div className="">
           <p className="m-0 p-0">
               <small className="text-muted">Clasificador: </small>
-              {C_clapre}
+              {C_clapre} <small><small className="text-muted">{N_clapre_desc}</small></small>
             </p>
             <p className="m-0 p-0">
-              <small className="text-muted">Secuencia funcional: </small>
-              {C_secfun}
+              <small className="text-muted">Secuencia funcional: {C_secfun} <small>{N_metapresup_desc}</small></small>
+              
             </p>
             <p className="m-0 p-0">
-              <small className="text-muted">Tarea operativa: </small>
-              {C_activpoi}
+              <small className="text-muted">Tarea operativa:  {C_activpoi} <small>{N_activpoi_desc}</small></small>
+             
             </p>
            
             <p className="m-0 p-0">
-              <small className="text-muted">Objetivo / Meta: </small>
-              {C_objpoi} / {C_metapoi}
+              <small className="text-muted">Objetivo / Meta:  {C_objpoi} / {C_metapoi}</small>
+             
             </p>
           </div>
         </Card.Header>

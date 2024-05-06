@@ -8,6 +8,7 @@ import { useState } from "react";
 export const RequeElaboraStepTareasItemSaldoComponent = ({
   C_secfun,
   actividad,
+  N_metapresup_desc,
 }) => {
   const { C_activpoi, N_activpoi_desc, C_depen, clasificadores } = actividad;
 
@@ -26,7 +27,7 @@ export const RequeElaboraStepTareasItemSaldoComponent = ({
         C_depen: C_depen,
         C_activpoi: C_activpoi,
         C_objpoi: C_objpoi,
-        C_metapoi: C_metapoi,
+        C_metapoi: C_metapoi
       };
 
       const check = requeClasificadores.some(
@@ -45,7 +46,7 @@ export const RequeElaboraStepTareasItemSaldoComponent = ({
     });
 
     setClasificadoresChecked(clasificadoresTmp);
-  }, [C_secfun, C_activpoi, C_depen, clasificadores, requeClasificadores]);
+  }, [C_secfun, C_activpoi, C_depen, clasificadores, requeClasificadores, N_activpoi_desc, N_metapresup_desc]);
 
   return (
     <Card className="mb-4">
@@ -89,6 +90,9 @@ export const RequeElaboraStepTareasItemSaldoComponent = ({
                   C_activpoi={C_activpoi}
                   C_depen={C_depen}
                   clasificador={clasificador}
+                  N_metapresup_desc = {N_metapresup_desc}
+                  N_activpoi_desc = {N_activpoi_desc}
+
                 />
               </tr>
             ))}

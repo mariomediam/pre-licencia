@@ -20,8 +20,6 @@ export const RequeElaboraStepTareasComponent = () => {
         const formato = "reque";
         const c_secfun = tipo_dependencia === 1 ? C_sf_dep : undefined;
 
-        console.log("************ tipo_dependencia ************")
-        console.log(tipo_dependencia)
         const tareasTmp = await obtenerRequeSaldoPresupDepen(
           C_anipre,
           C_sf_dep,

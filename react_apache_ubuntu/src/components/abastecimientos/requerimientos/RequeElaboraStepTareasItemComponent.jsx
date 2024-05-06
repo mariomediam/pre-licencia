@@ -21,7 +21,8 @@ export const RequeElaboraStepTareasItemComponent = ({ tarea, active }) => {
               <RequeElaboraStepTareasItemSaldoComponent
                 key={i}
                 C_secfun = {C_secfun}
-                actividad={actividad}                
+                actividad={actividad}      
+                N_metapresup_desc = {N_metapresup_desc}          
               />
             ))}
           </Accordion.Body>

@@ -278,8 +278,6 @@ export const RequeComprometeComponent = () => {
           </p>
         </Button>
       </div>
-      <p>Depedencia seleccionada: {dependSelected}</p>
-      <p>Jefe encargado: {currentDependJefe.C_TRABA_DNI} - {currentDependJefe.N_TRABA_NOMBRE}</p>
     </div>
   );
 };
