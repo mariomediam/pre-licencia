@@ -20,6 +20,7 @@ import { LicProvGestorComponent } from "../components/licenciaFuncionamiento/lic
 import { UbicacionView } from "../views/licenciaFuncionamiento/licenciaProvisional/UbicacionView";
 import { RequerimientosView } from "../views/abastecimientos/RequerimientosView";
 import { RequerimientoGestionView } from "../views/abastecimientos/RequerimientoGestionView";
+import { TributoArchivoView } from "../views/tesorero/TributoArchivoView";
 
 export const DashboardRoutes = () => {
   return (
@@ -91,7 +92,11 @@ export const DashboardRoutes = () => {
           <Route
             path="/abastecimientos/requerimiento/gestionar"
             element={<RequerimientoGestionView />}            
-          />       
+          />   
+           <Route
+            path="/tesorero/tributo/archivo"
+            element={<TributoArchivoView />}            
+          />      
         </Routes>
        
           

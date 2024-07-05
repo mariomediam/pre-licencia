@@ -36,6 +36,10 @@ code {
   background-color: rgb(40, 116, 166) !important;
 }
 
+.color-header2 {
+  background-color: #4E4187 !important;
+}
+
 
 .bootstrap-select .dropdown-menu {
   max-width: 100%;
@@ -104,3 +108,15 @@ code {
 .my-radio {
 	accent-color: green;
 }
+
+.text-color-default {
+  color: #4E4187;
+}
+
+.tributo-selected {
+  background-color: #4E4187;
+  color: white;   
+   /* que el color cambie poco a poco  */
+  transition: background-color 0.3s, color 0.3s;
+}
+
