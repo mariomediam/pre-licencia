@@ -1,3 +1,4 @@
+import { ReactComponent as DotsVertical } from "../../../assets/images/svg/dots-vertical.svg";
 import { obtenerNombreMes, transformarFecha } from "../../../utils/varios";
 
 export const TributoArchivoListarItemComponent = ({
@@ -17,6 +18,7 @@ export const TributoArchivoListarItemComponent = ({
 
       <td className="align-middle">{transformarFecha(D_Archivo_FecDig)}</td>
       <td className="align-middle">{C_Usuari_Login}</td>
+      <td className="align-middle"><DotsVertical /></td>
     </>
   );
 };

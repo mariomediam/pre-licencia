@@ -4,6 +4,8 @@ import { Table } from "react-bootstrap";
 import { obtenerTributoArchivo } from "../../../services/tesoreroService";
 import { TributoArchivoListarItemComponent } from "./TributoArchivoListarItemComponent";
 
+
+
 export const TributoArchivoListarComponent = ({ cTipOpe, NTipOpe, anio }) => {
   const [listTributoArchivo, setListTributoArchivo] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
@@ -33,7 +35,7 @@ export const TributoArchivoListarComponent = ({ cTipOpe, NTipOpe, anio }) => {
   return (
     <div className="">
         
-      <h5 className="text-color-default text-capitalize">{NTipOpe.toString().toLowerCase()}</h5>
+      <h5 className="text-color-default text-capitalize">{NTipOpe?.toString().toLowerCase()}</h5>
 
 
 
@@ -86,6 +88,7 @@ export const TributoArchivoListarComponent = ({ cTipOpe, NTipOpe, anio }) => {
           </tbody>
         </Table>
       </div>
+
     </div>
   );
 };

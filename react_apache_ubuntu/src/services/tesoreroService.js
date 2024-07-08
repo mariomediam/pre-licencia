@@ -51,4 +51,27 @@ const obtenerTributoArchivo = async (params) => {
   }
 };
 
-export { obtenerTributoTipoOperacion, obtenerTributoArchivo };
+
+const obtenerTributoPeriodosDisponibles = async (params) => {
+  try {
+    let api = UseAxios();
+
+    const { tipo, anio } = params;
+
+    let URLPeriodosDisponibles = `${URL}/tributo-periodos-disponibles?tipo=${tipo}`;
+
+    if (anio) {
+      URLPeriodosDisponibles += `&anio=${anio}`;
+    }
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLPeriodosDisponibles}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export { obtenerTributoTipoOperacion, obtenerTributoArchivo, obtenerTributoPeriodosDisponibles };
