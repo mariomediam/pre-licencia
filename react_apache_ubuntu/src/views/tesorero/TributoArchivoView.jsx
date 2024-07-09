@@ -51,6 +51,11 @@ export const TributoArchivoView = () => {
     return tipoOperacion ? tipoOperacion.N_TipOpe : "";
   };
 
+
+  const onClicTipoOperacion = (cTipOpe) => {
+    setTipOpeSelected(cTipOpe);
+  }
+
   useEffect(() => {
     const fetchTributoTipoOperacion = async () => {
       try {
@@ -142,7 +147,7 @@ export const TributoArchivoView = () => {
                               ? "tributo-selected"
                               : "tributo"
                           }`}
-                          onClick={() => setTipOpeSelected(itemTipOpe.C_TipOpe)}
+                          onClick={() => onClicTipoOperacion(itemTipOpe.C_TipOpe)}
                         >
                           {OperationIcon && <OperationIcon />}
                           {itemTipOpe.N_TipOpe}
@@ -187,7 +192,8 @@ export const TributoArchivoView = () => {
         anioSelected={anioSelected}
         tipOpeSelected={tipOpeSelected}
         NTipOpe={getNameTipoOperacion(tipOpeSelected)}
-        periodosDisponibles={periodosDisponibles}
+        periodosDisponibles={periodosDisponibles}   
+        onClicTipoOperacion={onClicTipoOperacion}     
       />
     </>
   );

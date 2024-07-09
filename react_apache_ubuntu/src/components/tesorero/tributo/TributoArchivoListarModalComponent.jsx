@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { useState, useRef, useEffect } from "react";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { Dropzone, FileMosaic } from "@files-ui/react";
 
 import { ReactComponent as FileUpload } from "../../../assets/images/svg/file-upload.svg";
 import { obtenerNombreMes } from "../../../utils/varios";
+import { UploadTributoArchivo } from "../../../services/tesoreroService";
 
 export const TributoArchivoListarModalComponent = ({
   show,
@@ -12,27 +13,44 @@ export const TributoArchivoListarModalComponent = ({
   tipOpeSelected,
   NTipOpe,
   periodosDisponibles,
+  onClicTipoOperacion,  
 }) => {
   const [files, setFiles] = useState([]);
-  
+  const [isSaving, setIsSaving] = useState(false)
+  const selectMes = useRef();
 
   const readFile = (incommingFiles) => {
-    //do something with the files
-    console.log("incomming files", incommingFiles);
-    setFiles(incommingFiles);
-    //even your own upload implementation
+    setFiles(incommingFiles);    
   };
 
   const removeFile = (id) => {
     setFiles(files.filter((x) => x.id !== id));
   };
 
+  const uploadFile = async () => {
+    try {
+        setIsSaving(true)
+      if (files.length > 0) {
+        const archivo = files[0].file;        
+        const tipo = tipOpeSelected;
+        const anio = anioSelected;
+        const mes = selectMes?.current?.value;
 
-  const uploadFile = ()  => {
-    console.log("uploading files", files);
-  }
+        await UploadTributoArchivo({ tipo, anio, mes, archivo });                
+        onClicTipoOperacion(tipOpeSelected);
+        handleClose();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+        setIsSaving(false)
+        
+    }
+  };
 
-  
+  useEffect(() => {
+    setFiles([]);
+  }, [show]);
 
   return (
     <>
@@ -55,6 +73,8 @@ export const TributoArchivoListarModalComponent = ({
               <select
                 className="form-select mb-3"
                 aria-label="Meses disponibles"
+                ref={selectMes}
+                disabled={isSaving}
               >
                 {periodosDisponibles.map((periodo) => (
                   <option
@@ -69,33 +89,38 @@ export const TributoArchivoListarModalComponent = ({
           )}
           <small className="text-muted">Archivo</small>
           <Dropzone
-            
             onChange={readFile}
             value={files}
-            maxFiles = {1}
-            label="Suelta el archivo aquí o haz clic para subirlo."
-            
-            // accept='application/vnd.ms-excel,'
+            maxFiles={1}
+            label="Suelta el archivo aquí o haz clic para subirlo."            
             accept=".xls, .xlsx"
-            // footer={false}
-            headerConfig={{ validFilesCount: false, deleteFiles: false}}
-            footerConfig={{ customMessage: "Solo se aceptan archivos de excel" }}
+            headerConfig={{ validFilesCount: false, deleteFiles: false }}
+            footerConfig={{
+              customMessage: "Solo se aceptan archivos de excel",
+            }}
             localization="ES-es"
             multiple={false}
             behaviour={"replace"}
+            disabled={isSaving}
           >
             {files.map((file) => (
               <FileMosaic key={file.id} {...file} onDelete={removeFile} info />
             ))}
-          </Dropzone>
-          
+          </Dropzone>          
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose} disabled={isSaving}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={uploadFile}>
-            Grabar
+          <Button variant="primary" onClick={uploadFile} disabled={isSaving}>
+            {isSaving ? (
+              <>
+                <Spinner animation="border" role="status" size="sm" className="me-2"/>
+                Cargando
+              </>
+            ) : (
+              "Guardar"
+            )}
           </Button>
         </Modal.Footer>
       </Modal>

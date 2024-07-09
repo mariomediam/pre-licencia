@@ -73,5 +73,33 @@ const obtenerTributoPeriodosDisponibles = async (params) => {
   }
 }
 
+const UploadTributoArchivo = async ( params ) => {
+  try {
+    let api = UseAxios();
 
-export { obtenerTributoTipoOperacion, obtenerTributoArchivo, obtenerTributoPeriodosDisponibles };
+    const { tipo, anio, mes, archivo } = params;
+
+    let URLTributoArchivo = `${URL}/tributo-archivo/`;
+
+    const formData = new FormData();
+    formData.append("tipo", tipo);
+    formData.append("anio", anio);
+    formData.append("mes", mes);
+    formData.append("archivo", archivo);
+
+    const headers = {
+      "Content-Type": "multipart/form-data",
+    };
+    let {
+      data: { content },
+    } = await api.post(`${URLTributoArchivo}`, formData, {
+      headers,
+    });
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { obtenerTributoTipoOperacion, obtenerTributoArchivo, obtenerTributoPeriodosDisponibles, UploadTributoArchivo };
