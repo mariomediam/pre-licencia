@@ -13,7 +13,7 @@ export const TributoArchivoListarModalComponent = ({
   tipOpeSelected,
   NTipOpe,
   periodosDisponibles,
-  onClicTipoOperacion,  
+  fetchTributoArchivo,
 }) => {
   const [files, setFiles] = useState([]);
   const [isSaving, setIsSaving] = useState(false)
@@ -37,7 +37,7 @@ export const TributoArchivoListarModalComponent = ({
         const mes = selectMes?.current?.value;
 
         await UploadTributoArchivo({ tipo, anio, mes, archivo });                
-        onClicTipoOperacion(tipOpeSelected);
+        fetchTributoArchivo();
         handleClose();
       }
     } catch (error) {

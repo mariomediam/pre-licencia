@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Breadcrumb } from "react-bootstrap";
 
 import { ReactComponent as Beneficios } from "../../assets/images/svg/businessplan.svg";
@@ -11,6 +11,7 @@ import { ReactComponent as Altas } from "../../assets/images/svg/cash.svg";
 import {
   obtenerTributoTipoOperacion,
   obtenerTributoPeriodosDisponibles,
+  obtenerTributoArchivo
 } from "../../services/tesoreroService";
 import Header from "../../components/Header";
 import { TributoArchivoListarComponent } from "../../components/tesorero/tributo/TributoArchivoListarComponent";
@@ -37,12 +38,30 @@ export const TributoArchivoView = () => {
     anios.length > 0 ? anios[0] : undefined
   );
   const [tipOpeSelected, setTipOpeSelected] = useState(undefined);
-  const [periodosDisponibles, setPeriodosDisponibles] = useState([]);
+  const [periodosDisponibles, setPeriodosDisponibles] = useState([]);  
+  const [listTributoArchivo, setListTributoArchivo] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const fetchTributoArchivo = useCallback(async () => {
+    try {
+        setIsLoading(true)
+      const opcion = tipOpeSelected === "01" ? "03" : "04";
+      const valor01 = tipOpeSelected;
+      const valor02 = anioSelected;
+      const data = await obtenerTributoArchivo({ opcion, valor01, valor02 });
+      setListTributoArchivo(data);
+      setIsLoading(false)
+    } catch (error) {
+      console.error(error);
+    }    
+  }, [tipOpeSelected, anioSelected]);
+
+  
 
   const getNameTipoOperacion = (cTipOpe) => {
     const tipoOperacion = lisTipoOperacion.find(
@@ -67,6 +86,7 @@ export const TributoArchivoView = () => {
     };
     fetchTributoTipoOperacion();
   }, []);
+
 
   useEffect(() => {
     if (lisTipoOperacion.length > 0) {
@@ -162,8 +182,10 @@ export const TributoArchivoView = () => {
         </div>
         <TributoArchivoListarComponent
           cTipOpe={tipOpeSelected}
-          NTipOpe={getNameTipoOperacion(tipOpeSelected)}
-          anio={anioSelected}
+          NTipOpe={getNameTipoOperacion(tipOpeSelected)}          
+          fetchTributoArchivo={fetchTributoArchivo}
+          listTributoArchivo={listTributoArchivo}          
+          isLoading={isLoading}          
         />
 
         <div style={{ position: "relative" }}>
@@ -175,8 +197,7 @@ export const TributoArchivoView = () => {
                 title={`Agregar ${getNameTipoOperacion(
                   tipOpeSelected
                 ).toLowerCase()}`}
-                onClick={handleShow}
-                // onClick={onClicAgregar}
+                onClick={handleShow}                
                 disabled={periodosDisponibles.length === 0}
               >
                 <i className="fas fa-plus"></i>
@@ -193,7 +214,7 @@ export const TributoArchivoView = () => {
         tipOpeSelected={tipOpeSelected}
         NTipOpe={getNameTipoOperacion(tipOpeSelected)}
         periodosDisponibles={periodosDisponibles}   
-        onClicTipoOperacion={onClicTipoOperacion}     
+        fetchTributoArchivo={fetchTributoArchivo}
       />
     </>
   );
