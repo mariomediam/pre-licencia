@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { Dropzone, FileMosaic } from "@files-ui/react";
+import Swal from "sweetalert2";
 
 import { ReactComponent as FileUpload } from "../../../assets/images/svg/file-upload.svg";
 import { obtenerNombreMes } from "../../../utils/varios";
 import { UploadTributoArchivo } from "../../../services/tesoreroService";
+import { Toast } from "../../tools/PopMessage";
 
 export const TributoArchivoListarModalComponent = ({
   show,
@@ -14,13 +16,14 @@ export const TributoArchivoListarModalComponent = ({
   NTipOpe,
   periodosDisponibles,
   fetchTributoArchivo,
+  fetchTributoPeriodosDisponibles,
 }) => {
   const [files, setFiles] = useState([]);
-  const [isSaving, setIsSaving] = useState(false)
+  const [isSaving, setIsSaving] = useState(false);
   const selectMes = useRef();
 
   const readFile = (incommingFiles) => {
-    setFiles(incommingFiles);    
+    setFiles(incommingFiles);
   };
 
   const removeFile = (id) => {
@@ -29,22 +32,33 @@ export const TributoArchivoListarModalComponent = ({
 
   const uploadFile = async () => {
     try {
-        setIsSaving(true)
+      setIsSaving(true);
       if (files.length > 0) {
-        const archivo = files[0].file;        
+        const archivo = files[0].file;
         const tipo = tipOpeSelected;
         const anio = anioSelected;
         const mes = selectMes?.current?.value;
 
-        await UploadTributoArchivo({ tipo, anio, mes, archivo });                
+        await UploadTributoArchivo({ tipo, anio, mes, archivo });
+
+        Toast.fire({
+          icon: "success",
+          title: `Archivo subido correctamente`,
+          background: "#F4F6F6",
+          timer: 1500,
+        });
         fetchTributoArchivo();
         handleClose();
+        fetchTributoPeriodosDisponibles();
       }
     } catch (error) {
-      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error subiendo archivo",
+        text: JSON.stringify(error?.response?.data?.message),
+      });
     } finally {
-        setIsSaving(false)
-        
+      setIsSaving(false);
     }
   };
 
@@ -92,7 +106,7 @@ export const TributoArchivoListarModalComponent = ({
             onChange={readFile}
             value={files}
             maxFiles={1}
-            label="Suelta el archivo aquí o haz clic para subirlo."            
+            label="Suelta el archivo aquí o haz clic para subirlo."
             accept=".xls, .xlsx"
             headerConfig={{ validFilesCount: false, deleteFiles: false }}
             footerConfig={{
@@ -106,7 +120,7 @@ export const TributoArchivoListarModalComponent = ({
             {files.map((file) => (
               <FileMosaic key={file.id} {...file} onDelete={removeFile} info />
             ))}
-          </Dropzone>          
+          </Dropzone>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose} disabled={isSaving}>
@@ -115,7 +129,12 @@ export const TributoArchivoListarModalComponent = ({
           <Button variant="primary" onClick={uploadFile} disabled={isSaving}>
             {isSaving ? (
               <>
-                <Spinner animation="border" role="status" size="sm" className="me-2"/>
+                <Spinner
+                  animation="border"
+                  role="status"
+                  size="sm"
+                  className="me-2"
+                />
                 Cargando
               </>
             ) : (

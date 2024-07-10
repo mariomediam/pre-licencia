@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Table } from "react-bootstrap";
 
-// import { obtenerTributoArchivo } from "../../../services/tesoreroService";
+// import { eliminarTributoArchivo } from "../../../services/tesoreroService";
 import { TributoArchivoListarItemComponent } from "./TributoArchivoListarItemComponent";
 
 
 
-export const TributoArchivoListarComponent = ({ cTipOpe, NTipOpe, fetchTributoArchivo, listTributoArchivo, isLoading }) => {
+export const TributoArchivoListarComponent = ({ cTipOpe, NTipOpe, fetchTributoArchivo, listTributoArchivo, isLoading, fetchTributoPeriodosDisponibles }) => {
   // const [listTributoArchivo, setListTributoArchivo] = useState([]);
   // const [isLoading, setIsLoading] = useState(false)
 
@@ -54,6 +54,7 @@ export const TributoArchivoListarComponent = ({ cTipOpe, NTipOpe, fetchTributoAr
               <th className="align-middle m-0">Fecha de carga</th>
               <th className="align-middle m-0">Responsable</th>
               <th className="text-center align-middle m-0 p-0"></th>
+              
             </tr>
           </thead>
           <tbody>
@@ -80,7 +81,7 @@ export const TributoArchivoListarComponent = ({ cTipOpe, NTipOpe, fetchTributoAr
                       D_Archivo_FecDig,
                       C_Usuari_Login,
                       N_Archivo_PC,
-                    }}
+                    }} fetchTributoPeriodosDisponibles = {fetchTributoPeriodosDisponibles}  fetchTributoArchivo = {fetchTributoArchivo} NTipOpe={NTipOpe}
                   />
                 </tr>
               )

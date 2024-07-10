@@ -102,4 +102,36 @@ const UploadTributoArchivo = async ( params ) => {
   }
 };
 
-export { obtenerTributoTipoOperacion, obtenerTributoArchivo, obtenerTributoPeriodosDisponibles, UploadTributoArchivo };
+const eliminarTributoArchivo = async (archivoId) => {
+  try {
+    let api = UseAxios();
+
+    const URLDEleteTributoArchivo = `${URL}/tributo-archivo/${archivoId}`;    
+
+    let {
+      data: { content },
+    } = await api.delete(`${URLDEleteTributoArchivo}`);
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+const downloadTributoArchivo = async (archivoId) => {
+  try {
+    let api = UseAxios();
+
+    let URLDownloadTributoArchivo = `${URL}/download-tributo-archivo/${archivoId}`;
+    const response =  await api.get(`${URLDownloadTributoArchivo}`, { responseType: 'blob' });
+    const file = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    return file;
+
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export { obtenerTributoTipoOperacion, obtenerTributoArchivo, obtenerTributoPeriodosDisponibles, UploadTributoArchivo, eliminarTributoArchivo, downloadTributoArchivo };

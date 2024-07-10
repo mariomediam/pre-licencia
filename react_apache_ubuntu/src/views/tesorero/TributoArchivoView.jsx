@@ -94,22 +94,34 @@ export const TributoArchivoView = () => {
     }
   }, [lisTipoOperacion]);
 
+  const fetchTributoPeriodosDisponibles = useCallback(async () => {
+    try {
+      const data = await obtenerTributoPeriodosDisponibles({
+        tipo: tipOpeSelected,
+        anio: anioSelected,
+      });
+      setPeriodosDisponibles(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [tipOpeSelected, anioSelected]);
+
   useEffect(() => {
     setPeriodosDisponibles([]);
 
-    const fetchTributoPeriodosDisponibles = async () => {
-      try {
-        const data = await obtenerTributoPeriodosDisponibles({
-          tipo: tipOpeSelected,
-          anio: anioSelected,
-        });
-        setPeriodosDisponibles(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    // const fetchTributoPeriodosDisponibles = async () => {
+    //   try {
+    //     const data = await obtenerTributoPeriodosDisponibles({
+    //       tipo: tipOpeSelected,
+    //       anio: anioSelected,
+    //     });
+    //     setPeriodosDisponibles(data);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
     fetchTributoPeriodosDisponibles();
-  }, [tipOpeSelected, anioSelected]);
+  }, [tipOpeSelected, anioSelected, fetchTributoPeriodosDisponibles]);
 
   return (
     <>
@@ -185,7 +197,8 @@ export const TributoArchivoView = () => {
           NTipOpe={getNameTipoOperacion(tipOpeSelected)}          
           fetchTributoArchivo={fetchTributoArchivo}
           listTributoArchivo={listTributoArchivo}          
-          isLoading={isLoading}          
+          isLoading={isLoading}             
+          fetchTributoPeriodosDisponibles={fetchTributoPeriodosDisponibles}       
         />
 
         <div style={{ position: "relative" }}>
@@ -215,6 +228,7 @@ export const TributoArchivoView = () => {
         NTipOpe={getNameTipoOperacion(tipOpeSelected)}
         periodosDisponibles={periodosDisponibles}   
         fetchTributoArchivo={fetchTributoArchivo}
+        fetchTributoPeriodosDisponibles={fetchTributoPeriodosDisponibles}
       />
     </>
   );
