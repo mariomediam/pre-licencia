@@ -4,6 +4,7 @@ import { Breadcrumb, Form, Table } from "react-bootstrap";
 import Header from "../../components/Header";
 import { obtenerTributoContrib } from "../../services/tesoreroService";
 import { TributoContribEmisionComponent } from "../../components/tesorero/tributo/TributoContribEmisionComponent";
+import { TributoContribAltasComponent } from "../../components/tesorero/tributo/TributoContribAltasComponent";
 
 const anios = [];
 const anioActual = new Date().getFullYear();
@@ -123,9 +124,9 @@ export const TributoArchivoContribView = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {listTributoContrib.map(
-                    ({ tipo, anio, mes, detalle }, i) =>
-                      tipo === "EMISION" && (
+                  {listTributoContrib.map(({ tipo, anio, mes, detalle }, i) => {
+                    if (tipo === "EMISION") {
+                      return (
                         <TributoContribEmisionComponent
                           tipo={tipo}
                           anio={anio}
@@ -137,8 +138,25 @@ export const TributoArchivoContribView = () => {
                           }
                           allSelected={allSelected}
                         />
-                      )
-                  )}
+                      );
+                    }
+                    if (tipo === "ALTAS") {
+                      return (
+                        <TributoContribAltasComponent
+                          tipo={tipo}
+                          anio={anio}
+                          mes={mes}
+                          detalle={detalle}
+                          key={`${tipo}-${anio}-${mes}`}
+                          setListTributoContribSelected={
+                            setListTributoContribSelected
+                          }
+                          allSelected={allSelected}
+                        />
+                      );
+                    }
+                    return null; // O manejar otros tipos si es necesario
+                  })}
                 </tbody>
               </Table>
             </div>
@@ -147,7 +165,10 @@ export const TributoArchivoContribView = () => {
 
         {/* BOTON AGREGAR */}
         {listTributoContribSelected.length === 0 && (
-          <div style={{ position: "relative" }} className="animate__animated animate__fadeIn animate__faster">
+          <div
+            style={{ position: "relative" }}
+            className="animate__animated animate__fadeIn animate__faster"
+          >
             <div style={{ position: "absolute", right: "0px", width: "70px" }}>
               <div style={{ position: "fixed", bottom: "25px" }}>
                 <button
@@ -166,7 +187,10 @@ export const TributoArchivoContribView = () => {
 
         {/* BOTON EDITAR */}
         {listTributoContribSelected.length === 1 && (
-          <div style={{ position: "relative" }} className="animate__animated animate__fadeIn animate__faster">
+          <div
+            style={{ position: "relative" }}
+            className="animate__animated animate__fadeIn animate__faster"
+          >
             <div style={{ position: "absolute", right: "0px", width: "70px" }}>
               <div style={{ position: "fixed", bottom: "25px" }}>
                 <button
@@ -185,8 +209,17 @@ export const TributoArchivoContribView = () => {
 
         {/* BOTON ELIMINAR */}
         {listTributoContribSelected.length > 0 && (
-          <div style={{ position: "relative" }} className="animate__animated animate__fadeIn animate__faster">
-            <div style={{ position: "absolute", right: listTributoContribSelected.length > 1 ? "0px" : "75px", width: "70px" }}>
+          <div
+            style={{ position: "relative" }}
+            className="animate__animated animate__fadeIn animate__faster"
+          >
+            <div
+              style={{
+                position: "absolute",
+                right: listTributoContribSelected.length > 1 ? "0px" : "75px",
+                width: "70px",
+              }}
+            >
               <div style={{ position: "fixed", bottom: "25px" }}>
                 <button
                   className="btn btn-danger rounded-circle"
