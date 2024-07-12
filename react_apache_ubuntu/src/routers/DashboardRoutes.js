@@ -21,6 +21,7 @@ import { UbicacionView } from "../views/licenciaFuncionamiento/licenciaProvision
 import { RequerimientosView } from "../views/abastecimientos/RequerimientosView";
 import { RequerimientoGestionView } from "../views/abastecimientos/RequerimientoGestionView";
 import { TributoArchivoView } from "../views/tesorero/TributoArchivoView";
+import { TributoArchivoContribView } from "../views/tesorero/TributoArchivoContribView";
 
 export const DashboardRoutes = () => {
   return (
@@ -96,7 +97,11 @@ export const DashboardRoutes = () => {
            <Route
             path="/tesorero/tributo/archivo"
             element={<TributoArchivoView />}            
-          />      
+          />    
+           <Route
+            path="/tesorero/tributo/contribuyente"
+            element={<TributoArchivoContribView />}            
+          />    
         </Routes>
        
           

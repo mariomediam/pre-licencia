@@ -133,5 +133,23 @@ const downloadTributoArchivo = async (archivoId) => {
   }
 };
 
+const obtenerTributoContrib = async (params) => {
+  try {
+    let api = UseAxios();
 
-export { obtenerTributoTipoOperacion, obtenerTributoArchivo, obtenerTributoPeriodosDisponibles, UploadTributoArchivo, eliminarTributoArchivo, downloadTributoArchivo };
+    const { valor, anio } = params;
+
+    let URLTributoContrib = `${URL}/tributo-select-contrib?valor=${valor}&anio=${anio}`;
+
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLTributoContrib}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export { obtenerTributoTipoOperacion, obtenerTributoArchivo, obtenerTributoPeriodosDisponibles, UploadTributoArchivo, eliminarTributoArchivo, downloadTributoArchivo, obtenerTributoContrib };
