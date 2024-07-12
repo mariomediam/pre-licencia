@@ -1,11 +1,9 @@
-import { useState, useRef } from "react";
-import { Breadcrumb, Table } from "react-bootstrap";
+import { useState, useRef, useEffect } from "react";
+import { Breadcrumb, Form, Table } from "react-bootstrap";
 
 import Header from "../../components/Header";
 import { obtenerTributoContrib } from "../../services/tesoreroService";
 import { TributoContribEmisionComponent } from "../../components/tesorero/tributo/TributoContribEmisionComponent";
-import { TributoContribEmisionItemComponent } from "../../components/tesorero/tributo/TributoContribEmisionItemComponent";
-
 
 const anios = [];
 const anioActual = new Date().getFullYear();
@@ -18,12 +16,14 @@ export const TributoArchivoContribView = () => {
     anios.length > 0 ? anios[0] : undefined
   );
   const [listTributoContrib, setListTributoContrib] = useState([]);
+  const [listTributoContribSelected, setListTributoContribSelected] = useState(
+    []
+  );
+  const [allSelected, setAllSelected] = useState(false);
 
   const inputContribuyente = useRef(null);
 
   const buscarTributoContrib = async (event) => {
-    
-
     if (event.key !== "Enter") return;
 
     try {
@@ -31,16 +31,21 @@ export const TributoArchivoContribView = () => {
       const anio = anioSelected;
       const data = await obtenerTributoContrib({ valor, anio });
       setListTributoContrib(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {}, [listTributoContribSelected]);
+
+  const onClickCheckAll = (event) => {
+    setAllSelected(event.target.checked);
+  };
+
   return (
     <>
       <Header />
-      <div className="ps-3 mb-0">
+      <div className="ps-3">
         <Breadcrumb>
           <Breadcrumb.Item active>Gestión y operaciones</Breadcrumb.Item>
           <Breadcrumb.Item active>Control y Gestión Tributaria</Breadcrumb.Item>
@@ -53,7 +58,7 @@ export const TributoArchivoContribView = () => {
         Buscar contribuyente
       </h3>
 
-      <div className="d-flex justify-content-center px-5 pt-4">
+      <div className="d-flex justify-content-center px-5 pt-4 mb-5">
         <div className="col-sm-12 col-lg-10 col-xl-6 p-4 border rounded">
           {/* INPUT BUSQUEDA */}
           <div className="input-group mb-3">
@@ -92,14 +97,21 @@ export const TributoArchivoContribView = () => {
           <div className="mb-4">
             <h5 className="text-color-default">Operaciones financieras</h5>
 
+            <Form.Check
+              aria-label="option 1"
+              label="Seleccionar todos"
+              onClick={onClickCheckAll}
+            />
             <div className="">
               <Table
                 hover
                 responsive
+                borderless
                 className="caption-top mb-1 animate__animated animate__fadeIn animate__faster rounded-3"
               >
                 <thead>
                   <tr className="color-header2 text-white">
+                    <th className="align-middle m-0"></th>
                     <th className="align-middle m-0">Archivo</th>
 
                     <th className="align-middle m-0">Contribuyente</th>
@@ -111,23 +123,85 @@ export const TributoArchivoContribView = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {listTributoContrib.map(({ tipo, anio, mes, detalle }, i) => (
-                    tipo === "EMISION" && (
-                    <TributoContribEmisionComponent
-                      tipo={tipo}
-                      anio={anio}
-                      mes={mes}
-                      detalle={detalle}
-                      key={`${tipo}-${anio}-${mes}`}
-                    />)
-                  ))}
+                  {listTributoContrib.map(
+                    ({ tipo, anio, mes, detalle }, i) =>
+                      tipo === "EMISION" && (
+                        <TributoContribEmisionComponent
+                          tipo={tipo}
+                          anio={anio}
+                          mes={mes}
+                          detalle={detalle}
+                          key={`${tipo}-${anio}-${mes}`}
+                          setListTributoContribSelected={
+                            setListTributoContribSelected
+                          }
+                          allSelected={allSelected}
+                        />
+                      )
+                  )}
                 </tbody>
               </Table>
             </div>
           </div>
         </div>
+
+        {/* BOTON AGREGAR */}
+        {listTributoContribSelected.length === 0 && (
+          <div style={{ position: "relative" }} className="animate__animated animate__fadeIn animate__faster">
+            <div style={{ position: "absolute", right: "0px", width: "70px" }}>
+              <div style={{ position: "fixed", bottom: "25px" }}>
+                <button
+                  className="btn btn-primary rounded-circle"
+                  style={{ width: "70px", height: "70px" }}
+                  title="Agregar operación financiera"
+                  // onClick={handleShow}
+                  // disabled={periodosDisponibles.length === 0}
+                >
+                  <i className="fas fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* BOTON EDITAR */}
+        {listTributoContribSelected.length === 1 && (
+          <div style={{ position: "relative" }} className="animate__animated animate__fadeIn animate__faster">
+            <div style={{ position: "absolute", right: "0px", width: "70px" }}>
+              <div style={{ position: "fixed", bottom: "25px" }}>
+                <button
+                  className="btn btn-primary rounded-circle"
+                  style={{ width: "70px", height: "70px" }}
+                  title="Editar operación financiera"
+                  // onClick={handleShow}
+                  // disabled={periodosDisponibles.length === 0}
+                >
+                  <i className="fas fa-edit"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* BOTON ELIMINAR */}
+        {listTributoContribSelected.length > 0 && (
+          <div style={{ position: "relative" }} className="animate__animated animate__fadeIn animate__faster">
+            <div style={{ position: "absolute", right: listTributoContribSelected.length > 1 ? "0px" : "75px", width: "70px" }}>
+              <div style={{ position: "fixed", bottom: "25px" }}>
+                <button
+                  className="btn btn-danger rounded-circle"
+                  style={{ width: "70px", height: "70px" }}
+                  title="Eliminar operación financiera"
+                  // onClick={handleShow}
+                  // disabled={periodosDisponibles.length === 0}
+                >
+                  <i className="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      <TributoContribEmisionItemComponent />
     </>
   );
 };
