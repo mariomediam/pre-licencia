@@ -5,6 +5,8 @@ import Header from "../../components/Header";
 import { obtenerTributoContrib } from "../../services/tesoreroService";
 import { TributoContribEmisionComponent } from "../../components/tesorero/tributo/TributoContribEmisionComponent";
 import { TributoContribAltasComponent } from "../../components/tesorero/tributo/TributoContribAltasComponent";
+import { TributoContribBajasComponent } from "../../components/tesorero/tributo/TributoContribBajasComponent";
+import { TributoContribRecaudacionComponent } from "../../components/tesorero/tributo/TributoContribRecaudacionComponent";
 
 const anios = [];
 const anioActual = new Date().getFullYear();
@@ -143,6 +145,38 @@ export const TributoArchivoContribView = () => {
                     if (tipo === "ALTAS") {
                       return (
                         <TributoContribAltasComponent
+                          tipo={tipo}
+                          anio={anio}
+                          mes={mes}
+                          detalle={detalle}
+                          key={`${tipo}-${anio}-${mes}`}
+                          setListTributoContribSelected={
+                            setListTributoContribSelected
+                          }
+                          allSelected={allSelected}
+                        />
+                      );
+                    }
+
+                    if (tipo === "BAJAS") {
+                      return (
+                        <TributoContribBajasComponent
+                          tipo={tipo}
+                          anio={anio}
+                          mes={mes}
+                          detalle={detalle}
+                          key={`${tipo}-${anio}-${mes}`}
+                          setListTributoContribSelected={
+                            setListTributoContribSelected
+                          }
+                          allSelected={allSelected}
+                        />
+                      );
+                    }
+
+                    if (tipo === "RECAUDACION") {
+                      return (
+                        <TributoContribRecaudacionComponent
                           tipo={tipo}
                           anio={anio}
                           mes={mes}
