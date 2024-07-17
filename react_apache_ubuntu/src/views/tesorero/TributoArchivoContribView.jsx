@@ -3,10 +3,6 @@ import { Breadcrumb, Form } from "react-bootstrap";
 
 import Header from "../../components/Header";
 import { obtenerTributoContrib } from "../../services/tesoreroService";
-import { TributoContribEmisionComponent } from "../../components/tesorero/tributo/TributoContribEmisionComponent";
-import { TributoContribAltasComponent } from "../../components/tesorero/tributo/TributoContribAltasComponent";
-import { TributoContribBajasComponent } from "../../components/tesorero/tributo/TributoContribBajasComponent";
-import { TributoContribRecaudacionComponent } from "../../components/tesorero/tributo/TributoContribRecaudacionComponent";
 import { TributoArchivoContribComponent } from "../../components/tesorero/tributo/TributoArchivoContribComponent";
 
 const anios = [];
@@ -31,6 +27,7 @@ export const TributoArchivoContribView = () => {
     if (event.key !== "Enter") return;
 
     try {
+      setAllSelected(false);
       const valor = inputContribuyente.current.value;
       const anio = anioSelected;
       const data = await obtenerTributoContrib({ valor, anio });
@@ -45,6 +42,14 @@ export const TributoArchivoContribView = () => {
   const onClickCheckAll = (event) => {
     setAllSelected(event.target.checked);
   };
+
+  useEffect(() => {
+    setListTributoContribSelected([]);
+   
+  }
+  , [listTributoContrib]);
+
+
 
   return (
     <>
@@ -104,14 +109,18 @@ export const TributoArchivoContribView = () => {
             <Form.Check
               aria-label="option 1"
               label="Seleccionar todos"
-              onClick={onClickCheckAll}
+              onChange={onClickCheckAll}
+              checked={allSelected}
             />
             { listTributoContrib.map((tributo) => (
-              <TributoArchivoContribComponent key={tributo.C_Contrib} tributo={tributo} />
+              <TributoArchivoContribComponent key={tributo.C_Contrib} tributo={tributo} setListTributoContribSelected={setListTributoContribSelected} allSelected={allSelected} />
             ))              
             }
           </div>
+          <span>{JSON.stringify(listTributoContribSelected)}</span>
         </div>
+
+        
 
         {/* BOTON AGREGAR */}
         {listTributoContribSelected.length === 0 && (
@@ -185,6 +194,7 @@ export const TributoArchivoContribView = () => {
           </div>
         )}
       </div>
+      
     </>
   );
 };

@@ -6,6 +6,8 @@ export const TributoContribBajasComponent = ({
   C_TipOpe,
   N_TipOpe,
   listTributo: listMes,
+  setListTributoContribSelected,
+  allSelected,
 }) => {  
 
   return (
@@ -25,6 +27,8 @@ export const TributoContribBajasComponent = ({
             C_TipOpe={C_TipOpe}
             N_TipOpe={N_TipOpe}
             mes={mes}
+            setListTributoContribSelected={setListTributoContribSelected}
+            allSelected={allSelected}
           />
         ))}
       </div>

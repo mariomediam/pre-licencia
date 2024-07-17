@@ -308,8 +308,6 @@ const anularRequerimiento = async (anio, numero, tipo, observaciones) => {
     observaciones,
   };
 
-
-  console.log(credenciales)
   let api = UseAxios();
 
   try {

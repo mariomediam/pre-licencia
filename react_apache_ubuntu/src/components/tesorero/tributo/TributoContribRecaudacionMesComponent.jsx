@@ -11,6 +11,8 @@ export const TributoContribRecaudacionMesComponent = ({
   C_TipOpe,
   N_TipOpe,
   mes,
+  setListTributoContribSelected,
+  allSelected,
 }) => {
   const [totales, setTotales] = useState(0);
   const { M_Archivo_Mes, detalle: listTributo } = mes;
@@ -93,6 +95,10 @@ export const TributoContribRecaudacionMesComponent = ({
                   <TributoContribRecaudacionItemComponent
                     key={`${tributo.C_Archivo}_${tributo.C_OpeFin}`}
                     tributo={tributo}
+                    setListTributoContribSelected={
+                      setListTributoContribSelected
+                    }
+                    allSelected={allSelected}
                   />
                 ))}
               </tbody>

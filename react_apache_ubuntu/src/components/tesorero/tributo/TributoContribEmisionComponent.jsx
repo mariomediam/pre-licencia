@@ -7,6 +7,8 @@ export const TributoContribEmisionComponent = ({
   C_TipOpe,
   N_TipOpe,
   listTributo,
+  setListTributoContribSelected,
+  allSelected,
 }) => {  
   return (
     <>
@@ -49,6 +51,8 @@ export const TributoContribEmisionComponent = ({
               <TributoContribEmisionItemComponent
                 key={`${tributo.C_Archivo}_${tributo.C_OpeFin}`}
                 tributo={tributo}
+                setListTributoContribSelected={setListTributoContribSelected}
+                allSelected={allSelected}
               />
             ))}
           </tbody>

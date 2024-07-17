@@ -3,7 +3,7 @@ import { TributoArchivoTipoOpeComponent } from "./TributoArchivoTipoOpeComponent
 import { useEffect, useState } from "react";
 import { formatNumber } from "../../../utils/varios";
 
-export const TributoArchivoContribComponent = ({ tributo }) => {
+export const TributoArchivoContribComponent = ({ tributo, setListTributoContribSelected, allSelected }) => {
   const { C_Contrib, N_Contrib, detalle } = tributo;
 
   const [totales, setTotales] = useState(0);
@@ -92,6 +92,8 @@ export const TributoArchivoContribComponent = ({ tributo }) => {
               C_Contrib={C_Contrib}
               N_Contrib={N_Contrib}
               listTipoOperacion={listTipoOperacion}
+              setListTributoContribSelected={setListTributoContribSelected}
+              allSelected={allSelected}
             />
           ))}
         </Accordion.Body>

@@ -12,6 +12,8 @@ export const TributoArchivoTipoOpeComponent = ({
   C_Contrib,
   N_Contrib,
   listTipoOperacion,
+  setListTributoContribSelected,
+  allSelected,
 }) => {
   const { C_TipOpe, N_TipOpe, detalle } = listTipoOperacion;
   const [totales, setTotales] = useState(0);
@@ -81,6 +83,8 @@ export const TributoArchivoTipoOpeComponent = ({
                 C_TipOpe={C_TipOpe}
                 N_TipOpe={N_TipOpe}
                 listTributo={detalle}
+                setListTributoContribSelected={setListTributoContribSelected}
+                allSelected={allSelected}
               />
             )}
           </>

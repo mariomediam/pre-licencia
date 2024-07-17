@@ -62,8 +62,6 @@ export const DependJefeComponent = ({
 
         const data = await obtenerJefeDepen(aniosSelected, dependSelected);
 
-        console.log(data)
-        
         setCurrentDependJefe(data || {});
       } else {
         setCurrentDependJefe({});

@@ -10,6 +10,8 @@ export const TributoContribAltasMesComponent = ({
   C_TipOpe,
   N_TipOpe,
   mes,
+  setListTributoContribSelected,
+  allSelected,
 }) => {
   const [totales, setTotales] = useState(0);
   const { M_Archivo_Mes, detalle: listTributo } = mes;
@@ -34,7 +36,6 @@ export const TributoContribAltasMesComponent = ({
             </div>
             <div className="col-5 text-end">
               <h6>S/. {formatNumber(totales, 2)}</h6>
-              
             </div>
           </div>
         </Accordion.Header>
@@ -92,6 +93,10 @@ export const TributoContribAltasMesComponent = ({
                   <TributoContribAltastemComponent
                     key={`${tributo.C_Archivo}_${tributo.C_OpeFin}`}
                     tributo={tributo}
+                    setListTributoContribSelected={
+                      setListTributoContribSelected
+                    }
+                    allSelected={allSelected}
                   />
                 ))}
               </tbody>

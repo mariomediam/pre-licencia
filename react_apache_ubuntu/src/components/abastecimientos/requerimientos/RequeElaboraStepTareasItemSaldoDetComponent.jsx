@@ -17,8 +17,6 @@ export const RequeElaboraStepTareasItemSaldoDetComponent = ({
   const { currentReque } = useSelector((state) => state.requerimiento);
   const { requeClasificadores } = currentReque;
 
-  console.log(clasificador);
-
   const { C_clapre, C_objpoi, C_metapoi, selecc, saldos = [], N_clapre_desc} = clasificador;
   
   const onChangeChecked = (e) => {

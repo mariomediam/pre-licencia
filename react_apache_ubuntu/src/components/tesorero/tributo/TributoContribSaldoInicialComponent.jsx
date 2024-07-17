@@ -7,6 +7,8 @@ export const TributoContribSaldoInicialComponent = ({
   C_TipOpe,
   N_TipOpe,
   listTributo,
+  setListTributoContribSelected,
+  allSelected,
 }) => {
 
     
@@ -36,6 +38,8 @@ export const TributoContribSaldoInicialComponent = ({
                 <TributoContribSaldoInicialItemComponent
                 key={`${tributo.C_Archivo}_${tributo.C_OpeFin}`}
                 tributo={tributo}
+                setListTributoContribSelected={setListTributoContribSelected}
+                allSelected={allSelected}
                 />
             ))}
         </tbody>

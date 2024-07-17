@@ -10,6 +10,8 @@ export const TributoContribBeneficioMesComponent = ({
   C_TipOpe,
   N_TipOpe,
   mes,
+  setListTributoContribSelected,
+  allSelected,
 }) => {
   const [totales, setTotales] = useState(0);
   const { M_Archivo_Mes, detalle: listTributo } = mes;
@@ -68,7 +70,7 @@ export const TributoContribBeneficioMesComponent = ({
                     className="align-middle m-0"
                     style={{ fontWeight: "100" }}
                   >
-                    Fecha
+                    Recibo
                   </th>
                   <th
                     className="align-middle m-0"
@@ -92,6 +94,10 @@ export const TributoContribBeneficioMesComponent = ({
                   <TributoContribBeneficioItemComponent
                     key={`${tributo.C_Archivo}_${tributo.C_OpeFin}`}
                     tributo={tributo}
+                    setListTributoContribSelected={
+                      setListTributoContribSelected
+                    }
+                    allSelected={allSelected}
                   />
                 ))}
               </tbody>

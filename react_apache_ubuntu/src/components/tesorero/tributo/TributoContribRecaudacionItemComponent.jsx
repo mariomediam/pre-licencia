@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { formatNumber, transformarFecha } from "../../../utils/varios";
 
-export const TributoContribRecaudacionItemComponent = ({ tributo }) => {
+export const TributoContribRecaudacionItemComponent = ({ tributo, setListTributoContribSelected, allSelected }) => {
+
+  const [selected, setSelected] = useState(false);
+
   const {    
     C_Recaud_Partida,
     N_Reacud_Partida,
@@ -9,8 +13,33 @@ export const TributoContribRecaudacionItemComponent = ({ tributo }) => {
     Q_Recaud_Monto,
     M_Recaud_Anio,
     D_Recaud,
-    M_Recaud_Recibo
+    M_Recaud_Recibo,
+    C_OpeFin,
+    C_Archivo
   } = tributo;
+
+  const onChangeCheckSelected = (event) => {
+    setSelected(event.target.checked);
+  };
+
+  useEffect(() => {
+    if (selected) {
+      setListTributoContribSelected((prev) => [
+        ...prev,
+        { C_OpeFin, C_Archivo },
+      ]);
+    } else {
+      setListTributoContribSelected((prev) =>
+        prev.filter(
+          (item) => item.C_OpeFin !== C_OpeFin || item.C_Archivo !== C_Archivo
+        )
+      );
+    }
+  }, [selected, setListTributoContribSelected, C_OpeFin, C_Archivo]);
+
+  useEffect(() => {
+    setSelected(allSelected);
+  }, [allSelected]);
 
   return (
     <>
@@ -19,8 +48,8 @@ export const TributoContribRecaudacionItemComponent = ({ tributo }) => {
           {" "}
           <Form.Check
             aria-label="option 1"
-            // onChange={onChangeCheckSelected}
-            // checked={selected}
+            onChange={onChangeCheckSelected}
+            checked={selected}
           />
         </td>        
         <td>{M_Recaud_Anio}</td>
