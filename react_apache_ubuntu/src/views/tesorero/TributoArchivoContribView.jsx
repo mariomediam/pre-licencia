@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Breadcrumb, Form, Table } from "react-bootstrap";
+import { Breadcrumb, Form } from "react-bootstrap";
 
 import Header from "../../components/Header";
 import { obtenerTributoContrib } from "../../services/tesoreroService";
@@ -7,6 +7,7 @@ import { TributoContribEmisionComponent } from "../../components/tesorero/tribut
 import { TributoContribAltasComponent } from "../../components/tesorero/tributo/TributoContribAltasComponent";
 import { TributoContribBajasComponent } from "../../components/tesorero/tributo/TributoContribBajasComponent";
 import { TributoContribRecaudacionComponent } from "../../components/tesorero/tributo/TributoContribRecaudacionComponent";
+import { TributoArchivoContribComponent } from "../../components/tesorero/tributo/TributoArchivoContribComponent";
 
 const anios = [];
 const anioActual = new Date().getFullYear();
@@ -105,95 +106,10 @@ export const TributoArchivoContribView = () => {
               label="Seleccionar todos"
               onClick={onClickCheckAll}
             />
-            <div className="">
-              <Table
-                hover
-                responsive
-                borderless
-                className="caption-top mb-1 animate__animated animate__fadeIn animate__faster rounded-3"
-              >
-                <thead>
-                  <tr className="color-header2 text-white">
-                    <th className="align-middle m-0"></th>
-                    <th className="align-middle m-0">Archivo</th>
-
-                    <th className="align-middle m-0">Contribuyente</th>
-                    <th className="align-middle m-0">Partida</th>
-                    <th className="text-center align-middle m-0 p-0">
-                      Importe
-                    </th>
-                    <th className="text-center align-middle m-0 p-0"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {listTributoContrib.map(({ tipo, anio, mes, detalle }, i) => {
-                    if (tipo === "EMISION") {
-                      return (
-                        <TributoContribEmisionComponent
-                          tipo={tipo}
-                          anio={anio}
-                          mes={mes}
-                          detalle={detalle}
-                          key={`${tipo}-${anio}-${mes}`}
-                          setListTributoContribSelected={
-                            setListTributoContribSelected
-                          }
-                          allSelected={allSelected}
-                        />
-                      );
-                    }
-                    if (tipo === "ALTAS") {
-                      return (
-                        <TributoContribAltasComponent
-                          tipo={tipo}
-                          anio={anio}
-                          mes={mes}
-                          detalle={detalle}
-                          key={`${tipo}-${anio}-${mes}`}
-                          setListTributoContribSelected={
-                            setListTributoContribSelected
-                          }
-                          allSelected={allSelected}
-                        />
-                      );
-                    }
-
-                    if (tipo === "BAJAS") {
-                      return (
-                        <TributoContribBajasComponent
-                          tipo={tipo}
-                          anio={anio}
-                          mes={mes}
-                          detalle={detalle}
-                          key={`${tipo}-${anio}-${mes}`}
-                          setListTributoContribSelected={
-                            setListTributoContribSelected
-                          }
-                          allSelected={allSelected}
-                        />
-                      );
-                    }
-
-                    if (tipo === "RECAUDACION") {
-                      return (
-                        <TributoContribRecaudacionComponent
-                          tipo={tipo}
-                          anio={anio}
-                          mes={mes}
-                          detalle={detalle}
-                          key={`${tipo}-${anio}-${mes}`}
-                          setListTributoContribSelected={
-                            setListTributoContribSelected
-                          }
-                          allSelected={allSelected}
-                        />
-                      );
-                    }
-                    return null; // O manejar otros tipos si es necesario
-                  })}
-                </tbody>
-              </Table>
-            </div>
+            { listTributoContrib.map((tributo) => (
+              <TributoArchivoContribComponent key={tributo.C_Contrib} tributo={tributo} />
+            ))              
+            }
           </div>
         </div>
 
