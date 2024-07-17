@@ -1,6 +1,6 @@
-import { TributoContribAltasMesComponent } from "./TributoContribAltasMesComponent";
+import { TributoContribBeneficioMesComponent } from "./TributoContribBeneficioMesComponent";
 
-export const TributoContribAltasComponent = ({
+export const TributoContribBeneficioComponent = ({
   C_Contrib,
   N_Contrib,
   C_TipOpe,
@@ -20,7 +20,7 @@ export const TributoContribAltasComponent = ({
       </small>
       <div style={{ border: "1px solid lightgrey" }} className="mt-2">
         {listMes.map((mes, index) => (
-          <TributoContribAltasMesComponent
+          <TributoContribBeneficioMesComponent
             key={`${C_Contrib}_${C_TipOpe}_${mes.M_Archivo_Mes}`}
             C_Contrib={C_Contrib}
             N_Contrib={N_Contrib}

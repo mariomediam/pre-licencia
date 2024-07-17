@@ -1,8 +1,75 @@
 import { Accordion } from "react-bootstrap";
 import { TributoArchivoTipoOpeComponent } from "./TributoArchivoTipoOpeComponent";
+import { useEffect, useState } from "react";
+import { formatNumber } from "../../../utils/varios";
 
 export const TributoArchivoContribComponent = ({ tributo }) => {
   const { C_Contrib, N_Contrib, detalle } = tributo;
+
+  const [totales, setTotales] = useState(0);
+
+  useEffect(() => {
+    let totalSaldoInicial = 0;
+    let totalEmision = 0;
+    let totalAltas = 0;
+    let totalBajas = 0;
+    let totalRecaudacion = 0;
+    let totalBeneficios = 0;
+
+    detalle.forEach((listTipoOperacion) => {
+      if (listTipoOperacion.C_TipOpe === "01") {
+        listTipoOperacion.detalle.forEach((saldoInicial) => {
+          totalSaldoInicial += saldoInicial.Q_SalIni_Monto;
+        });
+      }
+      if (listTipoOperacion.C_TipOpe === "02") {
+        listTipoOperacion.detalle.forEach((emision) => {
+          totalEmision += emision.Q_Emision_Monto;
+        });
+      }
+
+      if (listTipoOperacion.C_TipOpe === "03") {
+        listTipoOperacion.detalle.forEach((altas) => {
+          altas.detalle.forEach((alta) => {
+            totalAltas += alta.Q_Alta_Monto;
+          });
+        });
+      }
+
+      if (listTipoOperacion.C_TipOpe === "04") {
+        listTipoOperacion.detalle.forEach((bajas) => {
+          bajas.detalle.forEach((baja) => {
+            totalBajas += baja.Q_Baja_Monto;
+          });
+        });
+      }
+
+      if (listTipoOperacion.C_TipOpe === "05") {
+        listTipoOperacion.detalle.forEach((recaudacion) => {
+          recaudacion.detalle.forEach((recauda) => {
+            totalRecaudacion += recauda.Q_Recaud_Monto;
+          });
+        });
+      }
+
+      if (listTipoOperacion.C_TipOpe === "06") {
+        listTipoOperacion.detalle.forEach((beneficios) => {
+          beneficios.detalle.forEach((beneficio) => {
+            totalBeneficios += beneficio.Q_Benefi_Monto;
+          });
+        });
+      }
+
+      setTotales(
+        totalSaldoInicial +
+          totalEmision +
+          totalAltas -
+          totalBajas -
+          totalRecaudacion -
+          totalBeneficios
+      );
+    });
+  }, [detalle]);
 
   return (
     <Accordion className="mb-3">
@@ -14,20 +81,19 @@ export const TributoArchivoContribComponent = ({ tributo }) => {
               <small className="text-muted"> Cód. {C_Contrib}</small>
             </div>
             <div className="col-5 text-end">
-              <h5>S/. 100.00</h5>
+              <h5>{formatNumber(totales, 2)}</h5>
             </div>
           </div>
         </Accordion.Header>
         <Accordion.Body>
-          {
-            detalle.map((listTipoOperacion) => (
-                    <TributoArchivoTipoOpeComponent key={`${C_Contrib}_${listTipoOperacion.C_TipOpe}`} 
-                    C_Contrib={C_Contrib}
-                    N_Contrib={N_Contrib}
-                    listTipoOperacion={listTipoOperacion} />
-
-            ))
-          }
+          {detalle.map((listTipoOperacion) => (
+            <TributoArchivoTipoOpeComponent
+              key={`${C_Contrib}_${listTipoOperacion.C_TipOpe}`}
+              C_Contrib={C_Contrib}
+              N_Contrib={N_Contrib}
+              listTipoOperacion={listTipoOperacion}
+            />
+          ))}
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>

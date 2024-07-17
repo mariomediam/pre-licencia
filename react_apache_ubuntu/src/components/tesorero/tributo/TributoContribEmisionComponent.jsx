@@ -7,9 +7,7 @@ export const TributoContribEmisionComponent = ({
   C_TipOpe,
   N_TipOpe,
   listTributo,
-}) => {
-
-  console.log("Emision listTributo", listTributo)
+}) => {  
   return (
     <>
       <small>
