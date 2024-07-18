@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Breadcrumb, Form } from "react-bootstrap";
+import Swal from "sweetalert2";
 
+import { Toast } from "../../components/tools/PopMessage";
 import Header from "../../components/Header";
-import { obtenerTributoContrib } from "../../services/tesoreroService";
+import { eliminarOpeFin, obtenerTributoContrib } from "../../services/tesoreroService";
 import { TributoArchivoContribComponent } from "../../components/tesorero/tributo/TributoArchivoContribComponent";
 
 const anios = [];
@@ -20,12 +22,11 @@ export const TributoArchivoContribView = () => {
     []
   );
   const [allSelected, setAllSelected] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputContribuyente = useRef(null);
 
-  const buscarTributoContrib = async (event) => {
-    if (event.key !== "Enter") return;
-
+  const buscarTributoContrib = async () => {
     try {
       setAllSelected(false);
       const valor = inputContribuyente.current.value;
@@ -36,6 +37,55 @@ export const TributoArchivoContribView = () => {
       console.error(error);
     }
   };
+
+  const onChangeInputContrib = (event) => {
+    if (event.key !== "Enter") return;
+    buscarTributoContrib();
+
+  }
+
+  const eliminarOperacionFinanciera = async () => {
+    // try {
+    //   await eliminarOpeFin(listTributoContribSelected);
+    //   setListTributoContribSelected([]);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    let messageWarning = `¿Seguro de eliminar las operaciones financieras?`;
+
+    const result = await Swal.fire({
+      title: messageWarning,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await eliminarOpeFin(listTributoContribSelected);
+       
+        await buscarTributoContrib();
+        Toast.fire({
+          icon: "success",
+          title: "Operaciones financieras eliminadas correctamente",
+          background: "#F4F6F6",
+          timer: 1500,
+        });
+        // window.location.reload();
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error eliminando operaciones financieras",
+          text: error.message,
+        });
+      }
+    }
+  };
+
 
   useEffect(() => {}, [listTributoContribSelected]);
 
@@ -48,6 +98,8 @@ export const TributoArchivoContribView = () => {
    
   }
   , [listTributoContrib]);
+
+
 
 
 
@@ -78,7 +130,7 @@ export const TributoArchivoContribView = () => {
               aria-label="Ingrese código o nombre del contribuyente"
               aria-describedby="basic-addon2"
               ref={inputContribuyente}
-              onKeyPress={buscarTributoContrib}
+              onKeyPress={onChangeInputContrib}
             />
             <span className="input-group-text" id="basic-addon2">
               <i className="fas fa-search"></i>
@@ -184,7 +236,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-danger rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Eliminar operación financiera"
-                  // onClick={handleShow}
+                  onClick={eliminarOperacionFinanciera}
                   // disabled={periodosDisponibles.length === 0}
                 >
                   <i className="fas fa-trash"></i>

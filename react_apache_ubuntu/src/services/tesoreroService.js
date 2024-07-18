@@ -21,7 +21,6 @@ const obtenerTributoTipoOperacion = async (tipOpe) => {
   }
 };
 
-
 const obtenerTributoArchivo = async (params) => {
   try {
     let api = UseAxios();
@@ -51,7 +50,6 @@ const obtenerTributoArchivo = async (params) => {
   }
 };
 
-
 const obtenerTributoPeriodosDisponibles = async (params) => {
   try {
     let api = UseAxios();
@@ -63,7 +61,7 @@ const obtenerTributoPeriodosDisponibles = async (params) => {
     if (anio) {
       URLPeriodosDisponibles += `&anio=${anio}`;
     }
-    
+
     let {
       data: { content },
     } = await api.get(`${URLPeriodosDisponibles}`);
@@ -71,9 +69,9 @@ const obtenerTributoPeriodosDisponibles = async (params) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
-const UploadTributoArchivo = async ( params ) => {
+const UploadTributoArchivo = async (params) => {
   try {
     let api = UseAxios();
 
@@ -106,7 +104,7 @@ const eliminarTributoArchivo = async (archivoId) => {
   try {
     let api = UseAxios();
 
-    const URLDEleteTributoArchivo = `${URL}/tributo-archivo/${archivoId}`;    
+    const URLDEleteTributoArchivo = `${URL}/tributo-archivo/${archivoId}`;
 
     let {
       data: { content },
@@ -118,16 +116,18 @@ const eliminarTributoArchivo = async (archivoId) => {
   }
 };
 
-
 const downloadTributoArchivo = async (archivoId) => {
   try {
     let api = UseAxios();
 
     let URLDownloadTributoArchivo = `${URL}/download-tributo-archivo/${archivoId}`;
-    const response =  await api.get(`${URLDownloadTributoArchivo}`, { responseType: 'blob' });
-    const file = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const response = await api.get(`${URLDownloadTributoArchivo}`, {
+      responseType: "blob",
+    });
+    const file = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
     return file;
-
   } catch (error) {
     throw error;
   }
@@ -141,7 +141,6 @@ const obtenerTributoContrib = async (params) => {
 
     let URLTributoContrib = `${URL}/tributo-select-contrib?valor=${valor}&anio=${anio}`;
 
-    
     let {
       data: { content },
     } = await api.get(`${URLTributoContrib}`);
@@ -149,7 +148,42 @@ const obtenerTributoContrib = async (params) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
+const eliminarOpeFin = async (listOpeFin) => {
+  const credenciales = {
+    listOpeFin
+  };
 
-export { obtenerTributoTipoOperacion, obtenerTributoArchivo, obtenerTributoPeriodosDisponibles, UploadTributoArchivo, eliminarTributoArchivo, downloadTributoArchivo, obtenerTributoContrib };
+  let api = UseAxios();
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { message },
+    } = await api.delete(
+      `${URL}/tributo-ope-fin/`,
+      {
+        headers,
+        data: credenciales,
+      }
+    );
+ 
+    return message;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  obtenerTributoTipoOperacion,
+  obtenerTributoArchivo,
+  obtenerTributoPeriodosDisponibles,
+  UploadTributoArchivo,
+  eliminarTributoArchivo,
+  downloadTributoArchivo,
+  obtenerTributoContrib,
+  eliminarOpeFin,
+};
