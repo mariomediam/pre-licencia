@@ -24,7 +24,7 @@ export const TributoContribAltastemComponent = ({ tributo, setListTributoContrib
     if (selected) {
       setListTributoContribSelected((prev) => [
         ...prev,
-        { C_OpeFin, C_Archivo },
+        tributo,
       ]);
     } else {
       setListTributoContribSelected((prev) =>
@@ -33,7 +33,7 @@ export const TributoContribAltastemComponent = ({ tributo, setListTributoContrib
         )
       );
     }
-  }, [selected, setListTributoContribSelected, C_OpeFin, C_Archivo]);
+  }, [selected, setListTributoContribSelected, C_OpeFin, C_Archivo, tributo]);
 
   useEffect(() => {
     setSelected(allSelected);

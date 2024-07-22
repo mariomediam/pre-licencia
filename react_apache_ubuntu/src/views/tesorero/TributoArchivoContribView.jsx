@@ -1,11 +1,15 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Breadcrumb, Form } from "react-bootstrap";
 import Swal from "sweetalert2";
 
 import { Toast } from "../../components/tools/PopMessage";
 import Header from "../../components/Header";
-import { eliminarOpeFin, obtenerTributoContrib } from "../../services/tesoreroService";
+import {
+  eliminarOpeFin,
+  obtenerTributoContrib,
+} from "../../services/tesoreroService";
 import { TributoArchivoContribComponent } from "../../components/tesorero/tributo/TributoArchivoContribComponent";
+import { TributoContribSaldoInicialModalComponent } from "../../components/tesorero/tributo/TributoContribSaldoInicialModalComponent";
 
 const anios = [];
 const anioActual = new Date().getFullYear();
@@ -14,6 +18,10 @@ for (let i = anioActual; i >= 2000; i--) {
 }
 
 export const TributoArchivoContribView = () => {
+
+
+  console.log("Se renderizo TributoArchivoContribView");
+
   const [anioSelected, setAnioSelected] = useState(
     anios.length > 0 ? anios[0] : undefined
   );
@@ -24,33 +32,36 @@ export const TributoArchivoContribView = () => {
   const [allSelected, setAllSelected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const inputContribuyente = useRef(null);
 
-  const buscarTributoContrib = async () => {
+  const buscarTributoContrib = useCallback(async (paramAnio = undefined) => {
+    console.log("********* 2 ***********")
     try {
-      setAllSelected(false);
       const valor = inputContribuyente.current.value;
-      const anio = anioSelected;
+      if (valor === "") return;
+      const anio = paramAnio || anioSelected;
       const data = await obtenerTributoContrib({ valor, anio });
       setListTributoContrib(data);
+      // setAllSelected(false);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [inputContribuyente, anioSelected]);
 
   const onChangeInputContrib = (event) => {
+    console.log("********* 3 ***********")
     if (event.key !== "Enter") return;
     buscarTributoContrib();
-
-  }
+  };
 
   const eliminarOperacionFinanciera = async () => {
-    // try {
-    //   await eliminarOpeFin(listTributoContribSelected);
-    //   setListTributoContribSelected([]);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    console.log("********* 4 ***********")
+    
     let messageWarning = `¿Seguro de eliminar las operaciones financieras?`;
 
     const result = await Swal.fire({
@@ -67,7 +78,7 @@ export const TributoArchivoContribView = () => {
     if (result.isConfirmed) {
       try {
         await eliminarOpeFin(listTributoContribSelected);
-       
+
         await buscarTributoContrib();
         Toast.fire({
           icon: "success",
@@ -86,19 +97,40 @@ export const TributoArchivoContribView = () => {
     }
   };
 
-
-  useEffect(() => {}, [listTributoContribSelected]);
+  
 
   const onClickCheckAll = (event) => {
+    console.log("********* 5 ***********")
     setAllSelected(event.target.checked);
   };
 
   useEffect(() => {
+    console.log("********* 6 ***********")
     setListTributoContribSelected([]);
-   
-  }
-  , [listTributoContrib]);
+  }, [listTributoContrib]);
 
+  const onChangeSelectAnio = async (event) => {
+    console.log("********* 7 ***********")
+    setAnioSelected(event.target.value);    
+    // await buscarTributoContrib(event.target.value);
+  }
+
+  useEffect(() => {
+    console.log("********* 8 ***********")
+    buscarTributoContrib();
+   
+  }, [anioSelected]);
+
+
+  useEffect(() => {
+    console.log("********* 10 ***********")
+   
+  }, [allSelected]);
+
+  useEffect(() => {
+    console.log("********* 11 ***********")
+   
+  }, [listTributoContribSelected]);
 
 
 
@@ -144,7 +176,8 @@ export const TributoArchivoContribView = () => {
               className="form-select mb-3"
               aria-label="Default select example"
               defaultValue={anios[0]}
-              onChange={(e) => setAnioSelected(e.target.value)}
+              // onChange={(e) => setAnioSelected(e.target.value)}
+              onChange={onChangeSelectAnio}
             >
               {anios.map((anio) => (
                 <option key={anio} value={anio}>
@@ -164,15 +197,18 @@ export const TributoArchivoContribView = () => {
               onChange={onClickCheckAll}
               checked={allSelected}
             />
-            { listTributoContrib.map((tributo) => (
-              <TributoArchivoContribComponent key={tributo.C_Contrib} tributo={tributo} setListTributoContribSelected={setListTributoContribSelected} allSelected={allSelected} />
-            ))              
-            }
+            {listTributoContrib.map((tributo) => (
+              <TributoArchivoContribComponent
+                key={tributo.C_Contrib}
+                tributo={tributo}
+                setListTributoContribSelected={setListTributoContribSelected}
+                allSelected={allSelected}                
+              />
+            ))}
           </div>
-          <span>{JSON.stringify(listTributoContribSelected)}</span>
+          {/* <span>{JSON.stringify(listTributoContribSelected)}</span> */}
+          <span>{JSON.stringify(listTributoContrib)}</span>
         </div>
-
-        
 
         {/* BOTON AGREGAR */}
         {listTributoContribSelected.length === 0 && (
@@ -186,7 +222,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-primary rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Agregar operación financiera"
-                  // onClick={handleShow}
+                  onClick={handleShow}
                   // disabled={periodosDisponibles.length === 0}
                 >
                   <i className="fas fa-plus"></i>
@@ -208,7 +244,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-primary rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Editar operación financiera"
-                  // onClick={handleShow}
+                  onClick={handleShow}
                   // disabled={periodosDisponibles.length === 0}
                 >
                   <i className="fas fa-edit"></i>
@@ -246,7 +282,12 @@ export const TributoArchivoContribView = () => {
           </div>
         )}
       </div>
-      
+      <TributoContribSaldoInicialModalComponent
+        show={show}
+        handleClose={handleClose}
+        listTributoContribSelected={listTributoContribSelected}
+        anioSelected={anioSelected}
+      />
     </>
   );
 };

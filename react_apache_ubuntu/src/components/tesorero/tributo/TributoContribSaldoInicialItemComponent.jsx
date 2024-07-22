@@ -23,7 +23,7 @@ export const TributoContribSaldoInicialItemComponent = ({ tributo, setListTribut
     if (selected) {
       setListTributoContribSelected((prev) => [
         ...prev,
-        { C_OpeFin, C_Archivo },
+        tributo,
       ]);
     } else {
       setListTributoContribSelected((prev) =>
@@ -32,7 +32,7 @@ export const TributoContribSaldoInicialItemComponent = ({ tributo, setListTribut
         )
       );
     }
-  }, [selected, setListTributoContribSelected, C_OpeFin, C_Archivo]);
+  }, [selected, setListTributoContribSelected, C_OpeFin, C_Archivo, tributo]);
 
   useEffect(() => {
     setSelected(allSelected);

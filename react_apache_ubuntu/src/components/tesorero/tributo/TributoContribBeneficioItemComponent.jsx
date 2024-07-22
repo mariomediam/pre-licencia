@@ -26,7 +26,7 @@ export const TributoContribBeneficioItemComponent = ({ tributo, setListTributoCo
     if (selected) {
       setListTributoContribSelected((prev) => [
         ...prev,
-        { C_OpeFin, C_Archivo },
+        tributo,
       ]);
     } else {
       setListTributoContribSelected((prev) =>
@@ -35,7 +35,7 @@ export const TributoContribBeneficioItemComponent = ({ tributo, setListTributoCo
         )
       );
     }
-  }, [selected, setListTributoContribSelected, C_OpeFin, C_Archivo]);
+  }, [selected, setListTributoContribSelected, C_OpeFin, C_Archivo, tributo]);
 
   useEffect(() => {
     setSelected(allSelected);

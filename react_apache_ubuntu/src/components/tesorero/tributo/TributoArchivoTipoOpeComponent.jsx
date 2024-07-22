@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
-import { TributoContribSaldoInicialComponent } from "./TributoContribSaldoInicialComponent";
+import {TributoContribSaldoInicialComponent} from "./TributoContribSaldoInicialComponent";
 import { formatNumber } from "../../../utils/varios";
 import { TributoContribEmisionComponent } from "./TributoContribEmisionComponent";
 import { TributoContribAltasComponent } from "./TributoContribAltasComponent";

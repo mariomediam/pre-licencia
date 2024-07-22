@@ -11,7 +11,7 @@ export const TributoContribSaldoInicialComponent = ({
   allSelected,
 }) => {
 
-    
+    console.log("Se renderizo TributoContribSaldoInicialComponent");
 
   return (
     <>

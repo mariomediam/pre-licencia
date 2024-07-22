@@ -8,6 +8,11 @@ export const TributoArchivoContribComponent = ({ tributo, setListTributoContribS
 
   const [totales, setTotales] = useState(0);
 
+  console.log("Se renderizo TributoArchivoContribComponent");
+  console.log("tributo", tributo);
+  console.log(setListTributoContribSelected);
+  console.log(allSelected);
+
   useEffect(() => {
     let totalSaldoInicial = 0;
     let totalEmision = 0;
@@ -78,7 +83,7 @@ export const TributoArchivoContribComponent = ({ tributo, setListTributoContribS
           <div className="row flex-grow-1 me-3 ">
             <div className="col-7">
               {N_Contrib} <br />
-              <small className="text-muted"> Cód. {C_Contrib}</small>
+              <small className="text-muted"> Cód. {C_Contrib} </small>
             </div>
             <div className="col-5 text-end">
               <h5>{formatNumber(totales, 2)}</h5>
