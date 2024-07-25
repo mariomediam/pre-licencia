@@ -177,6 +177,30 @@ const eliminarOpeFin = async (listOpeFin) => {
   }
 };
 
+const agregarOpeFin = async (dataOpeFin) => {
+
+  const credenciales = {
+    ...dataOpeFin
+  };
+
+  let api = UseAxios();
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await api.post(`${URL}/tributo-ope-fin/`, credenciales, {
+      headers,
+    });
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerTributoTipoOperacion,
   obtenerTributoArchivo,
@@ -186,4 +210,5 @@ export {
   downloadTributoArchivo,
   obtenerTributoContrib,
   eliminarOpeFin,
+  agregarOpeFin,
 };

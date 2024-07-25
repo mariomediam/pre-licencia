@@ -222,8 +222,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-primary rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Agregar operación financiera"
-                  onClick={handleShow}
-                  // disabled={periodosDisponibles.length === 0}
+                  onClick={handleShow}                  
                 >
                   <i className="fas fa-plus"></i>
                 </button>
@@ -244,8 +243,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-primary rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Editar operación financiera"
-                  onClick={handleShow}
-                  // disabled={periodosDisponibles.length === 0}
+                  onClick={handleShow}                  
                 >
                   <i className="fas fa-edit"></i>
                 </button>
@@ -272,8 +270,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-danger rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Eliminar operación financiera"
-                  onClick={eliminarOperacionFinanciera}
-                  // disabled={periodosDisponibles.length === 0}
+                  onClick={eliminarOperacionFinanciera}                  
                 >
                   <i className="fas fa-trash"></i>
                 </button>
@@ -287,6 +284,8 @@ export const TributoArchivoContribView = () => {
         handleClose={handleClose}
         listTributoContribSelected={listTributoContribSelected}
         anioSelected={anioSelected}
+        inputContribuyente={inputContribuyente}
+        buscarTributoContrib={buscarTributoContrib}
       />
     </>
   );
