@@ -11,8 +11,6 @@ export const TributoContribSaldoInicialComponent = ({
   allSelected,
 }) => {
 
-    console.log("Se renderizo TributoContribSaldoInicialComponent");
-
   return (
     <>
         <small><small className="text-muted"> {C_Contrib} {N_Contrib} / {N_TipOpe}</small></small>

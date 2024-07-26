@@ -18,9 +18,7 @@ for (let i = anioActual; i >= 2000; i--) {
 }
 
 export const TributoArchivoContribView = () => {
-
-
-  console.log("Se renderizo TributoArchivoContribView");
+  
 
   const [anioSelected, setAnioSelected] = useState(
     anios.length > 0 ? anios[0] : undefined
@@ -30,8 +28,7 @@ export const TributoArchivoContribView = () => {
     []
   );
   const [allSelected, setAllSelected] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
+  
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -39,29 +36,28 @@ export const TributoArchivoContribView = () => {
 
   const inputContribuyente = useRef(null);
 
-  const buscarTributoContrib = useCallback(async (paramAnio = undefined) => {
-    console.log("********* 2 ***********")
-    try {
-      const valor = inputContribuyente.current.value;
-      if (valor === "") return;
-      const anio = paramAnio || anioSelected;
-      const data = await obtenerTributoContrib({ valor, anio });
-      setListTributoContrib(data);
-      // setAllSelected(false);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [inputContribuyente, anioSelected]);
+  const buscarTributoContrib = useCallback(
+    async (paramAnio = undefined) => {
+      try {
+        const valor = inputContribuyente.current.value;
+        if (valor === "") return;
+        const anio = paramAnio || anioSelected;
+        const data = await obtenerTributoContrib({ valor, anio });
+        setListTributoContrib(data);
+        setAllSelected(false);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [inputContribuyente, anioSelected]
+  );
 
   const onChangeInputContrib = (event) => {
-    console.log("********* 3 ***********")
     if (event.key !== "Enter") return;
     buscarTributoContrib();
   };
 
   const eliminarOperacionFinanciera = async () => {
-    console.log("********* 4 ***********")
-    
     let messageWarning = `¿Seguro de eliminar las operaciones financieras?`;
 
     const result = await Swal.fire({
@@ -97,43 +93,27 @@ export const TributoArchivoContribView = () => {
     }
   };
 
-  
-
   const onClickCheckAll = (event) => {
-    console.log("********* 5 ***********")
     setAllSelected(event.target.checked);
   };
 
   useEffect(() => {
-    console.log("********* 6 ***********")
     setListTributoContribSelected([]);
   }, [listTributoContrib]);
 
   const onChangeSelectAnio = async (event) => {
-    console.log("********* 7 ***********")
-    setAnioSelected(event.target.value);    
-    // await buscarTributoContrib(event.target.value);
-  }
+    setAnioSelected(event.target.value);
+  };
 
   useEffect(() => {
-    console.log("********* 8 ***********")
     buscarTributoContrib();
-   
-  }, [anioSelected]);
+  }, [anioSelected, buscarTributoContrib]);
 
-
-  useEffect(() => {
-    console.log("********* 10 ***********")
-   
-  }, [allSelected]);
-
-  useEffect(() => {
-    console.log("********* 11 ***********")
-   
-  }, [listTributoContribSelected]);
-
-
-
+  // useEffect(() => {
+  //   if (listTributoContribSelected.length === 0) {
+  //     setAllSelected(false);
+  //   }
+  // }, [listTributoContribSelected]);
 
   return (
     <>
@@ -202,12 +182,12 @@ export const TributoArchivoContribView = () => {
                 key={tributo.C_Contrib}
                 tributo={tributo}
                 setListTributoContribSelected={setListTributoContribSelected}
-                allSelected={allSelected}                
+                allSelected={allSelected}
               />
             ))}
           </div>
-          {/* <span>{JSON.stringify(listTributoContribSelected)}</span> */}
-          <span>{JSON.stringify(listTributoContrib)}</span>
+          <span>{JSON.stringify(listTributoContribSelected)}</span>
+          {/* <span>{JSON.stringify(listTributoContrib)}</span> */}
         </div>
 
         {/* BOTON AGREGAR */}
@@ -222,7 +202,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-primary rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Agregar operación financiera"
-                  onClick={handleShow}                  
+                  onClick={handleShow}
                 >
                   <i className="fas fa-plus"></i>
                 </button>
@@ -243,7 +223,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-primary rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Editar operación financiera"
-                  onClick={handleShow}                  
+                  onClick={handleShow}
                 >
                   <i className="fas fa-edit"></i>
                 </button>
@@ -270,7 +250,7 @@ export const TributoArchivoContribView = () => {
                   className="btn btn-danger rounded-circle"
                   style={{ width: "70px", height: "70px" }}
                   title="Eliminar operación financiera"
-                  onClick={eliminarOperacionFinanciera}                  
+                  onClick={eliminarOperacionFinanciera}
                 >
                   <i className="fas fa-trash"></i>
                 </button>

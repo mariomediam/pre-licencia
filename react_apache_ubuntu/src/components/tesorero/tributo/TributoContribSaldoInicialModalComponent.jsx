@@ -7,6 +7,7 @@ import { ReactComponent as FileUpload } from "../../../assets/images/svg/file-up
 import {
   obtenerTributoTipoOperacion,
   agregarOpeFin,
+  actualizarOpeFin,
 } from "../../../services/tesoreroService";
 import { obtenerNombreMes } from "../../../utils/varios";
 // import { obtenerNombreMes } from "../../../utils/varios";
@@ -59,8 +60,6 @@ export const TributoContribSaldoInicialModalComponent = ({
   const [tributo] = listTributoContribSelected;
 
   console.log("dataOpeFin", dataOpeFin);
-
-  // console.log("tributo", tributo);
 
   const mappingTables = useMemo(() => ({
     "01": {
@@ -186,9 +185,14 @@ export const TributoContribSaldoInicialModalComponent = ({
   const saveTributo = async () => {
     try {
       setIsSaving(true);
-      // await agregarOpeFin(dataOpeFin);
+      if (accion === "Agregar"){
+        await agregarOpeFin(dataOpeFin);
+      }
+      if (accion === "Editar"){
+        await actualizarOpeFin(dataOpeFin.C_OpeFin, dataOpeFin.C_Archivo, dataOpeFin);
+      }
       inputContribuyente.current.value = dataOpeFin.C_Contrib;
-      buscarTributoContrib();
+      await buscarTributoContrib();
 
       Toast.fire({
         icon: "success",

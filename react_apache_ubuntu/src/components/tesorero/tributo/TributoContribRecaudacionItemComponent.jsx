@@ -41,6 +41,10 @@ export const TributoContribRecaudacionItemComponent = ({ tributo, setListTributo
     setSelected(allSelected);
   }, [allSelected]);
 
+  useEffect(() => {
+    setSelected(false);
+  }, [tributo]);
+
   return (
     <>
       <tr>

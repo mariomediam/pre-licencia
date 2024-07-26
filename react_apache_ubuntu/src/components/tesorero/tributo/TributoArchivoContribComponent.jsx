@@ -8,11 +8,6 @@ export const TributoArchivoContribComponent = ({ tributo, setListTributoContribS
 
   const [totales, setTotales] = useState(0);
 
-  console.log("Se renderizo TributoArchivoContribComponent");
-  console.log("tributo", tributo);
-  console.log(setListTributoContribSelected);
-  console.log(allSelected);
-
   useEffect(() => {
     let totalSaldoInicial = 0;
     let totalEmision = 0;
