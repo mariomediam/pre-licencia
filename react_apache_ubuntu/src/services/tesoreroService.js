@@ -82,7 +82,9 @@ const UploadTributoArchivo = async (params) => {
     const formData = new FormData();
     formData.append("tipo", tipo);
     formData.append("anio", anio);
-    formData.append("mes", mes);
+    if (mes){
+      formData.append("mes", mes);
+    }
     formData.append("archivo", archivo);
 
     const headers = {

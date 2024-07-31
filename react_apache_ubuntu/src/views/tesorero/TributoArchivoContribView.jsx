@@ -186,7 +186,7 @@ export const TributoArchivoContribView = () => {
               />
             ))}
           </div>
-          <span>{JSON.stringify(listTributoContribSelected)}</span>
+          {/* <span>{JSON.stringify(listTributoContribSelected)}</span> */}
           {/* <span>{JSON.stringify(listTributoContrib)}</span> */}
         </div>
 

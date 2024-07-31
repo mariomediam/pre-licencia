@@ -59,8 +59,6 @@ export const TributoContribSaldoInicialModalComponent = ({
 
   const [tributo] = listTributoContribSelected;
 
-  console.log("dataOpeFin", dataOpeFin);
-
   const mappingTables = useMemo(() => ({
     "01": {
       C_SalIni_Contrib: "C_Contrib",
