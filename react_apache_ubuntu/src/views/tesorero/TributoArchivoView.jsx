@@ -50,7 +50,8 @@ export const TributoArchivoView = () => {
   const fetchTributoArchivo = useCallback(async () => {
     try {
         setIsLoading(true)
-      const opcion = tipOpeSelected === "01" ? "03" : "04";
+      // const opcion = tipOpeSelected === "01" ? "03" : "04";
+      const opcion = "04"
       const valor01 = tipOpeSelected;
       const valor02 = anioSelected;
       const data = await obtenerTributoArchivo({ opcion, valor01, valor02 });
