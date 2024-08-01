@@ -22,6 +22,7 @@ import { RequerimientosView } from "../views/abastecimientos/RequerimientosView"
 import { RequerimientoGestionView } from "../views/abastecimientos/RequerimientoGestionView";
 import { TributoArchivoView } from "../views/tesorero/TributoArchivoView";
 import { TributoArchivoContribView } from "../views/tesorero/TributoArchivoContribView";
+import { TributoArchivoReporteView } from "../views/tesorero/TributoArchivoReporteView";
 
 export const DashboardRoutes = () => {
   return (
@@ -76,35 +77,35 @@ export const DashboardRoutes = () => {
             path="/licencia/provisional/listar/:tipo"
             element={<LicenciaProvisionalListaView />}
           />
-          <Route
-            path="/licencia/provisional/gestionar/:tipo/"           
-          >
+          <Route path="/licencia/provisional/gestionar/:tipo/">
             <Route path=":accion" element={<LicProvGestorComponent />} />
             <Route path="" element={<LicProvGestorComponent />} />
-          </Route> 
+          </Route>
           <Route
             path="/licencia/provisional/ubica-listar/:tipo"
             element={<UbicacionView />}
-          />  
-           <Route
+          />
+          <Route
             path="/abastecimientos/requerimientos"
-            element={<RequerimientosView />}            
-          />       
+            element={<RequerimientosView />}
+          />
           <Route
             path="/abastecimientos/requerimiento/gestionar"
-            element={<RequerimientoGestionView />}            
-          />   
-           <Route
+            element={<RequerimientoGestionView />}
+          />
+          <Route
             path="/tesorero/tributo/archivo"
-            element={<TributoArchivoView />}            
-          />    
-           <Route
+            element={<TributoArchivoView />}
+          />
+          <Route
             path="/tesorero/tributo/contribuyente"
-            element={<TributoArchivoContribView />}            
-          />    
+            element={<TributoArchivoContribView />}
+          />
+          <Route
+            path="/tesorero/tributo/reporte"
+            element={<TributoArchivoReporteView />}
+          />
         </Routes>
-       
-          
       </div>
     </>
   );
