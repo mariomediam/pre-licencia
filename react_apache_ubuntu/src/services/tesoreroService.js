@@ -222,6 +222,26 @@ const actualizarOpeFin = async (opeFinId, archivoId, dataOpeFin) => {
   }
 };
 
+
+const downloadTributoReporte = async (params) => {
+  try {
+    let api = UseAxios();
+
+    let URLDownloadTributoReporte = `${URL}/tributo-report/`;
+    const credenciales = {...params};  
+
+    const response = await api.post(`${URLDownloadTributoReporte}`, credenciales, {
+      responseType: "blob",
+    });
+    const file = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    return file;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerTributoTipoOperacion,
   obtenerTributoArchivo,
@@ -233,4 +253,5 @@ export {
   eliminarOpeFin,
   agregarOpeFin,
   actualizarOpeFin,
+  downloadTributoReporte,
 };
