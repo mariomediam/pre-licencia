@@ -124,9 +124,12 @@ code {
   height: 100%;
 }
 
-/* Efecto de poner el color de borde   #4E4187; cuando coloco el mouse encima*/
-
 .tributo:hover {
   border: 1px solid #4E4187 !important;
+}
 
+.vertical-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
 }

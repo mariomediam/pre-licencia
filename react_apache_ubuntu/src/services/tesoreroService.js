@@ -82,7 +82,7 @@ const UploadTributoArchivo = async (params) => {
     const formData = new FormData();
     formData.append("tipo", tipo);
     formData.append("anio", anio);
-    if (mes){
+    if (mes) {
       formData.append("mes", mes);
     }
     formData.append("archivo", archivo);
@@ -154,7 +154,7 @@ const obtenerTributoContrib = async (params) => {
 
 const eliminarOpeFin = async (listOpeFin) => {
   const credenciales = {
-    listOpeFin
+    listOpeFin,
   };
 
   let api = UseAxios();
@@ -165,14 +165,11 @@ const eliminarOpeFin = async (listOpeFin) => {
     };
     let {
       data: { message },
-    } = await api.delete(
-      `${URL}/tributo-ope-fin/`,
-      {
-        headers,
-        data: credenciales,
-      }
-    );
- 
+    } = await api.delete(`${URL}/tributo-ope-fin/`, {
+      headers,
+      data: credenciales,
+    });
+
     return message;
   } catch (error) {
     throw error;
@@ -180,9 +177,8 @@ const eliminarOpeFin = async (listOpeFin) => {
 };
 
 const agregarOpeFin = async (dataOpeFin) => {
-
   const credenciales = {
-    ...dataOpeFin
+    ...dataOpeFin,
   };
 
   let api = UseAxios();
@@ -204,39 +200,55 @@ const agregarOpeFin = async (dataOpeFin) => {
 };
 
 const actualizarOpeFin = async (opeFinId, archivoId, dataOpeFin) => {
-  try {        
-    let api = UseAxios();    
-    const URLOpeFin= `${URL}/tributo-ope-fin/${opeFinId}/${archivoId}`;    
-    const credenciales = {...dataOpeFin};        
+  try {
+    let api = UseAxios();
+    const URLOpeFin = `${URL}/tributo-ope-fin/${opeFinId}/${archivoId}`;
+    const credenciales = { ...dataOpeFin };
     const headers = {
       "Content-Type": "application/json",
-    };    
+    };
     let {
       data: { content },
     } = await api.put(URLOpeFin, credenciales, {
       headers,
-    });       
+    });
     return content;
-  } catch (error) {    
+  } catch (error) {
     throw error;
   }
 };
-
 
 const downloadTributoReporte = async (params) => {
   try {
     let api = UseAxios();
 
     let URLDownloadTributoReporte = `${URL}/tributo-report/`;
-    const credenciales = {...params};  
+    const credenciales = { ...params };
 
-    const response = await api.post(`${URLDownloadTributoReporte}`, credenciales, {
-      responseType: "blob",
-    });
-    const file = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    return file;
+    if (params.contrib && params.contrib.length > 0) {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      let {
+        data: { content },
+      } = await api.post(`${URLDownloadTributoReporte}`, credenciales, {
+        headers,
+      });
+
+      return content;
+    } else {
+      const response = await api.post(
+        `${URLDownloadTributoReporte}`,
+        credenciales,
+        {
+          responseType: "blob",
+        }
+      );
+      const file = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      return file;
+    }
   } catch (error) {
     throw error;
   }

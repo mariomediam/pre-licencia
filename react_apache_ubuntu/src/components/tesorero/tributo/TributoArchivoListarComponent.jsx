@@ -7,22 +7,6 @@ import { TributoArchivoListarItemComponent } from "./TributoArchivoListarItemCom
 
 
 export const TributoArchivoListarComponent = ({ cTipOpe, NTipOpe, fetchTributoArchivo, listTributoArchivo, isLoading, fetchTributoPeriodosDisponibles }) => {
-  // const [listTributoArchivo, setListTributoArchivo] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false)
-
-  // const fetchTributoArchivo = useCallback(async () => {
-  //   try {
-  //       setIsLoading(true)
-  //     const opcion = cTipOpe === "01" ? "03" : "04";
-  //     const valor01 = cTipOpe;
-  //     const valor02 = anio;
-  //     const data = await obtenerTributoArchivo({ opcion, valor01, valor02 });
-  //     setListTributoArchivo(data);
-  //     setIsLoading(false)
-  //   } catch (error) {
-  //     console.error(error);
-  //   }    
-  // }, [cTipOpe, anio]);
 
 
   useEffect(() => {
