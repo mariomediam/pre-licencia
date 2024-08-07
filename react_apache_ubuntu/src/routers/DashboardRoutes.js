@@ -23,6 +23,7 @@ import { RequerimientoGestionView } from "../views/abastecimientos/Requerimiento
 import { TributoArchivoView } from "../views/tesorero/TributoArchivoView";
 import { TributoArchivoContribView } from "../views/tesorero/TributoArchivoContribView";
 import { TributoArchivoReporteView } from "../views/tesorero/TributoArchivoReporteView";
+import { TributoArchivoConciliaView } from "../views/tesorero/TributoArchivoConciliaView";
 
 export const DashboardRoutes = () => {
   return (
@@ -105,6 +106,10 @@ export const DashboardRoutes = () => {
             path="/tesorero/tributo/reporte"
             element={<TributoArchivoReporteView />}
           />
+          <Route 
+            path="/tesorero/tributo/concilia"
+            element={<TributoArchivoConciliaView />}
+            />
         </Routes>
       </div>
     </>

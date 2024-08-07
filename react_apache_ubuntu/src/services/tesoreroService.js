@@ -254,6 +254,36 @@ const downloadTributoReporte = async (params) => {
   }
 };
 
+const ConciliaTributo = async (params) => {
+  try {
+    let api = UseAxios();
+
+    const { anio, mes, archivo } = params;
+
+    let URLConciliaTributo = `${URL}/tributo-concilia/`;
+
+    const formData = new FormData();
+    formData.append("anio", anio);
+    formData.append("mes", mes);
+    formData.append("archivo", archivo);
+
+    const headers = {
+      "Content-Type": "multipart/form-data",
+    };
+    
+    const response = await api.post(`${URLConciliaTributo}`, formData, {
+      headers,
+      responseType: "blob",
+    });
+    const file = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    return file;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   obtenerTributoTipoOperacion,
   obtenerTributoArchivo,
@@ -266,4 +296,5 @@ export {
   agregarOpeFin,
   actualizarOpeFin,
   downloadTributoReporte,
+  ConciliaTributo,
 };

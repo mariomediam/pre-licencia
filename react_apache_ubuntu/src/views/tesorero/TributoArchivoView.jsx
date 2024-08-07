@@ -11,7 +11,7 @@ import { ReactComponent as Altas } from "../../assets/images/svg/cash.svg";
 import {
   obtenerTributoTipoOperacion,
   obtenerTributoPeriodosDisponibles,
-  obtenerTributoArchivo
+  obtenerTributoArchivo,
 } from "../../services/tesoreroService";
 import Header from "../../components/Header";
 import { TributoArchivoListarComponent } from "../../components/tesorero/tributo/TributoArchivoListarComponent";
@@ -38,9 +38,9 @@ export const TributoArchivoView = () => {
     anios.length > 0 ? anios[0] : undefined
   );
   const [tipOpeSelected, setTipOpeSelected] = useState(undefined);
-  const [periodosDisponibles, setPeriodosDisponibles] = useState([]);  
+  const [periodosDisponibles, setPeriodosDisponibles] = useState([]);
   const [listTributoArchivo, setListTributoArchivo] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const [show, setShow] = useState(false);
 
@@ -49,20 +49,18 @@ export const TributoArchivoView = () => {
 
   const fetchTributoArchivo = useCallback(async () => {
     try {
-        setIsLoading(true)
+      setIsLoading(true);
       // const opcion = tipOpeSelected === "01" ? "03" : "04";
-      const opcion = "04"
+      const opcion = "04";
       const valor01 = tipOpeSelected;
       const valor02 = anioSelected;
       const data = await obtenerTributoArchivo({ opcion, valor01, valor02 });
       setListTributoArchivo(data);
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
-    }    
+    }
   }, [tipOpeSelected, anioSelected]);
-
-  
 
   const getNameTipoOperacion = (cTipOpe) => {
     const tipoOperacion = lisTipoOperacion.find(
@@ -71,10 +69,9 @@ export const TributoArchivoView = () => {
     return tipoOperacion ? tipoOperacion.N_TipOpe : "";
   };
 
-
   const onClicTipoOperacion = (cTipOpe) => {
     setTipOpeSelected(cTipOpe);
-  }
+  };
 
   useEffect(() => {
     const fetchTributoTipoOperacion = async () => {
@@ -87,7 +84,6 @@ export const TributoArchivoView = () => {
     };
     fetchTributoTipoOperacion();
   }, []);
-
 
   useEffect(() => {
     if (lisTipoOperacion.length > 0) {
@@ -141,6 +137,33 @@ export const TributoArchivoView = () => {
       </h3>
 
       <div className="container border rounded p-4 fullHeight">
+        <div
+          className={`d-flex justify-content-end m-0 p-0 ${tipOpeSelected === "01" ? "invisible" : ""} `}
+          // style={{ visibility: "hidden" }}
+        >
+          <small>
+            <span style={{ color: "#4169E1" }}>
+              <a
+                href={`${
+                  process.env.REACT_APP_API
+                }/download-file/tesorero/${getNameTipoOperacion(
+                  tipOpeSelected
+                ).toLowerCase()}.xlsx`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i
+                  className="fas fa-download"
+                  title="Descargar"
+                  style={{ color: "#4169E1" }}
+                ></i>{" "}
+                Descargar plantilla {getNameTipoOperacion(
+                  tipOpeSelected
+                ).toLowerCase()}
+              </a>
+            </span>{" "}
+          </small>
+        </div>
         <div className="row">
           <div className="col-12">
             <div className="mb-4">
@@ -180,7 +203,9 @@ export const TributoArchivoView = () => {
                               ? "tributo-selected"
                               : "tributo"
                           }`}
-                          onClick={() => onClicTipoOperacion(itemTipOpe.C_TipOpe)}
+                          onClick={() =>
+                            onClicTipoOperacion(itemTipOpe.C_TipOpe)
+                          }
                         >
                           {OperationIcon && <OperationIcon />}
                           {itemTipOpe.N_TipOpe}
@@ -195,11 +220,11 @@ export const TributoArchivoView = () => {
         </div>
         <TributoArchivoListarComponent
           cTipOpe={tipOpeSelected}
-          NTipOpe={getNameTipoOperacion(tipOpeSelected)}          
+          NTipOpe={getNameTipoOperacion(tipOpeSelected)}
           fetchTributoArchivo={fetchTributoArchivo}
-          listTributoArchivo={listTributoArchivo}          
-          isLoading={isLoading}             
-          fetchTributoPeriodosDisponibles={fetchTributoPeriodosDisponibles}       
+          listTributoArchivo={listTributoArchivo}
+          isLoading={isLoading}
+          fetchTributoPeriodosDisponibles={fetchTributoPeriodosDisponibles}
         />
 
         <div style={{ position: "relative" }}>
@@ -211,7 +236,7 @@ export const TributoArchivoView = () => {
                 title={`Agregar ${getNameTipoOperacion(
                   tipOpeSelected
                 ).toLowerCase()}`}
-                onClick={handleShow}                
+                onClick={handleShow}
                 disabled={periodosDisponibles.length === 0}
               >
                 <i className="fas fa-plus"></i>
@@ -227,7 +252,7 @@ export const TributoArchivoView = () => {
         anioSelected={anioSelected}
         tipOpeSelected={tipOpeSelected}
         NTipOpe={getNameTipoOperacion(tipOpeSelected)}
-        periodosDisponibles={periodosDisponibles}   
+        periodosDisponibles={periodosDisponibles}
         fetchTributoArchivo={fetchTributoArchivo}
         fetchTributoPeriodosDisponibles={fetchTributoPeriodosDisponibles}
       />
