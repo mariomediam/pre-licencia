@@ -32,7 +32,7 @@ export const EjecucionView = () => {
         </h3>
       </div>
       <div className="p-3 d-flex justify-content-center">
-        <div className="full-width border" style={{ maxWidth: "1500px" }}>
+        <div className="full-width" style={{ maxWidth: "1500px" }}>
           <div className="col-12 col-sm-10 ">
             <div className="col-12 col-sm-5"></div>
 
@@ -65,10 +65,13 @@ export const EjecucionView = () => {
               ))}
             </Nav>
           </div>
+          <div className="px-3">
           {tabSelected === TABS[0] && <EjecucionFilterGeneralView />}
+
+          </div>
         </div>
       </div>
-      {tabSelected}
+      
     </>
   );
 };

@@ -1,15 +1,15 @@
 import { Form } from "react-bootstrap";
 
-import CalendarStats from "../../../../icons/CalendarStatsIcon";
+import ClockIcon from "../../../../icons/ClockIcon";
 
 export const FilterSIAFCycleComponent = () => {
   return (
     <div>
       <div className="d-flex align-items-end text-color-default mb-2">
-        <CalendarStats />
+        <ClockIcon />
         <small className="ms-1">Ciclo</small>
       </div>
-      <div className="d-flex gap-2" style={{minWidth: "200px"}}>
+      <div>
         <Form.Select aria-label="Default select example">
           <option>Gasto</option>
           <option value="1">One</option>
