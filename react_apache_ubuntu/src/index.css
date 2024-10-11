@@ -133,3 +133,7 @@ code {
   transform: rotate(180deg);
   text-align: center;
 }
+
+.full-width {
+  width: 100%;
+}
