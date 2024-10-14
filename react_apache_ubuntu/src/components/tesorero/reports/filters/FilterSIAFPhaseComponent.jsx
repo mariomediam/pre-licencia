@@ -10,7 +10,7 @@ export const FilterSIAFPhaseComponent = () => {
         <small className="ms-1">Fase</small>
       </div>
       <div>
-        <Form.Select aria-label="Default select example">
+        <Form.Select aria-label="Fase del expediente">
           <option>GIRADO</option>
           <option value="1">One</option>
           <option value="2">Two</option>
