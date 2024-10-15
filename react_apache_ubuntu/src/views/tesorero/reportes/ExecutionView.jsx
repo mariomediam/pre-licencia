@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Breadcrumb, Form } from "react-bootstrap";
-import Nav from "react-bootstrap/Nav";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Breadcrumb, Nav } from "react-bootstrap";
 
 import Header from "../../../components/Header";
 import ReportIcon from "../../../icons/ReportIcon";
@@ -10,14 +10,35 @@ import { ExecutionFilterDocumentView } from "./ExecutionFilterDocumentView";
 import { ExecutionFilterSIAFView } from "./ExecutionFilterSIAFView";
 import { ExecutionFilterSIGAView } from "./ExecutionFilterSIGAView";
 
+import { updateFilterSearch } from "../../../store/slices/helpers/filterSearch/thunks";
+
 const TABS = ["General", "Presupuestal", "Documento", "SIAF", "SIGA.NET"];
 
+const firstDay = new Date(new Date().getFullYear(), 0, 1)
+  .toISOString()
+  .split("T")[0];
+const currentDate = new Date().toISOString().split("T")[0];
+
+const initialFilterSearch = {
+  periodo: [firstDay, currentDate],
+  rubro: "07",
+  ciclo: "G",
+  fase: "",
+};
+
 export const ExecutionView = () => {
+  const dispatch = useDispatch();
   const [tabSelected, setTabSelected] = useState(TABS[0]);
+
+  const { filterSearch } = useSelector((state) => state.filterSearch);
 
   const onClickTab = (tab) => {
     setTabSelected(tab);
   };
+
+  useEffect(() => {
+    dispatch(updateFilterSearch(initialFilterSearch));
+  }, [dispatch]);
 
   const TabNavigation = ({ tabs, tabSelected, onClickTab }) => (
     <Nav
@@ -63,6 +84,7 @@ export const ExecutionView = () => {
         return null;
     }
   };
+  console.log("Se renderiza el componente ExecutionView");
 
   return (
     <>
@@ -95,6 +117,7 @@ export const ExecutionView = () => {
           </div>
         </div>
       </div>
+      {JSON.stringify(filterSearch)}
     </>
   );
 };

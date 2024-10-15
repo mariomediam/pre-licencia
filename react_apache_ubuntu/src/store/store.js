@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { counterSlice } from './slices/counter'
 import { boletasEnviadasSlice, boletasSlice, planillaCorreoSlice, planillaSlice, trabajadorCorreoSlice, licProvSlice, licProvUbicaSlice, requerimientoSlice } from './slices'
+import { filterSearchSlice } from './slices/helpers/filterSearch/filterSearchSlice'
 
 export const store = configureStore({
   reducer: {
@@ -13,5 +14,6 @@ export const store = configureStore({
     licProv: licProvSlice.reducer,
     licProvUbica: licProvUbicaSlice.reducer,
     requerimiento: requerimientoSlice.reducer,
+    filterSearch: filterSearchSlice.reducer
   },
 })

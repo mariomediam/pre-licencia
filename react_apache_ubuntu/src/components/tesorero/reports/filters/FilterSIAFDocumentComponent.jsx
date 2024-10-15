@@ -30,6 +30,7 @@ const initialDocuments = [
     <Select
             placeholder=""
             // ref={selectGiros}
+            isClearable 
             noOptionsMessage={() => "Registro no encontrado"}            
             name="colors"
             // onChange={setSelectedOption}
