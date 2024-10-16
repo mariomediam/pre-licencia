@@ -1,8 +1,7 @@
 import { Form } from "react-bootstrap";
 import CoinsIcon from "../../../../icons/CoinsIcon";
 
-export const FilterSIAFResourceComponent = () => {
-
+export const FilterSIAFResourceComponent = ({ value, setValue }) => {
   console.log("Se renderiza FilterSIAFResourceComponent");
   return (
     <div>
@@ -12,8 +11,13 @@ export const FilterSIAFResourceComponent = () => {
       </div>
 
       <div>
-        <Form.Control type="text" aria-describedby="Tipo de recurso" />
-      </div>
+        <Form.Control
+          type="text"
+          aria-describedby="Tipo de recurso"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+      </div>      
     </div>
   );
 };

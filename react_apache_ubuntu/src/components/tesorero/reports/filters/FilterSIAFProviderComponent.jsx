@@ -1,17 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 
-import FileDollarIcon from "../../../../icons/FileDollarIcon";
 import UserCheckIcon from "../../../../icons/UserCheckIcon";
 
-export const FilterSIAFProviderComponent = () => {
-  const initialDocuments = [
-    { value: "000", label: "DANIEL" },
-    { value: "001", label: "MARCO" },
-    { value: "002", label: "MARIO" },
-    { value: "003", label: "WALTER" },
-  ];
-  const [giros, setGiros] = useState(initialDocuments);
+import { obtenerPersona } from "../../../../services/siafService";
+
+export const FilterSIAFProviderComponent = ({ value, setValue }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [listPersonas, setListPersonas] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (value && value.length > 3) {
+  //       const data = await obtenerPersona(value);
+  //       const personas = data.map(({ RUC, NOMBRE }) => ({
+  //         value: RUC,
+  //         label: `${RUC} - ${NOMBRE}`,
+  //       }));  
+
+  //       setListPersonas(personas);
+  //     } else {
+  //       setListPersonas([]);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [value]);
+
+  useEffect(() => {
+    console.log("Se disparooooo")
+    // console.log("************* 1 *************");
+    // const delayDebounceFn = setTimeout(() => {
+    //   if (searchTerm) {
+    //     obtenerPersona(searchTerm).then((result) => {
+    //       setListPersonas(result);
+    //       console.log("************* 2 *************");
+    //     }).catch((error) => {
+    //       console.error("Error fetching personas:", error);
+    //     });
+    //   }
+    // }, 5000);
+
+    // return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
+  const handleSelectChange = (e) => {
+    setValue(e.target.value);
+  };
 
   return (
     <div>
@@ -25,8 +59,9 @@ export const FilterSIAFProviderComponent = () => {
           // ref={selectGiros}
           noOptionsMessage={() => "Registro no encontrado"}
           name="colors"
-          // onChange={setSelectedOption}
-          options={giros}
+          onChange={setSearchTerm}
+          // onInput={(e) => setSearchTerm(e.target.value)}
+          options={listPersonas}
           className="basic-multi-select"
           classNamePrefix="select"
         />

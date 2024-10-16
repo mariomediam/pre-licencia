@@ -1,10 +1,28 @@
+import { useDispatch, useSelector } from "react-redux";
+
 import { FillterNumberExped } from "../../../components/tesorero/reports/filters/FillterNumberExped"
 import { FilterSIAFCertificateComponent } from "../../../components/tesorero/reports/filters/FilterSIAFCertificateComponent"
 import { FilterSIAFCurrentAccountComponent } from "../../../components/tesorero/reports/filters/FilterSIAFCurrentAccountComponent"
 import { FilterSIAFProviderComponent } from "../../../components/tesorero/reports/filters/FilterSIAFProviderComponent"
 
+import { updateFilterSearch } from "../../../store/slices/helpers/filterSearch/thunks";
 
 export const ExecutionFilterSIAFView = () => {
+
+  const dispatch = useDispatch();
+  const { filterSearch } = useSelector((state) => state.filterSearch);
+
+  const { expedsiaf = "", certifanual = "" } = filterSearch;
+
+  const updateExpedSIAF = (value) => {
+    dispatch(updateFilterSearch({ expedsiaf: value }));
+  }
+
+  const updateCertifAnual = (value) => {
+    dispatch(updateFilterSearch({ certifanual: value }));
+  }
+
+
   return (
     <>
     
@@ -13,14 +31,14 @@ export const ExecutionFilterSIAFView = () => {
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "140px" }}
       >
-        <FillterNumberExped />
+        <FillterNumberExped value={expedsiaf} setValue={updateExpedSIAF} />
       </div>
 
       <div
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "140px" }}
       >
-        <FilterSIAFCertificateComponent />
+        <FilterSIAFCertificateComponent value={certifanual} setValue={updateCertifAnual} />
       </div>
 
       <div

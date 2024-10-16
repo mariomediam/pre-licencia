@@ -1,46 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 
-import FileDollarIcon from '../../../../icons/FileDollarIcon'
+import FileDollarIcon from "../../../../icons/FileDollarIcon";
+import { obtenerMaestroDocumento } from "../../../../services/siafService";
 
-export const FilterSIAFDocumentComponent = () => {
+export const FilterSIAFDocumentComponent = ({ value, setValue }) => {
+  const [documentos, setDocumentos] = useState([]);
 
-//     COD_DOC	NOMBRE
-// 000	SIN DOCUMENTO                                                                                                                                         
-// 001	FACTURA                                                                                                                                               
-// 002	BOLETA DE VENTA                                                                                                                                       
-// 003	ACTA DE ENTREGA                                                                                                                                       
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await obtenerMaestroDocumento();
 
-
-const initialDocuments = [
-    { value: '000', label: 'SIN DOCUMENTO' },
-    { value: '001', label: 'FACTURA' },
-    { value: '002', label: 'BOLETA DE VENTA' },
-    { value: '003', label: 'ACTA DE ENTREGA' }
-]
-    const [giros, setGiros] = useState(initialDocuments);
+      const documentos = data.map(({ COD_DOC, NOMBRE }) => ({
+        value: COD_DOC,
+        label: `${COD_DOC} - ${NOMBRE}`,
+      }));
+      setDocumentos(documentos);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
-    <div className='d-flex align-items-end text-color-default mb-2'>
+      <div className="d-flex align-items-end text-color-default mb-2">
         <FileDollarIcon />
-         <small className="ms-1">Documento</small>   
+        <small className="ms-1">Documento</small>
+      </div>
+      <div>
+        <Select
+          placeholder=""
+          // ref={selectGiros}
+          isClearable
+          noOptionsMessage={() => "Registro no encontrado"}
+          name="colors"
+          onChange={setValue}
+          options={documentos}
+          value={value}
+          className="basic-multi-select"
+          classNamePrefix="select"
+        />
+      </div>
     </div>
-    <div>
-    <Select
-            placeholder=""
-            // ref={selectGiros}
-            isClearable 
-            noOptionsMessage={() => "Registro no encontrado"}            
-            name="colors"
-            // onChange={setSelectedOption}
-            options={giros}
-            className="basic-multi-select"
-            classNamePrefix="select"
-          />
-        
-
-    </div>
-</div>
-  )
-}
+  );
+};

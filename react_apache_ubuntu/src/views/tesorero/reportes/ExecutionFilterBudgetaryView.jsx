@@ -9,17 +9,36 @@ import { FilterSIAFResourceComponent } from "../../../components/tesorero/report
 import { updateFilterSearch } from "../../../store/slices/helpers/filterSearch/thunks";
 
 export const ExecutionFilterBudgetaryView = () => {
-
   const dispatch = useDispatch();
   const { filterSearch } = useSelector((state) => state.filterSearch);
 
-  const { rubro } = filterSearch;
+  const {
+    rubro = "",
+    recurso = "",
+    clasificador = "",
+    meta = "",
+    operacion = "",
+  } = filterSearch;
 
   const updateRubro = (value) => {
-    dispatch(updateFilterSearch({ "rubro": value }));
-  }
+    dispatch(updateFilterSearch({ rubro: value }));
+  };
 
-  console.log("Se renderiza ExecutionFilterBudgetaryView");
+  const updateRecurso = (value) => {
+    dispatch(updateFilterSearch({ recurso: value }));
+  };
+
+  const updateClasificador = (value) => {
+    dispatch(updateFilterSearch({ clasificador: value }));
+  };
+
+  const updateMeta = (value) => {
+    dispatch(updateFilterSearch({ meta: value }));
+  };
+
+  const updateOperacion = (value) => {
+    dispatch(updateFilterSearch({ operacion: value }));
+  };
 
   return (
     <div className=" d-flex gap-3 flex-wrap animate__animated animate__fadeIn animate__faster">
@@ -27,31 +46,37 @@ export const ExecutionFilterBudgetaryView = () => {
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "130px" }}
       >
-        <FilterSIAFFFComponent value={rubro} setValue={updateRubro}/>
+        <FilterSIAFFFComponent value={rubro} setValue={updateRubro} />
       </div>
       <div
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "130px" }}
       >
-        <FilterSIAFResourceComponent />
+        <FilterSIAFResourceComponent value={recurso} setValue={updateRecurso} />
       </div>
       <div
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "180px" }}
       >
-        <FilterSIAFClassifierComponent />
+        <FilterSIAFClassifierComponent
+          value={clasificador}
+          setValue={updateClasificador}
+        />
       </div>
       <div
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "130px" }}
       >
-        <FilterSIAFGoalComponent />
+        <FilterSIAFGoalComponent value={meta} setValue={updateMeta} />
       </div>
       <div
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "130px" }}
       >
-        <FilterSIAFOperationComponent />
+        <FilterSIAFOperationComponent
+          value={operacion}
+          setValue={updateOperacion}
+        />
       </div>
     </div>
   );

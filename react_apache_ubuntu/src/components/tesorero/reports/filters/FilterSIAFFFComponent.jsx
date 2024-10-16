@@ -18,6 +18,7 @@ export const FilterSIAFFFComponent = ({ value, setValue }) => {
           onChange={(e) => setValue(e.target.value)}
         />
       </div>
+      
     </div>
   );
 };

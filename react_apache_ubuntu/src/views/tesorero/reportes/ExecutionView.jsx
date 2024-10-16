@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Breadcrumb, Nav } from "react-bootstrap";
 
 import Header from "../../../components/Header";
@@ -21,16 +21,25 @@ const currentDate = new Date().toISOString().split("T")[0];
 
 const initialFilterSearch = {
   periodo: [firstDay, currentDate],
-  rubro: "07",
   ciclo: "G",
   fase: "",
+  rubro: "",
+  recurso: "",
+  clasificador: "",
+  meta: "",
+  operacion: "",
+  documento: "",
+  numerodoc: "",
+  glosa: "",
+  expedsiaf: "",
+  certifanual: "",
 };
 
 export const ExecutionView = () => {
   const dispatch = useDispatch();
   const [tabSelected, setTabSelected] = useState(TABS[0]);
 
-  const { filterSearch } = useSelector((state) => state.filterSearch);
+  // const { filterSearch } = useSelector((state) => state.filterSearch);
 
   const onClickTab = (tab) => {
     setTabSelected(tab);
@@ -117,7 +126,7 @@ export const ExecutionView = () => {
           </div>
         </div>
       </div>
-      {JSON.stringify(filterSearch)}
+      {/* {JSON.stringify(filterSearch)} */}
     </>
   );
 };
