@@ -11,6 +11,7 @@ import { ExecutionFilterSIAFView } from "./ExecutionFilterSIAFView";
 import { ExecutionFilterSIGAView } from "./ExecutionFilterSIGAView";
 
 import { updateFilterSearch } from "../../../store/slices/helpers/filterSearch/thunks";
+import { ExecutionSearchSummary } from "../../../components/tesorero/reports/filters/ExecutionSearchSummary";
 
 const TABS = ["General", "Presupuestal", "Documento", "SIAF", "SIGA.NET"];
 
@@ -44,8 +45,6 @@ const initialFilterSearch = {
 export const ExecutionView = () => {
   const dispatch = useDispatch();
   const [tabSelected, setTabSelected] = useState(TABS[0]);
-
-  // const { filterSearch } = useSelector((state) => state.filterSearch);
 
   const onClickTab = (tab) => {
     setTabSelected(tab);
@@ -99,7 +98,6 @@ export const ExecutionView = () => {
         return null;
     }
   };
-  console.log("Se renderiza el componente ExecutionView");
 
   return (
     <>
@@ -131,8 +129,15 @@ export const ExecutionView = () => {
             <TabContent tabSelected={tabSelected} />
           </div>
         </div>
+        
       </div>
-      {/* {JSON.stringify(filterSearch)} */}
+      <div className="px-3 d-flex justify-content-center">
+      <div className="full-width px-3" style={{ maxWidth: "1500px" }}>
+                <ExecutionSearchSummary />
+        
+        </div>
+
+      </div>
     </>
   );
 };

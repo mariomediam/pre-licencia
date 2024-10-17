@@ -2,7 +2,6 @@ import { Form } from "react-bootstrap";
 import CashIcon from "../../../../icons/CashIcon";
 
 export const FilterSIAFFFComponent = ({ value, setValue }) => {
-  console.log("Se renderiza FilterSIAFFFComponent");
 
   return (
     <div>

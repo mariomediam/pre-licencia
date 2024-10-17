@@ -2,7 +2,6 @@ import { Form } from "react-bootstrap";
 import CoinsIcon from "../../../../icons/CoinsIcon";
 
 export const FilterSIAFResourceComponent = ({ value, setValue }) => {
-  console.log("Se renderiza FilterSIAFResourceComponent");
   return (
     <div>
       <div className="d-flex align-items-end text-color-default mb-2">

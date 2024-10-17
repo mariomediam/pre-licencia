@@ -8,8 +8,7 @@ export const filterSearchSlice = createSlice({
   reducers: {
 
     
-    initialFilterSearch: (state, { payload }) => {
-        console.log("first payload", payload);
+    initialFilterSearch: (state, { payload }) => {        
         state.filterSearch = payload;
     },
     setFilterSearch: (state, { payload }) => {
