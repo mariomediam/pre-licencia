@@ -31,9 +31,14 @@ const initialFilterSearch = {
   documento: "",
   numerodoc: "",
   glosa: "",
-  expedsiaf: "",
-  certifanual: "",
+  siafexped: "",
+  siafcertifanual: "",
   siafprov: "",
+  siafctacte: "",
+  sigaexped: "",
+  sigaprecomp: "",
+  sigaprov: "",
+  sigaplancont: "",
 };
 
 export const ExecutionView = () => {

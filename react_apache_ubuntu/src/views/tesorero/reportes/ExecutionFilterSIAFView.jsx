@@ -12,18 +12,22 @@ export const ExecutionFilterSIAFView = () => {
   const dispatch = useDispatch();
   const { filterSearch } = useSelector((state) => state.filterSearch);
 
-  const { expedsiaf = "", certifanual = "", siafprov = "" } = filterSearch;
+  const { siafexped = "", siafcertifanual = "", siafprov = "", siafctacte = "" } = filterSearch;
 
-  const updateExpedSIAF = (value) => {
-    dispatch(updateFilterSearch({ expedsiaf: value }));
+  const updatesiafexped = (value) => {
+    dispatch(updateFilterSearch({ siafexped: value }));
   }
 
-  const updateCertifAnual = (value) => {
-    dispatch(updateFilterSearch({ certifanual: value }));
+  const updatesiafcertifanual = (value) => {
+    dispatch(updateFilterSearch({ siafcertifanual: value }));
   }
 
   const updateSiafProv = (value) => {
     dispatch(updateFilterSearch({ siafprov: value }));
+  }
+
+  const updateSiafCtaCte = (value) => {
+    dispatch(updateFilterSearch({ siafctacte: value }));
   }
 
 
@@ -35,14 +39,14 @@ export const ExecutionFilterSIAFView = () => {
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "140px" }}
       >
-        <FillterNumberExped value={expedsiaf} setValue={updateExpedSIAF} />
+        <FillterNumberExped value={siafexped} setValue={updatesiafexped} />
       </div>
 
       <div
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "140px" }}
       >
-        <FilterSIAFCertificateComponent value={certifanual} setValue={updateCertifAnual} />
+        <FilterSIAFCertificateComponent value={siafcertifanual} setValue={updatesiafcertifanual} />
       </div>
 
       <div
@@ -56,7 +60,7 @@ export const ExecutionFilterSIAFView = () => {
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "140px" }}
       >
-        <FilterSIAFCurrentAccountComponent />
+        <FilterSIAFCurrentAccountComponent value={siafctacte} setValue={updateSiafCtaCte}/>
       </div>
       
       

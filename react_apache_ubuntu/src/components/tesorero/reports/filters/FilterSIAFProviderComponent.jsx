@@ -40,9 +40,10 @@ export const FilterSIAFProviderComponent = ({ value, setValue }) => {
         <small className="ms-1">Proveedor</small>
       </div>
       <div>
-        <AsyncSelect
-          defaultOptions
+        <AsyncSelect          
+          placeholder=""          
           isClearable
+          noOptionsMessage={() => "Registro no encontrado"}          
           loadOptions={promiseOptions}
           onChange={setValue}
           value={value}

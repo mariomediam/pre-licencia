@@ -20,8 +20,6 @@ const obtenerMaestroDocumento = async () => {
   };
 
   const obtenerPersona = async (filtro) => {
-
-    console.log("filtro", filtro);
     const credenciales = {
       filtro,
     };
@@ -43,5 +41,28 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   };
+
+  const obtenerProveedorSIGA = async (filtro) => {
+    const credenciales = {
+      filtro,
+    };
   
-export { obtenerMaestroDocumento, obtenerPersona };
+    let api = UseAxios();
+  
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      let {
+        data: { content },
+      } = await api.post(`${URL}/proveedor-siga/`, credenciales, {
+        headers,
+      });
+  
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  };
+  
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA };

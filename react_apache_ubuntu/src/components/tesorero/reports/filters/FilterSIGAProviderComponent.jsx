@@ -1,36 +1,54 @@
-import { useState } from "react";
-import Select from "react-select";
+import { useRef } from "react";
+import AsyncSelect from "react-select/async";
 
-import FileDollarIcon from "../../../../icons/FileDollarIcon";
 import UserCheckIcon from "../../../../icons/UserCheckIcon";
 
-export const FilterSIGAProviderComponent = () => {
-    const initialDocuments = [
-        { value: "000", label: "DANIEL" },
-        { value: "001", label: "MARCO" },
-        { value: "002", label: "MARIO" },
-        { value: "003", label: "WALTER" },
-      ];
-      const [giros, setGiros] = useState(initialDocuments);
-    
-      return (
-        <div>
-          <div className="d-flex align-items-end text-color-default mb-2">
-            <UserCheckIcon />
-            <small className="ms-1">Proveedor</small>
-          </div>
-          <div>
-            <Select
-              placeholder=""
-              // ref={selectGiros}
-              noOptionsMessage={() => "Registro no encontrado"}
-              name="colors"
-              // onChange={setSelectedOption}
-              options={giros}
-              className="basic-multi-select"
-              classNamePrefix="select"
-            />
-          </div>
-        </div>
-      );
+import { obtenerProveedorSIGA } from "../../../../services/siafService";
+
+export const FilterSIGAProviderComponent = ({ value, setValue }) => {
+  const debounceRef = useRef(null);
+
+  const filterProveedorSIAF = async (inputValue) => {
+    if (!inputValue) {
+      return [];
+    }
+
+    const data = await obtenerProveedorSIGA(inputValue);
+    const personas = data.map(({ c_prov, n_prov }) => ({
+      value: c_prov,
+      label: `${c_prov} - ${n_prov}`,
+    }));
+    return personas;
+  };
+
+  const promiseOptions = (inputValue) => {
+    return new Promise((resolve) => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+      debounceRef.current = setTimeout(async () => {
+        const data = await filterProveedorSIAF(inputValue);
+        resolve(data);
+      }, 1500);
+    });
+  };
+
+  return (
+    <div>
+      <div className="d-flex align-items-end text-color-default mb-2">
+        <UserCheckIcon />
+        <small className="ms-1">Proveedor</small>
+      </div>
+      <div>
+        <AsyncSelect          
+          placeholder=""          
+          isClearable
+          noOptionsMessage={() => "Registro no encontrado"}          
+          loadOptions={promiseOptions}
+          onChange={setValue}
+          value={value}
+        />
+      </div>
+    </div>
+  );
 }
