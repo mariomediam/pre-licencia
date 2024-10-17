@@ -33,6 +33,7 @@ const initialFilterSearch = {
   glosa: "",
   expedsiaf: "",
   certifanual: "",
+  siafprov: "",
 };
 
 export const ExecutionView = () => {

@@ -20,6 +20,8 @@ const obtenerMaestroDocumento = async () => {
   };
 
   const obtenerPersona = async (filtro) => {
+
+    console.log("filtro", filtro);
     const credenciales = {
       filtro,
     };

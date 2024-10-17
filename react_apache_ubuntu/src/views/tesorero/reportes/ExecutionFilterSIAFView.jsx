@@ -12,7 +12,7 @@ export const ExecutionFilterSIAFView = () => {
   const dispatch = useDispatch();
   const { filterSearch } = useSelector((state) => state.filterSearch);
 
-  const { expedsiaf = "", certifanual = "" } = filterSearch;
+  const { expedsiaf = "", certifanual = "", siafprov = "" } = filterSearch;
 
   const updateExpedSIAF = (value) => {
     dispatch(updateFilterSearch({ expedsiaf: value }));
@@ -20,6 +20,10 @@ export const ExecutionFilterSIAFView = () => {
 
   const updateCertifAnual = (value) => {
     dispatch(updateFilterSearch({ certifanual: value }));
+  }
+
+  const updateSiafProv = (value) => {
+    dispatch(updateFilterSearch({ siafprov: value }));
   }
 
 
@@ -45,7 +49,7 @@ export const ExecutionFilterSIAFView = () => {
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "450px" }}
       >
-        <FilterSIAFProviderComponent />
+        <FilterSIAFProviderComponent value={siafprov} setValue={updateSiafProv} />
       </div>
 
       <div

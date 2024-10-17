@@ -1,50 +1,36 @@
-import { useEffect, useState } from "react";
-import Select from "react-select";
+import { useRef } from "react";
+import AsyncSelect from "react-select/async";
 
 import UserCheckIcon from "../../../../icons/UserCheckIcon";
 
 import { obtenerPersona } from "../../../../services/siafService";
 
 export const FilterSIAFProviderComponent = ({ value, setValue }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [listPersonas, setListPersonas] = useState([]);
+  const debounceRef = useRef(null);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (value && value.length > 3) {
-  //       const data = await obtenerPersona(value);
-  //       const personas = data.map(({ RUC, NOMBRE }) => ({
-  //         value: RUC,
-  //         label: `${RUC} - ${NOMBRE}`,
-  //       }));  
+  const filterPersonas = async (inputValue) => {
+    if (!inputValue) {
+      return [];
+    }
 
-  //       setListPersonas(personas);
-  //     } else {
-  //       setListPersonas([]);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [value]);
+    const data = await obtenerPersona(inputValue);
+    const personas = data.map(({ RUC, NOMBRE }) => ({
+      value: RUC,
+      label: `${RUC} - ${NOMBRE}`,
+    }));
+    return personas;
+  };
 
-  useEffect(() => {
-    console.log("Se disparooooo")
-    // console.log("************* 1 *************");
-    // const delayDebounceFn = setTimeout(() => {
-    //   if (searchTerm) {
-    //     obtenerPersona(searchTerm).then((result) => {
-    //       setListPersonas(result);
-    //       console.log("************* 2 *************");
-    //     }).catch((error) => {
-    //       console.error("Error fetching personas:", error);
-    //     });
-    //   }
-    // }, 5000);
-
-    // return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
-
-  const handleSelectChange = (e) => {
-    setValue(e.target.value);
+  const promiseOptions = (inputValue) => {
+    return new Promise((resolve) => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+      debounceRef.current = setTimeout(async () => {
+        const data = await filterPersonas(inputValue);
+        resolve(data);
+      }, 1500);
+    });
   };
 
   return (
@@ -54,16 +40,12 @@ export const FilterSIAFProviderComponent = ({ value, setValue }) => {
         <small className="ms-1">Proveedor</small>
       </div>
       <div>
-        <Select
-          placeholder=""
-          // ref={selectGiros}
-          noOptionsMessage={() => "Registro no encontrado"}
-          name="colors"
-          onChange={setSearchTerm}
-          // onInput={(e) => setSearchTerm(e.target.value)}
-          options={listPersonas}
-          className="basic-multi-select"
-          classNamePrefix="select"
+        <AsyncSelect
+          defaultOptions
+          isClearable
+          loadOptions={promiseOptions}
+          onChange={setValue}
+          value={value}
         />
       </div>
     </div>
