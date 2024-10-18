@@ -37,7 +37,7 @@ export const FilterSIAFDocumentComponent = ({ value, setValue }) => {
           options={documentos}
           value={value}
           className="basic-multi-select"
-          classNamePrefix="select"
+          classNamePrefix="select"          
         />
       </div>
     </div>
