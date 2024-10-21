@@ -1,4 +1,4 @@
-import { initialFilterSearch, setFilterSearch} from "./filterSearchSlice"
+import { setFilterSearch} from "./filterSearchSlice"
 
 export const updateFilterSearch = (filterSearch) => {
     return async (dispatch, getState) => {

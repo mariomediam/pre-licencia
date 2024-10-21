@@ -284,6 +284,35 @@ const ConciliaTributo = async (params) => {
   }
 };
 
+
+const ejecucionDetallada = async (filters) => {
+  
+  console.log("06")
+
+  const credenciales = {
+    ...filters,
+  };
+
+  let api = UseAxios();
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await api.post(`${URL}/ejecucion-detallada/`, credenciales, {
+      headers,
+    });
+
+    console.log("07")
+    return content;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export {
   obtenerTributoTipoOperacion,
   obtenerTributoArchivo,
@@ -297,4 +326,5 @@ export {
   actualizarOpeFin,
   downloadTributoReporte,
   ConciliaTributo,
+  ejecucionDetallada,
 };
