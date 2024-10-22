@@ -17,5 +17,10 @@ export const getDetailedExecution = (filters) => {
             throw error;
         }
     }
+}
 
+export const initValuesDetailedExecution = () => {
+    return (dispatch) => {
+        dispatch(setDetailedExecution({ detailedExecution: [] }));
+    }
 }

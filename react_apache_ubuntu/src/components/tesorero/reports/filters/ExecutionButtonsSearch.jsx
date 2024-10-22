@@ -1,21 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 import XIcon from "../../../../icons/XIcon";
 import SearchIcon from "../../../../icons/SearchIcon";
 import { updateFilterSearch } from "../../../../store/slices/helpers/filterSearch/thunks";
-import { getDetailedExecution } from "../../../../store/slices/sigaNet/thunks";
+import { getDetailedExecution, initValuesDetailedExecution } from "../../../../store/slices/sigaNet/thunks";
 
 export const ExecutionButtonsSearch = () => {
   const SEARCH_SOURCES = {
-    "SIAF": ["siaf"],
+    SIAF: ["siaf"],
     "SIGA.NET": ["siga.net"],
-    "SIAF y SIGA.NET": ["siaf", "siga.net"]
-  }
+    "SIAF y SIGA.NET": ["siaf", "siga.net"],
+  };
 
   const { filterSearch } = useSelector((state) => state.filterSearch);
-
-
+  
 
   const firstDay = new Date(new Date().getFullYear(), 0, 1)
     .toISOString()
@@ -48,11 +48,12 @@ export const ExecutionButtonsSearch = () => {
 
   const clearValues = () => {
     dispatch(updateFilterSearch(initialValue));
+    dispatch(initValuesDetailedExecution());
   };
 
   const getFiltersWithValues = () => {
-    let filtersWithValues = {}
-    let filters = Object.keys(filterSearch)
+    let filtersWithValues = {};
+    let filters = Object.keys(filterSearch);
     for (let key of filters) {
       if (filterSearch[key] !== "") {
         filtersWithValues[key] = filterSearch[key];
@@ -64,17 +65,34 @@ export const ExecutionButtonsSearch = () => {
     filtersWithValues.hasta = hasta;
     delete filtersWithValues.periodo;
 
+    ["sigaprov", "documento", "siafprov"].forEach((key) => {
+      if (filtersWithValues[key]) {
+        filtersWithValues[key] = filtersWithValues[key].value;
+      }
+    });
+
     return filtersWithValues;
-  }
+  };
 
+  const onClickSearch = async (sources) => {
+    console.log("01");
+    try {
 
-  const onClickOption1 = async (sources) => {
-    console.log("01")
-    let filtersWithValues = getFiltersWithValues();
-    filtersWithValues.sources = sources;
-    await dispatch(getDetailedExecution(filtersWithValues));
-    console.log("11")
-    
+      dispatch(initValuesDetailedExecution());
+      let filtersWithValues = getFiltersWithValues();
+      filtersWithValues.sources = sources;
+      await dispatch(getDetailedExecution(filtersWithValues));
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: JSON.stringify(
+          error.response?.data?.message || "Error al obtener la data"
+        ),
+      });
+    }
+
+    console.log("11");
   };
 
   return (
@@ -94,12 +112,12 @@ export const ExecutionButtonsSearch = () => {
         >
           <SearchIcon className="me-1" /> <span className="me-1">Buscar</span>
         </button>
-        <ul className="dropdown-menu">          
+        <ul className="dropdown-menu">
           {Object.keys(SEARCH_SOURCES).map((key) => (
             <li key={key}>
               <button
                 className="dropdown-item"
-                onClick={() => onClickOption1(SEARCH_SOURCES[key])}
+                onClick={() => onClickSearch(SEARCH_SOURCES[key])}
               >
                 {key}
               </button>

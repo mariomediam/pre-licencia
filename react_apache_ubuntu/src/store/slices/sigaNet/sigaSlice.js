@@ -21,7 +21,10 @@ export const sigaNetSlice = createSlice({
             state.isLoading = false;
             console.log("10")
         },
+        resetDetailedExecution: (state) => {
+            state.detailedExecution = [];
+        }
     },
 });
 
-export const { startLoadingSiga, finishLoadingSiga, setDetailedExecution } = sigaNetSlice.actions;
+export const { startLoadingSiga, finishLoadingSiga, setDetailedExecution, resetDetailedExecution } = sigaNetSlice.actions;
