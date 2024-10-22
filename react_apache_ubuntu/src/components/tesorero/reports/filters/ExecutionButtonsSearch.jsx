@@ -70,11 +70,8 @@ export const ExecutionButtonsSearch = () => {
 
   const onClickOption1 = async (sources) => {
     console.log("01")
-   
     let filtersWithValues = getFiltersWithValues();
     filtersWithValues.sources = sources;
-    alert(JSON.stringify(filtersWithValues));
-
     await dispatch(getDetailedExecution(filtersWithValues));
     console.log("11")
     

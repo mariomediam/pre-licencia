@@ -13,6 +13,7 @@ import { ExecutionFilterSIGAView } from "./ExecutionFilterSIGAView";
 import { updateFilterSearch } from "../../../store/slices/helpers/filterSearch/thunks";
 import { ExecutionSearchSummary } from "../../../components/tesorero/reports/filters/ExecutionSearchSummary";
 import { ExecutionButtonsSearch } from "../../../components/tesorero/reports/filters/ExecutionButtonsSearch";
+import { DetailedExecution } from "../../../components/tesorero/reports/filters/DetailedExecution";
 
 const TABS = ["General", "Presupuestal", "Documento", "SIAF", "SIGA.NET"];
 
@@ -133,7 +134,10 @@ export const ExecutionView = () => {
       </div>
       <div className="px-3 d-flex justify-content-center">
         <div className=" full-width px-3" style={{ maxWidth: "1500px" }}>
-          <div className="d-flex flex-wrap gap-2 justify-content-between align-items-end" style={{ maxWidth: "918px" }}>
+          <div
+            className="d-flex flex-wrap gap-2 justify-content-between align-items-end"
+            style={{ maxWidth: "918px" }}
+          >
             <div>
               <ExecutionSearchSummary />
             </div>
@@ -141,6 +145,11 @@ export const ExecutionView = () => {
               <ExecutionButtonsSearch />
             </div>
           </div>
+        </div>
+      </div>
+      <div className="px-3 py-5 d-flex justify-content-center">
+        <div className=" full-width px-3" style={{ maxWidth: "1500px" }}>
+          <DetailedExecution />
         </div>
       </div>
     </>
