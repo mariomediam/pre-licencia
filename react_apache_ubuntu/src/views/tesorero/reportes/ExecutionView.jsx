@@ -118,7 +118,7 @@ export const ExecutionView = () => {
         </h3>
       </div>
       <div className="p-3 d-flex justify-content-center">
-        <div className="full-width" style={{ maxWidth: "1500px" }}>
+        <div className="full-width" style={{ maxWidth: "1200px" }}>
           <div className="col-12 col-sm-10 ">
             <div className="col-12 col-sm-5"></div>
             <TabNavigation
@@ -133,7 +133,7 @@ export const ExecutionView = () => {
         </div>
       </div>
       <div className="px-3 d-flex justify-content-center">
-        <div className=" full-width px-3" style={{ maxWidth: "1500px" }}>
+        <div className=" full-width px-3" style={{ maxWidth: "1200px" }}>
           <div
             className="d-flex flex-wrap gap-2 justify-content-between align-items-end"
             style={{ maxWidth: "918px" }}
@@ -147,8 +147,8 @@ export const ExecutionView = () => {
           </div>
         </div>
       </div>
-      <div className="px-3 py-5 d-flex justify-content-center">
-        <div className=" full-width px-3" style={{ maxWidth: "1500px" }}>
+      <div className="py-4 d-flex justify-content-center">
+        <div className=" full-width" style={{ width: "1200px" }}>
           <DetailedExecution />
         </div>
       </div>

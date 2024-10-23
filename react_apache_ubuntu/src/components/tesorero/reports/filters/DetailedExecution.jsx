@@ -35,7 +35,7 @@ export const DetailedExecution = () => {
     >
       {tabs.map((tab, index) => (
         <Nav.Item key={index}>
-          <Nav.Link eventKey={`link-${tab}`} onClick={() => onClickTab(tab)}>
+          <Nav.Link eventKey={`link-${tab}`} onClick={() => onClickTab(tab)} className="mb-0 pb-0">
             <span
               className={`text-color-default ${
                 tab === tabSelected ? "fw-bold" : ""
