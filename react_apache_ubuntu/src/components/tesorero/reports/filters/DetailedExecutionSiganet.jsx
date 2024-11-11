@@ -1,8 +1,7 @@
 import { Table } from "react-bootstrap";
 import { DetailedExecutionSiganetItem } from "./DetailedExecutionSiganetItem";
 
-export const DetailedExecutionSiganet = ({ data = [] }) => {
-  console.log("data siganet", data);
+export const DetailedExecutionSiganet = ({ data = [] }) => {  
   return (
     <div style={{ border: "1px solid lightgrey", minWidth: "992px" }}>
       <Table
@@ -42,36 +41,7 @@ export const DetailedExecutionSiganet = ({ data = [] }) => {
         <tbody>
           {data.map((record, index) => (
             <DetailedExecutionSiganetItem key={index} record={record} />
-          ))}
-
-          {/* {listTributoArchivo.map(
-              (
-                {
-                  C_Archivo,
-                  C_TipOpe,
-                  M_Archivo_Anio,
-                  M_Archivo_Mes,
-                  D_Archivo_FecDig,
-                  C_Usuari_Login,
-                  N_Archivo_PC,
-                },
-                i
-              ) => (
-                <tr key={C_Archivo}>
-                  <TributoArchivoListarItemComponent
-                    {...{
-                      C_Archivo,
-                      C_TipOpe,
-                      M_Archivo_Anio,
-                      M_Archivo_Mes,
-                      D_Archivo_FecDig,
-                      C_Usuari_Login,
-                      N_Archivo_PC,
-                    }} fetchTributoPeriodosDisponibles = {fetchTributoPeriodosDisponibles}  fetchTributoArchivo = {fetchTributoArchivo} NTipOpe={NTipOpe}
-                  />
-                </tr>
-              )
-            )} */}
+          ))}         
         </tbody>
       </Table>
     </div>
