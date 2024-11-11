@@ -366,7 +366,7 @@ export const ContribuyenteAddComponent = ({
                 // Comentado hasta solicionar el problema de la consulta a la Sunat
               } 
               else {
-                if (tipoDocum === "01") {
+                if (tipoDocum === "01" && validaReniec) {
                   try {
                     const { coResultado, deResultado, datosPersona } =
                       await obtenerConsultaReniec(codigoContrib);
@@ -388,7 +388,7 @@ export const ContribuyenteAddComponent = ({
                     });
                   }
                 } else {
-                  if (tipoDocum === "05") {
+                  if (tipoDocum === "05" && validaSunat) {
                     try {
                       consultaSunat = await obtenerConsultaSunat(codigoContrib);
 
@@ -528,6 +528,9 @@ export const ContribuyenteAddComponent = ({
 
     return newErrors;
   };
+
+  const validaReniec = false
+  const validaSunat = false
 
   return (
     <>
