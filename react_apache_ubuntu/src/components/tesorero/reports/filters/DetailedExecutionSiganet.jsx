@@ -39,7 +39,7 @@ export const DetailedExecutionSiganet = ({ data = [] }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((record, index) => (
+          {data?.map((record, index) => (
             <DetailedExecutionSiganetItem key={index} record={record} />
           ))}         
         </tbody>

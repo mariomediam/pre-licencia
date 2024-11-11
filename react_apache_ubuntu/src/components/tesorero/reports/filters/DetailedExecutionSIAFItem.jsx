@@ -15,7 +15,7 @@ export const DetailedExecutionSIAFItem = ({ record }) => {
     fase,
     // secuencia,
     // CORRELATIVO,
-    cod_doc,
+    // cod_doc,
     num_doc,
     banco,
     cta_cte,
@@ -32,6 +32,7 @@ export const DetailedExecutionSIAFItem = ({ record }) => {
     glosa,
     certificado,
     // certificado_secuencia,
+    doc_abreviatura,
   } = record;
 
   const glosaRef = useRef(null);
@@ -77,7 +78,7 @@ export const DetailedExecutionSIAFItem = ({ record }) => {
       <td
         className=""
         style={{ maxWidth: "150px" }}
-      >{`${cod_doc} ${num_doc}`}</td>
+      >{`${doc_abreviatura} ${num_doc}`}</td>
       <td className="">
         <div>
           <p className="my-0 py-0">

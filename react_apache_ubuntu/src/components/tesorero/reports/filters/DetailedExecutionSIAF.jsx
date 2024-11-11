@@ -41,7 +41,7 @@ export const DetailedExecutionSIAF = ({ data}) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((record, index) => (
+          {data?.map((record, index) => (
             <DetailedExecutionSIAFItem key={index} record={record} />
           ))}
 

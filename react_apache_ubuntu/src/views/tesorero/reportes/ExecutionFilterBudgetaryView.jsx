@@ -41,7 +41,7 @@ export const ExecutionFilterBudgetaryView = () => {
   };
 
   return (
-    <div className=" d-flex gap-3 flex-wrap animate__animated animate__fadeIn animate__faster border">
+    <div className=" d-flex gap-3 flex-wrap animate__animated animate__fadeIn animate__faster">
       <div
         className="flex-grow-1 flex-md-grow-0"
         style={{ maxWidth: "100%", flexBasis: "130px" }}

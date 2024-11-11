@@ -10,6 +10,7 @@ const filtersDescrip = {
   rubro: "Rubro",
   recurso: "Recurso",
   clasificador: "Clasificador",
+  meta: "Meta",
   operacion: "Operación",
   documento: "Documento",
   numerodoc: "Número de Documento",
