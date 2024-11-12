@@ -47,6 +47,7 @@ export const FilterSIGAProviderComponent = ({ value, setValue }) => {
           loadOptions={promiseOptions}
           onChange={setValue}
           value={value}
+          menuPortalTarget={document.body}
         />
       </div>
     </div>

@@ -20,16 +20,16 @@ export const FilterSIAFDocumentComponent = ({ value, setValue }) => {
     fetchData();
   }, []);
 
+  
   return (
-    <div>
-      <div className="d-flex align-items-end text-color-default mb-2">
+    <div >
+      <div>
         <FileDollarIcon />
         <small className="ms-1">Documento</small>
       </div>
       <div>
         <Select
-          placeholder=""
-          // ref={selectGiros}
+          placeholder=""          
           isClearable
           noOptionsMessage={() => "Registro no encontrado"}
           name="colors"
@@ -37,7 +37,9 @@ export const FilterSIAFDocumentComponent = ({ value, setValue }) => {
           options={documentos}
           value={value}
           className="basic-multi-select"
-          classNamePrefix="select"          
+          classNamePrefix="select"           
+          menuPortalTarget={document.body}
+           
         />
       </div>
     </div>

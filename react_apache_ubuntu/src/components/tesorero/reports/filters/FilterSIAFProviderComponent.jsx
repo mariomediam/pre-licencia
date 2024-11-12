@@ -47,6 +47,7 @@ export const FilterSIAFProviderComponent = ({ value, setValue }) => {
           loadOptions={promiseOptions}
           onChange={setValue}
           value={value}
+          menuPortalTarget={document.body}
         />
       </div>
     </div>
