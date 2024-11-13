@@ -270,7 +270,7 @@ const ConciliaTributo = async (params) => {
     const headers = {
       "Content-Type": "multipart/form-data",
     };
-    
+
     const response = await api.post(`${URLConciliaTributo}`, formData, {
       headers,
       responseType: "blob",
@@ -284,11 +284,7 @@ const ConciliaTributo = async (params) => {
   }
 };
 
-
 const ejecucionDetallada = async (filters) => {
-  
-  console.log("06")
-
   const credenciales = {
     ...filters,
   };
@@ -305,13 +301,61 @@ const ejecucionDetallada = async (filters) => {
       headers,
     });
 
-    console.log("07")
     return content;
   } catch (error) {
     throw error;
   }
 };
 
+const downloadDetailedExecution = async (filters) => {
+  // try {
+  //   let api = UseAxios();
+
+  //   const credenciales = {
+  //     ...filters,
+  //   };
+
+  //   const headers = {
+  //     "Content-Type": "application/json",
+  //     "responseType": "blob",
+  //   };
+
+  //   const response = await api.post(`${URL}/download-detailed-execution/`, credenciales, {
+  //     headers,
+  //   });
+
+  //   const file = new Blob([response.data], {
+  //     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  //   });
+
+  //   return file;
+
+  // } catch (error) {
+  //   throw error;
+  // }
+  try {
+    let api = UseAxios();
+
+    const credenciales = {
+      ...filters,
+    };
+
+    const response = await api.post(
+      `${URL}/download-detailed-execution/`,
+      credenciales,
+      {
+        responseType: "blob",
+      }
+    );
+
+    const file = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    return file;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export {
   obtenerTributoTipoOperacion,
@@ -327,4 +371,5 @@ export {
   downloadTributoReporte,
   ConciliaTributo,
   ejecucionDetallada,
+  downloadDetailedExecution,
 };

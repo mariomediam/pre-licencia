@@ -97,7 +97,7 @@ export const DetailedExecutionSIAFItem = ({ record }) => {
         </div>
       </td>
 
-      <td className="">
+      <td className="" style={{maxWidth: "150px"}}>
         <div>
           <p className="my-0 py-0">{NOMBRE}</p>
           <p className="my-0 py-0">
@@ -110,7 +110,7 @@ export const DetailedExecutionSIAFItem = ({ record }) => {
       <td className="">
         <p
           className={`py-0 my-0 ${viewMore ? "" : "max-five-lines"}`}
-          style={{ maxWidth: "220px" }}
+          style={{ maxWidth: "220px", minWidth: "50px" }}
           ref={glosaRef}
         >
           {glosa}
