@@ -66,7 +66,7 @@ export const TributoArchivoListarItemComponent = ({
 
       if (!["01", "02"].includes(C_TipOpe)){
         name_file = `${name_file}_${nombreMes} `
-      }
+      }      
       const url = URL.createObjectURL(tributoArhivo);
       const link = document.createElement("a");
       link.href = url;
@@ -92,7 +92,7 @@ export const TributoArchivoListarItemComponent = ({
         <Button
           size="sm"
           variant="outline-primary"
-          title="Desargar archivo"
+          title="Descargar archivo"
           onClick={onClickDownloadTributoArchivo}    
           className="me-2"      
         >

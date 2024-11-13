@@ -74,8 +74,7 @@ export const ExecutionButtonsSearch = () => {
     return filtersWithValues;
   };
 
-  const onClickSearch = async (sources) => {
-    console.log("01");
+  const onClickSearch = async (sources) => {    
     try {
 
       dispatch(initValuesDetailedExecution());
@@ -91,8 +90,6 @@ export const ExecutionButtonsSearch = () => {
         ),
       });
     }
-
-    console.log("11");
   };
 
   return (

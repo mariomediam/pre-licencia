@@ -81,7 +81,7 @@ export const DetailedExecution = () => {
               onClickTab={onClickTab}
             />
           </div>
-          <div className="px-3">
+          <div className="px-3" >
             <TabContent tabSelected={tabSelected} />
           </div>
         </div>

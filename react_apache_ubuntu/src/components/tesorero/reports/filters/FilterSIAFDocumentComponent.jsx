@@ -23,7 +23,7 @@ export const FilterSIAFDocumentComponent = ({ value, setValue }) => {
   
   return (
     <div >
-      <div>
+      <div className="d-flex align-items-end text-color-default mb-2">
         <FileDollarIcon />
         <small className="ms-1">Documento</small>
       </div>
