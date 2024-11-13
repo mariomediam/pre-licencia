@@ -529,8 +529,8 @@ export const ContribuyenteAddComponent = ({
     return newErrors;
   };
 
-  const validaReniec = false
-  const validaSunat = false
+  const validaReniec = true
+  const validaSunat = true
 
   return (
     <>
