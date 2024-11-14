@@ -3,6 +3,7 @@ import { counterSlice } from './slices/counter'
 import { boletasEnviadasSlice, boletasSlice, planillaCorreoSlice, planillaSlice, trabajadorCorreoSlice, licProvSlice, licProvUbicaSlice, requerimientoSlice } from './slices'
 import { filterSearchSlice } from './slices/helpers/filterSearch/filterSearchSlice'
 import { sigaNetSlice } from './slices/sigaNet/sigaSlice'
+import { siafSlice } from './slices/siaf/siafSlice'
 
 export const store = configureStore({
   reducer: {
@@ -17,5 +18,6 @@ export const store = configureStore({
     requerimiento: requerimientoSlice.reducer,
     filterSearch: filterSearchSlice.reducer,
     sigaNet: sigaNetSlice.reducer,
+    siaf: siafSlice.reducer,
   },
 })
