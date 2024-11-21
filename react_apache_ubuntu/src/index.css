@@ -137,3 +137,13 @@ code {
 .full-width {
   width: 100%;
 }
+
+.circle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: #67FD09; Color verde */
+  /* color: #fff;               Color del icono */
+  border-radius: 50%;        /* Círculo */  
+  padding: 2px;
+}

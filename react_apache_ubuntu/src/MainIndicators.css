@@ -1,0 +1,16 @@
+/* MainIndicators.css */
+
+@font-face {
+  font-family: "Host Grotesk", 'Roboto', "sans-serif";
+  src: url("./fonts/Host_Grotesk/HostGrotesk-VariableFont_wght.ttf")
+      format("truetype"),
+    url("./fonts/Host_Grotesk/HostGrotesk-Italic-VariableFont_wght.ttf")
+      format("truetype");
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.main-indicators-font {
+  font-family: "Host Grotesk", 'Roboto', "sans-serif";
+}

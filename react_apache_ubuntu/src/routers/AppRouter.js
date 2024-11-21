@@ -4,6 +4,7 @@ import { AuthProvider } from "../context/AuthContext";
 import { DashboardRoutes } from "./DashboardRoutes";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
+import { MainIndicators } from "../views/managementIndicators/MainIndicators";
 
 export const AppRouter = () => {
   return (
@@ -18,6 +19,8 @@ export const AppRouter = () => {
               </PublicRoute>
             }
           />
+
+          <Route path="/indicadores" element={<MainIndicators />} />
 
           <Route
             path="/*"
