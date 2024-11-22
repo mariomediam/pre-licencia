@@ -61,4 +61,69 @@ const ComparacionVehiculosAutorizados = async (dia, mes, anio01, anio02) => {
   }
 }
 
-export { TranspVigente, VehiculosAutorizadosMes, ComparacionVehiculosAutorizados };
+
+const InfraccionesTransporte = async (anio) => {
+  let credenciales = {};
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(
+      `${URL}/infracciones-transporte?anio=${anio}`,
+      credenciales,
+      { headers }
+    );
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+const ComparacionInfraccionesTransporte = async (dia, mes, anio01, anio02) => {
+  let credenciales = {};
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(
+      `${URL}/comparacion-infracciones-transporte?dia=${dia}&mes=${mes}&anio01=${anio01}&anio02=${anio02}`,
+      credenciales,
+      { headers }
+    );
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const AntiguedadVehiculos = async () => {
+  let credenciales = {};
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(
+      `${URL}/antiguedad-vehiculos`,
+      credenciales,
+      { headers }
+    );
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { TranspVigente, VehiculosAutorizadosMes, ComparacionVehiculosAutorizados, InfraccionesTransporte, ComparacionInfraccionesTransporte, AntiguedadVehiculos };

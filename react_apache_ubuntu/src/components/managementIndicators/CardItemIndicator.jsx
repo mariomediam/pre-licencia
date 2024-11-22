@@ -3,7 +3,7 @@ import React from "react";
 export const CardItemIndicator = ({ indicator }) => {
   const { component } = indicator;
   return (
-    <div className="border rounded shadow-sm p-3">      
+    <div className="border rounded shadow-sm p-3 card-indicator">      
       <div>{component}</div>
     </div>
   );

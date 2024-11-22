@@ -147,3 +147,19 @@ code {
   border-radius: 50%;        /* Círculo */  
   padding: 2px;
 }
+
+.cards-container {
+  justify-content: flex-start;
+}
+
+
+
+@media (max-width: 630px) {
+  .cards-container {
+    justify-content: center;
+  }
+  .card-indicator {
+    flex: 1 1 100%;
+    max-width: 300px;
+  }
+}

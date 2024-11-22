@@ -24,7 +24,7 @@ export const CurrentPermits = ({ anioSelected, title = "" }) => {
           radius: ["40%", "70%"],
           avoidLabelOverlap: false,
           itemStyle: {
-            borderRadius: 10,
+            borderRadius: 0,
             borderColor: "#fff",
             borderWidth: 2,
           },

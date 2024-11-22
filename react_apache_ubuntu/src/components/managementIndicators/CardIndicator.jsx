@@ -1,6 +1,8 @@
 import { AuthorizedVehicles } from "./authorizedVehicles/AuthorizedVehicles";
 import { CardItemIndicator } from "./CardItemIndicator";
 import { CurrentPermits } from "./currentPermits/CurrentPermits";
+import { OldVehicles } from "./oldVehicles/OldVehicles";
+import { TransportationTickets } from "./transportationTickets/TransportationTickets";
 
 export const CardIndicator = ({ anioSelected }) => {
   const indicators = [
@@ -9,7 +11,7 @@ export const CardIndicator = ({ anioSelected }) => {
       component: (
         <CurrentPermits
           anioSelected={anioSelected}
-          title={"Autorizaciones vigentes a la actualidad"}
+          title={"Autorizaciones vigentes"}
         />
       ),
     },
@@ -34,25 +36,25 @@ export const CardIndicator = ({ anioSelected }) => {
     {
       code: "04",
       component: (
-        <CurrentPermits
+        <TransportationTickets
           anioSelected={anioSelected}
-          title={"Infracciones de tránisto"}
+          title={"Infracciones de tránsito"}
         />
       ),
     },
     {
       code: "05",
       component: (
-        <CurrentPermits
+        <OldVehicles
           anioSelected={anioSelected}
-          title={"Antigüedad de vehículos con permisos vigentes"}
+          title={"Antigüedad de vehículos con autorización vigente"}
         />
       ),
     },
   ];
 
   return (
-    <div className="d-flex gap-3 flex-wrap">
+    <div className="d-flex gap-3 flex-wrap cards-container">
       {indicators.map((indicator) => (
         <CardItemIndicator key={indicator.code} indicator={indicator} />
       ))}
