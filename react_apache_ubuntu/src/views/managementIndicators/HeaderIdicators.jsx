@@ -1,7 +1,9 @@
+import { useSelector } from "react-redux";
 import SideBarIcon from "../../icons/SideBarIcon";
 
 
 export const HeaderIdicators = ({anios = [], setAnioSelected}) => {
+  const { currentYear } = useSelector((state) => state.indicators);
 
     const onChangeSelectYear = (e) => {
         setAnioSelected( parseInt(e.target.value) );
@@ -25,7 +27,7 @@ export const HeaderIdicators = ({anios = [], setAnioSelected}) => {
 
         <div className="d-flex align-items-center gap-2 ">
           <span className="m-0 p-0">Año: </span>
-          <select className="form-select " aria-label="Año a consultar" onChange={onChangeSelectYear}>
+          <select className="form-select " aria-label="Año a consultar" onChange={onChangeSelectYear} value={currentYear}>
             {anios.map((anio) => (
               <option key={anio} value={anio}>
                 {anio}
