@@ -163,3 +163,7 @@ code {
     max-width: 300px;
   }
 }
+
+.negrita-container:hover .negrita-text:hover {
+  font-weight: bold;
+}
