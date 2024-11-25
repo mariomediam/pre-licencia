@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import "../../../src/MainIndicators.css";
 import { CardIndicator } from "../../components/managementIndicators/CardIndicator";
 import { HeaderIdicators } from "./HeaderIdicators";
+import { setCurrentYearThunk } from "../../store/slices/indicators/thunks";
 
 const currentYear = new Date().getFullYear();
 const anios = Array.from(
@@ -12,15 +14,18 @@ const anios = Array.from(
 
 export const MainIndicators = () => {
 
-  const [anioSelected, setAnioSelected] = useState(currentYear);
+  const dispatch = useDispatch();
+  const { currentYear } = useSelector((state) => state.indicators);
 
-
+  const setAnioSelected = (anio) => {
+    dispatch(setCurrentYearThunk(anio));
+  };
 
   return (
     <div className="main-indicators-font m-3">
       <HeaderIdicators anios={anios} setAnioSelected={setAnioSelected} />
       <main className="mt-4">
-        <CardIndicator anioSelected={anioSelected} />
+        <CardIndicator anioSelected={currentYear} />
       </main>
     </div>
   );
