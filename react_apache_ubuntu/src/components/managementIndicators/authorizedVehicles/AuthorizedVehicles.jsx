@@ -7,6 +7,7 @@ import {
 import MyChart from "../../helpers/MyChart";
 import { obtenerNombreMes } from "../../../utils/varios";
 import ChevronUp from "../../../icons/ChevronUp";
+import { ViewMore } from "../ViewMore";
 
 export const AuthorizedVehicles = ({ anioSelected, title = "" }) => {
   const [vehicles, setVehicles] = useState([]);
@@ -38,7 +39,6 @@ export const AuthorizedVehicles = ({ anioSelected, title = "" }) => {
     }),
     []
   );
-
 
   useEffect(() => {
     const getVehiculosVigentes = async () => {
@@ -79,15 +79,20 @@ export const AuthorizedVehicles = ({ anioSelected, title = "" }) => {
       xAxis: { ...dafaultOption.xAxis, data: xAxisData },
       series: [{ ...dafaultOption.series[0], data: seriesData }],
     });
-
   }, [vehicles, dafaultOption]);
 
   useEffect(() => {
     const getComparacionVehiculosAutorizados = async () => {
       try {
         const currentDate = new Date();
-        const dia = anioSelected === currentDate.getFullYear() ? currentDate.getDate() : 31;
-        const mes = anioSelected === currentDate.getFullYear() ? currentDate.getMonth() + 1 : 12;
+        const dia =
+          anioSelected === currentDate.getFullYear()
+            ? currentDate.getDate()
+            : 31;
+        const mes =
+          anioSelected === currentDate.getFullYear()
+            ? currentDate.getMonth() + 1
+            : 12;
 
         const { total1, total2 } = await ComparacionVehiculosAutorizados(
           dia,
@@ -109,41 +114,47 @@ export const AuthorizedVehicles = ({ anioSelected, title = "" }) => {
   }, [anioSelected]);
 
   return (
-    <div>
-      <h6>{title}</h6>
-      <div className="d-flex gap-3">
-        <div style={{ maxWidth: "100px" }}>
-          <h3>{total}</h3>
-          <span
-            className="circle-icon me-1"
-            style={{
-              backgroundColor: isPositive ? "#67FD09" : "#F6D5AF",
-              transform: `rotate(${isPositive ? 0 : 180}deg)`,
-            }}
-          >
-            <ChevronUp width={14} height={14} className={isPositive ? "text-success" : "text-danger"}/>
-          </span>
-          <small className={isPositive ? "text-success" : "text-danger"}>
-            {Math.round(variation)}%{" "}
-          </small>
-          <p
-            style={{ lineHeight: 1 }}
-            className={isPositive ? "text-success" : "text-danger"}
-          >
-            <small style={{ fontSize: "0.7rem" }}>
-              Comparado con el año anterior
+    <div className="d-flex flex-column flex-grow-1 justify-content-between">
+      <div>
+        <h6>{title}</h6>
+        <div className="d-flex gap-3">
+          <div style={{ maxWidth: "100px" }}>
+            <h3>{total}</h3>
+            <span
+              className="circle-icon me-1"
+              style={{
+                backgroundColor: isPositive ? "#67FD09" : "#F6D5AF",
+                transform: `rotate(${isPositive ? 0 : 180}deg)`,
+              }}
+            >
+              <ChevronUp
+                width={14}
+                height={14}
+                className={isPositive ? "text-success" : "text-danger"}
+              />
+            </span>
+            <small className={isPositive ? "text-success" : "text-danger"}>
+              {Math.round(variation)}%{" "}
             </small>
-          </p>
+            <p
+              style={{ lineHeight: 1 }}
+              className={isPositive ? "text-success" : "text-danger"}
+            >
+              <small style={{ fontSize: "0.7rem" }}>
+                Comparado con el año anterior
+              </small>
+            </p>
+          </div>
+          <div>
+            <MyChart
+              option={optionChart}
+              widthChart="150px"
+              heightChart="100px"
+            />{" "}
+          </div>
         </div>
-        <div>
-          <MyChart
-            option={optionChart}
-            widthChart="150px"
-            heightChart="100px"
-          />{" "}
-        </div>
-
       </div>
+      <ViewMore />
     </div>
   );
 };

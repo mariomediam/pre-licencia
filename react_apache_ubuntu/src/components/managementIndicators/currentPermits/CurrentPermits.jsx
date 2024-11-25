@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { TranspVigente } from "../../../services/indicatorsService";
 import MyChart from "../../helpers/MyChart";
+import { ViewMore } from "../ViewMore";
 
 export const CurrentPermits = ({ anioSelected, title = "" }) => {
   const [vehiculosVigentes, setVehiculosVigentes] = useState([]);
@@ -76,22 +77,26 @@ export const CurrentPermits = ({ anioSelected, title = "" }) => {
   }, [vehiculosVigentes, dafaultOption]);
 
   return (
-    <div style={{ maxWidth: "260px"}}>
-      <h6>{title} </h6>
-      <div className="d-flex gap-3">
-        <div>
+    <div
+      style={{ maxWidth: "260px" }}
+      className="d-flex flex-column flex-grow-1 justify-content-between"
+    >
+      <div>
+        <h6 className="">{title} </h6>
+
+        <div className="d-flex gap-3">
           <h3>{total}</h3>
-        </div>
-        <div>
-          <MyChart
-            option={optionChart}
-            widthChart="150px"
-            heightChart="100px"
-          />{" "}
+          <div>
+            <MyChart
+              option={optionChart}
+              widthChart="160px"
+              heightChart="100px"
+            />{" "}
+          </div>
         </div>
       </div>
 
-      {/* <small>{anioSelected}</small> */}
+      <ViewMore />
     </div>
   );
 };

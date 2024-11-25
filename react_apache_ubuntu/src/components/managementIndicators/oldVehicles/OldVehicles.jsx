@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { AntiguedadVehiculos } from "../../../services/indicatorsService";
 import MyChart from "../../helpers/MyChart";
+import { ViewMore } from "../ViewMore";
 
 export const OldVehicles = ({ anioSelected, title = "" }) => {
   const [yearManufacture, setYearManufacture] = useState([]);
@@ -95,7 +96,8 @@ export const OldVehicles = ({ anioSelected, title = "" }) => {
   }, [yearManufacture, dafaultOption]);
 
   return (
-    <div style={{ maxWidth: "260px" }}>
+    <div style={{ maxWidth: "260px" }} className="d-flex flex-column flex-grow-1 justify-content-between">
+      <div>
       <h6>{title} </h6>
       <div className="d-flex gap-3">
         <div className="d-flex align-items-center">
@@ -123,7 +125,8 @@ export const OldVehicles = ({ anioSelected, title = "" }) => {
         </div>
       </div>
 
-      {/* <small>{anioSelected}</small> */}
+      </div>
+      <ViewMore />
     </div>
   );
 };
