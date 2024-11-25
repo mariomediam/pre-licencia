@@ -3,8 +3,8 @@ import React from "react";
 export const CardItemIndicator = ({ indicator }) => {
   const { component } = indicator;
   return (
-    <div className="border rounded shadow-sm p-3 card-indicator">      
-      <div>{component}</div>
+    <div className="border rounded shadow-sm p-3 card-indicator d-flex flex-column">            
+      {component}
     </div>
   );
 };
