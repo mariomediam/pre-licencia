@@ -5,7 +5,7 @@ import * as echarts from 'echarts';
 const dafaultOption = {
   tooltip: {
     trigger: 'item'
-  },
+  },  
   legend: {
     top: '0%',
     left: 'center'
@@ -79,7 +79,7 @@ const MyChart = ({ option = dafaultOption, widthChart = "150px", heightChart = "
   return (
     <div
       ref={chartRef}
-      style={{ width: widthChart, height: heightChart }} // Dimensiones explícitas
+      style={{ width: widthChart, height: heightChart }} // Dimensiones explícitas      
     />
   );
 };
