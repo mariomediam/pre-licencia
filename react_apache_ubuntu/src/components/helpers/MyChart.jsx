@@ -46,7 +46,7 @@ const dafaultOption = {
   ]
 };
 
-const MyChart = ({ option = dafaultOption, widthChart = "150px", heightChart = "150px"}) => {
+const MyChart = ({ option = dafaultOption, widthChart = "150px", heightChart = "150px", onColorsChange }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -58,10 +58,14 @@ const MyChart = ({ option = dafaultOption, widthChart = "150px", heightChart = "
       }
 
       const chartInstance = echarts.init(chartRef.current);
-
       
-
       chartInstance.setOption(option);
+
+      // Obtener los colores generados por ECharts
+      const colors = chartInstance.getOption().color;
+      if (onColorsChange) {
+        onColorsChange(colors);
+      }
 
       window.addEventListener('resize', chartInstance.resize);
 
@@ -70,7 +74,7 @@ const MyChart = ({ option = dafaultOption, widthChart = "150px", heightChart = "
         chartInstance.dispose();
       };
     }
-  }, [option]);
+  }, [option, onColorsChange]);
 
   return (
     <div
