@@ -13,6 +13,7 @@ export const CurrentPermitDetail = () => {
   const [vehiculosVigentes, setVehiculosVigentes] = useState([]);
   const [total, setTotal] = useState(0);
   const [optionChart, setOptionsChart] = useState({});
+  const [colors, setColors] = useState([]);
 
   const onClickClose = () => {
     navigate(-1);
@@ -20,13 +21,12 @@ export const CurrentPermitDetail = () => {
 
   const dafaultOption = useMemo(
     () => ({
-      
-      legend: {
-        // orient: "vertical",
-        left: "center",
-        top: "top",
-        
-      },
+      // legend: {
+      //   // orient: "vertical",
+      //   left: "center",
+      //   top: "top",
+
+      // },
       series: [
         {
           name: "Autoizaciones vigentes",
@@ -110,21 +110,24 @@ export const CurrentPermitDetail = () => {
           <XIcon className="cursor-pointer" />
         </div>
       </header>
-      <div className="d-flex align-items-center gap-5 flex-wrap justify-content-center pt-4">
-        
-          <MyChart
-            option={optionChart}
-            widthChart="400px"
-            heightChart="400px"
-          />{" "}
-        
-        <div className="d-flex align-items-center">
-          <table class="table">
+      <div className="d-flex flex-column align-items-center gap-1 flex-wrap justify-content-center pt-4">
+        <div className="d-flex align-items-center mb-0 pb-0">
+          <table className="table">
             <tbody>
-              {vehiculosVigentes.map(({ tipo, total }) => (
-                <tr>
-                  <td>{tipo}</td>
-                  <td className="text-end">{total}</td>
+              {vehiculosVigentes.map((vehiculo, index) => (
+                <tr key={vehiculo.tipo}>
+                  <td>
+                    <span
+                      className="circle-icon me-1"
+                      style={{
+                        backgroundColor: colors[index],
+                        width: "16px",
+                        height: "16px",
+                      }}
+                    ></span>
+                    {vehiculo.tipo}
+                  </td>
+                  <td className="text-end">{vehiculo.total}</td>
                 </tr>
               ))}
             </tbody>
@@ -136,7 +139,13 @@ export const CurrentPermitDetail = () => {
             </tfoot>
           </table>
         </div>
-      </div>
+        <MyChart
+          option={optionChart}
+          widthChart="400px"
+          heightChart="400px"
+          onColorsChange={setColors}
+        />{" "}
+      </div>     
     </div>
   );
 };
