@@ -6,6 +6,7 @@ import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 import { MainIndicators } from "../views/managementIndicators/MainIndicators";
 import { CurrentPermitDetail } from "../components/managementIndicators/currentPermits/CurrentPermitDetail";
+import { AuthorizedVehiclesDetail } from "../components/managementIndicators/authorizedVehicles/AuthorizedVehiclesDetail";
 
 export const AppRouter = () => {
   return (
@@ -30,6 +31,10 @@ export const AppRouter = () => {
           <Route
             path="/indicadores/autorizaciones-vigentes/:anio"
             element={<CurrentPermitDetail />}
+          />
+          <Route
+            path="/indicadores/autorizaciones-emitidas/:anio"
+            element={<AuthorizedVehiclesDetail />}
           />
 
           <Route
