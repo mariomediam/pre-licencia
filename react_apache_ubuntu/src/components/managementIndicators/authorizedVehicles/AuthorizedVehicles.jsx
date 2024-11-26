@@ -154,7 +154,7 @@ export const AuthorizedVehicles = ({ anioSelected, title = "" }) => {
           </div>
         </div>
       </div>
-      <ViewMore />
+      <ViewMore url={`/indicadores/autorizaciones-emitidas/${anioSelected}`} />
     </div>
   );
 };
