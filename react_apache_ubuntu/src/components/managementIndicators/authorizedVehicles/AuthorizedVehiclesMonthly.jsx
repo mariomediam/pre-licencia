@@ -12,52 +12,51 @@ export const AuthorizedVehiclesMonthly = () => {
   const [vehicles, setVehicles] = useState([]);
   const [total, setTotal] = useState(0);
   const [optionChart, setOptionsChart] = useState({});
+  const [formatData, setFormatData] = useState({});
 
   const { anio: anioSelected } = useParams();
-
 
   const defaultOption = useMemo(
     () => ({
       // title: {
-      //   text: 'Autorizaciones emitidas por mes',        
+      //   text: 'Autorizaciones emitidas por mes',
       // },
       tooltip: {
-        trigger: 'axis',
+        trigger: "axis",
         axisPointer: {
-          type: 'cross',
+          type: "cross",
           label: {
-            backgroundColor: '#6a7985'
-          }
-        }
+            backgroundColor: "#6a7985",
+          },
+        },
       },
       legend: {
-        // data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']        
+        // data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
       },
       toolbox: {
         feature: {
-          saveAsImage: {}
-        }
+          saveAsImage: {},
+        },
       },
       grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
+        left: "3%",
+        right: "4%",
+        bottom: "3%",
         containLabel: true,
-        
       },
       xAxis: [
         {
-          type: 'category',
+          type: "category",
           boundaryGap: false,
           // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        }
+        },
       ],
       yAxis: [
         {
-          type: 'value'
-        }
+          type: "value",
+        },
       ],
-      series: []
+      series: [],
     }),
     []
   );
@@ -71,7 +70,6 @@ export const AuthorizedVehiclesMonthly = () => {
 
         total = vehiculos.reduce((acc, { q_total }) => acc + q_total, 0);
         setTotal(total);
-        
 
         const objTipos = Object.groupBy(vehiculos, ({ tipo }) => tipo);
         const objMeses = Object.groupBy(vehiculos, ({ mes }) => mes);
@@ -111,16 +109,17 @@ export const AuthorizedVehiclesMonthly = () => {
           }
         }
 
-        console.log("series", series);
-        console.log("listTipos", listTipos);
-
         setOptionsChart({
           ...defaultOption,
           legend: { data: listTipos },
-          xAxis: { ...defaultOption.xAxis, data: listMeses.map((mes) => obtenerNombreMes(mes)) },          
+          xAxis: {
+            ...defaultOption.xAxis,
+            data: listMeses.map((mes) => obtenerNombreMes(mes)),
+          },
           series: series,
         });
-        
+
+        setFormatData({ tipos: listTipos, meses: listMeses, series: series });
       } catch (error) {
         console.error(error);
       }
@@ -128,39 +127,42 @@ export const AuthorizedVehiclesMonthly = () => {
     getVehiculosVigentes();
   }, [anioSelected, defaultOption]);
 
-  useEffect(() => {
-    let total = 0;
-
-    total = vehicles.reduce((acc, { value }) => acc + value, 0);
-    setTotal(total);
-
-    const xAxisData = vehicles.map(({ name }) => name);
-    const seriesData = vehicles.map(({ value }) => value);
-
-    setOptionsChart({
-      ...defaultOption,
-      xAxis: { ...defaultOption.xAxis, data: xAxisData },
-      series: [{ ...defaultOption.series[0], data: seriesData }],
-    });
-  }, [vehicles, defaultOption]);
-
-
-
   return (
     <div className="d-flex flex-column flex-grow-1 justify-content-between">
       <div className="d-flex flex-column align-items-center gap-2">
         <h6> {total} autorizaciones emitidas</h6>
-        <div className="d-flex gap-3">
-         
-          
-            <MyChart
-              option={optionChart}
-              widthChart="400px"
-              heightChart="400px"
-            />{" "}
-          
+        <div className="d-flex gap-5 flex-wrap justify-content-center">
+          <MyChart
+            option={optionChart}
+            widthChart="400px"
+            heightChart="400px"
+          />{" "}
+          <div className="d-flex justify-content-center">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th className="px-3"></th>
+                  {formatData?.tipos?.map((tipo) => (
+                    <th className="px-3">{tipo}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {formatData?.meses?.map((mes, index) => (
+                  <tr className="py-0 my-0">
+                    <td className="py-0">{obtenerNombreMes(mes)}</td>
+                    {formatData?.series?.map((serie) => (
+                      <td className="px-3 py-0 text-end">{serie.data[index]}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* <small>{JSON.stringify(formatData)}</small> */}
+          </div>
         </div>
-      </div>      
+      </div>
     </div>
   );
 };
