@@ -1,6 +1,6 @@
-import { setCurrentYear } from "./indicatorsSlice";
+import { setSelectedYear } from "./indicatorsSlice";
 
-export const setCurrentYearThunk = (year) => (dispatch) => {
-    dispatch(setCurrentYear(year));
+export const setSelectedYearThunk = (year) => (dispatch) => {    
+    dispatch(setSelectedYear(year));
 };
 
