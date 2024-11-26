@@ -5,6 +5,7 @@ import { DashboardRoutes } from "./DashboardRoutes";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
 import { MainIndicators } from "../views/managementIndicators/MainIndicators";
+import { CurrentPermitDetail } from "../components/managementIndicators/currentPermits/CurrentPermitDetail";
 
 export const AppRouter = () => {
   return (
@@ -20,7 +21,16 @@ export const AppRouter = () => {
             }
           />
 
-          <Route path="/indicadores" element={<MainIndicators />} />
+          <Route path="/indicadores/">
+            <Route path=":anio" element={<MainIndicators />} />
+            <Route path="" element={<MainIndicators />} />
+          </Route>
+
+          {/* <Route path="/indicadores/:anio" element={<MainIndicators />} /> */}
+          <Route
+            path="/indicadores/autorizaciones-vigentes/:anio"
+            element={<CurrentPermitDetail />}
+          />
 
           <Route
             path="/*"
