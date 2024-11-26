@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { TranspVigente } from "../../../services/indicatorsService";
 import MyChart from "../../helpers/MyChart";
@@ -8,7 +8,7 @@ import XIcon from "../../../icons/XIcon";
 
 export const CurrentPermitDetail = () => {
   const navigate = useNavigate();
-  const { anio: urlYear } = useParams();
+  // const { anio: urlYear } = useParams();
 
   const [vehiculosVigentes, setVehiculosVigentes] = useState([]);
   const [total, setTotal] = useState(0);
@@ -21,12 +21,18 @@ export const CurrentPermitDetail = () => {
 
   const dafaultOption = useMemo(
     () => ({
-      // legend: {
-      //   // orient: "vertical",
-      //   left: "center",
-      //   top: "top",
-
-      // },
+      title: {
+        text: `Autorizaciones vigentes`,
+        subtext: `${total}`,
+        left: "center",
+        top: "45%",
+        textStyle: {
+          fontSize: 10,
+        },
+        subtextStyle: {
+          fontSize: 25,
+        },
+      },
       series: [
         {
           name: "Autoizaciones vigentes",
@@ -57,7 +63,7 @@ export const CurrentPermitDetail = () => {
         },
       ],
     }),
-    []
+    [total]
   );
 
   useEffect(() => {
@@ -97,7 +103,7 @@ export const CurrentPermitDetail = () => {
               className="p-0"
               style={{ marginTop: "-5px", marginBottom: "0px" }}
             >
-              {`Transportes / Autorizaciones vigentes ${urlYear}`}
+              {`Transportes / Autorizaciones vigentes`}
             </p>
           </div>
         </div>
@@ -111,33 +117,28 @@ export const CurrentPermitDetail = () => {
         </div>
       </header>
       <div className="d-flex flex-column align-items-center gap-1 flex-wrap justify-content-center pt-4">
-        <div className="d-flex align-items-center mb-0 pb-0">
-          <table className="table">
-            <tbody>
-              {vehiculosVigentes.map((vehiculo, index) => (
-                <tr key={vehiculo.tipo}>
-                  <td>
-                    <span
-                      className="circle-icon me-1"
-                      style={{
-                        backgroundColor: colors[index],
-                        width: "16px",
-                        height: "16px",
-                      }}
-                    ></span>
-                    {vehiculo.tipo}
-                  </td>
-                  <td className="text-end">{vehiculo.total}</td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td>Total</td>
-                <td className="text-end">{total}</td>
-              </tr>
-            </tfoot>
-          </table>
+        <div className="pb-0 mb-0">
+          {vehiculosVigentes.map((vehiculo, index) => (
+            <div
+              key={vehiculo.tipo}
+              className="d-flex justify-content-between gap-5"
+            >
+              <div className="d-flex align-items-center">
+                <span
+                  className="circle-icon me-1 "
+                  style={{
+                    backgroundColor: colors[index],
+                    width: "16px",
+                    height: "16px",
+                  }}
+                ></span>
+
+                <span style={{ fontSize: "0.8rem" }}>{vehiculo.tipo}</span>
+              </div>
+
+              <span style={{ fontSize: "0.8rem" }}>{vehiculo.total}</span>
+            </div>
+          ))}
         </div>
         <MyChart
           option={optionChart}
@@ -145,7 +146,7 @@ export const CurrentPermitDetail = () => {
           heightChart="400px"
           onColorsChange={setColors}
         />{" "}
-      </div>     
+      </div>
     </div>
   );
 };
