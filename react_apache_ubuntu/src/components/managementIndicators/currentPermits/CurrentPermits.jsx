@@ -96,7 +96,7 @@ export const CurrentPermits = ({ anioSelected, title = "" }) => {
         </div>
       </div>
 
-      <ViewMore />
+      <ViewMore url={`/indicadores/autorizaciones-vigentes/${anioSelected}`} />
     </div>
   );
 };
