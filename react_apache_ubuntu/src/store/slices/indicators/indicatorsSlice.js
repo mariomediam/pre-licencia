@@ -4,7 +4,7 @@ export const indicatorsSlice = createSlice({
   name: "indicators",
   initialState: {
     indicators: {},
-    currentYear: new Date().getFullYear(),    
+    selectedYear: new Date().getFullYear(),    
   },
   reducers: {
     initialIndicators: (state, { payload }) => {
@@ -13,11 +13,11 @@ export const indicatorsSlice = createSlice({
     setIndicators: (state, { payload }) => {
       state.indicators = { ...state.indicators, ...payload };
     },
-    setCurrentYear: (state, { payload }) => {
-      state.currentYear = payload;
+    setSelectedYear: (state, { payload }) => {      
+      state.selectedYear = payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { initialIndicators, setIndicators, setCurrentYear } = indicatorsSlice.actions;
+export const { initialIndicators, setIndicators, setSelectedYear } = indicatorsSlice.actions;
