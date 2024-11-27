@@ -10,7 +10,7 @@ import { setSelectedYearThunk } from "../../store/slices/indicators/thunks";
 
 const currentYear = new Date().getFullYear();
 const anios = Array.from(
-  { length: currentYear - 2021 },
+  { length: currentYear - 2020 },
   (_, i) => currentYear - i
 );
 
