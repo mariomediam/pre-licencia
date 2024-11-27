@@ -70,8 +70,7 @@ export const CurrentPermitDetail = () => {
     const getVehiculosVigentes = async () => {
       try {
         const vehiculos = await TranspVigente();
-        setVehiculosVigentes(vehiculos);
-        console.log("vehiculos", vehiculos);
+        setVehiculosVigentes(vehiculos);        
       } catch (error) {
         throw error;
       }
