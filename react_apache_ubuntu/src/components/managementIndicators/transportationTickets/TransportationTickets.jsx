@@ -129,7 +129,7 @@ export const TransportationTickets = ({ anioSelected, title = "" }) => {
   return (
     <div className="d-flex flex-column flex-grow-1 justify-content-between">
       <div>
-        <h6>{title}</h6>
+        <h6>{title} {anioSelected}</h6>
         <div className="d-flex gap-3">
           <div style={{ maxWidth: "100px" }}>
             <h3>{total}</h3>
