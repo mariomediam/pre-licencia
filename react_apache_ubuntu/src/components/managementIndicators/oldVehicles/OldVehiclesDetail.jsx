@@ -85,8 +85,7 @@ export const OldVehiclesDetail = () => {
     const getYearManufacture = async () => {
       try {
         const dataYearManufacture = await AntiguedadVehiculos();
-        const objGrouped = Object.groupBy(dataYearManufacture, getGrouped);
-        console.log("objGrouped", objGrouped);
+        const objGrouped = Object.groupBy(dataYearManufacture, getGrouped);        
         const totalVehicles = dataYearManufacture.reduce(
           (acc, { q_total }) => acc + q_total,
           0
@@ -107,7 +106,7 @@ export const OldVehiclesDetail = () => {
             });
           }
         }
-        console.log("data", data);
+        
         setYearManufacture(data);
       } catch (error) {
         throw error;
