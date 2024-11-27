@@ -91,7 +91,7 @@ export const TransportationTicketsMonthly = () => {
   }, [anioSelected]);
 
   useEffect(() => {
-    console.log("entro a tickets", tickets);
+    
     let total = 0;
     const data = [];
     tickets.forEach((ticket) => {
@@ -101,7 +101,7 @@ export const TransportationTicketsMonthly = () => {
       });
       total += ticket.q_total;
     });
-    console.log("total", total);
+    
     setTotal(total);
     setOptionsChart({
       ...dafaultOption,
