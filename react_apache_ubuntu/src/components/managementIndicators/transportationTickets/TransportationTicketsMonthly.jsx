@@ -151,7 +151,7 @@ export const TransportationTicketsMonthly = () => {
           />
           </div>
           <div className="d-flex justify-content-center mx-5" style={{maxWidth: "1200px"}}>
-            <table class="table">
+            <table className="table">
               <thead>
                 <tr>
                   <th className="px-3"></th>
