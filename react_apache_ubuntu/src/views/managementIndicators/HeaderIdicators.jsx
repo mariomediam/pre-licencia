@@ -30,7 +30,7 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected }) => {
         </div>
 
         <div className="d-flex align-items-center gap-2 ">
-          <span className="m-0 p-0">{selectedYear} Año: </span>
+          <span className="m-0 p-0">Año: </span>
           <select
             className="form-select "
             aria-label="Año a consultar"
