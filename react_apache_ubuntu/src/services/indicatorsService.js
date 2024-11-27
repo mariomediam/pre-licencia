@@ -40,7 +40,7 @@ const VehiculosAutorizadosMes = async (anio) => {
   }
 };
 
-const ComparacionVehiculosAutorizados = async (dia, mes, anio01, anio02) => {
+const ComparacionVehiculosAutorizados = async (dia, mes, anio01, anio02, opcion = 1) => {
   let credenciales = {};
 
   try {
@@ -50,7 +50,7 @@ const ComparacionVehiculosAutorizados = async (dia, mes, anio01, anio02) => {
     let {
       data: { content },
     } = await axios.get(
-      `${URL}/comparacion-vehiculos-autorizados?dia=${dia}&mes=${mes}&anio01=${anio01}&anio02=${anio02}`,
+      `${URL}/comparacion-vehiculos-autorizados?dia=${dia}&mes=${mes}&anio01=${anio01}&anio02=${anio02}&opcion=${opcion}`,
       credenciales,
       { headers }
     );
