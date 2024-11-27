@@ -94,8 +94,7 @@ export const AuthorizedVehiclesAnual = () => {
     }));
 
     const tipos = seriesData.map((serie) => serie.name);
-    tipos.push("TOTAL");
-    console.log("seriesData", seriesData);
+    tipos.push("TOTAL");    
 
     seriesData.push({
       name: "TOTAL",
