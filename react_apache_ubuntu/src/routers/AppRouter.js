@@ -7,6 +7,7 @@ import { PublicRoute } from "./PublicRoute";
 import { MainIndicators } from "../views/managementIndicators/MainIndicators";
 import { CurrentPermitDetail } from "../components/managementIndicators/currentPermits/CurrentPermitDetail";
 import { AuthorizedVehiclesDetail } from "../components/managementIndicators/authorizedVehicles/AuthorizedVehiclesDetail";
+import { TransportationTicketsDetail } from "../components/managementIndicators/transportationTickets/TransportationTicketsDetail";
 
 export const AppRouter = () => {
   return (
@@ -35,6 +36,10 @@ export const AppRouter = () => {
           <Route
             path="/indicadores/autorizaciones-emitidas/:anio"
             element={<AuthorizedVehiclesDetail />}
+          />
+          <Route
+            path="/indicadores/infracciones-transporte/:anio"
+            element={<TransportationTicketsDetail />}
           />
 
           <Route
