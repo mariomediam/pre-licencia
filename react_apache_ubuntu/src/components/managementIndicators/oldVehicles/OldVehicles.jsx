@@ -126,7 +126,7 @@ export const OldVehicles = ({ anioSelected, title = "" }) => {
       </div>
 
       </div>
-      <ViewMore />
+      <ViewMore url={`/indicadores/antiguedad-vehiculos/${anioSelected}`} />
     </div>
   );
 };
