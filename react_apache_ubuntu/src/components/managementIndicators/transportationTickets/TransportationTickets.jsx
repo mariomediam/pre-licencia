@@ -167,7 +167,7 @@ export const TransportationTickets = ({ anioSelected, title = "" }) => {
           </div>
         </div>
       </div>
-      <ViewMore />
+      <ViewMore url={`/indicadores/infracciones-transporte/${anioSelected}`} />
     </div>
   );
 };
