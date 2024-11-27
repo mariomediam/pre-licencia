@@ -1,15 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  VehiculosAutorizadosMes,
-  ComparacionVehiculosAutorizados,
-} from "../../../services/indicatorsService";
+import { VehiculosAutorizadosMes } from "../../../services/indicatorsService";
 import MyChart from "../../helpers/MyChart";
 import { obtenerNombreMes } from "../../../utils/varios";
 
 export const AuthorizedVehiclesMonthly = () => {
-  const [vehicles, setVehicles] = useState([]);
   const [total, setTotal] = useState(0);
   const [optionChart, setOptionsChart] = useState({});
   const [formatData, setFormatData] = useState({});
@@ -104,7 +100,6 @@ export const AuthorizedVehiclesMonthly = () => {
               }
               serie.data.push(monto);
             }
-            console.log("entro");
             series.push(serie);
           }
         }
@@ -152,7 +147,9 @@ export const AuthorizedVehiclesMonthly = () => {
                   <tr className="py-0 my-0">
                     <td className="py-0">{obtenerNombreMes(mes)}</td>
                     {formatData?.series?.map((serie) => (
-                      <td className="px-3 py-0 text-end">{serie.data[index]}</td>
+                      <td className="px-3 py-0 text-end">
+                        {serie.data[index]}
+                      </td>
                     ))}
                   </tr>
                 ))}
