@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  ComparacionInfraccionesTransporte,
+import {  
   InfraccionesTransporte,
 } from "../../../services/indicatorsService";
 import MyChart from "../../helpers/MyChart";
