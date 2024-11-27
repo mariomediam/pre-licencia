@@ -40,7 +40,13 @@ const VehiculosAutorizadosMes = async (anio) => {
   }
 };
 
-const ComparacionVehiculosAutorizados = async (dia, mes, anio01, anio02, opcion = 1) => {
+const ComparacionVehiculosAutorizados = async (
+  dia,
+  mes,
+  anio01,
+  anio02,
+  opcion = 1
+) => {
   let credenciales = {};
 
   try {
@@ -59,30 +65,30 @@ const ComparacionVehiculosAutorizados = async (dia, mes, anio01, anio02, opcion 
   } catch (error) {
     throw error;
   }
-}
-
+};
 
 const InfraccionesTransporte = async (anio) => {
   let credenciales = {};
 
   try {
+    let urlInfracciones = `${URL}/infracciones-transporte`;
+
+    if (anio) {
+      urlInfracciones += `?anio=${anio}`;
+    }
+
     const headers = {
       "Content-Type": "application/json",
     };
     let {
       data: { content },
-    } = await axios.get(
-      `${URL}/infracciones-transporte?anio=${anio}`,
-      credenciales,
-      { headers }
-    );
+    } = await axios.get(urlInfracciones, credenciales, { headers });
 
     return content;
   } catch (error) {
     throw error;
   }
-}
-
+};
 
 const ComparacionInfraccionesTransporte = async (dia, mes, anio01, anio02) => {
   let credenciales = {};
@@ -103,7 +109,7 @@ const ComparacionInfraccionesTransporte = async (dia, mes, anio01, anio02) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 const AntiguedadVehiculos = async () => {
   let credenciales = {};
@@ -114,16 +120,21 @@ const AntiguedadVehiculos = async () => {
     };
     let {
       data: { content },
-    } = await axios.get(
-      `${URL}/antiguedad-vehiculos`,
-      credenciales,
-      { headers }
-    );
+    } = await axios.get(`${URL}/antiguedad-vehiculos`, credenciales, {
+      headers,
+    });
 
     return content;
   } catch (error) {
     throw error;
   }
-}
+};
 
-export { TranspVigente, VehiculosAutorizadosMes, ComparacionVehiculosAutorizados, InfraccionesTransporte, ComparacionInfraccionesTransporte, AntiguedadVehiculos };
+export {
+  TranspVigente,
+  VehiculosAutorizadosMes,
+  ComparacionVehiculosAutorizados,
+  InfraccionesTransporte,
+  ComparacionInfraccionesTransporte,
+  AntiguedadVehiculos,
+};
