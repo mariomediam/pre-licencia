@@ -133,21 +133,21 @@ export const AuthorizedVehiclesMonthly = () => {
             heightChart="400px"
           />{" "}
           <div className="d-flex justify-content-center">
-            <table class="table">
+            <table className="table">
               <thead>
                 <tr>
                   <th className="px-3"></th>
                   {formatData?.tipos?.map((tipo) => (
-                    <th className="px-3">{tipo}</th>
+                    <th className="px-3" key={tipo}>{tipo}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {formatData?.meses?.map((mes, index) => (
-                  <tr className="py-0 my-0">
+                  <tr className="py-0 my-0" key={mes}>
                     <td className="py-0">{obtenerNombreMes(mes)}</td>
-                    {formatData?.series?.map((serie) => (
-                      <td className="px-3 py-0 text-end">
+                    {formatData?.series?.map((serie, index) => (
+                      <td className="px-3 py-0 text-end" key={index}>
                         {serie.data[index]}
                       </td>
                     ))}
