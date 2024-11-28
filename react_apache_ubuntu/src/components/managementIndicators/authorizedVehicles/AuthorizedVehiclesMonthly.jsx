@@ -143,13 +143,21 @@ export const AuthorizedVehiclesMonthly = () => {
                 </tr>
               </thead>
               <tbody>
-                {formatData?.meses?.map((mes, index) => (
+                {/* {formatData?.meses?.map((mes, index) => (
                   <tr className="py-0 my-0" key={mes}>
                     <td className="py-0">{obtenerNombreMes(mes)}</td>
                     {formatData?.series?.map((serie, index) => (
                       <td className="px-3 py-0 text-end" key={index}>
                         {serie.data[index]}
                       </td>
+                    ))}
+                  </tr>
+                ))} */}
+                 {formatData?.meses?.map((mes, indexMeses) => (
+                  <tr className="py-0 my-0" key={indexMeses}>
+                    <td className="py-0">{obtenerNombreMes(mes)}</td>
+                    {formatData?.series?.map((serie, indexSerie) => (
+                      <td className="px-3 py-0 text-end" key={indexSerie}>{serie.data[indexMeses]}</td>
                     ))}
                   </tr>
                 ))}
