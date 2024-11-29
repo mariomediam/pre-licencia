@@ -160,7 +160,7 @@ code {
   }
   .card-indicator {
     flex: 1 1 100%;
-    max-width: 300px;
+    max-width: 400px;
   }
 }
 
