@@ -35,9 +35,6 @@ export const OldVehicles = ({ anioSelected, title = "" }) => {
           },
           label: {
             show: true,
-            // textStyle: {
-            //   fontSize: 10, // Ajusta el tamaño de la fuente aquí
-            // },
             fontSize: 10,
           },
         },
@@ -88,7 +85,7 @@ export const OldVehicles = ({ anioSelected, title = "" }) => {
     const data = yearManufacture.map(({ value, name }) => ({
       name: name.replace(" años", ""),
       value,
-    }));
+    }));    
     setOptionsChart({
       ...dafaultOption,
       series: [{ ...dafaultOption.series[0], data }],
@@ -96,35 +93,43 @@ export const OldVehicles = ({ anioSelected, title = "" }) => {
   }, [yearManufacture, dafaultOption]);
 
   return (
-    <div style={{ maxWidth: "260px" }} className="d-flex flex-column flex-grow-1 justify-content-between">
+    <div
+      style={{ maxWidth: "260px" }}
+      className="d-flex flex-column flex-grow-1 justify-content-between"
+    >
       <div>
-      <h6>{title} </h6>
-      <div className="d-flex gap-3">
-        <div className="d-flex align-items-center">
-          <table>
-            <tbody>
-            {yearManufacture.map(({ value, name }) => (
-              <tr key={name} className="py-0 my-0">
-                <td className="py-0 my-0" style={{ verticalAlign: "baseline" }}>
-                  <h5 className="p-0 m-0">{value}</h5>
-                </td>
-                <td className="py-0 my-0" style={{ verticalAlign: "baseline" }}>
-                  <small className="py-0 ps-2 m-0">{name}</small>
-                </td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
+        <h6>{title} </h6>
+        <div className="d-flex gap-3">
+          <div className="d-flex align-items-center">
+            <table>
+              <tbody>
+                {yearManufacture.map(({ value, name }) => (
+                  <tr key={name} className="py-0 my-0">
+                    <td
+                      className="py-0 my-0"
+                      style={{ verticalAlign: "baseline" }}
+                    >
+                      <h5 className="p-0 m-0">{value}</h5>
+                    </td>
+                    <td
+                      className="py-0 my-0"
+                      style={{ verticalAlign: "baseline" }}
+                    >
+                      <small className="py-0 ps-2 m-0">{name}</small>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <MyChart
+              option={optionChart}
+              widthChart="110px"
+              heightChart="130px"
+            />{" "}
+          </div>
         </div>
-        <div>
-          <MyChart
-            option={optionChart}
-            widthChart="110px"
-            heightChart="130px"
-          />{" "}
-        </div>
-      </div>
-
       </div>
       <ViewMore url={`/indicadores/antiguedad-vehiculos/${anioSelected}`} />
     </div>
