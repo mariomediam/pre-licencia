@@ -130,6 +130,30 @@ const AntiguedadVehiculos = async () => {
   }
 };
 
+const OcurrenciasxAnio = async ( params ) => {
+
+  const { anio, opcion } = params;
+
+  let credenciales = {};
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(`${URL}/ocurrencias-anio?anio=${anio}&opcion=${opcion}`, credenciales, {
+      headers,
+    });
+
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+
 export {
   TranspVigente,
   VehiculosAutorizadosMes,
@@ -137,4 +161,5 @@ export {
   InfraccionesTransporte,
   ComparacionInfraccionesTransporte,
   AntiguedadVehiculos,
+  OcurrenciasxAnio,
 };
