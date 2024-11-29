@@ -25,7 +25,8 @@ export const AppRouter = () => {
           />
 
           <Route path="/indicadores/">
-            <Route path=":anio" element={<MainIndicators />} />
+            <Route path=":tipo/:anio" element={<MainIndicators />} />
+            <Route path=":tipo" element={<MainIndicators />} />
             <Route path="" element={<MainIndicators />} />
           </Route>
 
