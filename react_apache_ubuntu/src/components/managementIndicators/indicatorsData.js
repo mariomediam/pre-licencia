@@ -52,7 +52,7 @@ export const getIndicators = (anioSelected) => [
     component: (
       <OccurrencesType
         anioSelected={anioSelected}
-        title={"Antigüedad de vehículos con autorización vigente"}
+        title={"Ocurrencias por tipo"}
       />
     ),
   },
