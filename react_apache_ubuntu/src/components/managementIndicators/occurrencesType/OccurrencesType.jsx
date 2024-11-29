@@ -6,6 +6,7 @@ import { ViewMore } from "../ViewMore";
 
 export const OccurrencesType = ({ anioSelected, title = "" }) => {
   const [dataOccurrence, setDataOccurrence] = useState([]);
+  const [totalOccurrences, setTotalOccurrences] = useState(0)
   const [optionChart, setOptionsChart] = useState({});
   const [colors, setColors] = useState([]);
 
@@ -61,6 +62,7 @@ export const OccurrencesType = ({ anioSelected, title = "" }) => {
 
         // Sumar los totales de cada tipo de apoyo
         const data = [];
+        let sumOccurrences = 0;
         for (const key in objTipoApoyo) {
           if (Object.hasOwnProperty.call(objTipoApoyo, key)) {
             const element = objTipoApoyo[key];
@@ -69,8 +71,10 @@ export const OccurrencesType = ({ anioSelected, title = "" }) => {
               0
             );
             data.push({ name: key, value: total });
+            sumOccurrences += total ;
           }
         }
+        setTotalOccurrences(sumOccurrences)
 
         // Ordenar de mayor a menor
         data.sort((a, b) => b.value - a.value);
@@ -106,20 +110,22 @@ export const OccurrencesType = ({ anioSelected, title = "" }) => {
     >
       <div>
         <h6>{title} </h6>
+        <h3>{totalOccurrences}</h3>
         <div className="d-flex gap-0 flew-wrap flex-column">
           <div className="d-flex align-items-center">
+            
             <table>
               <tbody>
                 {dataOccurrence.map(({ value, name }, index) => (
                   <tr key={name} className="py-0 my-0">
-                    <td
+                    {/* <td
                       className="py-0 my-0"
                       style={{ verticalAlign: "baseline" }}
                     >
                       <h6 className="p-0 m-0">{value}</h6>
-                    </td>
+                    </td> */}
                     <td
-                      className="py-0 my-0 ps-3"
+                      className=" my-0 ps-3"
                       style={{ verticalAlign: "baseline" }}
                     >
                       <div className="d-flex ">
@@ -133,11 +139,11 @@ export const OccurrencesType = ({ anioSelected, title = "" }) => {
                         }}
                       ></span>
                       <p
-                        style={{ fontSize: "0.6rem", lineHeight: "1.2" }}
+                        style={{ fontSize: "0.7rem", lineHeight: "1.2" }}
                         className="py-0 m-0"
                         title={name}
                       >
-                        {name}
+                        <span className="fw-bold">{value}</span> {name}
                       </p>
                       </div>
                     </td>
