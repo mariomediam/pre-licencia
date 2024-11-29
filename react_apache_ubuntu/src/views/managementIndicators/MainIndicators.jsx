@@ -1,11 +1,11 @@
 import { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import "../../../src/MainIndicators.css";
 import { CardIndicator } from "../../components/managementIndicators/CardIndicator";
 import { HeaderIdicators } from "./HeaderIdicators";
-import { setSelectedYearThunk } from "../../store/slices/indicators/thunks";
+import { setSelectedTypeAndYearThunk, setSelectedYearThunk } from "../../store/slices/indicators/thunks";
 
 
 const currentYear = new Date().getFullYear();
@@ -17,26 +17,30 @@ const anios = Array.from(
 
 export const MainIndicators = () => {
 
-  const { anio : urlYear } = useParams();
+  const { anio : urlYear = currentYear, tipo : urlTipo = "01" } = useParams();
 
   const dispatch = useDispatch();
-  const { selectedYear } = useSelector((state) => state.indicators);
+  
+
+  const setTipoYAnioSelected = useCallback((tipo, anio) => {
+    dispatch(setSelectedTypeAndYearThunk(tipo, anio));
+  }, [dispatch]);
 
   const setAnioSelected = useCallback((anio) => {
     dispatch(setSelectedYearThunk(anio));
   }, [dispatch]);
 
   useEffect(() => {
-      setAnioSelected(parseInt(urlYear) || currentYear);
-    
-  }, [urlYear, setAnioSelected]);
+    setTipoYAnioSelected(urlTipo, parseInt(urlYear));    
+  }, [urlTipo, urlYear, setTipoYAnioSelected]);
 
 
   return (
     <div className="main-indicators-font m-3">
-      <HeaderIdicators anios={anios} setAnioSelected={setAnioSelected} />
+      <HeaderIdicators anios={anios} setAnioSelected={setAnioSelected} selectedType={urlTipo} />
       <main className="mt-4">
-        <CardIndicator anioSelected={selectedYear} />
+        {/* <CardIndicator anioSelected={selectedYear} tipoSelected={selectedType} /> */}
+        <CardIndicator anioSelected={urlYear} tipoSelected={urlTipo} />
       </main>
     </div>
   );
