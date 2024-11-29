@@ -21,11 +21,10 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) =
     navigate(`/indicadores/${selectedType}/${e.target.value}`);
   };
 
-  const onClickMenu = (e) => {
-    // setMenuSelected(e.target.id);
+  const onClickMenu = (e) => {    
     navigate(`/indicadores/${e.target.id}`);
     handleClose();
-    // console.log(e.target.id);
+
   }
 
   
@@ -55,7 +54,10 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) =
               className="p-0"
               style={{ marginTop: "-5px", marginBottom: "0px" }}
             >
-              Transportes
+              {
+                menuPrincipal.find((item) => item.tipo === selectedType)
+                  ?.menDesc
+              }
             </p>
           </div>
         </div>
@@ -86,7 +88,7 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) =
             {menuPrincipal.map(({ tipo, menDesc, icon }, i) => (
               <ListGroup.Item
                 action
-                // variant={menCodi === menCodiSelec ? "dark" : ""}
+                variant={tipo === selectedType ? "dark" : ""}
                 key={tipo}
                 id={tipo}                
                 onClick={onClickMenu}
