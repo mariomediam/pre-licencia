@@ -1,39 +1,40 @@
 import { useEffect, useMemo, useState } from "react";
 
-import {
-  VehiculosAutorizadosMes,
-  ComparacionVehiculosAutorizados,
-} from "../../../services/indicatorsService";
+import { OcurrenciasxAnio } from "../../../services/indicatorsService";
 import MyChart from "../../helpers/MyChart";
 import { obtenerNombreMes } from "../../../utils/varios";
-import ChevronUp from "../../../icons/ChevronUp";
 import { ViewMore } from "../ViewMore";
 
-
 export const OccurrencesTime = ({ anioSelected, title = "" }) => {
-    const [vehicles, setVehicles] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [dataOccurrence, setDataOccurrence] = useState([]);
+  const [totalOccurrences, setTotalOccurrences] = useState(0);
   const [optionChart, setOptionsChart] = useState({});
-  const [variation, setVariation] = useState(0);
-
-  const isPositive = variation > 0;
 
   const dafaultOption = useMemo(
     () => ({
+        
       xAxis: {
         type: "category",
         boundaryGap: false,
         // data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        show: false,
+        show: true,
+      },
+      grid: {
+        top: "3%",
+        bottom: "15%",
+        // bottom: 0,
+        
+
       },
       yAxis: {
         type: "value",
-        show: false,
+        show: true,
       },
       series: [
         {
           //   data: [820, 932, 901, 934, 1290, 1330, 1320],
           type: "line",
+          
           areaStyle: {},
         },
       ],
@@ -42,120 +43,68 @@ export const OccurrencesTime = ({ anioSelected, title = "" }) => {
   );
 
   useEffect(() => {
-    const getVehiculosVigentes = async () => {
+    const getOccurrences = async () => {
       try {
-        const vehiculos = await VehiculosAutorizadosMes(anioSelected);
-        const result = Object.groupBy(vehiculos, ({ mes }) => mes);
+        const params = {
+          anio: anioSelected,
+          opcion: "02",
+        };
+        const dataOccurrence = await OcurrenciasxAnio(params);
+
+        // Agrupar por mes
+        const objMes = Object.groupBy(dataOccurrence, ({ mes }) => mes);
+
+        // Sumar los totales de cada mes
         const data = [];
-        for (const key in result) {
-          if (Object.hasOwnProperty.call(result, key)) {
-            const element = result[key];
+        let sumOccurrences = 0;
+        for (const key in objMes) {
+          if (Object.hasOwnProperty.call(objMes, key)) {
+            const element = objMes[key];
             const total = element.reduce(
               (acc, { q_total }) => acc + q_total,
               0
             );
-            data.push({ value: total, name: obtenerNombreMes(key) });
+            data.push({ name: obtenerNombreMes(key), value: total });
+            sumOccurrences += total;
           }
         }
-
-        setVehicles(data);
+        setTotalOccurrences(sumOccurrences);
+        setDataOccurrence(data);
       } catch (error) {
-        console.error(error);
+        throw error;
       }
     };
-    getVehiculosVigentes();
+    getOccurrences();
   }, [anioSelected]);
 
   useEffect(() => {
-    let total = 0;
-
-    total = vehicles.reduce((acc, { value }) => acc + value, 0);
-    setTotal(total);
-
-    const xAxisData = vehicles.map(({ name }) => name);
-    const seriesData = vehicles.map(({ value }) => value);
+    const xAxisData = dataOccurrence.map(({ name }) => name);
+    const seriesData = dataOccurrence.map(({ value }) => value);
 
     setOptionsChart({
       ...dafaultOption,
       xAxis: { ...dafaultOption.xAxis, data: xAxisData },
       series: [{ ...dafaultOption.series[0], data: seriesData }],
     });
-  }, [vehicles, dafaultOption]);
-
-  useEffect(() => {
-    const getComparacionVehiculosAutorizados = async () => {
-      try {
-        const currentDate = new Date();
-        const dia =
-          anioSelected === currentDate.getFullYear()
-            ? currentDate.getDate()
-            : 31;
-        const mes =
-          anioSelected === currentDate.getFullYear()
-            ? currentDate.getMonth() + 1
-            : 12;
-
-        const { total1, total2 } = await ComparacionVehiculosAutorizados(
-          dia,
-          mes,
-          anioSelected - 1,
-          anioSelected
-        );
-
-        let percentVariation = 0;
-        if (total1 !== 0) {
-          percentVariation = ((total2 - total1) / total1) * 100;
-        }
-        setVariation(percentVariation);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getComparacionVehiculosAutorizados();
-  }, [anioSelected]);
+  }, [dataOccurrence, dafaultOption]);
 
   return (
     <div className="d-flex flex-column flex-grow-1 justify-content-between">
       <div>
-        <h6>{title} {anioSelected}</h6>
-        <div className="d-flex gap-3">
-          <div style={{ maxWidth: "100px" }}>
-            <h3>{total}</h3>
-            <span
-              className="circle-icon me-1"
-              style={{
-                backgroundColor: isPositive ? "#67FD09" : "#F6D5AF",
-                transform: `rotate(${isPositive ? 0 : 180}deg)`,
-              }}
-            >
-              <ChevronUp
-                width={14}
-                height={14}
-                className={isPositive ? "text-success" : "text-danger"}
-              />
-            </span>
-            <small className={isPositive ? "text-success" : "text-danger"}>
-              {Math.round(variation)}%{" "}
-            </small>
-            <p
-              style={{ lineHeight: 1 }}
-              className={isPositive ? "text-success" : "text-danger"}
-            >
-              <small style={{ fontSize: "0.7rem" }}>
-                Comparado con el año anterior
-              </small>
-            </p>
-          </div>
-          <div>
-            <MyChart
-              option={optionChart}
-              widthChart="150px"
-              heightChart="200px"
-            />{" "}
-          </div>
+        <h6>
+          {title} {anioSelected}
+        </h6>
+        <h3>{totalOccurrences}</h3>
+
+        <div className="d-flex justify-content-center align-items-center">
+          <MyChart
+            option={optionChart}
+            widthChart="150px"
+            heightChart="200px"
+          />{" "}
         </div>
       </div>
       <ViewMore url={`/indicadores/autorizaciones-emitidas/${anioSelected}`} />
     </div>
   );
-}
+};
