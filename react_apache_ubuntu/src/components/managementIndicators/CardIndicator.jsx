@@ -9,7 +9,7 @@ export const CardIndicator = ({ anioSelected, tipoSelected }) => {
 
   return (
     <div className="d-flex gap-3 flex-wrap cards-container">
-      {tipoSelected}
+      
       {indicators.filter(({type}) => type === tipoSelected).map((indicator) => (
         <CardItemIndicator key={indicator.code} indicator={indicator} />
       ))}
