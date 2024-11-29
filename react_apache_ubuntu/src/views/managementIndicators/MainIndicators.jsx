@@ -17,7 +17,10 @@ const anios = Array.from(
 
 export const MainIndicators = () => {
 
-  const { anio : urlYear = currentYear, tipo : urlTipo = "01" } = useParams();
+  const { anio = currentYear, tipo : urlTipo = "01" } = useParams();
+  const urlYear = parseInt(anio);
+
+
 
   const dispatch = useDispatch();
   
@@ -38,8 +41,7 @@ export const MainIndicators = () => {
   return (
     <div className="main-indicators-font m-3">
       <HeaderIdicators anios={anios} setAnioSelected={setAnioSelected} selectedType={urlTipo} />
-      <main className="mt-4">
-        {/* <CardIndicator anioSelected={selectedYear} tipoSelected={selectedType} /> */}
+      <main className="mt-4">        
         <CardIndicator anioSelected={urlYear} tipoSelected={urlTipo} />
       </main>
     </div>
