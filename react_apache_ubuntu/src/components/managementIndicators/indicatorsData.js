@@ -1,5 +1,6 @@
 import { AuthorizedVehicles } from "./authorizedVehicles/AuthorizedVehicles";
 import { CurrentPermits } from "./currentPermits/CurrentPermits";
+import { OccurrencesTime } from "./occurrencesTime/OccurrencesTime";
 import { OccurrencesType } from "./occurrencesType/OccurrencesType";
 import { OldVehicles } from "./oldVehicles/OldVehicles";
 import { TransportationTickets } from "./transportationTickets/TransportationTickets";
@@ -53,6 +54,16 @@ export const getIndicators = (anioSelected) => [
       <OccurrencesType
         anioSelected={anioSelected}
         title={"Ocurrencias por tipo"}
+      />
+    ),
+  },
+  {
+    type: "02",
+    code: "02",
+    component: (
+      <OccurrencesTime
+        anioSelected={anioSelected}
+        title={"Ocurrencias por mes"}
       />
     ),
   },
