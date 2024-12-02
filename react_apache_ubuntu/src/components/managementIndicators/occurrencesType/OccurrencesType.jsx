@@ -162,7 +162,7 @@ export const OccurrencesType = ({ anioSelected, title = "" }) => {
           </div>
         </div>
       </div>
-      <ViewMore url={`/indicadores/antiguedad-vehiculos/${anioSelected}`} />
+      <ViewMore url={`/indicadores/ocurrencias-tipo/${anioSelected}`} />
     </div>
   );
 };
