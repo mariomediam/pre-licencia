@@ -12,7 +12,11 @@ export const OccurrencesTime = ({ anioSelected, title = "" }) => {
 
   const dafaultOption = useMemo(
     () => ({
+      tooltip: {
+        trigger: "axis",
+        axisPointer: { type: "cross" },
         
+      },
       xAxis: {
         type: "category",
         boundaryGap: false,
@@ -22,9 +26,7 @@ export const OccurrencesTime = ({ anioSelected, title = "" }) => {
       grid: {
         top: "3%",
         bottom: "15%",
-        // bottom: 0,
-        
-
+        containLabel: true,
       },
       yAxis: {
         type: "value",
@@ -34,8 +36,8 @@ export const OccurrencesTime = ({ anioSelected, title = "" }) => {
         {
           //   data: [820, 932, 901, 934, 1290, 1330, 1320],
           type: "line",
-          
           areaStyle: {},
+          smooth: true,
         },
       ],
     }),
@@ -99,7 +101,7 @@ export const OccurrencesTime = ({ anioSelected, title = "" }) => {
         <div className="d-flex justify-content-center align-items-center">
           <MyChart
             option={optionChart}
-            widthChart="150px"
+            widthChart="350px"
             heightChart="200px"
           />{" "}
         </div>
