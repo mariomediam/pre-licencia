@@ -14,25 +14,52 @@ export const OccurrencesTypeDetail = () => {
 
   const dafaultOption = useMemo(
     () => ({
-      title: {
-        text: `${totalOccurrences} Ocurrencias`,
-        left: 'center'
+      // title: {
+      //   text: `${totalOccurrences} Ocurrencias`,
+      //   left: 'center'
+      // },
+      label: {
+        position: "insideTopLeft",
+        formatter: function (params) {
+          const total = params.treePathInfo[0].value;
+          const percent = ((params.value / total) * 100).toFixed(2);
+          let arr = [
+            "{name|" + params.name + "}",
+            "{hr|}",
+            "{value|" + params.value + "}{name| ocurrencias}",
+            "{name|" + percent + "}{name|%}",
+          ];
+          return arr.join("\n");
+        },
+        
+        rich: {
+          value: {
+            fontSize: 22,
+            lineHeight: 30,
+            // color: 'yellow'
+          },
+          name: {
+            fontSize: 12,
+            color: "#fff",
+          },
+          hr: {
+            width: "100%",
+            borderColor: "rgba(255,255,255,0.2)",
+            borderWidth: 0.5,
+            height: 0,
+            lineHeight: 10,
+          },
+        },
       },
 
       tooltip: {
-        formatter: function (info) {
-          // var value = info.value;
+        formatter: function (info) {          
           var treePathInfo = info.treePathInfo;
           var treePath = [];
           for (var i = 1; i < treePathInfo.length; i++) {
             treePath.push(treePathInfo[i].name);
           }
-          // return [
-          //   '<div class="tooltip-title">' +
-          //     echarts.format.encodeHTML(treePath.join('/')) +
-          //     '</div>',
-          //   'Ocurrencias: ' + echarts.format.addCommas(value) + ' KB'
-          // ].join('');
+          
         }
       },
       series: [
@@ -41,50 +68,18 @@ export const OccurrencesTypeDetail = () => {
           type: 'treemap',
           visibleMin: 300,
           leafDepth: 1,
-          // label: {
-          //   show: true,
-          //   formatter: '{b}'
-          // },
-          // upperLabel: {
-          //   show: true,
-          //   height: 20
-          // },
-          label: {
-            show: true,
-            // formatter: "{b}",
-            // Establece tu estilo de fuente aquí
-            fontFamily: "Arial", // Fuente deseada
-            fontSize: 10,        // Tamaño de fuente
-            fontWeight: "normal", // Peso de fuente
-            color: "#fff",       // Color de texto
-            // Elimina bordes y sombras de texto
-            textBorderColor: "transparent",
-            textBorderWidth: 0,
-            textShadowColor: "transparent",
-            textShadowBlur: 0,
-            overflow: "truncate",
-            ellipsis: "...",
-            tooltip: {
-              show: true,
-            },
-          },
+          
+         
           upperLabel: {
             show: true,
-            // formatter: "{b}",
-            // Aplica el mismo estilo a las etiquetas superiores
             fontFamily: "Arial",
             fontSize: 10,
-            // fontWeight: "bold",
             color: "#fff",
             textBorderColor: "transparent",
             textBorderWidth: 0,
             textShadowColor: "transparent",
             textShadowBlur: 0,
-            overflow: "truncate",
-            ellipsis: "...",
-            tooltip: {
-              show: true,
-            },
+            
           },
           itemStyle: {
             borderColor: '#fff',           
@@ -94,45 +89,79 @@ export const OccurrencesTypeDetail = () => {
         }
       ]
     }),
-    [dataOccurrence, totalOccurrences]
+    [dataOccurrence]
   );
 
   function getLevelOption() {
     return [
       {
+        // Nivel 0: Primer nivel
         itemStyle: {
           borderColor: '#777',
           borderWidth: 0,
-          gapWidth: 1
+          gapWidth: 1,
         },
         upperLabel: {
           show: false,
-          
-        }
+        },
       },
       {
+        // Nivel 1: Segundo nivel
         itemStyle: {
           borderColor: '#555',
           borderWidth: 5,
-          gapWidth: 1
+          gapWidth: 1,
+        },
+        label: {
+          show: true,
+          fontFamily: "Arial",
+          fontSize: 12,
+          fontWeight: "normal",
+          color: "#fff",
+          // Puedes agregar más estilos si es necesario
+        },
+        upperLabel: {
+          show: true,
+          formatter: function (params) {
+            return params.name;
+          },
         },
         emphasis: {
+          focus: 'none',
           itemStyle: {
-            borderColor: '#ddd'
-          }
-        }
+            color: null,
+          },
+        },
+        blur: {
+          itemStyle: {
+            color: null,
+          },
+        },
       },
       {
-        colorSaturation: [0.35, 0.5],
+        // Nivel 2: Tercer nivel
         itemStyle: {
           borderWidth: 5,
           gapWidth: 1,
-          borderColorSaturation: 0.6
-        }
-      }
+          borderColorSaturation: 0.6,
+        },
+        label: {
+          show: true,
+          fontFamily: "Arial",
+          fontSize: 12,
+          fontWeight: "normal",
+          color: "#fff",
+          // Asegúrate de que los estilos coincidan con los del segundo nivel
+        },
+        upperLabel: {
+          show: true,
+          formatter: function (params) {
+            return params.name;
+          },
+        },
+      },
     ];
   }
-
   useEffect(() => {
     const getOccurrences = async () => {
       try {
@@ -232,14 +261,14 @@ export const OccurrencesTypeDetail = () => {
         </div>
       </header>
       <main>
-        <div className="d-flex flex-column flex-grow-1 justify-content-between pt-4">
+        <div className="d-flex flex-column flex-grow-1 align-items-center justify-content-between pt-0">
           <div className="d-flex flex-column align-items-center gap-2">
             {/* <h6> {totalOccurrences} ocurrencias</h6> */}
-            <div className="d-flex gap-5 flex-wrap justify-content-center">
+            <div className="d-flex flex-column gap-0 flex-wrap justify-content-center align-items-center">
               <MyChart
                 option={optionChart}
-                widthChart="800px"
-                heightChart="500px"
+                widthChart="550px"
+                heightChart="550px"
               />{" "}
               <div className="d-flex justify-content-center">
                 <table className="table">
