@@ -1,0 +1,274 @@
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { OcurrenciasxAnio } from "../../../services/indicatorsService";
+import MyChart from "../../helpers/MyChart";
+import XIcon from "../../../icons/XIcon";
+
+export const OccurrencesTypeDetail = () => {
+  const navigate = useNavigate();
+  const { anio: urlYear } = useParams();
+
+  const [dataOccurrence, setDataOccurrence] = useState([]);
+  const [totalOccurrences, setTotalOccurrences] = useState(0);
+  const [optionChart, setOptionsChart] = useState({});
+
+  const dafaultOption = useMemo(
+    () => ({
+      title: {
+        text: `${totalOccurrences} Ocurrencias`,
+        left: 'center'
+      },
+
+      tooltip: {
+        formatter: function (info) {
+          // var value = info.value;
+          var treePathInfo = info.treePathInfo;
+          var treePath = [];
+          for (var i = 1; i < treePathInfo.length; i++) {
+            treePath.push(treePathInfo[i].name);
+          }
+          // return [
+          //   '<div class="tooltip-title">' +
+          //     echarts.format.encodeHTML(treePath.join('/')) +
+          //     '</div>',
+          //   'Ocurrencias: ' + echarts.format.addCommas(value) + ' KB'
+          // ].join('');
+        }
+      },
+      series: [
+        {
+          name: 'Ocurrencias',
+          type: 'treemap',
+          visibleMin: 300,
+          leafDepth: 1,
+          // label: {
+          //   show: true,
+          //   formatter: '{b}'
+          // },
+          // upperLabel: {
+          //   show: true,
+          //   height: 20
+          // },
+          label: {
+            show: true,
+            // formatter: "{b}",
+            // Establece tu estilo de fuente aquí
+            fontFamily: "Arial", // Fuente deseada
+            fontSize: 10,        // Tamaño de fuente
+            fontWeight: "normal", // Peso de fuente
+            color: "#fff",       // Color de texto
+            // Elimina bordes y sombras de texto
+            textBorderColor: "transparent",
+            textBorderWidth: 0,
+            textShadowColor: "transparent",
+            textShadowBlur: 0,
+            overflow: "truncate",
+            ellipsis: "...",
+            tooltip: {
+              show: true,
+            },
+          },
+          upperLabel: {
+            show: true,
+            // formatter: "{b}",
+            // Aplica el mismo estilo a las etiquetas superiores
+            fontFamily: "Arial",
+            fontSize: 10,
+            // fontWeight: "bold",
+            color: "#fff",
+            textBorderColor: "transparent",
+            textBorderWidth: 0,
+            textShadowColor: "transparent",
+            textShadowBlur: 0,
+            overflow: "truncate",
+            ellipsis: "...",
+            tooltip: {
+              show: true,
+            },
+          },
+          itemStyle: {
+            borderColor: '#fff',           
+          },
+          levels: getLevelOption(),
+          data: dataOccurrence
+        }
+      ]
+    }),
+    [dataOccurrence, totalOccurrences]
+  );
+
+  function getLevelOption() {
+    return [
+      {
+        itemStyle: {
+          borderColor: '#777',
+          borderWidth: 0,
+          gapWidth: 1
+        },
+        upperLabel: {
+          show: false,
+          
+        }
+      },
+      {
+        itemStyle: {
+          borderColor: '#555',
+          borderWidth: 5,
+          gapWidth: 1
+        },
+        emphasis: {
+          itemStyle: {
+            borderColor: '#ddd'
+          }
+        }
+      },
+      {
+        colorSaturation: [0.35, 0.5],
+        itemStyle: {
+          borderWidth: 5,
+          gapWidth: 1,
+          borderColorSaturation: 0.6
+        }
+      }
+    ];
+  }
+
+  useEffect(() => {
+    const getOccurrences = async () => {
+      try {
+        const params = {
+          anio: urlYear,
+          opcion: "01",
+        };
+        const dataOccurrence = await OcurrenciasxAnio(params);
+
+        // Agrupar por tipo de apoyo y subtipo y modalidad
+  
+        const dataMap = {};
+  
+        dataOccurrence.forEach(({ tipo_de_apoyo, sub_tipo, modalidad_ocurrencia, q_total }) => {
+          if (!dataMap[tipo_de_apoyo]) {
+            dataMap[tipo_de_apoyo] = {
+              name: tipo_de_apoyo,
+              value: 0,
+              path: tipo_de_apoyo,
+              children: {},
+            };
+          }
+          dataMap[tipo_de_apoyo].value += q_total;
+  
+          if (!dataMap[tipo_de_apoyo].children[sub_tipo]) {
+            dataMap[tipo_de_apoyo].children[sub_tipo] = {
+              name: sub_tipo,
+              value: 0,
+              path: `${tipo_de_apoyo}/${sub_tipo}`,
+              children: {},
+            };
+          }
+          dataMap[tipo_de_apoyo].children[sub_tipo].value += q_total;
+  
+          if (!dataMap[tipo_de_apoyo].children[sub_tipo].children[modalidad_ocurrencia]) {
+            dataMap[tipo_de_apoyo].children[sub_tipo].children[modalidad_ocurrencia] = {
+              name: modalidad_ocurrencia,
+              value: 0,
+              path: `${tipo_de_apoyo}/${sub_tipo}/${modalidad_ocurrencia}`,
+            };
+          }
+          dataMap[tipo_de_apoyo].children[sub_tipo].children[modalidad_ocurrencia].value += q_total;
+        });
+  
+        const data = Object.values(dataMap).map((tipo) => ({
+          ...tipo,
+          children: Object.values(tipo.children).map((subTipo) => ({
+            ...subTipo,
+            children: Object.values(subTipo.children),
+          })),
+        }));
+  
+        const sumOccurrences = data.reduce((acc, item) => acc + item.value, 0);
+        setTotalOccurrences(sumOccurrences);
+  
+        console.log("data", data);
+        setDataOccurrence(data);
+      } catch (error) {
+        throw error;
+      }
+    };
+    getOccurrences();
+  }, [urlYear]);
+
+  useEffect(() => {
+    setOptionsChart({
+      ...dafaultOption,
+      series: [{ ...dafaultOption.series[0], data: dataOccurrence }],
+    });
+  }, [dataOccurrence, dafaultOption]);
+
+  const onClickClose = () => {
+    navigate(-1);
+  };
+
+  return (
+    <div className="p-3">
+      <header className="d-flex justify-content-between">
+        <div className="d-flex gap-0">
+          <div className="m-0 p-0">
+            <p className="m-0 p-0 fs-5 fw-bold">Indicadores de gestión</p>
+            <p
+              className="p-0"
+              style={{ marginTop: "-5px", marginBottom: "0px" }}
+            >
+              {`Seguridad ciudadana / Ocurrencias ${urlYear} por tipo de apoyo`}
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="d-flex align-items-center gap-2 "
+          role="button"
+          onClick={onClickClose}
+        >
+          <XIcon className="cursor-pointer" />
+        </div>
+      </header>
+      <main>
+        <div className="d-flex flex-column flex-grow-1 justify-content-between pt-4">
+          <div className="d-flex flex-column align-items-center gap-2">
+            {/* <h6> {totalOccurrences} ocurrencias</h6> */}
+            <div className="d-flex gap-5 flex-wrap justify-content-center">
+              <MyChart
+                option={optionChart}
+                widthChart="800px"
+                heightChart="500px"
+              />{" "}
+              <div className="d-flex justify-content-center">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th className="px-3"></th>
+                      {/* {formatData?.tipos?.map((tipo) => (
+                    <th className="px-3" key={tipo}>{tipo}</th>
+                  ))} */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* {formatData?.meses?.map((mes, indexMeses) => (
+                  <tr className="py-0 my-0" key={indexMeses}>
+                    <td className="py-0">{obtenerNombreMes(mes)}</td>
+                    {formatData?.series?.map((serie, indexSerie) => (
+                      <td className="px-3 py-0 text-end" key={indexSerie}>{serie.data[indexMeses]}</td>
+                    ))}
+                  </tr>
+                ))} */}
+                  </tbody>
+                </table>
+
+                {/* <small>{JSON.stringify(formatData)}</small> */}
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
