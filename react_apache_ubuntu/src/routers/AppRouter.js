@@ -9,6 +9,7 @@ import { CurrentPermitDetail } from "../components/managementIndicators/currentP
 import { AuthorizedVehiclesDetail } from "../components/managementIndicators/authorizedVehicles/AuthorizedVehiclesDetail";
 import { TransportationTicketsDetail } from "../components/managementIndicators/transportationTickets/TransportationTicketsDetail";
 import { OldVehiclesDetail } from "../components/managementIndicators/oldVehicles/OldVehiclesDetail";
+import { OccurrencesTypeDetail } from "../components/managementIndicators/occurrencesType/OccurrencesTypeDetail";
 
 export const AppRouter = () => {
   return (
@@ -46,6 +47,10 @@ export const AppRouter = () => {
           <Route
             path="/indicadores/antiguedad-vehiculos/:anio"
             element={<OldVehiclesDetail />}
+          />
+          <Route
+            path="/indicadores/ocurrencias-tipo/:anio"
+            element={<OccurrencesTypeDetail />}
           />
 
 
