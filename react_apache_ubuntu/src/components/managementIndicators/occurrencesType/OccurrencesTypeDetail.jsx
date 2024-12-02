@@ -14,10 +14,16 @@ export const OccurrencesTypeDetail = () => {
 
   const dafaultOption = useMemo(
     () => ({
-      // title: {
-      //   text: `${totalOccurrences} Ocurrencias`,
-      //   left: 'center'
-      // },
+      title: {
+        text: `${totalOccurrences} ocurrencias`,
+        
+        left: "center",
+        top: "3%",
+        textStyle: {
+          fontSize: 20,
+        },
+        
+      },
       label: {
         position: "insideTopLeft",
         formatter: function (params) {
@@ -31,7 +37,7 @@ export const OccurrencesTypeDetail = () => {
           ];
           return arr.join("\n");
         },
-        
+
         rich: {
           value: {
             fontSize: 22,
@@ -53,23 +59,23 @@ export const OccurrencesTypeDetail = () => {
       },
 
       tooltip: {
-        formatter: function (info) {          
+        formatter: function (info) {
           var treePathInfo = info.treePathInfo;
           var treePath = [];
           for (var i = 1; i < treePathInfo.length; i++) {
             treePath.push(treePathInfo[i].name);
           }
-          
-        }
+        },
       },
       series: [
         {
-          name: 'Ocurrencias',
-          type: 'treemap',
-          visibleMin: 300,
+          name: "Ocurrencias",
+          type: "treemap",          
           leafDepth: 1,
+          breadcrumb: {
           
-         
+          },
+
           upperLabel: {
             show: true,
             fontFamily: "Arial",
@@ -79,15 +85,14 @@ export const OccurrencesTypeDetail = () => {
             textBorderWidth: 0,
             textShadowColor: "transparent",
             textShadowBlur: 0,
-            
           },
           itemStyle: {
-            borderColor: '#fff',           
+            borderColor: "#fff",
           },
           levels: getLevelOption(),
-          data: dataOccurrence
-        }
-      ]
+          data: dataOccurrence,
+        },
+      ],
     }),
     [dataOccurrence]
   );
@@ -97,7 +102,7 @@ export const OccurrencesTypeDetail = () => {
       {
         // Nivel 0: Primer nivel
         itemStyle: {
-          borderColor: '#777',
+          borderColor: "#777",
           borderWidth: 0,
           gapWidth: 1,
         },
@@ -108,7 +113,7 @@ export const OccurrencesTypeDetail = () => {
       {
         // Nivel 1: Segundo nivel
         itemStyle: {
-          borderColor: '#555',
+          borderColor: "#555",
           borderWidth: 5,
           gapWidth: 1,
         },
@@ -127,7 +132,7 @@ export const OccurrencesTypeDetail = () => {
           },
         },
         emphasis: {
-          focus: 'none',
+          focus: "none",
           itemStyle: {
             color: null,
           },
@@ -172,40 +177,50 @@ export const OccurrencesTypeDetail = () => {
         const dataOccurrence = await OcurrenciasxAnio(params);
 
         // Agrupar por tipo de apoyo y subtipo y modalidad
-  
+
         const dataMap = {};
-  
-        dataOccurrence.forEach(({ tipo_de_apoyo, sub_tipo, modalidad_ocurrencia, q_total }) => {
-          if (!dataMap[tipo_de_apoyo]) {
-            dataMap[tipo_de_apoyo] = {
-              name: tipo_de_apoyo,
-              value: 0,
-              path: tipo_de_apoyo,
-              children: {},
-            };
+
+        dataOccurrence.forEach(
+          ({ tipo_de_apoyo, sub_tipo, modalidad_ocurrencia, q_total }) => {
+            if (!dataMap[tipo_de_apoyo]) {
+              dataMap[tipo_de_apoyo] = {
+                name: tipo_de_apoyo,
+                value: 0,
+                path: tipo_de_apoyo,
+                children: {},
+              };
+            }
+            dataMap[tipo_de_apoyo].value += q_total;
+
+            if (!dataMap[tipo_de_apoyo].children[sub_tipo]) {
+              dataMap[tipo_de_apoyo].children[sub_tipo] = {
+                name: sub_tipo,
+                value: 0,
+                path: `${tipo_de_apoyo}/${sub_tipo}`,
+                children: {},
+              };
+            }
+            dataMap[tipo_de_apoyo].children[sub_tipo].value += q_total;
+
+            if (
+              !dataMap[tipo_de_apoyo].children[sub_tipo].children[
+                modalidad_ocurrencia
+              ]
+            ) {
+              dataMap[tipo_de_apoyo].children[sub_tipo].children[
+                modalidad_ocurrencia
+              ] = {
+                name: modalidad_ocurrencia,
+                value: 0,
+                path: `${tipo_de_apoyo}/${sub_tipo}/${modalidad_ocurrencia}`,
+              };
+            }
+            dataMap[tipo_de_apoyo].children[sub_tipo].children[
+              modalidad_ocurrencia
+            ].value += q_total;
           }
-          dataMap[tipo_de_apoyo].value += q_total;
-  
-          if (!dataMap[tipo_de_apoyo].children[sub_tipo]) {
-            dataMap[tipo_de_apoyo].children[sub_tipo] = {
-              name: sub_tipo,
-              value: 0,
-              path: `${tipo_de_apoyo}/${sub_tipo}`,
-              children: {},
-            };
-          }
-          dataMap[tipo_de_apoyo].children[sub_tipo].value += q_total;
-  
-          if (!dataMap[tipo_de_apoyo].children[sub_tipo].children[modalidad_ocurrencia]) {
-            dataMap[tipo_de_apoyo].children[sub_tipo].children[modalidad_ocurrencia] = {
-              name: modalidad_ocurrencia,
-              value: 0,
-              path: `${tipo_de_apoyo}/${sub_tipo}/${modalidad_ocurrencia}`,
-            };
-          }
-          dataMap[tipo_de_apoyo].children[sub_tipo].children[modalidad_ocurrencia].value += q_total;
-        });
-  
+        );
+
         const data = Object.values(dataMap).map((tipo) => ({
           ...tipo,
           children: Object.values(tipo.children).map((subTipo) => ({
@@ -213,10 +228,10 @@ export const OccurrencesTypeDetail = () => {
             children: Object.values(subTipo.children),
           })),
         }));
-  
+
         const sumOccurrences = data.reduce((acc, item) => acc + item.value, 0);
         setTotalOccurrences(sumOccurrences);
-  
+
         console.log("data", data);
         setDataOccurrence(data);
       } catch (error) {
@@ -263,7 +278,7 @@ export const OccurrencesTypeDetail = () => {
       <main>
         <div className="d-flex flex-column flex-grow-1 align-items-center justify-content-between pt-0">
           <div className="d-flex flex-column align-items-center gap-2">
-            {/* <h6> {totalOccurrences} ocurrencias</h6> */}
+            {/* <h3 className="m-0 pt-2 pb-0"> {totalOccurrences} ocurrencias</h3> */}
             <div className="d-flex flex-column gap-0 flex-wrap justify-content-center align-items-center">
               <MyChart
                 option={optionChart}
