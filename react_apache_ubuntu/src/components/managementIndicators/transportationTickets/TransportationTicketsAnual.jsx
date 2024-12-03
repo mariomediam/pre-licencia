@@ -47,6 +47,11 @@ export const TransportationTicketsAnual = () => {
             stack: "total",
             label: {
               show: true,
+              position: "right",
+               
+            },
+            itemStyle: {
+              color: "#FF7070",
             },
             emphasis: {
               focus: "series",
