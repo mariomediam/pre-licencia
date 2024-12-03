@@ -85,7 +85,7 @@ export const OldVehiclesDetail = () => {
     const getYearManufacture = async () => {
       try {
         const dataYearManufacture = await AntiguedadVehiculos();
-        const objGrouped = Object.groupBy(dataYearManufacture, getGrouped);        
+        const objGrouped = Object.groupBy(dataYearManufacture, getGrouped);
         const totalVehicles = dataYearManufacture.reduce(
           (acc, { q_total }) => acc + q_total,
           0
@@ -106,7 +106,7 @@ export const OldVehiclesDetail = () => {
             });
           }
         }
-        
+
         setYearManufacture(data);
       } catch (error) {
         throw error;
@@ -131,7 +131,7 @@ export const OldVehiclesDetail = () => {
   };
 
   return (
-    <div className="p-3">
+    <div className="px-3 pt-3 pb-0">
       <header className="d-flex justify-content-between">
         <div className="d-flex gap-0">
           <div className="m-0 p-0">
@@ -153,13 +153,10 @@ export const OldVehiclesDetail = () => {
           <XIcon className="cursor-pointer" />
         </div>
       </header>
-      <div className="d-flex flex-column align-items-center gap-1 flex-wrap justify-content-center pt-4">
-        <div className="pb-0 mb-0"></div>
-        <MyChart
-          option={optionChart}
-          widthChart="400px"
-          heightChart="500px"
-        />{" "}
+      <div className="d-flex flex-column align-items-center gap-1 flex-wrap justify-content-center pt-0">
+        <div className="mychart">
+          <MyChart option={optionChart} widthChart="100%" heightChart="550px" />{" "}
+        </div>
       </div>
     </div>
   );
