@@ -328,7 +328,7 @@ export const OccurrencesTypeDetail = () => {
                                 <Accordion defaultActiveKey="0" flush>
                                   {subOccurrence.children.map(
                                     (modalidad, index) => (
-                                      <div className="d-flex flex-grow-1 gap-3 justify-content-between mx-5">
+                                      <div className="d-flex flex-grow-1 gap-3 justify-content-between mx-5" key={modalidad.name}>
                                         <small>{modalidad.name}</small>
                                         <small>{modalidad.value}</small>
                                       </div>
