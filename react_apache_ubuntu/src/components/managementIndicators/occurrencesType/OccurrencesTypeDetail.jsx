@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Accordion, Badge } from "react-bootstrap";
+
 import { OcurrenciasxAnio } from "../../../services/indicatorsService";
 import MyChart from "../../helpers/MyChart";
 import XIcon from "../../../icons/XIcon";
@@ -11,18 +13,18 @@ export const OccurrencesTypeDetail = () => {
   const [dataOccurrence, setDataOccurrence] = useState([]);
   const [totalOccurrences, setTotalOccurrences] = useState(0);
   const [optionChart, setOptionsChart] = useState({});
+  const [colors, setColors] = useState([]);
 
   const dafaultOption = useMemo(
     () => ({
       title: {
         text: `${totalOccurrences} ocurrencias`,
-        
+
         left: "center",
         top: "3%",
         textStyle: {
           fontSize: 20,
         },
-        
       },
       label: {
         position: "insideTopLeft",
@@ -70,11 +72,9 @@ export const OccurrencesTypeDetail = () => {
       series: [
         {
           name: "Ocurrencias",
-          type: "treemap",          
+          type: "treemap",
           leafDepth: 1,
-          breadcrumb: {
-          
-          },
+          breadcrumb: {},
 
           upperLabel: {
             show: true,
@@ -94,7 +94,7 @@ export const OccurrencesTypeDetail = () => {
         },
       ],
     }),
-    [dataOccurrence]
+    [dataOccurrence, totalOccurrences]
   );
 
   function getLevelOption() {
@@ -284,30 +284,70 @@ export const OccurrencesTypeDetail = () => {
                 option={optionChart}
                 widthChart="550px"
                 heightChart="550px"
+                onColorsChange={setColors}
               />{" "}
-              <div className="d-flex justify-content-center">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th className="px-3"></th>
-                      {/* {formatData?.tipos?.map((tipo) => (
-                    <th className="px-3" key={tipo}>{tipo}</th>
-                  ))} */}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* {formatData?.meses?.map((mes, indexMeses) => (
-                  <tr className="py-0 my-0" key={indexMeses}>
-                    <td className="py-0">{obtenerNombreMes(mes)}</td>
-                    {formatData?.series?.map((serie, indexSerie) => (
-                      <td className="px-3 py-0 text-end" key={indexSerie}>{serie.data[indexMeses]}</td>
-                    ))}
-                  </tr>
-                ))} */}
-                  </tbody>
-                </table>
+              <div className="d-flex justify-content-center pt-4 px-2" style={{maxWidth: "900px"}}>
+                
+                <Accordion defaultActiveKey="0" flush>
+                  {dataOccurrence.map((occurrence, index) => (
+                    
+                    <Accordion.Item key={occurrence.name} eventKey={index}>
+                      <Accordion.Header>
+                        <div className="d-flex flex-grow-1 gap-3 justify-content-between px-3">
+                          <h6>{occurrence.name}</h6>
+                          <h5>{occurrence.value}</h5>
 
-                {/* <small>{JSON.stringify(formatData)}</small> */}
+
+                          
+                         <span
+                          className="circle-icon me-1 "
+                          style={{
+                            backgroundColor: colors[index],
+                            width: "16px",
+                            height: "16px",
+                          }}
+                        ></span>
+
+                        
+
+
+
+
+                          
+                        </div>
+                      </Accordion.Header>
+                      <Accordion.Body>
+                        <Accordion defaultActiveKey="0" flush>
+                          {occurrence.children.map((subOccurrence, index) => (
+                            <Accordion.Item
+                              key={subOccurrence.name}
+                              eventKey={index}
+                            >
+                              <Accordion.Header>
+                                <div className="d-flex flex-grow-1 gap-3 justify-content-between px-3">
+                                  <span>{subOccurrence.name}</span>
+                                  <span>{subOccurrence.value}</span>
+                                </div>
+                              </Accordion.Header>
+                              <Accordion.Body>
+                                <Accordion defaultActiveKey="0" flush>
+                                  {subOccurrence.children.map(
+                                    (modalidad, index) => (
+                                      <div className="d-flex flex-grow-1 gap-3 justify-content-between mx-5">
+                                        <small>{modalidad.name}</small>
+                                        <small>{modalidad.value}</small>
+                                      </div>
+                                    )
+                                  )}
+                                </Accordion>
+                              </Accordion.Body>
+                            </Accordion.Item>
+                          ))}
+                        </Accordion>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  ))}
+                </Accordion>
               </div>
             </div>
           </div>
