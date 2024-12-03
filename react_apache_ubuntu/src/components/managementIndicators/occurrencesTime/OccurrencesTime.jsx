@@ -106,7 +106,7 @@ export const OccurrencesTime = ({ anioSelected, title = "" }) => {
           />{" "}
         </div>
       </div>
-      <ViewMore url={`/indicadores/autorizaciones-emitidas/${anioSelected}`} />
+      <ViewMore url={`/indicadores/ocurrencias-mes/${anioSelected}`} />
     </div>
   );
 };
