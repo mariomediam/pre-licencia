@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Accordion, Badge } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
 
 import { OcurrenciasxAnio } from "../../../services/indicatorsService";
 import MyChart from "../../helpers/MyChart";
@@ -176,8 +176,7 @@ export const OccurrencesTypeDetail = () => {
         };
         const dataOccurrence = await OcurrenciasxAnio(params);
 
-        // Agrupar por tipo de apoyo y subtipo y modalidad
-
+        // Agrupar por tipo de apoyo, subtipo y modalidad
         const dataMap = {};
 
         dataOccurrence.forEach(
@@ -221,21 +220,23 @@ export const OccurrencesTypeDetail = () => {
           }
         );
 
-        const data = Object.values(dataMap).map((tipo) => ({
-          ...tipo,
-          children: Object.values(tipo.children).map((subTipo) => ({
-            ...subTipo,
-            children: Object.values(subTipo.children),
-          })),
-        }));
+        // Convertir dataMap en un array y ordenar por 'value' en orden descendente
+        const data = Object.values(dataMap)
+          .map((tipo) => ({
+            ...tipo,
+            children: Object.values(tipo.children).map((subTipo) => ({
+              ...subTipo,
+              children: Object.values(subTipo.children),
+            })),
+          }))
+          .sort((a, b) => b.value - a.value); // Ordenar por 'value' descendente
 
         const sumOccurrences = data.reduce((acc, item) => acc + item.value, 0);
         setTotalOccurrences(sumOccurrences);
-
-        console.log("data", data);
+        
         setDataOccurrence(data);
       } catch (error) {
-        throw error;
+        console.error(error);
       }
     };
     getOccurrences();
@@ -286,34 +287,28 @@ export const OccurrencesTypeDetail = () => {
                 heightChart="550px"
                 onColorsChange={setColors}
               />{" "}
-              <div className="d-flex justify-content-center pt-4 px-2" style={{maxWidth: "900px"}}>
-                
+              <div
+                className="d-flex justify-content-center pt-4 px-2"
+                style={{ maxWidth: "900px" }}
+              >
                 <Accordion defaultActiveKey="0" flush>
                   {dataOccurrence.map((occurrence, index) => (
-                    
                     <Accordion.Item key={occurrence.name} eventKey={index}>
                       <Accordion.Header>
                         <div className="d-flex flex-grow-1 gap-3 justify-content-between px-3">
-                          <h6>{occurrence.name}</h6>
+                          <div className="d-flex align-items-start">
+                            <span
+                              className="circle-icon me-1 "
+                              style={{
+                                backgroundColor: colors[index],
+                                width: "16px",
+                                height: "16px",
+                                flexShrink: 0,
+                              }}
+                            ></span>
+                            <h6>{occurrence.name}</h6>
+                          </div>
                           <h5>{occurrence.value}</h5>
-
-
-                          
-                         <span
-                          className="circle-icon me-1 "
-                          style={{
-                            backgroundColor: colors[index],
-                            width: "16px",
-                            height: "16px",
-                          }}
-                        ></span>
-
-                        
-
-
-
-
-                          
                         </div>
                       </Accordion.Header>
                       <Accordion.Body>
