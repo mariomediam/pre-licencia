@@ -19,26 +19,15 @@ export const OccurrencesTimeDetail = () => {
 
   const dafaultOption = useMemo(
     () => ({
-      title: {
-        text: 'Stacked Area Chart'
-      },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985'
-          }
+          // Use axis to trigger tooltip
+          type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
         }
       },
       legend: {
-        // data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
         show: false,
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
-        }
       },
       grid: {
         left: '3%',
@@ -46,73 +35,14 @@ export const OccurrencesTimeDetail = () => {
         bottom: '3%',
         containLabel: true
       },
-      xAxis: [
-        {
-          type: 'category',
-          boundaryGap: false,
-          // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        }
-      ],
-      yAxis: [
-        {
-          type: 'value'
-        }
-      ],
-      series: [
-        // {
-        //   name: 'Email',
-        //   type: 'line',
-        //   stack: 'Total',
-        //   areaStyle: {},
-        //   emphasis: {
-        //     focus: 'series'
-        //   },
-        //   data: [120, 132, 101, 134, 90, 230, 210]
-        // },
-        // {
-        //   name: 'Union Ads',
-        //   type: 'line',
-        //   stack: 'Total',
-        //   areaStyle: {},
-        //   emphasis: {
-        //     focus: 'series'
-        //   },
-        //   data: [220, 182, 191, 234, 290, 330, 310]
-        // },
-        // {
-        //   name: 'Video Ads',
-        //   type: 'line',
-        //   stack: 'Total',
-        //   areaStyle: {},
-        //   emphasis: {
-        //     focus: 'series'
-        //   },
-        //   data: [150, 232, 201, 154, 190, 330, 410]
-        // },
-        // {
-        //   name: 'Direct',
-        //   type: 'line',
-        //   stack: 'Total',
-        //   areaStyle: {},
-        //   emphasis: {
-        //     focus: 'series'
-        //   },
-        //   data: [320, 332, 301, 334, 390, 330, 320]
-        // },
-        // {
-        //   name: 'Search Engine',
-        //   type: 'line',
-        //   stack: 'Total',
-        //   label: {
-        //     show: true,
-        //     position: 'top'
-        //   },
-        //   areaStyle: {},
-        //   emphasis: {
-        //     focus: 'series'
-        //   },
-        //   data: [820, 932, 901, 934, 1290, 1330, 1320]
-        // }
+      xAxis: {
+        type: 'value'
+      },
+      yAxis: {
+        type: 'category',
+        // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      series: [      
       ]
     }),
     []
@@ -145,24 +75,20 @@ export const OccurrencesTimeDetail = () => {
             return item ? item.q_total : 0;
           });
           return {
-            name: tipoApoyo,
-            type: "line",
-            stack: "Total",
-            areaStyle: {},
-            label: {
-                  show: true,
-                  position: 'top'
-                },
-            emphasis: {
-              focus: "series",
-            },
-            data,
+        
+          name: tipoApoyo,
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data
+        
           };
         });
-
-        console.log("series", series);
-
-       
 
         const sumOccurrences = dataOccurrence.reduce((acc, item) => acc + item.value, 0);
         setTotalOccurrences(sumOccurrences);
@@ -178,7 +104,7 @@ export const OccurrencesTimeDetail = () => {
   useEffect(() => {
     setOptionsChart({
       ...dafaultOption,
-      xAxis: { ...dafaultOption.xAxis, data: dataOccurrence.xAxisData },
+      yAxis: { ...dafaultOption.yAxis, data: dataOccurrence.xAxisData },
       series: dataOccurrence.seriesData,
       legend: {
         ...dafaultOption.legend,
