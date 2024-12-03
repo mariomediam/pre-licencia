@@ -10,6 +10,7 @@ import { AuthorizedVehiclesDetail } from "../components/managementIndicators/aut
 import { TransportationTicketsDetail } from "../components/managementIndicators/transportationTickets/TransportationTicketsDetail";
 import { OldVehiclesDetail } from "../components/managementIndicators/oldVehicles/OldVehiclesDetail";
 import { OccurrencesTypeDetail } from "../components/managementIndicators/occurrencesType/OccurrencesTypeDetail";
+import { OccurrencesTimeDetail } from "../components/managementIndicators/occurrencesTime/OccurrencesTimeDetail";
 
 export const AppRouter = () => {
   return (
@@ -51,6 +52,10 @@ export const AppRouter = () => {
           <Route
             path="/indicadores/ocurrencias-tipo/:anio"
             element={<OccurrencesTypeDetail />}
+          />
+          <Route
+            path="/indicadores/ocurrencias-mes/:anio"
+            element={<OccurrencesTimeDetail />}
           />
 
 
