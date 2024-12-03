@@ -47,8 +47,7 @@ export const OccurrencesTimeDetail = () => {
           anio: urlYear,
           opcion: "02",
         };
-        const dataOccurrence = await OcurrenciasxAnio(params);
-        console.log("dataOccurrence", dataOccurrence);
+        const dataOccurrence = await OcurrenciasxAnio(params);        
 
         const objMes = Object.groupBy(dataOccurrence, ({ mes }) => mes);
         const listMes = Object.keys(objMes);
@@ -58,9 +57,6 @@ export const OccurrencesTimeDetail = () => {
           ({ tipo_de_apoyo }) => tipo_de_apoyo
         );
         const listTipoApoyo = Object.keys(objTipoApoyo);
-
-        console.log("listMes", listMes);
-        console.log("listTipoApoyo", listTipoApoyo);
 
         const series = listTipoApoyo.map((tipoApoyo) => {
           const data = listMes.map((mes) => {
@@ -85,7 +81,7 @@ export const OccurrencesTimeDetail = () => {
         });
 
         const sumOccurrences = dataOccurrence.reduce(
-          (acc, item) => acc + item.value,
+          (acc, item) => acc + item.q_total,
           0
         );
         setTotalOccurrences(sumOccurrences);
@@ -123,50 +119,7 @@ export const OccurrencesTimeDetail = () => {
   }, [dataOccurrence, dafaultOption]);
 
   useEffect(() => {
-    // crear un nuevo array con los meses y los valores de cada mes de la siguiente manera
-    // [
-    // {
-    //   "MES": "Enero",
-    //  "value": 30
-    //   data: [
-    //     {
-    //       "tipo_de_apoyo": "Apoyo 1",
-    //       "value": 10
-    //     },
-    //     {
-    //       "tipo_de_apoyo": "Apoyo 2",
-    //       "value": 20
-    //     }
-    // },
-    // {
-    //   "MES": "Febrero",
-    // value: 30
-    //   data: [
-    //     {
-    //       "tipo_de_apoyo": "Apoyo 1",
-    //       "value": 10
-    //     },
-    //     {
-    //       "tipo_de_apoyo": "Apoyo 2",
-    //       "value": 20
-    //     }
-    // }
-
-    // const lisMeses = dataOccurrence.xAxisData;
-    console.log("first dataOccurrence", dataOccurrence);
-
-    // const seriesData = dataOccurrence.seriesData;
-
-    // const data = dataOccurrence.meses.map((mes, index) => {
-    //   const obj = {
-    //     mes,
-    //     data: seriesData.map((item) => ({
-    //       tipo_de_apoyo: item.name,
-    //       value: item.data[index],
-    //     })),
-    //   };
-    //   return obj;
-    // });
+    
 
     const data = dataOccurrence?.meses?.map((mes, index) => {
       const obj = {
@@ -182,8 +135,6 @@ export const OccurrencesTimeDetail = () => {
       };
       return obj;
     });
-
-    console.log(data);
 
     setDataOccurrenceFormat(data);
 
@@ -220,7 +171,7 @@ export const OccurrencesTimeDetail = () => {
       <main>
         <div className="d-flex flex-column flex-grow-1 align-items-center justify-content-between pt-0">
           <div className="d-flex flex-column align-items-center gap-2">
-            {/* <h3 className="m-0 pt-2 pb-0"> {totalOccurrences} ocurrencias</h3> */}
+            <h3 className="m-0 pt-2 pb-0"> {totalOccurrences} ocurrencias</h3>
             <div className="d-flex flex-column gap-0 flex-wrap justify-content-center align-items-center border">
               <div className="mychart">
                 <MyChart
