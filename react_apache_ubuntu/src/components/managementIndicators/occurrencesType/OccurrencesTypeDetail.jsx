@@ -281,12 +281,15 @@ export const OccurrencesTypeDetail = () => {
           <div className="d-flex flex-column align-items-center gap-2">
             {/* <h3 className="m-0 pt-2 pb-0"> {totalOccurrences} ocurrencias</h3> */}
             <div className="d-flex flex-column gap-0 flex-wrap justify-content-center align-items-center">
+            <div className="mychart">
+
               <MyChart
                 option={optionChart}
-                widthChart="550px"
+                widthChart="100%"
                 heightChart="550px"
                 onColorsChange={setColors}
               />{" "}
+              </div>
               <div
                 className="d-flex justify-content-center pt-4 px-2"
                 style={{ maxWidth: "900px" }}
