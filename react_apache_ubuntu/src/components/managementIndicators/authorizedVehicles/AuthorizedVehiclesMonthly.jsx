@@ -140,31 +140,32 @@ export const AuthorizedVehiclesMonthly = () => {
                   {formatData?.tipos?.map((tipo) => (
                     <th className="px-3" key={tipo}>{tipo}</th>
                   ))}
+                  <th className="px-3">TOTAL</th>
                 </tr>
               </thead>
               <tbody>
-                {/* {formatData?.meses?.map((mes, index) => (
-                  <tr className="py-0 my-0" key={mes}>
-                    <td className="py-0">{obtenerNombreMes(mes)}</td>
-                    {formatData?.series?.map((serie, index) => (
-                      <td className="px-3 py-0 text-end" key={index}>
-                        {serie.data[index]}
-                      </td>
-                    ))}
-                  </tr>
-                ))} */}
-                 {formatData?.meses?.map((mes, indexMeses) => (
-                  <tr className="py-0 my-0" key={indexMeses}>
-                    <td className="py-0">{obtenerNombreMes(mes)}</td>
+                {formatData?.meses?.map((mes, indexMeses) => (
+                  <tr key={indexMeses} className="py-0 my-0">
+                    <td  className="py-0">{obtenerNombreMes(mes)}</td>
                     {formatData?.series?.map((serie, indexSerie) => (
-                      <td className="px-3 py-0 text-end" key={indexSerie}>{serie.data[indexMeses]}</td>
+                      <td key={indexSerie} className="px-3 py-0 text-end">{serie.data[indexMeses]}</td>
                     ))}
+                    <td  className="py-0 text-end">{formatData?.series?.reduce((acc, serie) => acc + serie.data[indexMeses], 0)}</td>
                   </tr>
                 ))}
+                <tr>
+                  <td className="px-3">TOTAL</td>
+                  {formatData?.series?.map((serie, indexSerie) => (
+                    <td key={indexSerie} className="px-3 text-end">{serie.data.reduce((acc, monto) => acc + monto, 0)}</td>
+                  ))}
+                  <td className="text-end">{formatData?.series?.reduce((acc, serie) => acc + serie.data.reduce((acc, monto) => acc + monto, 0), 0)}</td>
+                </tr>
+               
+                
               </tbody>
             </table>
 
-            {/* <small>{JSON.stringify(formatData)}</small> */}
+            
           </div>
         </div>
       </div>
