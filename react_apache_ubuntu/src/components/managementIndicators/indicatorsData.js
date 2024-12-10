@@ -3,6 +3,7 @@ import { CurrentPermits } from "./currentPermits/CurrentPermits";
 import { OccurrencesTime } from "./occurrencesTime/OccurrencesTime";
 import { OccurrencesType } from "./occurrencesType/OccurrencesType";
 import { OldVehicles } from "./oldVehicles/OldVehicles";
+import { PatrolGoal } from "./patrolGoal/PatrolGoal";
 import { TransportationTickets } from "./transportationTickets/TransportationTickets";
 
 
@@ -64,6 +65,16 @@ export const getIndicators = (anioSelected) => [
       <OccurrencesTime
         anioSelected={anioSelected}
         title={"Ocurrencias por mes"}
+      />
+    ),
+  },
+  {
+    type: "02",
+    code: "03",
+    component: (
+      <PatrolGoal
+        anioSelected={anioSelected}
+        title={"Kilometros de patrullaje"}
       />
     ),
   },
