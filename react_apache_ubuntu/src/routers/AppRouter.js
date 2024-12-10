@@ -11,6 +11,7 @@ import { TransportationTicketsDetail } from "../components/managementIndicators/
 import { OldVehiclesDetail } from "../components/managementIndicators/oldVehicles/OldVehiclesDetail";
 import { OccurrencesTypeDetail } from "../components/managementIndicators/occurrencesType/OccurrencesTypeDetail";
 import { OccurrencesTimeDetail } from "../components/managementIndicators/occurrencesTime/OccurrencesTimeDetail";
+import { PatrolGoalDetail } from "../components/managementIndicators/patrolGoal/PatrolGoalDetail";
 
 export const AppRouter = () => {
   return (
@@ -56,6 +57,10 @@ export const AppRouter = () => {
           <Route
             path="/indicadores/ocurrencias-mes/:anio"
             element={<OccurrencesTimeDetail />}
+          />
+          <Route
+            path="/indicadores/patullaje-meta/:anio"
+            element={<PatrolGoalDetail />}
           />
 
 
