@@ -4,53 +4,44 @@ import MyChart from "../../helpers/MyChart";
 import { ViewMore } from "../ViewMore";
 
 export const PatrolGoal = ({ anioSelected, title = "" }) => {
-  
-    const dafaultOption = useMemo(
-    () => ({
-      tooltip: {
-        trigger: "axis",
-      },
-      legend: {
-        data: ["Programado", "Validado"],
-      },
-      toolbox: {
+  const rawData = [
+    [70, 72, 96, 94],
+    [30, 28, 4, 6],
+  ];
+  const totalData = [100, 100, 100, 100];
+
+  const series = ["Cumplido", "Faltante"].map((name, sid) => {
+    return {
+      name,
+      type: "bar",
+      stack: "total",
+      barWidth: "60%",
+      label: {
         show: true,
+        formatter: (params) => Math.round(params.value * 1000) / 10 + "%",
+        fontSize: 10,
       },
-      calculable: true,
-      xAxis: [
-        {
-          type: "category",
-          // prettier-ignore
-          data: ['Ago', 'Sep', 'Oct', 'Nov'],
-        },
-      ],
-      yAxis: [
-        {
-          type: "value",
-        },
-      ],
-      series: [
-        {
-          name: "Programado",
-          type: "bar",
-          data: [341, 330, 341, 330],
-          label: {
-            show: true,
-            position: "top",
-          },          
-        },
-        {
-          name: "Validado",
-          type: "bar",
-          data: [242, 239, 324, 307],
-          label: {
-            show: true,
-            position: "top",
-          },
-        },
-      ],
+      data: rawData[sid].map((d, did) =>
+        totalData[did] <= 0 ? 0 : d / totalData[did]
+      ),
+    };
+  });
+
+  const dafaultOption = useMemo(
+    () => ({
+      legend: {
+        selectedMode: false,
+      },
+      yAxis: {
+        type: "value",
+      },
+      xAxis: {
+        type: "category",
+        data: ["Ago", "Sep", "Oct", "Nov"],
+      },
+      series,
     }),
-    []
+    [series]
   );
 
   return (
@@ -69,7 +60,7 @@ export const PatrolGoal = ({ anioSelected, title = "" }) => {
           />{" "}
         </div>
       </div>
-      <ViewMore url={`/indicadores/ocurrencias-mes/${anioSelected}`} />
+      <ViewMore url={`/indicadores/patullaje-meta/${anioSelected}`} />
     </div>
   );
 };
