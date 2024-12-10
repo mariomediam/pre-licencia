@@ -74,7 +74,7 @@ export const getIndicators = (anioSelected) => [
     component: (
       <PatrolGoal
         anioSelected={anioSelected}
-        title={"Kilometros de patrullaje"}
+        title={"Cumplimiento de metas por patrullaje"}
       />
     ),
   },
