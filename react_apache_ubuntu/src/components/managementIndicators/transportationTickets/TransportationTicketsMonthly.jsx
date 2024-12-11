@@ -18,7 +18,7 @@ export const TransportationTicketsMonthly = () => {
   const dafaultOption = useMemo(
     () => ({
       title: {
-        text: `Infracciones de tránsito`,
+        text: `Infracciones de transportes`,
         subtext: `${total}`,
         left: "center",
         top: "45%",
@@ -34,7 +34,7 @@ export const TransportationTicketsMonthly = () => {
       },
       series: [
         {
-          name: "Infracciones de tránsito",
+          name: "Infracciones de transportes",
           type: "pie",
           radius: ["40%", "70%"],
           avoidLabelOverlap: false,
