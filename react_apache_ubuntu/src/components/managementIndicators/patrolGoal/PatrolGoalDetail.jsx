@@ -1,20 +1,26 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+import upIcon from "../../../assets/images/indicators/thumb-up.png";
+import downIcon from "../../../assets/images/indicators/thumb-down.png";
 
 import MyChart from "../../helpers/MyChart";
 import XIcon from "../../../icons/XIcon";
+import CheckIcon from "../../../icons/CheckIcon";
 
 export const PatrolGoalDetail = () => {
   const navigate = useNavigate();
   const { anio: urlYear } = useParams();
 
-  const [colors, setColors] = useState([]);
+    const urlUpIcon = `image://${upIcon}`;
+  const urlDownIcon = `image://${downIcon}`;
 
-  const rawData = [
+  const rawData = useMemo(() => [
     [70, 72, 96, 94],
     [30, 28, 4, 6],
-  ];
-  const totalData = [100, 100, 100, 100];
+  ], []);
+
+  const totalData = useMemo(() => [100, 100, 100, 100], []);
 
   const dataTable = [
     { mes: "AGOSTO", programado: 341, validado: 242, percent: 70 },
@@ -38,25 +44,58 @@ export const PatrolGoalDetail = () => {
     },
   ];
 
-  const seriesName = ["CUMPLIDO", "FALTANTE"];
-
   const months = useMemo(() => ["Ago", "Sep", "Oct", "Nov"], []);
 
-  const series = seriesName.map((name, sid) => {
-    return {
-      name,
-      type: "bar",
-      stack: "total",
-      barWidth: "60%",
-      label: {
-        show: true,
-        formatter: (params) => Math.round(params.value * 1000) / 10 + "%",
-      },
-      data: rawData[sid].map((d, did) =>
-        totalData[did] <= 0 ? 0 : d / totalData[did]
-      ),
-    };
+  
+  const cumplimientoPorcentajes = rawData[0].map((cumplido, index) => {
+    const total = totalData[index];
+    return total <= 0 ? 0 : cumplido / total;
   });
+
+  const series = useMemo(
+    () => [
+      {
+        name: "CUMPLIDO",
+        type: "bar",
+        stack: "total",
+        barWidth: "60%",
+        label: {
+          show: true,
+          formatter: (params) => Math.round(params.value * 1000) / 10 + "%",
+        },
+        data: rawData[0].map((d, did) =>
+          totalData[did] <= 0 ? 0 : d / totalData[did]
+        ),
+        
+        markPoint: {
+          data: cumplimientoPorcentajes.map((porcentaje, index) => ({
+            xAxis: index,
+            y: porcentaje,
+            symbol: porcentaje >= 0.75 ? urlUpIcon : urlDownIcon,
+            symbolSize: 20,
+            symbolOffset: [0, 40],
+          })),
+          label: {
+            show: false,
+          },
+        },
+      },
+      {
+        name: "FALTANTE",
+        type: "bar",
+        stack: "total",
+        barWidth: "60%",
+        label: {
+          show: true,
+          formatter: (params) => Math.round(params.value * 1000) / 10 + "%",
+        },
+        data: rawData[1].map((d, did) =>
+          totalData[did] <= 0 ? 0 : d / totalData[did]
+        ),
+      },
+    ],
+    [rawData, totalData, urlUpIcon, urlDownIcon, cumplimientoPorcentajes]
+  );
 
   const dafaultOption = useMemo(
     () => ({
@@ -107,13 +146,11 @@ export const PatrolGoalDetail = () => {
           <div className="d-flex flex-column align-items-center gap-2">
             {/* <h3 className="m-0 pt-2 pb-0"> ocurrencias</h3> */}
             <div className="d-flex gap-0 flex-wrap justify-content-center align-items-center">
-              
-                  <MyChart
-                    option={dafaultOption}
-                    widthChart="400px"
-                    heightChart="550px"
-                  />{" "}
-              
+              <MyChart
+                option={dafaultOption}
+                widthChart="400px"
+                heightChart="550px"
+              />{" "}
               <div className="d-flex justify-content-center ">
                 <table className="table">
                   <thead>
@@ -128,16 +165,29 @@ export const PatrolGoalDetail = () => {
                     {dataTable.map((mes, indexMeses) => (
                       <tr key={indexMeses} className="py-0 my-0">
                         <td className="py-0">{mes.mes}</td>
-                        <td className="px-3 py-0 text-end">
-                          {mes.programado} Km.
+                        <td className="py-0 text-end">{mes.programado} Km.</td>
+                        <td className="py-0 text-end">{mes.validado} Km.</td>
+                        <td className="py-0 text-end">
+                          <span className="me-1">{mes.percent}%</span>
+                          {mes.percent >= 75 ? (
+                            <CheckIcon className="text-success" />
+                          ) : (
+                            <XIcon className="text-danger" />
+                          )}
                         </td>
-                        <td className="px-3 py-0 text-end">
-                          {mes.validado} Km.
-                        </td>
-                        <td className="px-3 py-0 text-end">{mes.percent}%</td>
                       </tr>
                     ))}
                   </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colSpan={4} className="text-center">
+                        <small>
+                          El patrullaje cumple la meta si el porcentaje es mayor
+                          o igual al 75%.
+                        </small>
+                      </td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </div>
