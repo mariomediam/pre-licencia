@@ -12,32 +12,41 @@ export const OccurrencesTime = ({ anioSelected, title = "" }) => {
 
   const dafaultOption = useMemo(
     () => ({
-      tooltip: {
-        trigger: "axis",
-        axisPointer: { type: "cross" },
+      // tooltip: {
+      //   trigger: "axis",
+      //   axisPointer: { type: "cross" },
         
-      },
+      // },
       xAxis: {
         type: "category",
-        boundaryGap: false,
+        // boundaryGap: false,
         // data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         show: true,
       },
       grid: {
-        top: "3%",
+        top: "8%",
         bottom: "15%",
+        // left: "10%", // 
         containLabel: true,
+
       },
       yAxis: {
         type: "value",
         show: true,
+
       },
       series: [
         {
           //   data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: "line",
-          areaStyle: {},
-          smooth: true,
+          type: "bar",
+          // areaStyle: {},
+          // smooth: true,
+          barWidth: "60%",
+          label: {
+            show: true,
+            position: "top",
+            // formatter: (params) => Math.round(params.value * 1000) / 10 + "%",
+          },
         },
       ],
     }),
