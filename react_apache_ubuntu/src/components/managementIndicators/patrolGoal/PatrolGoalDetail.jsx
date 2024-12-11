@@ -165,8 +165,8 @@ export const PatrolGoalDetail = () => {
                     {dataTable.map((mes, indexMeses) => (
                       <tr key={indexMeses} className="py-0 my-0">
                         <td className="py-0">{mes.mes}</td>
-                        <td className="py-0 text-end">{mes.programado} Km.</td>
-                        <td className="py-0 text-end">{mes.validado} Km.</td>
+                        <td className="py-0 text-end">{mes.programado} <small className="text-muted">patrullajes</small></td>
+                        <td className="py-0 text-end">{mes.validado} <small className="text-muted">patrullajes</small></td>
                         <td className="py-0 text-end">
                           <span className="me-1">{mes.percent}%</span>
                           {mes.percent >= 75 ? (
