@@ -1,3 +1,4 @@
+import { AmountsTransitTickets } from "./amountsTransitTickets/AmountsTransitTickets";
 import { AuthorizedVehicles } from "./authorizedVehicles/AuthorizedVehicles";
 import { CurrentPermits } from "./currentPermits/CurrentPermits";
 import { OccurrencesTime } from "./occurrencesTime/OccurrencesTime";
@@ -34,7 +35,7 @@ export const getIndicators = (anioSelected) => [
     component: (
       <TransportationTickets
         anioSelected={anioSelected}
-        title={"Infracciones de tránsito"}
+        title={"Infracciones de transportes"}
       />
     ),
   },
@@ -45,6 +46,16 @@ export const getIndicators = (anioSelected) => [
       <OldVehicles
         anioSelected={anioSelected}
         title={"Antigüedad de vehículos con autorización vigente"}
+      />
+    ),
+  },
+  {
+    type: "01",
+    code: "06",
+    component: (
+      <AmountsTransitTickets
+        anioSelected={anioSelected}
+        title={"Recaudación por infracciones de transportes"}
       />
     ),
   },
