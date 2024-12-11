@@ -72,7 +72,7 @@ export const TransportationTicketsDetail = () => {
               className="p-0"
               style={{ marginTop: "-5px", marginBottom: "0px" }}
             >
-              {`Transportes / Infracciones de tránsito ${urlYear}`}
+              {`Transportes / Infracciones de transportes ${urlYear}`}
             </p>
           </div>
         </div>
