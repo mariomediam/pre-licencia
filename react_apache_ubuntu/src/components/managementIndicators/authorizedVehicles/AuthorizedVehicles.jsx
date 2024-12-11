@@ -19,6 +19,10 @@ export const AuthorizedVehicles = ({ anioSelected, title = "" }) => {
 
   const dafaultOption = useMemo(
     () => ({
+      grid: {
+        top: "20%",
+        bottom: "5%",
+      },
       xAxis: {
         type: "category",
         boundaryGap: false,
