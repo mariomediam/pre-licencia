@@ -20,7 +20,7 @@ export const AccrualFormatStep0 = ({ expedErrors, setExpedErrors }) => {
   };
 
   return (
-    <div className="d-flex gap-2">
+    <div className="d-flex gap-2 px-3">
       <div className="mb-3 full-width">
         <label htmlFor="anioInput" className="form-label">
           <small className="text-muted">Año</small>
