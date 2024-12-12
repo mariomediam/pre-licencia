@@ -137,3 +137,7 @@ code {
 .full-width {
   width: 100%;
 }
+
+.text-balance {
+  text-wrap: balance;
+}
