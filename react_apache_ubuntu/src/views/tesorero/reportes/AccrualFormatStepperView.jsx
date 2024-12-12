@@ -20,14 +20,20 @@ const steps = ["Seleccionar expediente", "Seleccionar fase", "Generar formato"];
 
 export const AccrualFormatStepperView = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const { currentExped } = useSelector((state) => state.siaf);
-  const { anioExped, numeroExped } = currentExped;
   const [expedErrors, setExpedErrors] = useState({});
 
+  const { currentExped, currentSecuencia } = useSelector((state) => state.siaf);
+  const { anioExped, numeroExped } = currentExped;
+  const {
+    anioExped: anioSecuencia,
+    numeroExped: numeroSecuencia,
+    secuencia,
+    correlativo,
+  } = currentSecuencia;
 
   const handleNext = () => {
     if (validateStep(activeStep)) {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 
@@ -41,43 +47,68 @@ export const AccrualFormatStepperView = () => {
 
   const getStepContent = (step) => {
     switch (step) {
-        case 0:
-            return <AccrualFormatStep0 expedErrors={expedErrors} setExpedErrors={setExpedErrors}/>;
-        case 1:
-            return <AccrualFormatStep1 />;
-        case 2:
-            return <AccrualFormatStep2 />;
-        default:
-            return <></>
+      case 0:
+        return (
+          <AccrualFormatStep0
+            expedErrors={expedErrors}
+            setExpedErrors={setExpedErrors}
+          />
+        );
+      case 1:
+        return (
+          <AccrualFormatStep1
+            expedErrors={expedErrors}
+            setExpedErrors={setExpedErrors}
+          />
+        );
+      case 2:
+        return <AccrualFormatStep2 />;
+      default:
+        return <></>;
     }
-    
-};
+  };
 
-const validateStep = (step) => {
+  const validateStep = (step) => {
     switch (step) {
-        case 0:
-            return validateStep0();
-        case 1:
-            return true;
-        case 2:
-            return true;
-        default:
-            return false;
+      case 0:
+        return validateStep0();
+      case 1:
+        return validateStep1();
+      case 2:
+        return true;
+      default:
+        return false;
     }
-}
+  };
 
-const validateStep0 = () => {
+  const validateStep0 = () => {
     let errors = {};
 
     if (anioExped.length !== 4) {
-        errors.anioExped = "El año del expediente debe tener 4 dígitos";        
+      errors.anioExped = "El año del expediente debe tener 4 dígitos";
     }
     if (numeroExped.length === 0) {
-        errors.numeroExped = "El número del expediente es requerido";        
+      errors.numeroExped = "El número del expediente es requerido";
     }
     setExpedErrors(errors);
     return Object.keys(errors).length === 0;
-}
+  };
+
+  const validateStep1 = () => {
+    let errors = {};
+
+    if (
+      !secuencia ||
+      !correlativo ||
+      anioExped !== anioSecuencia ||
+      numeroExped !== numeroSecuencia
+    ) {
+      errors.selectedSecuencia = "Debe seleccionar una fase";
+    }
+
+    setExpedErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const renderStepLabel = (label, index) => (
     <StepLabel
