@@ -62,6 +62,16 @@ export const AccrualFormatExpedItem = ({ expedFase, setExpedErrors }) => {
         numeroExped: EXPEDIENTE,
         secuencia: SECUENCIA,
         correlativo: CORRELATIVO,
+        MONTO_NACIONAL,
+        ABREVIATURA,
+        SERIE_DOC,
+        NUM_DOC,
+        FECHA_DOC,
+        FUENTE_FINANC,
+        TIPO_RECURSO,
+        NOMBRE,
+        RUC,
+        GLOSA,
       })
     );
     setExpedErrors({}); // Reset errors
