@@ -40,7 +40,7 @@ export const AccrualFormatStep1 = ({ expedErrors, setExpedErrors }) => {
   }, [numeroExped, anioExped]);
 
   return (
-    <div>
+    <div className="px-3">
       <small>
         Expediente {numeroExped} {anioExped}
       </small>
