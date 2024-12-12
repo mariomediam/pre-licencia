@@ -64,5 +64,18 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   };
+
+  const obtenerExpedienteFase = async (params) => {
+    const { anio, expediente, ciclo, fase } = params;
+    let api = UseAxios();
+    try {
+      let {
+        data: { content },
+      } = await api.get(`${URL}/seleccionar-expediente-fase?anio=${anio}&expediente=${expediente}&ciclo=${ciclo}&fase=${fase}`);
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  }
   
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase };
