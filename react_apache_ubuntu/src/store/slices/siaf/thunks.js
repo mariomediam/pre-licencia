@@ -1,4 +1,4 @@
-import { setCurrentExped } from "./siafSlice"
+import { resetCurrentSecuencia, setCurrentExped, setCurrentSecuencia } from "./siafSlice"
 
 
 
@@ -16,4 +16,16 @@ export const setCurrentExpedThunk = (expedData) => {
   
       dispatch(setCurrentExped({ currentExped: updatedExped }));
     };
+  };
+
+  export const setCurrentSecuenciaThunk = (secuenciaData) => {
+    return async (dispatch) => {
+      dispatch(setCurrentSecuencia({ currentSecuencia: secuenciaData }));
+    };
+  };
+
+  export const resetCurrentSecuenciaThunk = () => {
+    return async (dispatch) => {
+      dispatch(resetCurrentSecuencia());
+    }
   };
