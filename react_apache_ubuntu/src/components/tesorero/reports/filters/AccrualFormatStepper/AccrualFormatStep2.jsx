@@ -12,13 +12,6 @@ export const AccrualFormatStep2 = ({retentions, setRetentions, expedErrors, setE
 
   const [sumRetentions, setSumRetentions] = useState(0)
 
- 
-
-  // useState(() => {
-  //   const retentionType = getRetentionType();
-  //   setRetentions(retentionType);
-  // }, []);
-
   useEffect(() => {
     const retentionType = getRetentionType();
     setRetentions(retentionType);
