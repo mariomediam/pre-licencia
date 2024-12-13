@@ -1,6 +1,6 @@
 import XIcon from "../../../../../icons/XIcon";
 
-export const AccruralRetentionItem = ({ retention, setRetentions }) => {
+export const AccruralRetentionItem = ({ retention, setRetentions, expedErrors, setExpedErrors }) => {
   const { code, description, value, isPersonalized } = retention;
 
   const onChangeInput = (e) => {
@@ -11,6 +11,7 @@ export const AccruralRetentionItem = ({ retention, setRetentions }) => {
         item.code === code ? { ...item, value: valueFloat } : item
       )
     );
+    setExpedErrors({ ...expedErrors, [code]: "" });
   };
 
   const oncClicRemoveRetention = () => {
@@ -25,10 +26,12 @@ export const AccruralRetentionItem = ({ retention, setRetentions }) => {
         <div className="input-group">
           <input
             type="number"
-            className={`form-control text-end`}
-            id="numeroInput"
+            className={`form-control text-end ${
+              expedErrors[code] ? "is-invalid" : ""
+            }`}
+            id={`idRetention-${code}`}
             maxLength={10}
-            name="numeroExped"
+            name={`retention-${code}`}
             onChange={onChangeInput}
             value={value}
             step={1}
@@ -39,6 +42,10 @@ export const AccruralRetentionItem = ({ retention, setRetentions }) => {
             </button>
           )}
         </div>
+        <span className="text-danger" style={{ fontSize: "0.8rem" }}>
+          {" "}
+          {expedErrors[code]}
+        </span>
       </div>
     </article>
   );
