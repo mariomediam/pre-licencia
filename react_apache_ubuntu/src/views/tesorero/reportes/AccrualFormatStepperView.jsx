@@ -22,6 +22,8 @@ export const AccrualFormatStepperView = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [expedErrors, setExpedErrors] = useState({});
 
+  const [retentions, setRetentions] = useState([]);
+
   const { currentExped, currentSecuencia } = useSelector((state) => state.siaf);
   const { anioExped, numeroExped } = currentExped;
   const {
@@ -62,7 +64,7 @@ export const AccrualFormatStepperView = () => {
           />
         );
       case 2:
-        return <AccrualFormatStep2 />;
+        return <AccrualFormatStep2  retentions={retentions} setRetentions={setRetentions} expedErrors = {expedErrors} setExpedErrors = {setExpedErrors}/>;
       default:
         return <></>;
     }
@@ -75,7 +77,7 @@ export const AccrualFormatStepperView = () => {
       case 1:
         return validateStep1();
       case 2:
-        return true;
+        return validateStep2();
       default:
         return false;
     }
@@ -109,6 +111,18 @@ export const AccrualFormatStepperView = () => {
     setExpedErrors(errors);
     return Object.keys(errors).length === 0;
   };
+
+  const validateStep2 = () => {
+    let errors = {};
+
+    const retentionsLessZero = retentions.filter((retention) => retention.value < 0);
+
+    for (const retention of retentionsLessZero) {
+      errors[retention.code] = "El monto debe ser mayor o igual a 0";
+    }
+    setExpedErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
 
   const renderStepLabel = (label, index) => (
     <StepLabel
