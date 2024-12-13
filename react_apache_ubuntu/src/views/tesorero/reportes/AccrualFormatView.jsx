@@ -18,10 +18,10 @@ export const AccrualFormatView = () => {
         <CashRegisterIcon className="me-1 thumbnail text-color-default mb-1" />
         <h3 className="text-color-default">Formato para fase devengado</h3>
       </div>
-      <div className="d-flex justify-content-center pt-3" >
-      <div style={{ maxWidth: "576px" }}>
-        <AccrualFormatStepperView />
-      </div>
+      <div className="d-flex justify-content-center pt-3 pb-3">
+        <div style={{ maxWidth: "576px" }}>
+          <AccrualFormatStepperView />
+        </div>
       </div>
     </>
   );
