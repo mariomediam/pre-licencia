@@ -1,5 +1,7 @@
+import XIcon from "../../../../../icons/XIcon";
+
 export const AccruralRetentionItem = ({ retention, setRetentions }) => {
-  const { code, description, value } = retention;
+  const { code, description, value, isPersonalized } = retention;
 
   const onChangeInput = (e) => {
     const { value } = e.target;
@@ -11,21 +13,32 @@ export const AccruralRetentionItem = ({ retention, setRetentions }) => {
     );
   };
 
-  return (
-    <article className="row py-1">
-      <div className="col d-flex align-items-center">{description}</div>
+  const oncClicRemoveRetention = () => {
+    setRetentions((prev) => prev.filter((item) => item.code !== code));
+  };
 
-      <div class="col">
-        <input
-          type="number"
-          className={`form-control text-end`}
-          id="numeroInput"
-          maxLength={10}
-          name="numeroExped"
-          onChange={onChangeInput}
-          value={value}
-          step={1}
-        />
+  return (
+    <article className="row py-1 d-flex align-items-center">
+      <div className="col ">{description}</div>
+
+      <div className="col">
+        <div className="input-group">
+          <input
+            type="number"
+            className={`form-control text-end`}
+            id="numeroInput"
+            maxLength={10}
+            name="numeroExped"
+            onChange={onChangeInput}
+            value={value}
+            step={1}
+          />
+          {isPersonalized && (
+            <button className="btn btn-outline-secondary" type="button" title="Eliminar retención" onClick={oncClicRemoveRetention}>
+              <XIcon />
+            </button>
+          )}
+        </div>
       </div>
     </article>
   );
