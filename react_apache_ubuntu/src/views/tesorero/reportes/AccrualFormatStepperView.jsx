@@ -37,6 +37,7 @@ export const AccrualFormatStepperView = () => {
   const handleNext = () => {
     if (validateStep(activeStep)) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      console.log("retentions", retentions);
     }
   };
 
@@ -128,7 +129,7 @@ export const AccrualFormatStepperView = () => {
       errors.totalRetentions = "La suma de las retenciones no debe superar el monto fase";
     }
     
-    setExpedErrors(errors);
+    setExpedErrors(errors);    
     return Object.keys(errors).length === 0;
   }
 
