@@ -77,5 +77,18 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   }
+
+  const obtenerExpedienteSecuencia = async (params) => {
+    const { anio, expediente, secuencia, correlativo } = params;
+    let api = UseAxios();
+    try {
+      let {
+        data: { content },
+      } = await api.get(`${URL}/seleccionar-expediente-secuencia?anio=${anio}&expediente=${expediente}&secuencia=${secuencia}&correlativo=${correlativo}`);
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  }
   
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia };
