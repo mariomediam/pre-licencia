@@ -12,6 +12,7 @@ export const AccuralRetentionAdd = ({ setRetentions }) => {
       code: uuidv4(),
       description: inputDescripcion.current.value,
       value: parseFloat(inputMonto.current.value),
+      isPersonalized: true,
     };
     setRetentions((prev) => [...prev, newRetention]);
     inputDescripcion.current.value = "";
