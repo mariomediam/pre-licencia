@@ -4,6 +4,7 @@ import { getRetentionType } from "./retentionTypeData";
 import { AccuralRetentionAdd } from "./AccuralRetentionAdd";
 import { useSelector } from "react-redux";
 import { formatNumber } from "../../../../../utils/varios";
+import ExclamationCircleIcon from "../../../../../icons/ExclamationCircleIcon";
 
 export const AccrualFormatStep2 = ({retentions, setRetentions, expedErrors, setExpedErrors}) => {
   const { currentSecuencia } = useSelector((state) => state.siaf);
@@ -22,8 +23,12 @@ export const AccrualFormatStep2 = ({retentions, setRetentions, expedErrors, setE
       (acc, curr) => acc + curr.value,
       0
     );
-    setSumRetentions(totalRetentions);
+    setSumRetentions(totalRetentions);    
   }, [retentions]);
+
+
+
+
 
   return (
     <div className="mx-5">
@@ -54,8 +59,17 @@ export const AccrualFormatStep2 = ({retentions, setRetentions, expedErrors, setE
       <div className="d-flex justify-content-between">
         <p className="py-0 my-0">Total a pagar</p>
         <p className="fw-bold py-0 my-0">S/. {formatNumber(MONTO_NACIONAL - sumRetentions, 2)}</p>
+        
       </div>
-      </div>      
+      {expedErrors.totalRetentions && (
+        <small className="text-danger d-flex align-items-center">
+          <ExclamationCircleIcon className="me-1" />
+          {expedErrors.totalRetentions}
+        </small>
+      )}
+      
+      </div>
+      
     </div>
   );
 };

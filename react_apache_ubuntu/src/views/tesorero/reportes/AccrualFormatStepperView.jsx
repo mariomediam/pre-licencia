@@ -31,6 +31,7 @@ export const AccrualFormatStepperView = () => {
     numeroExped: numeroSecuencia,
     secuencia,
     correlativo,
+    MONTO_NACIONAL = 0,
   } = currentSecuencia;
 
   const handleNext = () => {
@@ -117,9 +118,16 @@ export const AccrualFormatStepperView = () => {
 
     const retentionsLessZero = retentions.filter((retention) => retention.value < 0);
 
+    const sumRetentions = retentions.reduce((acc, retention) => acc + retention.value, 0);
+    
     for (const retention of retentionsLessZero) {
       errors[retention.code] = "El monto debe ser mayor o igual a 0";
     }
+
+    if (sumRetentions > MONTO_NACIONAL) {
+      errors.totalRetentions = "La suma de las retenciones no debe superar el monto fase";
+    }
+    
     setExpedErrors(errors);
     return Object.keys(errors).length === 0;
   }
