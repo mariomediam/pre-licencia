@@ -7,14 +7,17 @@ import {
   StepLabel,
   Button,
   Typography,
+  CircularProgress
 } from "@mui/material";
 
 import ChevronRightIcon from "../../../icons/ChevronRightIcon";
 import DeviceFloppyIcon from "../../../icons/DeviceFloppyIcon";
 import ChevronLeftIcon from "../../../icons/ChevronLeftIcon";
+import RotateClockwiseIcon from "../../../icons/RotateClockwiseIcon";
 import { AccrualFormatStep0 } from "../../../components/tesorero/reports/filters/AccrualFormatStepper/AccrualFormatStep0";
 import { AccrualFormatStep1 } from "../../../components/tesorero/reports/filters/AccrualFormatStepper/AccrualFormatStep1";
 import { AccrualFormatStep2 } from "../../../components/tesorero/reports/filters/AccrualFormatStepper/AccrualFormatStep2";
+import { downloadAccrualFormat } from "../../../services/siafService";
 
 const steps = ["Seleccionar expediente", "Seleccionar fase", "Generar formato"];
 
@@ -23,6 +26,7 @@ export const AccrualFormatStepperView = () => {
   const [expedErrors, setExpedErrors] = useState({});
 
   const [retentions, setRetentions] = useState([]);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const { currentExped, currentSecuencia } = useSelector((state) => state.siaf);
   const { anioExped, numeroExped } = currentExped;
@@ -34,10 +38,13 @@ export const AccrualFormatStepperView = () => {
     MONTO_NACIONAL = 0,
   } = currentSecuencia;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (validateStep(activeStep)) {
+      if (activeStep === steps.length - 1) {
+        await donwloadFormat();
+        return;
+      }
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      console.log("retentions", retentions);
     }
   };
 
@@ -66,7 +73,14 @@ export const AccrualFormatStepperView = () => {
           />
         );
       case 2:
-        return <AccrualFormatStep2  retentions={retentions} setRetentions={setRetentions} expedErrors = {expedErrors} setExpedErrors = {setExpedErrors}/>;
+        return (
+          <AccrualFormatStep2
+            retentions={retentions}
+            setRetentions={setRetentions}
+            expedErrors={expedErrors}
+            setExpedErrors={setExpedErrors}
+          />
+        );
       default:
         return <></>;
     }
@@ -117,21 +131,27 @@ export const AccrualFormatStepperView = () => {
   const validateStep2 = () => {
     let errors = {};
 
-    const retentionsLessZero = retentions.filter((retention) => retention.value < 0);
+    const retentionsLessZero = retentions.filter(
+      (retention) => retention.value < 0
+    );
 
-    const sumRetentions = retentions.reduce((acc, retention) => acc + retention.value, 0);
-    
+    const sumRetentions = retentions.reduce(
+      (acc, retention) => acc + retention.value,
+      0
+    );
+
     for (const retention of retentionsLessZero) {
       errors[retention.code] = "El monto debe ser mayor o igual a 0";
     }
 
     if (sumRetentions > MONTO_NACIONAL) {
-      errors.totalRetentions = "La suma de las retenciones no debe superar el monto fase";
+      errors.totalRetentions =
+        "La suma de las retenciones no debe superar el monto fase";
     }
-    
-    setExpedErrors(errors);    
+
+    setExpedErrors(errors);
     return Object.keys(errors).length === 0;
-  }
+  };
 
   const renderStepLabel = (label, index) => (
     <StepLabel
@@ -167,17 +187,40 @@ export const AccrualFormatStepperView = () => {
           <span className="pt-1 pe-1">Regresar</span>
         </div>
       </Button>
+      {activeStep === steps.length - 1 && (
+        <Button
+          onClick={onClicButtonRestart}
+          variant="contained"
+          size="small"
+          color="secondary"          
+        >
+          <div className="d-flex align-items-center">
+            <RotateClockwiseIcon className="me-1" />
+            <span className="pt-1 pe-1">Reiniciar</span>
+          </div>
+        </Button>
+      )}
       <Box sx={{ flex: "1 1 auto" }} />
       <Button
         onClick={handleNext}
         variant="contained"
         size="small"
         color={activeStep === steps.length - 1 ? "primary" : "success"}
+        disabled={activeStep === steps.length - 1 && isDownloading}
       >
         {activeStep === steps.length - 1 ? (
           <div className="m-0 p-0">
-            <DeviceFloppyIcon />
-            <span className="pt-1">Descargar formato</span>
+            {isDownloading ? (
+              <div className="d-flex align-items-center">
+              <CircularProgress size="24px" className="me-2"/>
+                <span className="pt-1">Descargando...</span>
+              </div>
+            ) : (
+              <div className="d-flex align-items-center">
+                <DeviceFloppyIcon className="me-1" />
+                <span className="pt-1 pe-1">Descargar formato</span>
+              </div>
+            )}
           </div>
         ) : (
           <div className="d-flex align-items-center">
@@ -186,8 +229,41 @@ export const AccrualFormatStepperView = () => {
           </div>
         )}
       </Button>
+      {/* <Button>
+        Reiniciar
+      </Button> */}
     </Box>
   );
+
+  const donwloadFormat = async () => {
+    try {
+      setIsDownloading(true);
+      const params = {
+        anio: anioSecuencia,
+        expediente: numeroSecuencia,
+        secuencia: secuencia,
+        correlativo: correlativo,
+        retentions,
+      };
+      const accrualFormat = await downloadAccrualFormat(params);
+      const name_file = `Formarto Devengado SIAF ${numeroSecuencia}-${anioSecuencia}-${secuencia}`;
+      const url = URL.createObjectURL(accrualFormat);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = name_file;
+      link.target = "_blank";
+      link.click();
+      setIsDownloading(false);
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const onClicButtonRestart = () => {
+    window.location.reload();
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
