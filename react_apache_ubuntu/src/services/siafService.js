@@ -90,5 +90,25 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   }
+
+
+  const downloadAccrualFormat = async (params) => {
+    const { anio, expediente, secuencia, correlativo, retentions } = params;
+    let api = UseAxios();
+    try {
+      const response = await api.post(`${URL}/download-formato-devengado`, { anio, expediente, secuencia, correlativo, retentions }, { responseType: 'blob' });
+
+      const file = new Blob([response.data], {
+        type: "application/pdf",
+      });
+
+      return file;
+
+    } catch (error) {
+      throw error;
+    }
+  }
+
   
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia };
+  
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat };
