@@ -7,7 +7,7 @@ import {
   StepLabel,
   Button,
   Typography,
-  CircularProgress
+  CircularProgress,
 } from "@mui/material";
 
 import ChevronRightIcon from "../../../icons/ChevronRightIcon";
@@ -17,7 +17,10 @@ import RotateClockwiseIcon from "../../../icons/RotateClockwiseIcon";
 import { AccrualFormatStep0 } from "../../../components/tesorero/reports/filters/AccrualFormatStepper/AccrualFormatStep0";
 import { AccrualFormatStep1 } from "../../../components/tesorero/reports/filters/AccrualFormatStepper/AccrualFormatStep1";
 import { AccrualFormatStep2 } from "../../../components/tesorero/reports/filters/AccrualFormatStepper/AccrualFormatStep2";
-import { downloadAccrualFormat } from "../../../services/siafService";
+import {
+  downloadAccrualFormat,
+  procesoActualizarRegistro,
+} from "../../../services/siafService";
 
 const steps = ["Seleccionar expediente", "Seleccionar fase", "Generar formato"];
 
@@ -26,7 +29,7 @@ export const AccrualFormatStepperView = () => {
   const [expedErrors, setExpedErrors] = useState({});
 
   const [retentions, setRetentions] = useState([]);
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { currentExped, currentSecuencia } = useSelector((state) => state.siaf);
   const { anioExped, numeroExped } = currentExped;
@@ -40,6 +43,16 @@ export const AccrualFormatStepperView = () => {
 
   const handleNext = async () => {
     if (validateStep(activeStep)) {
+      if (activeStep === 0) {
+        setIsLoading(true);
+        const params = {
+          anio: anioExped,
+          expediente: numeroExped,
+        };
+        await procesoActualizarRegistro(params);
+        setIsLoading(false);
+      }
+
       if (activeStep === steps.length - 1) {
         await donwloadFormat();
         return;
@@ -172,6 +185,51 @@ export const AccrualFormatStepperView = () => {
     </StepLabel>
   );
 
+  const renderButonNext = {
+    0: {
+      true: (
+        <>
+          <CircularProgress size="24px" className="me-2" />
+          <span className="pt-1">Buscando...</span>
+        </>
+      ),
+      false: (
+        <>
+          <span className="pt-1 ps-1">Siguiente</span>
+          <ChevronRightIcon />
+        </>
+      ),
+    },
+    1: {
+      true: (
+        <>
+          <span className="pt-1 ps-1">Siguiente</span>
+          <ChevronRightIcon />
+        </>
+      ),
+      false: (
+        <>
+          <span className="pt-1 ps-1">Siguiente</span>
+          <ChevronRightIcon />
+        </>
+      ),
+    },
+    2: {
+      true: (
+        <>
+          <CircularProgress size="24px" className="me-2" />
+          <span className="pt-1">Descargando...</span>
+        </>
+      ),
+      false: (
+        <>
+          <DeviceFloppyIcon className="me-1" />
+          <span className="pt-1 pe-1">Descargar formato</span>
+        </>
+      ),
+    },
+  };
+
   const renderButtons = () => (
     <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
       <Button
@@ -192,7 +250,7 @@ export const AccrualFormatStepperView = () => {
           onClick={onClicButtonRestart}
           variant="contained"
           size="small"
-          color="secondary"          
+          color="secondary"
         >
           <div className="d-flex align-items-center">
             <RotateClockwiseIcon className="me-1" />
@@ -206,38 +264,19 @@ export const AccrualFormatStepperView = () => {
         variant="contained"
         size="small"
         color={activeStep === steps.length - 1 ? "primary" : "success"}
-        disabled={activeStep === steps.length - 1 && isDownloading}
+        disabled={isLoading}
+        // disabled={activeStep === steps.length - 1 && isLoading}
       >
-        {activeStep === steps.length - 1 ? (
-          <div className="m-0 p-0">
-            {isDownloading ? (
-              <div className="d-flex align-items-center">
-              <CircularProgress size="24px" className="me-2"/>
-                <span className="pt-1">Descargando...</span>
-              </div>
-            ) : (
-              <div className="d-flex align-items-center">
-                <DeviceFloppyIcon className="me-1" />
-                <span className="pt-1 pe-1">Descargar formato</span>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="d-flex align-items-center">
-            <span className="pt-1 ps-1">Siguiente</span>
-            <ChevronRightIcon />
-          </div>
-        )}
+        <div className="d-flex align-items-center">
+          {renderButonNext[activeStep][isLoading]}
+        </div>
       </Button>
-      {/* <Button>
-        Reiniciar
-      </Button> */}
     </Box>
   );
 
   const donwloadFormat = async () => {
     try {
-      setIsDownloading(true);
+      setIsLoading(true);
       const params = {
         anio: anioSecuencia,
         expediente: numeroSecuencia,
@@ -253,17 +292,17 @@ export const AccrualFormatStepperView = () => {
       link.download = name_file;
       link.target = "_blank";
       link.click();
-      setIsDownloading(false);
+      setIsLoading(false);
     } catch (error) {
       throw error;
     } finally {
-      setIsDownloading(false);
+      setIsLoading(false);
     }
   };
 
   const onClicButtonRestart = () => {
     window.location.reload();
-  }
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
