@@ -13,7 +13,7 @@ export const getRetentionType = () => [
     },
     {
         code: "03",
-        description: "RETENCIÓN DEL 10%",
+        description: "GARANTÍAS",
         value: 0.00,
         isPersonalized: false,
     },
@@ -26,6 +26,12 @@ export const getRetentionType = () => [
     {
         code: "05",
         description: "EMBARGO A FAVOR DE SUNAT",
+        value: 0.00,
+        isPersonalized: false,
+    },
+    {
+        code: "06",
+        description: "SESIÓN DE DERECHOS",
         value: 0.00,
         isPersonalized: false,
     },
