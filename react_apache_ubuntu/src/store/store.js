@@ -4,6 +4,7 @@ import { boletasEnviadasSlice, boletasSlice, planillaCorreoSlice, planillaSlice,
 import { filterSearchSlice } from './slices/helpers/filterSearch/filterSearchSlice'
 import { sigaNetSlice } from './slices/sigaNet/sigaSlice'
 import { indicatorsSlice } from './slices/indicators/indicatorsSlice'
+import { siafSlice } from './slices/siaf/siafSlice'
 
 export const store = configureStore({
   reducer: {
@@ -19,5 +20,6 @@ export const store = configureStore({
     filterSearch: filterSearchSlice.reducer,
     sigaNet: sigaNetSlice.reducer,
     indicators: indicatorsSlice.reducer,
+    siaf: siafSlice.reducer,
   },
 })

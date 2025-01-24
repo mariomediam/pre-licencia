@@ -25,6 +25,7 @@ import { TributoArchivoContribView } from "../views/tesorero/TributoArchivoContr
 import { TributoArchivoReporteView } from "../views/tesorero/TributoArchivoReporteView";
 import { TributoArchivoConciliaView } from "../views/tesorero/TributoArchivoConciliaView";
 import { ExecutionView } from "../views/tesorero/reportes/ExecutionView";
+import { AccrualFormatView } from "../views/tesorero/reportes/AccrualFormatView";
 
 export const DashboardRoutes = () => {
   return (
@@ -115,6 +116,10 @@ export const DashboardRoutes = () => {
             path="/tesorero/reportes/ejecucion"
             element={<ExecutionView />}
            />
+           <Route
+           path="/tesorero/reportes/accrual-format"
+           element={<AccrualFormatView />}
+          />
         </Routes>
       </div>
     </>
