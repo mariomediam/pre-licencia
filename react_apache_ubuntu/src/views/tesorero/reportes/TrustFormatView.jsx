@@ -1,10 +1,19 @@
+import { useState } from "react";
 import { Breadcrumb } from "react-bootstrap";
 
 import Header from "../../../components/Header";
 import FilesIcon from "../../../icons/FilesIcon";
+import { TrustFormatModalComponent } from "../../../components/tesorero/reports/filters/TrustFormat/TrustFormatModalComponent";
 // import { AccrualFormatStepperView } from "./AccrualFormatStepperView";
 
 export const TrustFormatView = () => {
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  
+
   return (
     <>
       <Header />
@@ -31,7 +40,7 @@ export const TrustFormatView = () => {
               className="btn btn-primary rounded-circle"
               style={{ width: "70px", height: "70px" }}
               title="Agregar carta orden"
-              // onClick={handleShow}
+              onClick={handleShow}
               // disabled={periodosDisponibles.length === 0}
             >
               <i className="fas fa-plus"></i>
@@ -39,6 +48,8 @@ export const TrustFormatView = () => {
           </div>
         </div>
       </div>
+
+      <TrustFormatModalComponent show={show} handleClose={handleClose} />
     </>
   );
 };
