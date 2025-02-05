@@ -32,18 +32,11 @@ export const TrustFormatModalItemComponent = ({ cartaOrden, selectCarta }) => {
   const {
     ANO_EJE,
     EXPEDIENTE,
-    CICLO,
-    FASE,
-    SECUENCIA,
-    CORRELATIVO,
     FECHA_DOC,
     NUM_DOC,
     RUC,
     NOMBRE_PROVEEDOR,
     MONTO_NACIONAL,
-    CCI,
-    NOMBRE_CUENTA_CTE,
-    NOMBRE_BANCO,
     GLOSA,
     isSelected,
     key
