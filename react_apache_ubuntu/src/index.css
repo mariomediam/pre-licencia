@@ -181,3 +181,26 @@ code {
 .text-balance {
   text-wrap: balance;
 }
+
+.agregar-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 15px; /* Posición por defecto para pantallas pequeñas */
+  width: 70px;
+  height: 70px;
+  z-index: 1050;
+}
+
+/* Para pantallas medianas */
+@media (min-width: 890px) {
+  .agregar-btn {
+    right: 120px;
+  }
+}
+
+/* Para pantallas grandes */
+@media (min-width: 1540px) {
+  .agregar-btn {
+    right: 400px;
+  }
+}
