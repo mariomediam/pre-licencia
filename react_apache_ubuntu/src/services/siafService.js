@@ -154,6 +154,23 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   }
+
+  const downloadCartaOrdenFideicomiso = async (params) => {
+    const { cartas } = params;
+    let api = UseAxios();
+    try {
+      const response = await api.post(`${URL}/download-carta-orden-fideicomiso`, { cartas }, { responseType: 'blob' });
+
+      const file = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      return file;
+
+    } catch (error) {
+      throw error;
+    }
+  }
   
  
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso };
