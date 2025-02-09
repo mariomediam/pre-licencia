@@ -3,7 +3,7 @@ import { Badge } from "react-bootstrap";
 
 import { formatNumber, transformarFecha } from "../../../../../utils/varios";
 
-export const TrustFormatModalItemComponent = ({ cartaOrden, selectCarta }) => {
+export const TrustFormatModalItemComponent = ({ cartaOrden, selectCarta, addCartas }) => {
   
   const [isTruncated, setIsTruncated] = useState(false);
   const [viewMore, setViewMore] = useState(false);
@@ -47,6 +47,13 @@ export const TrustFormatModalItemComponent = ({ cartaOrden, selectCarta }) => {
     
   };
 
+  const onArticleDoubleClick = () => {
+    if (!isSelected){
+      selectCarta(key);
+    }
+    addCartas();
+  }
+
   return (
     <article
       className={`border rounded my-2 p-2 ${
@@ -55,6 +62,7 @@ export const TrustFormatModalItemComponent = ({ cartaOrden, selectCarta }) => {
           : ""
       }`}
       onClick={onArticleClick}
+      onDoubleClick={onArticleDoubleClick}
     >
       <header className="d-flex justify-content-between mb-2">
         <span>
