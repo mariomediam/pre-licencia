@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Swal from "sweetalert2";
 import { Modal, Button, Spinner, Form, InputGroup } from "react-bootstrap";
 
@@ -15,10 +15,17 @@ export const TrustFormatModalComponent = ({
   const [cartasSearched, setCartasSearched] = useState([]);
   const [inputText, setInputText] = useState("");
 
+  const inputSearch = useRef(null);
+
   useEffect(() => {
     if (!show) {
-      setCartasSearched([]);
-      setInputText("");
+      setCartasSearched([]);      
+      setInputText(new Date().getFullYear().toString());
+    } else
+    {
+      setTimeout(() => {
+        if (inputSearch.current) inputSearch.current.focus();
+      }, 100);
     }
   }, [show]);
 
@@ -90,6 +97,15 @@ export const TrustFormatModalComponent = ({
                 aria-describedby="inputCarta"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
+                ref = {inputSearch}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    searchCarta();
+                  }
+                }}
+                
+
                 placeholder="20250015"
               />
               <Button
@@ -120,6 +136,7 @@ export const TrustFormatModalComponent = ({
                 key={index}
                 cartaOrden={item}
                 selectCarta={selectCarta}
+                addCartas={addCartas}
               />
             ))}
           </div>
