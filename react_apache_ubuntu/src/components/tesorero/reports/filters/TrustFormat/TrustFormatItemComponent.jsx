@@ -49,7 +49,7 @@ export const TrustFormatItemComponent = ({
 
   return (
     <article
-      className={`border rounded my-2 p-2 bg-white`}
+      className={`border rounded my-2 p-2 bg-white animate__animated animate__fadeIn`}
       // onClick={onArticleClick}
     >
       <header className="d-flex justify-content-between mb-2">
