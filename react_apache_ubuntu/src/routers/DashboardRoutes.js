@@ -27,6 +27,7 @@ import { TributoArchivoConciliaView } from "../views/tesorero/TributoArchivoConc
 import { ExecutionView } from "../views/tesorero/reportes/ExecutionView";
 import { AccrualFormatView } from "../views/tesorero/reportes/AccrualFormatView";
 import { TrustFormatView } from "../views/tesorero/reportes/TrustFormatView";
+import { SeguimientoProyecto } from "../views/territorial/proyectosInversion/SeguimientoProyecto";
 
 export const DashboardRoutes = () => {
   return (
@@ -125,6 +126,10 @@ export const DashboardRoutes = () => {
            path="/tesorero/reportes/trust-format"
            element={<TrustFormatView />}
           />
+          <Route path="/territorial/seguimiento-inversion/">
+            <Route path=":anio/:mes" element={<SeguimientoProyecto />} />
+            <Route path="" element={<SeguimientoProyecto />} />
+          </Route>
         </Routes>
       </div>
     </>
