@@ -171,6 +171,19 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   }
+
+  const obtenerProyectosProgramacionMensual = async (params) => {
+    const { anio_eje, mes_eje, sec_ejec } = params;
+    let api = UseAxios();
+    try {
+      let {
+        data: { content },
+      } = await api.get(`${URL}/proyectos-programacion-mensual?ano_eje=${anio_eje}&mes_eje=${mes_eje}&sec_ejec=${sec_ejec}`);
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  }
   
  
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual };
