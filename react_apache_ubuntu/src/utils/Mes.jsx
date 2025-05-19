@@ -1,10 +1,10 @@
 import { Form } from "react-bootstrap";
 
-export const Mes = ({ selectedMonth = 1, setSelectedMonth}) => {
+export const Mes = ({ selectedMonth = 1, setSelectedMonth, className = ""}) => {
 
 
   return (
-    <Form.Select aria-label="Selecciones mes" onChange={(e) => setSelectedMonth(e.target.value)} defaultValue={selectedMonth}>
+    <Form.Select aria-label="Selecciones mes" onChange={(e) => setSelectedMonth(e.target.value)} defaultValue={selectedMonth} className={className}>
       <option value="1">Enero</option>
       <option value="2">Febrero</option>
       <option value="3">Marzo</option>
