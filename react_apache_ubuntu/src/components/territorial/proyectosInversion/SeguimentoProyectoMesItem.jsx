@@ -17,11 +17,11 @@
 //     "n_prgpro_pc": null,
 //     "d_prgpro_fecdig": null,
 //     "MONTO_PIA": 0.0,
-//     "MONTO_PIM": 5841332.0,
+//     "MONTO_PIM_ACUM": 5841332.0,
 //     "MONTO_CERTIFICADO": 5838829.37,
 //     "MONTO_COMPROMETIDO_ANUAL": 5651225.42,
 //     "MONTO_COMPROMETIDO": 5454102.77,
-//     "MONTO_DEVENGADO": 5454102.77,
+//     "MONTO_DEVENGADO_ACUM": 5454102.77,
 //     "MONTO_GIRADO": 5454102.77,
 // "n_estado_color": "#000000",
 // "n_estado_descrip": "Ninguno"
@@ -36,8 +36,9 @@ export const SeguimentoProyectoMesItem = ({ proyecto }) => {
   const {
     c_proinv_codigo,
     n_proinv_nombre,    
-    MONTO_PIM,
-    MONTO_DEVENGADO,
+    MONTO_PIM_ACUM,
+    MONTO_DEVENGADO_ACUM,
+    MONTO_DEVENGADO_MES,
     q_prgpro_caida,
     q_prgpro_increm,
     q_prgpro_riesgo,
@@ -60,7 +61,7 @@ export const SeguimentoProyectoMesItem = ({ proyecto }) => {
 
 
   // Avances
-  const avanceFinanciero = MONTO_DEVENGADO / MONTO_PIM * 100 || 0;
+  const avanceFinanciero = MONTO_DEVENGADO_ACUM / MONTO_PIM_ACUM * 100 || 0;
   const avanceFisico = p_prgpro_fisica || 0;
 
   // Formato de moneda
@@ -146,7 +147,7 @@ export const SeguimentoProyectoMesItem = ({ proyecto }) => {
           </div>
           <div className="col-12 col-md-2">
             <div className="text-muted small">Ejecución</div>
-            <div className="">{formatMoney(MONTO_DEVENGADO)}</div>
+            <div className="">{formatMoney(MONTO_DEVENGADO_MES)}</div>
           </div>
           <div className="col-12 col-md-4 mb-3" >
             <div className="mb-2">
