@@ -184,6 +184,37 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   }
+
+  // {{url_api}}/api/siaf/ultima-sincro?ano_eje=2025&sec_ejec=301529
+
+  const obtenerUltimaSincro = async (params) => {
+    const { ano_eje, sec_ejec } = params;
+    let api = UseAxios();
+    try {
+      let {
+        data: { content },
+      } = await api.get(`${URL}/ultima-sincro?ano_eje=${ano_eje}&sec_ejec=${sec_ejec}`);
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  // {{url_api}}/api/siaf/producto-proyecto-nombre?ano_eje=2025&producto_proyecto=2461159
+
+  const obtenerProductoProyectoNombre = async (params) => {
+    const { ano_eje, producto_proyecto } = params;
+    let api = UseAxios();
+    try {
+      let {
+        data: { content },
+      } = await api.get(`${URL}/producto-proyecto-nombre?ano_eje=${ano_eje}&producto_proyecto=${producto_proyecto}`);
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
   
  
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre };
