@@ -73,7 +73,7 @@ export const SeguimentoProyectoMesItem = ({ proyecto }) => {
     });
 
   return (
-    <div className="card mb-3 shadow-sm">
+    <div className="card mb-3 shadow-sm animate__animated animate__fadeIn animate__faster">
       <div className="card-body p-3">
         <div className="d-flex justify-content-between align-items-center mb-2 flex-wrap">
           <div className="d-flex gap-2 align-items-center mb-1">
