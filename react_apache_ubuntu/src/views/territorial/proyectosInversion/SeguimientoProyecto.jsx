@@ -14,7 +14,8 @@ import Header from "../../../components/Header";
 import ChartHistogramIcon from "../../../icons/ChartHistogramIcon";
 import { SeguimientoProyectoMes } from "../../../components/territorial/proyectosInversion/SeguimientoProyectoMes";
 import FileTypeXLSIcon from "../../../icons/FileTypeXLSIcon";
-
+import { UltimaSincro } from "./UltimaSincro";
+import { ProyectoAgregar } from "../../../components/territorial/proyectosInversion/ProyectoAgregar";
 const anioActual = () => {
   const fecha = new Date();
   return fecha.getFullYear();
@@ -32,18 +33,16 @@ const anios = Array.from(
 );
 
 export const SeguimientoProyecto = () => {
-  
-
   let { anio = anioActual(), mes = mesActual() } = useParams();
+  const sec_ejec = process.env.REACT_APP_SEC_EJEC;
 
   const [selectedAnio, setSelectedAnio] = useState(anio);
   const [selectedMonth, setSelectedMonth] = useState(mes);
   const [searchTerm, setSearchTerm] = useState("");
+  const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    const secEjec = process.env.SEC_EJEC;
-    console.log("Variable de entorno SEC_EJEC:", secEjec);
-  }, []);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div>
@@ -118,20 +117,40 @@ export const SeguimientoProyecto = () => {
                 <Button variant="outline-dark" id="button-addon2">
                   <FileTypeXLSIcon /> Exportar
                 </Button>
-              </InputGroup>              
+              </InputGroup>
             </div>
           </div>
           <SeguimientoProyectoMes
             selectedAnio={selectedAnio}
             selectedMonth={selectedMonth}
-            searchTerm={searchTerm}            
+            searchTerm={searchTerm}
           />
         </div>
+        <div style={{ position: "relative" }}>
+          <div style={{ position: "absolute", right: "0px", width: "70px" }}>
+            <div style={{ position: "fixed", bottom: "25px" }}>
+              <button
+                className="btn btn-primary rounded-circle"
+                style={{ width: "70px", height: "70px" }}
+                // title={`Agregar ${getNameTipoOperacion(
+                //   tipOpeSelected
+                // ).toLowerCase()}`}
+                onClick={handleShow}
+                // disabled={periodosDisponibles.length === 0}
+              >
+                <i className="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <UltimaSincro ano_eje={selectedAnio} sec_ejec={sec_ejec} />
       </div>
-      <div>
+
+      {/* <div>
         <p>{selectedAnio}</p>
         <p>{selectedMonth}</p>
-      </div>
+      </div> */}
+      <ProyectoAgregar show={show} handleClose={handleClose} ano_eje={selectedAnio} />
     </div>
   );
 };
