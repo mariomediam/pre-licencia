@@ -12,8 +12,8 @@ import { useParams } from "react-router-dom";
 
 import Header from "../../../components/Header";
 import ChartHistogramIcon from "../../../icons/ChartHistogramIcon";
-import SearchIcon from "../../../icons/SearchIcon";
 import { SeguimientoProyectoMes } from "../../../components/territorial/proyectosInversion/SeguimientoProyectoMes";
+import FileTypeXLSIcon from "../../../icons/FileTypeXLSIcon";
 
 const anioActual = () => {
   const fecha = new Date();
@@ -38,6 +38,7 @@ export const SeguimientoProyecto = () => {
 
   const [selectedAnio, setSelectedAnio] = useState(anio);
   const [selectedMonth, setSelectedMonth] = useState(mes);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const secEjec = process.env.SEC_EJEC;
@@ -111,16 +112,19 @@ export const SeguimientoProyecto = () => {
                   placeholder="Buscar por código o descripción..."
                   aria-label="Buscar por código o descripción..."
                   aria-describedby="Buscar por código o descripción..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="outline-secondary" id="button-addon2">
-                  <SearchIcon />
+                <Button variant="outline-dark" id="button-addon2">
+                  <FileTypeXLSIcon /> Exportar
                 </Button>
-              </InputGroup>
+              </InputGroup>              
             </div>
           </div>
           <SeguimientoProyectoMes
             selectedAnio={selectedAnio}
             selectedMonth={selectedMonth}
+            searchTerm={searchTerm}            
           />
         </div>
       </div>
