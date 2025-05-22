@@ -229,7 +229,29 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   }
+
+  // {{url_api}}/api/siaf/proyecto-inversion
+
+  const agregarProyectoInversion = async (params) => {
+   
+    let api = UseAxios();
+  
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      let {
+        data: { content },
+      } = await api.post(`${URL}/proyecto-inversion`, params, {
+        headers,
+      });
+  
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  }
   
   
  
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion };
