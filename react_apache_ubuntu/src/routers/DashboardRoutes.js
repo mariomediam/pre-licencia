@@ -28,6 +28,7 @@ import { ExecutionView } from "../views/tesorero/reportes/ExecutionView";
 import { AccrualFormatView } from "../views/tesorero/reportes/AccrualFormatView";
 import { TrustFormatView } from "../views/tesorero/reportes/TrustFormatView";
 import { SeguimientoProyecto } from "../views/territorial/proyectosInversion/SeguimientoProyecto";
+import { ProyectoAgregar } from "../views/territorial/proyectosInversion/ProyectoAgregar";
 
 export const DashboardRoutes = () => {
   return (
@@ -130,7 +131,12 @@ export const DashboardRoutes = () => {
             <Route path=":anio/:mes" element={<SeguimientoProyecto />} />
             <Route path="" element={<SeguimientoProyecto />} />
           </Route>
+          <Route
+            path="/territorial/proyectos-inversion/agregar/:cui"
+            element={<ProyectoAgregar />}
+          />
         </Routes>
+
       </div>
     </>
   );
