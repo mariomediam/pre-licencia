@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Breadcrumb,
   Form,
@@ -8,14 +8,14 @@ import {
   Col,
 } from "react-bootstrap";
 import { Mes } from "../../../utils";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Header from "../../../components/Header";
 import ChartHistogramIcon from "../../../icons/ChartHistogramIcon";
 import { SeguimientoProyectoMes } from "../../../components/territorial/proyectosInversion/SeguimientoProyectoMes";
 import FileTypeXLSIcon from "../../../icons/FileTypeXLSIcon";
 import { UltimaSincro } from "./UltimaSincro";
-import { ProyectoAgregar } from "../../../components/territorial/proyectosInversion/ProyectoAgregar";
+import { ProyectoAgregarModal } from "../../../components/territorial/proyectosInversion/ProyectoAgregarModal";
 const anioActual = () => {
   const fecha = new Date();
   return fecha.getFullYear();
@@ -34,6 +34,7 @@ const anios = Array.from(
 
 export const SeguimientoProyecto = () => {
   let { anio = anioActual(), mes = mesActual() } = useParams();
+  const navigate = useNavigate();
   const sec_ejec = process.env.REACT_APP_SEC_EJEC;
 
   const [selectedAnio, setSelectedAnio] = useState(anio);
@@ -43,6 +44,17 @@ export const SeguimientoProyecto = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleChangeAnio = (e) => {
+    const nuevoAnio = e.target.value;
+    setSelectedAnio(nuevoAnio);
+    navigate(`/territorial/seguimiento-inversion/${nuevoAnio}/${selectedMonth}`);
+  };
+
+  const handleChangeMes = (nuevoMes) => {
+    setSelectedMonth(nuevoMes);
+    navigate(`/territorial/seguimiento-inversion/${selectedAnio}/${nuevoMes}`);
+  };
 
   return (
     <div>
@@ -78,8 +90,8 @@ export const SeguimientoProyecto = () => {
                   <Form.Select
                     aria-label="Año del proyecto "
                     className="mb-0"
-                    defaultValue={selectedAnio}
-                    onChange={(e) => setSelectedAnio(e.target.value)}
+                    value={selectedAnio}
+                    onChange={handleChangeAnio}
                   >
                     {anios.map((anio) => (
                       <option key={anio} value={anio}>
@@ -96,7 +108,7 @@ export const SeguimientoProyecto = () => {
                   <Form.Label>Mes</Form.Label>
                   <Mes
                     selectedMonth={selectedMonth}
-                    setSelectedMonth={setSelectedMonth}
+                    setSelectedMonth={handleChangeMes}
                     className="mb-0"
                   />
                 </Form.Group>
@@ -150,7 +162,7 @@ export const SeguimientoProyecto = () => {
         <p>{selectedAnio}</p>
         <p>{selectedMonth}</p>
       </div> */}
-      <ProyectoAgregar show={show} handleClose={handleClose} ano_eje={selectedAnio} />
+      <ProyectoAgregarModal show={show} handleClose={handleClose} ano_eje={selectedAnio} />
     </div>
   );
 };
