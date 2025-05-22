@@ -214,7 +214,22 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   }
+
+  // /api/siaf/resumen-producto-proyecto?ano_eje=2025&producto_proyecto=2331918
+
+  const obtenerResumenProductoProyecto = async (params) => {
+    const { ano_eje, producto_proyecto } = params;
+    let api = UseAxios();
+    try {
+      let {
+        data: { content },
+      } = await api.get(`${URL}/resumen-producto-proyecto?ano_eje=${ano_eje}&producto_proyecto=${producto_proyecto}`);
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  }
   
   
  
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto };
