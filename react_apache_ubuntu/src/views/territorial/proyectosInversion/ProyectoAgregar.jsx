@@ -2,8 +2,12 @@ import { Breadcrumb } from "react-bootstrap";
 import Header from "../../../components/Header";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { obtenerProductoProyectoNombre, obtenerResumenProductoProyecto } from "../../../services/siafService";
+import { agregarProyectoInversion, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto } from "../../../services/siafService";
 import ArrowRightIcon from "../../../icons/ArrowRight";
+import Swal from "sweetalert2";
+
+import { Toast } from "../../../components/tools/PopMessage";
+
 
 export const ProyectoAgregar = ({ano_eje = 2025}) => {
 
@@ -35,6 +39,66 @@ export const ProyectoAgregar = ({ano_eje = 2025}) => {
       obtenerResumen();
     }
   }, [cui, ano_eje]);
+
+
+  const createJsonforSave = () => {
+
+    // Quiero que el json tenga el siguiente formato:
+
+    // {
+    //   "ano_eje": 2025,
+    //   "c_proinv_codigo": "CUI",
+    //   "n_proinv_nombre": "Nombre del proyecto",
+    //   "programacion": [
+    //    m_prgpro_mes: 1,
+    //    q_prgpro_financ: 100000
+    //    p_prgpro_fisica: 100000
+    //   ]
+    // }
+
+    const programacion = [];
+    for (let i = 1; i <= 12; i++) {
+      programacion.push({
+        m_prgpro_mes: i,
+        q_prgpro_financ: programacionPresupuestal[i],
+        p_prgpro_fisica: programacionFisica[i]
+      })
+    }
+
+    const json = {
+      ano_eje: ano_eje,
+      c_proinv_codigo: cui,
+      n_proinv_nombre: proyectoNombre,
+      programacion: programacion
+    }
+
+    return json;
+  }
+
+  const saveProyecto = async () => {
+
+    try {
+      const json = createJsonforSave();
+      await agregarProyectoInversion(json);
+
+      
+      Toast.fire({
+        icon: "success",
+        title: "Proyecto agregado correctamente",
+        background: "#F4F6F6",
+        timer: 1500,
+      });    
+      navigate(-1);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error agregando proyecto",
+        text: error.message,
+      });
+    }
+    
+    
+  }
 
   return (
     <div>
@@ -170,7 +234,7 @@ export const ProyectoAgregar = ({ano_eje = 2025}) => {
            {/* Botones */}
            <div className="d-flex justify-content-end mt-3">
              <button className="btn btn-outline-secondary me-2" onClick={() => navigate(-1)}>Cancelar</button>
-             <button className="btn btn-primary" onClick={() => navigate(-1)}>Guardar proyecto</button>
+             <button className="btn btn-primary" onClick={saveProyecto}>Guardar proyecto</button>
            </div>
          </div>
        </div>
