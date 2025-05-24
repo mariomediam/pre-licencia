@@ -173,12 +173,24 @@ const obtenerMaestroDocumento = async () => {
   }
 
   const obtenerProyectosProgramacionMensual = async (params) => {
-    const { anio_eje, mes_eje, sec_ejec } = params;
+    const { anio_eje, mes_eje, sec_ejec, c_proinv_codigo } = params;
+
+    let URLProyectosProgramacionMensual = `${URL}/proyectos-programacion-mensual?ano_eje=${anio_eje}&mes_eje=${mes_eje}&sec_ejec=${sec_ejec}`;
+
+    if(c_proinv_codigo){
+      URLProyectosProgramacionMensual += `&c_proinv_codigo=${c_proinv_codigo.trim()}`;
+    }
+
     let api = UseAxios();
     try {
       let {
         data: { content },
-      } = await api.get(`${URL}/proyectos-programacion-mensual?ano_eje=${anio_eje}&mes_eje=${mes_eje}&sec_ejec=${sec_ejec}`);
+      } = await api.get(URLProyectosProgramacionMensual);
+      
+      if(content.length > 0 && c_proinv_codigo){
+        return content[0];
+      }
+      
       return content;
     } catch (error) {
       throw error;
@@ -251,7 +263,22 @@ const obtenerMaestroDocumento = async () => {
       throw error;
     }
   }
+
+  // {{url_api}}/api/siaf/programacion-proyecto-inversion?c_prgpro=95
+
+  const obtenerProgramacionProyectoInversion = async (params) => {
+    const { c_prgpro } = params;
+    let api = UseAxios();
+    try {
+      let {
+        data: { content },
+      } = await api.get(`${URL}/programacion-proyecto-inversion?c_prgpro=${c_prgpro}`);
+      return content;
+    } catch (error) {
+      throw error;
+    }
+  } 
   
   
  
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion };
