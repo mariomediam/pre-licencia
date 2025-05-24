@@ -29,6 +29,7 @@ import { AccrualFormatView } from "../views/tesorero/reportes/AccrualFormatView"
 import { TrustFormatView } from "../views/tesorero/reportes/TrustFormatView";
 import { SeguimientoProyecto } from "../views/territorial/proyectosInversion/SeguimientoProyecto";
 import { ProyectoAgregar } from "../views/territorial/proyectosInversion/ProyectoAgregar";
+import { ProyectoEditar } from "../views/territorial/proyectosInversion/ProyectoEditar";
 
 export const DashboardRoutes = () => {
   return (
@@ -132,8 +133,12 @@ export const DashboardRoutes = () => {
             <Route path="" element={<SeguimientoProyecto />} />
           </Route>
           <Route
-            path="/territorial/proyectos-inversion/agregar/:cui"
+            path="/territorial/proyectos-inversion/agregar/:ano_eje/:cui"
             element={<ProyectoAgregar />}
+          />
+           <Route
+           path="/territorial/proyectos-inversion/editar/:c_prgpro"
+           element={<ProyectoEditar />}
           />
         </Routes>
 
