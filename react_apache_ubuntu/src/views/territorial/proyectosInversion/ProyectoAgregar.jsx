@@ -9,9 +9,9 @@ import Swal from "sweetalert2";
 import { Toast } from "../../../components/tools/PopMessage";
 
 
-export const ProyectoAgregar = ({ano_eje = 2025}) => {
+export const ProyectoAgregar = () => {
 
-  const { cui } = useParams();
+  const { cui, ano_eje = 0 } = useParams();
   const navigate = useNavigate();
   const [proyectoNombre, setProyectoNombre] = useState("");
   const [resumen, setResumen] = useState({});
@@ -124,7 +124,7 @@ export const ProyectoAgregar = ({ano_eje = 2025}) => {
              >
                <ArrowRightIcon width={20} height={20} style={{ transform: 'rotate(180deg)' }} />
              </button>
-             <h3 className="mb-0">Agregar nuevo proyecto</h3>
+             <h3 className="mb-0">Agregar nuevo proyecto {ano_eje}</h3>
            </div>
            <div className="text-muted mb-3">Complete la información del proyecto</div>
 
