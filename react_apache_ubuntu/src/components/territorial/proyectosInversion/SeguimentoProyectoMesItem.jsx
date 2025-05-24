@@ -28,12 +28,15 @@
 // },
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CashIcon from "../../../icons/CashIcon";
 import EditIcon from "../../../icons/EditIcon";
 import ChevronUp from "../../../icons/ChevronUp";
 
 export const SeguimentoProyectoMesItem = ({ proyecto }) => {
+  const navigate = useNavigate();
   const {
+    c_prgpro,    
     c_proinv_codigo,
     n_proinv_nombre,    
     MONTO_PIM_ACUM,
@@ -64,6 +67,11 @@ export const SeguimentoProyectoMesItem = ({ proyecto }) => {
   const avanceFinanciero = MONTO_DEVENGADO_ACUM / MONTO_PIM_ACUM * 100 || 0;
   const avanceFisico = p_prgpro_fisica || 0;
 
+
+  const onClickEditar = () => {
+    navigate(`/territorial/proyectos-inversion/editar/${c_prgpro}`);
+  }
+
   // Formato de moneda
   const formatMoney = (n) =>
     n?.toLocaleString("es-PE", {
@@ -93,6 +101,7 @@ export const SeguimentoProyectoMesItem = ({ proyecto }) => {
             <button
               type="button"
               className="btn btn-outline-dark d-flex align-items-center"
+              onClick={onClickEditar}
             >
               <EditIcon />
               Editar
