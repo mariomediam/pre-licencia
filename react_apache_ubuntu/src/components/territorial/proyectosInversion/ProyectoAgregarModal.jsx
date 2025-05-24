@@ -18,7 +18,7 @@ export const ProyectoAgregarModal = ({ show, handleClose, ano_eje }) => {
   };
 
   const onClickGrabar = () => {
-    navigate(`/territorial/proyectos-inversion/agregar/${inputProyectoCodigo.current.value}`);
+    navigate(`/territorial/proyectos-inversion/agregar/${ano_eje}/${inputProyectoCodigo.current.value}`);
   };
 
   const clearVariables = () => {
