@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import {
   obtenerProgramacionProyectoInversion,
   obtenerProyectosProgramacionMensual,
+  actualizarProgramacionProyectoInversion,
 } from "../../../services/siafService";
 
 import Swal from "sweetalert2";
@@ -22,6 +23,7 @@ export const ProyectoEditar = () => {
   const { c_prgpro } = useParams();
   const [programacion, setProgramacion] = useState({});
   const [ejecucion, setEjecucion] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   //   programacion =
   // {
@@ -64,29 +66,44 @@ export const ProyectoEditar = () => {
   }, [c_prgpro]);
 
   useEffect(() => {
-    if (cui && ano_eje && mes_eje && SEC_EJEC) {
-      const obtenerEjecucion = async () => {
-        const response = await obtenerProyectosProgramacionMensual({
-          c_proinv_codigo: cui,
-          anio_eje: ano_eje,
-          mes_eje: mes_eje,
-          sec_ejec: SEC_EJEC,
-        });
-        setEjecucion(response);
-      };
 
-      obtenerEjecucion();
+    try {
+        setIsLoading(true);
+        if (cui && ano_eje && mes_eje && SEC_EJEC) {
+            const obtenerEjecucion = async () => {
+              const response = await obtenerProyectosProgramacionMensual({
+                c_proinv_codigo: cui,
+                anio_eje: ano_eje,
+                mes_eje: mes_eje,
+                sec_ejec: SEC_EJEC,
+              });
+              setEjecucion(response);
+            };
+      
+            obtenerEjecucion();
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Error actualizando proyecto",
+            text: error.message,
+          });
+    } finally {
+        setIsLoading(false);
     }
+    
   }, [cui, ano_eje, mes_eje]);
 
   const saveProyecto = async () => {
     try {
       //   const json = createJsonforSave();
       //   await agregarProyectoInversion(json);
+      setIsLoading(true);
+      await actualizarProgramacionProyectoInversion(programacion);
 
       Toast.fire({
         icon: "success",
-        title: "Proyecto agregado correctamente",
+        title: "Proyecto actualizado correctamente",
         background: "#F4F6F6",
         timer: 1500,
       });
@@ -94,15 +111,23 @@ export const ProyectoEditar = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Error agregando proyecto",
+        title: "Error actualizando proyecto",
         text: error.message,
       });
+    } finally {
+      setIsLoading(false);
     }
+
   };
 
   const onChangeControl = (columnName, value) => {
     setProgramacion({ ...programacion, [columnName]: value });
   };
+
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
 
   return (
     <div>
@@ -379,7 +404,7 @@ export const ProyectoEditar = () => {
               >
                 Cancelar
               </button>
-              <button className="btn btn-primary" onClick={saveProyecto}>
+              <button className="btn btn-primary" onClick={saveProyecto} disabled={isLoading}>
                 Guardar proyecto
               </button>
             </div>
