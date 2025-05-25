@@ -190,7 +190,7 @@ const obtenerMaestroDocumento = async () => {
       if(content.length > 0 && c_proinv_codigo){
         return content[0];
       }
-      
+
       return content;
     } catch (error) {
       throw error;
@@ -272,13 +272,54 @@ const obtenerMaestroDocumento = async () => {
     try {
       let {
         data: { content },
-      } = await api.get(`${URL}/programacion-proyecto-inversion?c_prgpro=${c_prgpro}`);
+      } = await api.get(`${URL}/programacion-proyecto-inversion/${c_prgpro}`);
       return content;
     } catch (error) {
       throw error;
     }
   } 
+
+
+//   curl --location --request PUT 'http://127.0.0.1:8000/api/siaf/programacion-proyecto-inversion/91' \
+// --header 'Content-Type: application/json' \
+// --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ4MTAwOTgzLCJpYXQiOjE3NDgwNTc3ODMsImp0aSI6ImEwMTM1MjlmNTgwMDQ3NzNhMjNlMTI4NTVmYjNhNzU1IiwidXNlcl9pZCI6Ik1NRURJTkEgICAgICAgICAgICAgIn0.I7BWHMSCVAWVHqKI67izsdJ00eCs8AH6vlmG8jXhDQM' \
+// --data '{    
+//     "m_prgpro_mes": 5,
+//     "q_prgpro_financ": 1000000,
+//     "p_prgpro_fisica": 66,
+//     "q_prgpro_caida": 30000,
+//     "q_prgpro_increm": 5000,
+//     "q_prgpro_riesgo": 12000,
+//     "t_prgpro_estsit": "Estaedo situacional xyz",
+//     "t_prgpro_coment": "Comentarios abc",
+//     "c_usuari_login": "MMEDINA ",
+//     "n_prgpro_pc": "127.0.0.1",
+//     "d_prgpro_fecdig": "2025-05-22T14:45:52.187000",
+//     "c_proinv": 19,
+//     "n_proinv_nombre": "MEJORAMIENTO DEL SERVICIO DE TRANSITABILIDAD PEATONAL Y VEHICULAR DE LA UPIS LOS ANGELES EN EL DISTRITO DE PIURA, PROVINCIA DE PIURA - PIURA",
+//     "ano_eje": 2025,
+//     "c_proinv_codigo": "2331918 ",
+//     "c_estado": 2
+// }'
+
+const actualizarProgramacionProyectoInversion = async (params) => {
+  const { c_prgpro } = params;
+  let api = UseAxios();
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await api.put(`${URL}/programacion-proyecto-inversion/${c_prgpro}`, params, {
+      headers,
+    });
+    return content;
+  } catch (error) {
+    throw error;
+  } 
+}
   
   
  
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion };
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion };
