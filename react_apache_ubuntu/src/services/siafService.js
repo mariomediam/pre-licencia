@@ -320,6 +320,21 @@ const actualizarProgramacionProyectoInversion = async (params) => {
   } 
 }
   
-  
- 
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion };
+
+const descargarProyeccionMensual = async (params) => {
+  const { ano_eje, mes_eje, sec_ejec } = params;
+  let api = UseAxios();
+  try {
+    const response = await api.post(`${URL}/download-proyeccion-mensual`, { ano_eje, mes_eje, sec_ejec }, { responseType: 'blob' });
+
+    const file = new Blob([response.data], {  
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    return file;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual };
