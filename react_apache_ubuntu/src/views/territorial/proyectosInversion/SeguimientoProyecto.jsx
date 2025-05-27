@@ -16,6 +16,8 @@ import { SeguimientoProyectoMes } from "../../../components/territorial/proyecto
 import FileTypeXLSIcon from "../../../icons/FileTypeXLSIcon";
 import { UltimaSincro } from "./UltimaSincro";
 import { ProyectoAgregarModal } from "../../../components/territorial/proyectosInversion/ProyectoAgregarModal";
+import { descargarProyeccionMensual } from "../../../services/siafService";
+import { obtenerNombreMes } from "../../../utils/varios";
 const anioActual = () => {
   const fecha = new Date();
   return fecha.getFullYear();
@@ -55,6 +57,16 @@ export const SeguimientoProyecto = () => {
     setSelectedMonth(nuevoMes);
     navigate(`/territorial/seguimiento-inversion/${selectedAnio}/${nuevoMes}`);
   };
+
+  const handleExport = async () => {
+    const file = await descargarProyeccionMensual({ ano_eje: selectedAnio, mes_eje: selectedMonth, sec_ejec });
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `proyeccion_${selectedAnio}_${obtenerNombreMes(selectedMonth)}.xlsx`;
+    a.click();
+  }
+
 
   return (
     <div>
@@ -126,7 +138,7 @@ export const SeguimientoProyecto = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="outline-dark" id="button-addon2">
+                <Button variant="outline-dark" id="button-addon2" onClick={handleExport}>
                   <FileTypeXLSIcon /> Exportar
                 </Button>
               </InputGroup>
