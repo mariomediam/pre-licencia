@@ -392,8 +392,6 @@ export const ProyectoEditar = () => {
               </div>
             </div>
 
-            {JSON.stringify(programacion)}
-
             <UltimaSincro ano_eje={ano_eje} sec_ejec={SEC_EJEC} />
 
             {/* Botones */}
