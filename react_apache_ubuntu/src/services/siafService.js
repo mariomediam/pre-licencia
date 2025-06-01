@@ -337,4 +337,68 @@ const descargarProyeccionMensual = async (params) => {
   }
 }
 
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual };
+// curl --location 'http://127.0.0.1:8000/api/siaf/obtener-montos-por-anio?anio=2025' \
+// --header 'Authorization: ••••••'
+
+const obtenerMontosPorAnio = async (params) => {
+  const { anio } = params;
+  let api = UseAxios();
+  try {
+    let {
+      data: { content },
+    } = await api.get(`${URL}/obtener-montos-por-anio?anio=${anio}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// curl --location 'http://127.0.0.1:8000/api/siaf/contar-proyectos-por-anio?anio=2025&sec_ejec=301529' \
+// --header 'Authorization: ••••••'
+
+const contarProyectosPorAnio = async (params) => {
+  const { anio, sec_ejec } = params;
+  let api = UseAxios();
+  try {
+    let {
+      data: { content },
+    } = await api.get(`${URL}/contar-proyectos-por-anio?anio=${anio}&sec_ejec=${sec_ejec}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// curl --location 'http://127.0.0.1:8000/api/siaf/ejecucion-mes?anio=2025&sec_ejec=301529' \
+// --header 'Authorization: ••••••'
+
+const obtenerEjecucionMes = async (params) => {
+  const { anio, sec_ejec } = params;
+  let api = UseAxios();
+  try {
+    let {
+      data: { content },
+    } = await api.get(`${URL}/ejecucion-mes?anio=${anio}&sec_ejec=${sec_ejec}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// curl --location 'http://127.0.0.1:8000/api/siaf/ejecucion-esperada?anio=2025&sec_ejec=301529' \
+// --header 'Authorization: Bearer eyJ0eXA......'
+
+const obtenerEjecucionEsperada = async (params) => {
+  const { anio, sec_ejec } = params;
+  let api = UseAxios();
+  try {
+    let {
+      data: { content },
+    } = await api.get(`${URL}/ejecucion-esperada?anio=${anio}&sec_ejec=${sec_ejec}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual, obtenerMontosPorAnio, contarProyectosPorAnio, obtenerEjecucionMes, obtenerEjecucionEsperada };
