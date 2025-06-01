@@ -30,6 +30,7 @@ import { TrustFormatView } from "../views/tesorero/reportes/TrustFormatView";
 import { SeguimientoProyecto } from "../views/territorial/proyectosInversion/SeguimientoProyecto";
 import { ProyectoAgregar } from "../views/territorial/proyectosInversion/ProyectoAgregar";
 import { ProyectoEditar } from "../views/territorial/proyectosInversion/ProyectoEditar";
+import { DashboardProyectos } from "../views/territorial/proyectosInversion/DashboardProyectos";
 
 export const DashboardRoutes = () => {
   return (
@@ -129,8 +130,8 @@ export const DashboardRoutes = () => {
            element={<TrustFormatView />}
           />
           <Route path="/territorial/seguimiento-inversion/">
+            <Route index element={<SeguimientoProyecto />} />
             <Route path=":anio/:mes" element={<SeguimientoProyecto />} />
-            <Route path="" element={<SeguimientoProyecto />} />
           </Route>
           <Route
             path="/territorial/proyectos-inversion/agregar/:ano_eje/:cui"
@@ -140,6 +141,11 @@ export const DashboardRoutes = () => {
            path="/territorial/proyectos-inversion/editar/:c_prgpro"
            element={<ProyectoEditar />}
           />
+         
+          <Route path="/territorial/proyectos-inversion/dashboard">
+            <Route index element={<DashboardProyectos />} />
+            <Route path=":anio" element={<DashboardProyectos />} />
+          </Route>
         </Routes>
 
       </div>
