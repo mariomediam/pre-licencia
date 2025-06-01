@@ -89,3 +89,9 @@ export const formatNumber = (num, decimalRounded = undefined) => {
   });
 };
 
+export const formatMoney = (n) =>
+  n?.toLocaleString("es-PE", {
+    style: "currency",
+    currency: "PEN",
+    minimumFractionDigits: 2,
+  });
