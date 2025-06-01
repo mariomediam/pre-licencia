@@ -6,6 +6,7 @@ import Header from "../../../components/Header";
 import LayoutBoardIcon from "../../../icons/LayoutBoardIcon";
 import { CardIndicator } from "../../../components/territorial/proyectosInversion/CardIndicator";
 import { ChartEjecucionPorMes } from "../../../components/territorial/proyectosInversion/ChartEjecucionPorMes";
+import { ChartEjecucionAcumPorMes } from "../../../components/territorial/proyectosInversion/ChartEjecucionAcumPorMes";
 
 const anioActual = () => {
   const fecha = new Date();
@@ -81,6 +82,7 @@ export const DashboardProyectos = () => {
           <div className="d-flex mt-3  justify-content-between flex-wrap">
            <CardIndicator  anio={selectedAnio} sec_ejec={sec_ejec}/>
            <ChartEjecucionPorMes anio={selectedAnio} sec_ejec={sec_ejec}/>
+           <ChartEjecucionAcumPorMes anio={selectedAnio} sec_ejec={sec_ejec}/>
           </div>
         </div>
       </div>
