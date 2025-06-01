@@ -1,8 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  obtenerEjecucionMes,  
-  obtenerMontosPorAnio,
-} from "../../../services/siafService";
+import { obtenerEjecucionMes } from "../../../services/siafService";
 import MyChart from "../../helpers/MyChart";
 
 export const ChartEjecucionPorMes = ({ anio, sec_ejec }) => {
@@ -10,14 +7,16 @@ export const ChartEjecucionPorMes = ({ anio, sec_ejec }) => {
 
   const defaultOption = useMemo(
     () => ({
-        title: {
-            text: 'Ejecución acumulada por mes',            
-            textStyle: {
-                fontSize: 20
-            },
-            padding: [10, 10, 10, 10]
-
-          },
+      title: {
+        text: "Ejecución por mes",
+        textStyle: {
+          fontSize: 20,
+        },
+        padding: [10, 10, 10, 10],
+      },
+      tooltip: {
+        trigger: "axis",
+      },
       xAxis: {
         type: "category",
         data: [
@@ -38,80 +37,32 @@ export const ChartEjecucionPorMes = ({ anio, sec_ejec }) => {
       yAxis: {
         type: "value",
       },
-      tooltip: {
-        trigger: 'axis'
-      },
       legend: {
-        data: ["PIM", "Ejecución acumulada"],
+        data: ["Ejecución"],
+        padding: [10, 10, 10, 10],
         
       },
-      series: [
-        //   {
-        //     name: 'PIM',
-        //     type: 'line',
-        //     stack: 'Total',
-        //     data: [120, 132, 101, 134, 90, 230, 210]
-        //   },
-        //   {
-        //     name: 'Ejecución',
-        //     type: 'line',
-        //     stack: 'Total',
-        //     data: [220, 182, 191]
-        //   },
-      ],
+      series: [],
     }),
     []
   );
 
-  const acumuladoPorMes = (ejecucion) => {
-    let acumulado = 0;
-    return ejecucion.map((item) => {
-      acumulado += item.MONTO_DEVENGADO;
-      return {
-        ...item,
-        MONTO_DEVENGADO_ACUM: acumulado,
-      };
-    });
-  };
-
   useEffect(() => {
     const getOptionsChart = async () => {
-      const ejecucion = await obtenerEjecucionMes({ anio, sec_ejec });      
-      const montosPorAnio = await obtenerMontosPorAnio({ anio, sec_ejec });
-
-      const pim = montosPorAnio.MONTO_PIM;
-
-      const seriePim = {
-        data: Array.from({ length: 12 }, () => pim),
-        type: "line",
-        name: 'PIM',
-      };
+      const ejecucion = await obtenerEjecucionMes({ anio, sec_ejec });
 
       const serieEjecucion = {
-        data: acumuladoPorMes(ejecucion).map(
-          (item) => item.MONTO_DEVENGADO_ACUM.toFixed(2)
-        ),
-        type: "line",
-        name: 'Ejecución acumulada',
+        data: ejecucion.map((item) => item.MONTO_DEVENGADO),
+        type: "bar",
+        name: "Ejecución",
       };
 
-    //   const serieEjecucionEsperada = {
-    //     data: acumuladoPorMes(ejecucionEsperada).map(
-    //       (item) => item.MONTO_MAXIMO
-    //     ),
-    //     type: "line",
-    //   };
+      const series = [serieEjecucion];
 
-      console.log(ejecucion);
-      
-
-      const series = [seriePim, serieEjecucion];
-
-      console.log(series);
+      console.log("series", series);
 
       setOptionsChart({
         ...defaultOption,
-        // xAxis: xAxis,
         series: series,
       });
     };
@@ -119,8 +70,11 @@ export const ChartEjecucionPorMes = ({ anio, sec_ejec }) => {
   }, [anio, sec_ejec, defaultOption]);
 
   return (
-    <div className="mt-5 p-1 border bg-white" style={{ width: "100%", height: "400px" }}>
-      <MyChart option={optionChart} widthChart="100%" heightChart="400px"/>
+    <div
+      className="mt-5 p-1 border bg-white"
+      style={{ width: "100%", height: "400px" }}
+    >
+      <MyChart option={optionChart} widthChart="100%" heightChart="400px" />
     </div>
   );
 };
