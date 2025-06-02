@@ -401,4 +401,20 @@ const obtenerEjecucionEsperada = async (params) => {
   }
 }
 
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual, obtenerMontosPorAnio, contarProyectosPorAnio, obtenerEjecucionMes, obtenerEjecucionEsperada };
+// curl --location 'http://127.0.0.1:8000/api/siaf/resumen-proyectos?anio=2025&sec_ejec=301529' \
+// --header 'Authorization: Bearer eyJ0eXAiOiJ...
+
+const obtenerResumenProyectos = async (params) => {
+  const { anio, sec_ejec } = params;
+  let api = UseAxios();
+  try {
+    let {
+      data: { content },
+    } = await api.get(`${URL}/resumen-proyectos?anio=${anio}&sec_ejec=${sec_ejec}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual, obtenerMontosPorAnio, contarProyectosPorAnio, obtenerEjecucionMes, obtenerEjecucionEsperada, obtenerResumenProyectos };
