@@ -71,7 +71,7 @@ export const ChartEjecucionPorMes = ({ anio, sec_ejec }) => {
 
   return (
     <div
-      className="mt-5 p-1 border bg-white"
+      className="mt-3 p-1 border bg-white"
       style={{ width: "100%", height: "400px" }}
     >
       <MyChart option={optionChart} widthChart="100%" heightChart="400px" />
