@@ -7,6 +7,8 @@ import LayoutBoardIcon from "../../../icons/LayoutBoardIcon";
 import { CardIndicator } from "../../../components/territorial/proyectosInversion/CardIndicator";
 import { ChartEjecucionPorMes } from "../../../components/territorial/proyectosInversion/ChartEjecucionPorMes";
 import { ChartEjecucionAcumPorMes } from "../../../components/territorial/proyectosInversion/ChartEjecucionAcumPorMes";
+import { ResumenProyecto } from "../../../components/territorial/proyectosInversion/ResumenProyecto";
+import { UltimaSincro } from "./UltimaSincro";
 
 const anioActual = () => {
   const fecha = new Date();
@@ -31,8 +33,6 @@ export const DashboardProyectos = () => {
     setSelectedAnio(parseInt(e.target.value));
     navigate(`/territorial/proyectos-inversion/dashboard/${e.target.value}`);
   };
-
-  
 
   return (
     <div>
@@ -78,11 +78,15 @@ export const DashboardProyectos = () => {
               </select>
             </div>
           </div>
-            
+
           <div className="d-flex mt-3  justify-content-between flex-wrap">
-           <CardIndicator  anio={selectedAnio} sec_ejec={sec_ejec}/>
-           <ChartEjecucionPorMes anio={selectedAnio} sec_ejec={sec_ejec}/>
-           <ChartEjecucionAcumPorMes anio={selectedAnio} sec_ejec={sec_ejec}/>
+            <CardIndicator anio={selectedAnio} sec_ejec={sec_ejec} />
+            <div className="w-100">
+              <UltimaSincro ano_eje={selectedAnio} sec_ejec={sec_ejec} />
+            </div>
+            <ChartEjecucionPorMes anio={selectedAnio} sec_ejec={sec_ejec} />
+            <ChartEjecucionAcumPorMes anio={selectedAnio} sec_ejec={sec_ejec} />
+            <ResumenProyecto anio={selectedAnio} sec_ejec={sec_ejec} />
           </div>
         </div>
       </div>
