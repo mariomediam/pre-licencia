@@ -417,4 +417,28 @@ const obtenerResumenProyectos = async (params) => {
   }
 }
 
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual, obtenerMontosPorAnio, contarProyectosPorAnio, obtenerEjecucionMes, obtenerEjecucionEsperada, obtenerResumenProyectos };
+// curl --location 'http://127.0.0.1:8000/api/siaf/download-resumen-proyectos' \
+// --header 'Content-Type: application/json' \
+// --header 'Authorization: ••••••' \
+// --data '{    
+//     "ano_eje": 2025,    
+//     "sec_ejec": 301529
+// }'
+
+const descargarResumenProyectos = async (params) => {
+  const { ano_eje, sec_ejec } = params;
+  let api = UseAxios();
+  try {
+    const response = await api.post(`${URL}/download-resumen-proyectos`, { ano_eje, sec_ejec }, { responseType: 'blob' });
+
+    const file = new Blob([response.data], {  
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    return file;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual, obtenerMontosPorAnio, contarProyectosPorAnio, obtenerEjecucionMes, obtenerEjecucionEsperada, obtenerResumenProyectos, descargarResumenProyectos };
