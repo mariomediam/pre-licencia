@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Form, InputGroup, Button, Spinner, Table } from "react-bootstrap";
 import FileTypeXLSIcon from "../../../icons/FileTypeXLSIcon";
-import { obtenerResumenProyectos } from "../../../services/siafService";
+import { descargarResumenProyectos, obtenerResumenProyectos } from "../../../services/siafService";
 import { useState } from "react";
 import { ResumenProyectoItem } from "./ResumenProyectoItem";
 
@@ -10,6 +10,23 @@ export const ResumenProyecto = ({ anio, sec_ejec }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProyectos, setFilteredProyectos] = useState([]);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleExport = async () => {
+    try {
+      setIsDownloading(true);
+      const file = await descargarResumenProyectos({ ano_eje: anio, sec_ejec });
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `resumen_proyectos_${anio}.xlsx`;
+      a.click();    
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsDownloading(false);
+    }
+  }
 
   useEffect(() => {
     const filterProyectos = (data) => {
@@ -63,8 +80,12 @@ export const ResumenProyecto = ({ anio, sec_ejec }) => {
                 value={searchTerm}   
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button variant="outline-dark" id="button-addon2">
-              <FileTypeXLSIcon /> Exportar
+            <Button variant="outline-dark" id="button-addon2" onClick={handleExport}>
+              {isDownloading ? (
+                <><Spinner animation="border" variant="primary" size="sm"/> Descargando...</>
+              ) : (
+                <><FileTypeXLSIcon /> Exportar</>
+              )}
             </Button>
           </InputGroup>
         </div>
