@@ -13,6 +13,7 @@ import { OccurrencesTypeDetail } from "../components/managementIndicators/occurr
 import { OccurrencesTimeDetail } from "../components/managementIndicators/occurrencesTime/OccurrencesTimeDetail";
 import { PatrolGoalDetail } from "../components/managementIndicators/patrolGoal/PatrolGoalDetail";
 import { AmountsTransitTicketsDetail } from "../components/managementIndicators/amountsTransitTickets/AmountsTransitTicketsDetail";
+import { InvestmentProjectsDetail } from "../components/managementIndicators/InvestmentProjects/InvestmentProjectsDetail";
 
 export const AppRouter = () => {
   return (
@@ -66,6 +67,10 @@ export const AppRouter = () => {
           <Route
             path="/indicadores/montos-papeleta/:anio"
             element={<AmountsTransitTicketsDetail />}
+          />
+          <Route
+            path="/indicadores/proyectos-inversion/:anio"
+            element={<InvestmentProjectsDetail />}
           />
 
 
