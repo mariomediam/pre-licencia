@@ -4,6 +4,7 @@ import { CurrentPermits } from "./currentPermits/CurrentPermits";
 import { OccurrencesTime } from "./occurrencesTime/OccurrencesTime";
 import { OccurrencesType } from "./occurrencesType/OccurrencesType";
 import { OldVehicles } from "./oldVehicles/OldVehicles";
+import { InvestmentProjects } from "./InvestmentProjects/InvestmentProjects";
 import { PatrolGoal } from "./patrolGoal/PatrolGoal";
 import { TransportationTickets } from "./transportationTickets/TransportationTickets";
 
@@ -86,6 +87,16 @@ export const getIndicators = (anioSelected) => [
       <PatrolGoal
         anioSelected={anioSelected}
         title={"Cumplimiento de metas por patrullaje"}
+      />
+    ),
+  },
+  {
+    type: "03",
+    code: "01",
+    component: (
+      <InvestmentProjects
+        anioSelected={anioSelected}
+        title={"Ejecución de proyectos"}
       />
     ),
   },
