@@ -7,6 +7,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import SideBarIcon from "../../icons/SideBarIcon";
 import BusIcon from "../../icons/BusIcon";
 import LockIcon from "../../icons/LockIcon";
+import WreckingBallIcon from "../../icons/WreckingBallIcon";
 
 export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) => {
   const navigate = useNavigate();
@@ -38,6 +39,11 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) =
       tipo: "02",
       menDesc: "Seguridad ciudadana",
       icon: <LockIcon className="me-2"/>,
+    },
+    {
+      tipo: "03",
+      menDesc: "Desarrollo territorial",
+      icon: <WreckingBallIcon className="me-2"/>,
     },
   ]),[]);
 
