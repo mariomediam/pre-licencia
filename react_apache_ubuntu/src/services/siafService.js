@@ -1,4 +1,5 @@
 import UseAxios from "../utils/useAxios";
+import axios from "axios";
 
 const URL = `${process.env.REACT_APP_API}/siaf`;
 
@@ -201,11 +202,25 @@ const obtenerMaestroDocumento = async () => {
 
   const obtenerUltimaSincro = async (params) => {
     const { ano_eje, sec_ejec } = params;
-    let api = UseAxios();
+    // const useTokens = false;
+    // let api = UseAxios(useTokens);
     try {
+      // let {
+      //   data: { content },
+      // } = await api.get(`${URL}/ultima-sincro?ano_eje=${ano_eje}&sec_ejec=${sec_ejec}`);
+
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      let credenciales = {};
       let {
         data: { content },
-      } = await api.get(`${URL}/ultima-sincro?ano_eje=${ano_eje}&sec_ejec=${sec_ejec}`);
+      } = await axios.get(
+        `${URL}/ultima-sincro?ano_eje=${ano_eje}&sec_ejec=${sec_ejec}`,
+        credenciales,
+        { headers }
+      );
       return content;
     } catch (error) {
       throw error;
@@ -342,11 +357,18 @@ const descargarProyeccionMensual = async (params) => {
 
 const obtenerMontosPorAnio = async (params) => {
   const { anio } = params;
-  let api = UseAxios();
+  // let api = UseAxios();
   try {
+    // let {
+    //   data: { content },
+    // } = await api.get(`${URL}/obtener-montos-por-anio?anio=${anio}`);
+    let credenciales = {};
+    const headers = {
+      "Content-Type": "application/json",
+    };
     let {
       data: { content },
-    } = await api.get(`${URL}/obtener-montos-por-anio?anio=${anio}`);
+    } = await axios.get(`${URL}/obtener-montos-por-anio?anio=${anio}`, credenciales, { headers });
     return content;
   } catch (error) {
     throw error;
@@ -358,11 +380,18 @@ const obtenerMontosPorAnio = async (params) => {
 
 const contarProyectosPorAnio = async (params) => {
   const { anio, sec_ejec } = params;
-  let api = UseAxios();
+  // let api = UseAxios();
   try {
+    // let {
+    //   data: { content },
+    // } = await api.get(`${URL}/contar-proyectos-por-anio?anio=${anio}&sec_ejec=${sec_ejec}`);
+    let credenciales = {};
+    const headers = {
+      "Content-Type": "application/json",
+    };
     let {
       data: { content },
-    } = await api.get(`${URL}/contar-proyectos-por-anio?anio=${anio}&sec_ejec=${sec_ejec}`);
+    } = await axios.get(`${URL}/contar-proyectos-por-anio?anio=${anio}&sec_ejec=${sec_ejec}`, credenciales, { headers });
     return content;
   } catch (error) {
     throw error;
@@ -374,11 +403,18 @@ const contarProyectosPorAnio = async (params) => {
 
 const obtenerEjecucionMes = async (params) => {
   const { anio, sec_ejec } = params;
-  let api = UseAxios();
+  // let api = UseAxios();
   try {
+    // let {
+    //   data: { content },
+    // } = await api.get(`${URL}/ejecucion-mes?anio=${anio}&sec_ejec=${sec_ejec}`);
+    let credenciales = {};
+    const headers = {
+      "Content-Type": "application/json",
+    };
     let {
       data: { content },
-    } = await api.get(`${URL}/ejecucion-mes?anio=${anio}&sec_ejec=${sec_ejec}`);
+    } = await axios.get(`${URL}/ejecucion-mes?anio=${anio}&sec_ejec=${sec_ejec}`, credenciales, { headers });
     return content;
   } catch (error) {
     throw error;
@@ -390,11 +426,19 @@ const obtenerEjecucionMes = async (params) => {
 
 const obtenerEjecucionEsperada = async (params) => {
   const { anio, sec_ejec } = params;
-  let api = UseAxios();
+  // let api = UseAxios();
   try {
+    // let {
+    //   data: { content },
+    // } = await api.get(`${URL}/ejecucion-esperada?anio=${anio}&sec_ejec=${sec_ejec}`);
+
+    let credenciales = {};
+    const headers = {
+      "Content-Type": "application/json",
+    };
     let {
       data: { content },
-    } = await api.get(`${URL}/ejecucion-esperada?anio=${anio}&sec_ejec=${sec_ejec}`);
+    } = await axios.get(`${URL}/ejecucion-esperada?anio=${anio}&sec_ejec=${sec_ejec}`, credenciales, { headers });
     return content;
   } catch (error) {
     throw error;
@@ -406,11 +450,18 @@ const obtenerEjecucionEsperada = async (params) => {
 
 const obtenerResumenProyectos = async (params) => {
   const { anio, sec_ejec } = params;
-  let api = UseAxios();
+  // let api = UseAxios();
   try {
+    // let {
+    //   data: { content },
+    // } = await api.get(`${URL}/resumen-proyectos?anio=${anio}&sec_ejec=${sec_ejec}`);
+    let credenciales = {};
+    const headers = {
+      "Content-Type": "application/json",
+    };
     let {
       data: { content },
-    } = await api.get(`${URL}/resumen-proyectos?anio=${anio}&sec_ejec=${sec_ejec}`);
+    } = await axios.get(`${URL}/resumen-proyectos?anio=${anio}&sec_ejec=${sec_ejec}`, credenciales, { headers });
     return content;
   } catch (error) {
     throw error;
@@ -427,9 +478,11 @@ const obtenerResumenProyectos = async (params) => {
 
 const descargarResumenProyectos = async (params) => {
   const { ano_eje, sec_ejec } = params;
-  let api = UseAxios();
+  // let api = UseAxios();
   try {
-    const response = await api.post(`${URL}/download-resumen-proyectos`, { ano_eje, sec_ejec }, { responseType: 'blob' });
+    // const response = await api.post(`${URL}/download-resumen-proyectos`, { ano_eje, sec_ejec }, { responseType: 'blob' });
+
+     const response = await axios.post(`${URL}/download-resumen-proyectos`, { ano_eje, sec_ejec }, { responseType: 'blob' });
 
     const file = new Blob([response.data], {  
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
