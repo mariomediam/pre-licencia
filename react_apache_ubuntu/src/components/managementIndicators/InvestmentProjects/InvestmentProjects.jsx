@@ -15,8 +15,8 @@ export const InvestmentProjects = ({ anioSelected, title = "" }) => {
 
   useEffect(() => {
     const obtenerSincro = async () => {
-      const params = { ano_eje: anioSelected, sec_ejec: process.env.REACT_APP_SEC_EJEC };
-      const response = await obtenerUltimaSincro(params);
+      const params = { ano_eje: anioSelected, sec_ejec: process.env.REACT_APP_SEC_EJEC };      
+      const response = await obtenerUltimaSincro(params);      
       setUltimaSincro(response);
     };
     if (anioSelected) {
@@ -26,9 +26,6 @@ export const InvestmentProjects = ({ anioSelected, title = "" }) => {
 
   useEffect(() => {
     const { MONTO_PIM: pim = 0, MONTO_DEVENGADO: devengado = 0 } = montos;
-
-    console.log("anioSelected", anioSelected);
-    
 
     if (pim > 0) {
       const porcAvance = (devengado / pim) * 100;
