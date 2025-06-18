@@ -2,9 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 
 import MyChart from "../../helpers/MyChart";
 import { ViewMore } from "../ViewMore";
-import { obtenerMontosPorAnio, obtenerUltimaSincro } from "../../../services/siafService";
+import {
+  obtenerMontosPorAnio,
+  obtenerUltimaSincro,
+} from "../../../services/siafService";
 
 import { transformarFecha } from "../../../utils/varios";
+import { Spinner } from "react-bootstrap";
 
 export const InvestmentProjects = ({ anioSelected, title = "" }) => {
   const [montos, setMontos] = useState({});
@@ -15,8 +19,11 @@ export const InvestmentProjects = ({ anioSelected, title = "" }) => {
 
   useEffect(() => {
     const obtenerSincro = async () => {
-      const params = { ano_eje: anioSelected, sec_ejec: process.env.REACT_APP_SEC_EJEC };      
-      const response = await obtenerUltimaSincro(params);      
+      const params = {
+        ano_eje: anioSelected,
+        sec_ejec: process.env.REACT_APP_SEC_EJEC,
+      };
+      const response = await obtenerUltimaSincro(params);
       setUltimaSincro(response);
     };
     if (anioSelected) {
@@ -36,12 +43,11 @@ export const InvestmentProjects = ({ anioSelected, title = "" }) => {
   }, [montos, anioSelected]);
 
   useEffect(() => {
-    
-    const obtenerMontos = async () => {      
+    const obtenerMontos = async () => {
       try {
         setIsLoading(true);
         const montos = await obtenerMontosPorAnio({
-          anio: anioSelected
+          anio: anioSelected,
         });
         setMontos(montos);
       } catch (error) {
@@ -117,22 +123,28 @@ export const InvestmentProjects = ({ anioSelected, title = "" }) => {
         <h6>
           {title} {anioSelected}
         </h6>
-        {/* <h3>{totalOccurrences}</h3> */}
-
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{ padding: 0 }}
-        >
-          <MyChart
-            option={dafaultOption}
-            widthChart="200px"
-            heightChart="200px"
-          />{" "}
-        </div>
-        <div style={{fontSize: "0.6rem", maxWidth: "230px"}}>
-            Ejecución del gasto presupuestal actualizado al{" "}
-            {transformarFecha(ultimaSincro?.ultima_actualizacion)}{" "}
-        </div>
+        {isLoading ? (
+          <div className="d-flex justify-content-center align-items-center">
+            <Spinner animation="border" size="sm" />
+          </div>
+        ) : (
+          <>
+            <div
+              className="d-flex justify-content-center align-items-center"
+              style={{ padding: 0 }}
+            >
+              <MyChart
+                option={dafaultOption}
+                widthChart="200px"
+                heightChart="200px"
+              />{" "}
+            </div>
+            <div style={{ fontSize: "0.6rem", maxWidth: "230px" }}>
+              Ejecución del gasto presupuestal actualizado al{" "}
+              {transformarFecha(ultimaSincro?.ultima_actualizacion)}{" "}
+            </div>
+          </>
+        )}
       </div>
       <ViewMore url={`/indicadores/proyectos-inversion/${anioSelected}`} />
     </div>

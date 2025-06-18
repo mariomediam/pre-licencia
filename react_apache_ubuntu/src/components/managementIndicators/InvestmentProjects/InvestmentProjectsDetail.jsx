@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import XIcon from "../../../icons/XIcon";
 import { CardIndicator } from "../../territorial/proyectosInversion/CardIndicator";
