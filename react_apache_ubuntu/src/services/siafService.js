@@ -494,4 +494,24 @@ const descargarResumenProyectos = async (params) => {
   }
 }
 
-export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual, obtenerMontosPorAnio, contarProyectosPorAnio, obtenerEjecucionMes, obtenerEjecucionEsperada, obtenerResumenProyectos, descargarResumenProyectos };
+// curl --location 'http://192.168.100.59:8000/api/siaf/sincro-gasto-diario' \
+// --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwMjE0NDQxLCJpYXQiOjE3NTAxNzEyNDEsImp0aSI6Ijg4Njg4NDYwMTZmYzQ1OTE4MDE0YWNjMGM5MjcwNmJlIiwidXNlcl9pZCI6Ik1NRURJTkEgICAgICAgICAgICAgIn0.X_5WOWxW72bJeP99RZi8GTQPiadM3nGHEAi425xACJU'
+
+const sincronizarGastoDiario = async () => {
+  
+  try {
+    let api = UseAxios();
+
+    let URLSincroGastoDiario = `${URL}/sincro-gasto-diario`;    
+    
+    let {
+      data: { content },
+    } = await api.get(`${URLSincroGastoDiario}`);
+    return content;
+  } catch (error) {
+    throw error;
+  }
+  
+}
+
+export { obtenerMaestroDocumento, obtenerPersona, obtenerProveedorSIGA, obtenerExpedienteFase, obtenerExpedienteSecuencia, downloadAccrualFormat, procesoActualizarRegistro, buscarCartaOrden, downloadCartaOrdenFideicomiso, obtenerProyectosProgramacionMensual, obtenerUltimaSincro, obtenerProductoProyectoNombre, obtenerResumenProductoProyecto, agregarProyectoInversion, obtenerProgramacionProyectoInversion, actualizarProgramacionProyectoInversion, descargarProyeccionMensual, obtenerMontosPorAnio, contarProyectosPorAnio, obtenerEjecucionMes, obtenerEjecucionEsperada, obtenerResumenProyectos, descargarResumenProyectos, sincronizarGastoDiario };
