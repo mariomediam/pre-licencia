@@ -31,6 +31,7 @@ import { SeguimientoProyecto } from "../views/territorial/proyectosInversion/Seg
 import { ProyectoAgregar } from "../views/territorial/proyectosInversion/ProyectoAgregar";
 import { ProyectoEditar } from "../views/territorial/proyectosInversion/ProyectoEditar";
 import { DashboardProyectos } from "../views/territorial/proyectosInversion/DashboardProyectos";
+import { SincronizaGastoDiario } from "../views/territorial/proyectosInversion/SincronizaGastoDiario";
 
 export const DashboardRoutes = () => {
   return (
@@ -146,6 +147,10 @@ export const DashboardRoutes = () => {
             <Route index element={<DashboardProyectos />} />
             <Route path=":anio" element={<DashboardProyectos />} />
           </Route>
+          <Route
+           path="/territorial/proyectos-inversion/sincroniza-gasto-diario"
+           element={<SincronizaGastoDiario />}
+          />
         </Routes>
 
       </div>
