@@ -19,7 +19,7 @@ import { AccrualFormatStep1 } from "../../../components/tesorero/reports/filters
 import { AccrualFormatStep2 } from "../../../components/tesorero/reports/filters/AccrualFormatStepper/AccrualFormatStep2";
 import {
   downloadAccrualFormat,
-  procesoActualizarRegistro,
+  // procesoActualizarRegistro,
 } from "../../../services/siafService";
 
 const steps = ["Seleccionar expediente", "Seleccionar fase", "Generar formato"];
@@ -45,11 +45,11 @@ export const AccrualFormatStepperView = () => {
     if (validateStep(activeStep)) {
       if (activeStep === 0) {
         setIsLoading(true);
-        const params = {
-          anio: anioExped,
-          expediente: numeroExped,
-        };
-        await procesoActualizarRegistro(params);
+        // const params = {
+        //   anio: anioExped,
+        //   expediente: numeroExped,
+        // };
+        // await procesoActualizarRegistro(params);
         setIsLoading(false);
       }
 
