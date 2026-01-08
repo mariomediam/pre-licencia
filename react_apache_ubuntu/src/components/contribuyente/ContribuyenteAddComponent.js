@@ -24,6 +24,7 @@ import { ContribEditDatPriComponent } from "./ContribEditDatPriComponent";
 import { ContribEditDomiciComponent } from "./ContribEditDomiciComponent";
 import { ContribEditOtrosComponent } from "./ContribEditOtrosComponent";
 import { Toast } from "../tools/PopMessage";
+import { GetPasswordReniec } from "./GetPasswordReniec";
 
 const steps = [
   "Tipo de contribuyente",
@@ -80,6 +81,15 @@ export const ContribuyenteAddComponent = ({
   const [skipped, setSkipped] = useState(new Set());
   const [tipoContribuyente, setTipoContribuyente] = useState([]);
   const [errors, setErrors] = useState({});
+  const [showPasswordReniec, setshowPasswordReniec] = useState(false);
+
+  const handleShowPasswordReniec = () => {
+    setshowPasswordReniec(true);
+  };
+
+  const handleClosePasswordReniec = () => {
+    setshowPasswordReniec(false);
+  };
 
   const isStepOptional = (step) => {
     return step === -1;
@@ -104,6 +114,11 @@ export const ContribuyenteAddComponent = ({
         
         
         if (activeStep === 0) {
+
+          if (valores.tipoDocum === "01") {
+            handleShowPasswordReniec();
+          } 
+
           // GENERA DOCUMENTO Y NACIONALIDAD
           let setDocumNacionNew = {};
 
@@ -763,6 +778,12 @@ export const ContribuyenteAddComponent = ({
           </div>
         </div>
       </Container>
+      
+      <GetPasswordReniec
+        show={showPasswordReniec}
+        handleClose={handleClosePasswordReniec}
+        dniAConsultar={valores.codigoContrib}
+      />
     </>
   );
 };
