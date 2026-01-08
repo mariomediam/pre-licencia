@@ -74,7 +74,7 @@ export const ContribuyenteAddComponent = ({
     resultReniec: {},
     resultSunat: {},
   });
-  
+
   let consultaReniec = undefined;
   let consultaSunat = undefined;
 
@@ -110,15 +110,7 @@ export const ContribuyenteAddComponent = ({
     } else {
       // No errors! Put any logic here for the form submission!
       try {
-        
-        
-        
         if (activeStep === 0) {
-
-          if (valores.tipoDocum === "01") {
-            handleShowPasswordReniec();
-          } 
-
           // GENERA DOCUMENTO Y NACIONALIDAD
           let setDocumNacionNew = {};
 
@@ -162,27 +154,27 @@ export const ContribuyenteAddComponent = ({
             };
           }
 
-          if (consultaReniec) {
-            setDocumNacionNew = {
-              ...setDocumNacionNew,
-              resultReniec: {
-                coResultado: consultaReniec.coResultado,
-                deResultado: consultaReniec.deResultado,
-              },
-            };
+          // if (consultaReniec) {
+          //   setDocumNacionNew = {
+          //     ...setDocumNacionNew,
+          //     resultReniec: {
+          //       coResultado: consultaReniec.coResultado,
+          //       deResultado: consultaReniec.deResultado,
+          //     },
+          //   };
 
-            if (consultaReniec.coResultado === "0000") {
-              setDocumNacionNew = {
-                ...setDocumNacionNew,
-                apePat: consultaReniec.datosPersona.apPrimer,
-                apeMat: consultaReniec.datosPersona.apSegundo,
-                nombre: consultaReniec.datosPersona.prenombres,
-                direccAdic: `${consultaReniec.datosPersona.direccion} ${consultaReniec.datosPersona.ubigeo}`,
-                foto: consultaReniec.datosPersona.foto,
-                observ: `ESTADO CIVIL: ${consultaReniec.datosPersona.estadoCivil}, RESTRICCIÓN: ${consultaReniec.datosPersona.restriccion}`,
-              };
-            }
-          }
+          //   if (consultaReniec.coResultado === "0000") {
+          //     setDocumNacionNew = {
+          //       ...setDocumNacionNew,
+          //       apePat: consultaReniec.datosPersona.apPrimer,
+          //       apeMat: consultaReniec.datosPersona.apSegundo,
+          //       nombre: consultaReniec.datosPersona.prenombres,
+          //       direccAdic: `${consultaReniec.datosPersona.direccion} ${consultaReniec.datosPersona.ubigeo}`,
+          //       foto: consultaReniec.datosPersona.foto,
+          //       observ: `ESTADO CIVIL: ${consultaReniec.datosPersona.estadoCivil}, RESTRICCIÓN: ${consultaReniec.datosPersona.restriccion}`,
+          //     };
+          //   }
+          // }
 
           if (consultaSunat) {
             setDocumNacionNew = {
@@ -235,7 +227,7 @@ export const ContribuyenteAddComponent = ({
           title: "Error grabando contribuyente",
           text: error,
         });
-      } 
+      }
     }
   };
 
@@ -379,29 +371,30 @@ export const ContribuyenteAddComponent = ({
                 const { C002Cod_Cont, C001Nombre } = validaDocum.shift();
                 newErrors.codigoContrib = `Ya existe el documento: ${codigoContrib.trim()} para el contribuyente: ${C002Cod_Cont} ${C001Nombre.trim()}`;
                 // Comentado hasta solicionar el problema de la consulta a la Sunat
-              } 
-              else {
+              } else {
                 if (tipoDocum === "01" && validaReniec) {
-                  try {
-                    const { coResultado, deResultado, datosPersona } =
-                      await obtenerConsultaReniec(codigoContrib);
+                  handleShowPasswordReniec();
 
-                    if (coResultado === "0999") {
-                      newErrors.codigoContrib = `RENIEC: ${deResultado} `;
-                    } else {
-                      consultaReniec = {
-                        coResultado,
-                        deResultado,
-                        datosPersona,
-                      };
-                    }
-                  } catch (error) {
-                    Swal.fire({
-                      icon: "error",
-                      title: "Error validando DNI",
-                      text: error,
-                    });
-                  }
+                  //   try {
+                  //     const { coResultado, deResultado, datosPersona } =
+                  //       await obtenerConsultaReniec(codigoContrib);
+
+                  //     if (coResultado === "0999") {
+                  //       newErrors.codigoContrib = `RENIEC: ${deResultado} `;
+                  //     } else {
+                  //       consultaReniec = {
+                  //         coResultado,
+                  //         deResultado,
+                  //         datosPersona,
+                  //       };
+                  //     }
+                  //   } catch (error) {
+                  //     Swal.fire({
+                  //       icon: "error",
+                  //       title: "Error validando DNI",
+                  //       text: error,
+                  //     });
+                  //   }
                 } else {
                   if (tipoDocum === "05" && validaSunat) {
                     try {
@@ -544,8 +537,57 @@ export const ContribuyenteAddComponent = ({
     return newErrors;
   };
 
-  const validaReniec = true
-  const validaSunat = true
+  const validaReniec = true;
+  const validaSunat = true;
+
+  const setValoresFromReniec = async (dniAConsultar, claveReniec) => {
+    try {
+      const { coResultado, deResultado, datosPersona } =
+        await obtenerConsultaReniec(dniAConsultar, claveReniec);
+
+      if (coResultado === "0999") {
+        throw new Error(`RENIEC: ${deResultado} `);
+      } else {
+        consultaReniec = {
+          coResultado,
+          deResultado,
+          datosPersona,
+        };
+
+        let setDocumNacionNew = {};
+
+        if (consultaReniec) {
+          setDocumNacionNew = {
+            ...setDocumNacionNew,
+            resultReniec: {
+              coResultado: consultaReniec.coResultado,
+              deResultado: consultaReniec.deResultado,
+            },
+          };
+
+          if (consultaReniec.coResultado === "0000") {
+            setDocumNacionNew = {
+              ...setDocumNacionNew,
+              apePat: consultaReniec.datosPersona.apPrimer,
+              apeMat: consultaReniec.datosPersona.apSegundo,
+              nombre: consultaReniec.datosPersona.prenombres,
+              direccAdic: `${consultaReniec.datosPersona.direccion} ${consultaReniec.datosPersona.ubigeo}`,
+              foto: consultaReniec.datosPersona.foto,
+              observ: `ESTADO CIVIL: ${consultaReniec.datosPersona.estadoCivil}, RESTRICCIÓN: ${consultaReniec.datosPersona.restriccion}`,
+            };
+          }
+
+          setField(setDocumNacionNew);
+        }
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error validando DNI",
+        text: error,
+      });
+    }
+  };
 
   return (
     <>
@@ -778,11 +820,12 @@ export const ContribuyenteAddComponent = ({
           </div>
         </div>
       </Container>
-      
+
       <GetPasswordReniec
         show={showPasswordReniec}
         handleClose={handleClosePasswordReniec}
         dniAConsultar={valores.codigoContrib}
+        setValoresFromReniec={setValoresFromReniec}
       />
     </>
   );
