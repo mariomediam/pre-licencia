@@ -2,11 +2,11 @@ import UseAxios from "../utils/useAxios";
 
 const URL = `${process.env.REACT_APP_API}`;
 
-const obtenerConsultaReniec = async (nroDni) => {
+const obtenerConsultaReniec = async (nroDniAConsultar, claveReniec) => {
     try {
       let api = UseAxios();
   
-      let URLConsultaReniec = `${URL}/buscar-reniec?numero=${nroDni}`;
+      let URLConsultaReniec = `${URL}/buscar-reniec?dniConsultar=${nroDniAConsultar}&claveReniec=${claveReniec}`;
   
       let {
         data: { consultarResponse },
