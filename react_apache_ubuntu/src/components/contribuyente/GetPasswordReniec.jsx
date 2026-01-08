@@ -1,9 +1,18 @@
+import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import LockIcon from "../../icons/LockIcon";
 import ExclamationCircleIcon from "../../icons/ExclamationCircleIcon";
 import CheckIcon from "../../icons/CheckIcon";
 
-export const GetPasswordReniec = ({ show, handleClose, dniAConsultar }) => {
+export const GetPasswordReniec = ({ show, handleClose, dniAConsultar, setValoresFromReniec }) => {
+
+    const [password, setPassword] = useState("");
+
+
+    const handleAccept = async () => {
+        await setValoresFromReniec(dniAConsultar, password);
+        handleClose();
+    }
   return (
     <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
       <Modal.Header closeButton>
@@ -32,7 +41,7 @@ export const GetPasswordReniec = ({ show, handleClose, dniAConsultar }) => {
           <Form.Label className="text-muted mb-0">
             <small>Contraseña</small>
           </Form.Label>
-          <Form.Control type="password" />
+          <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </Form.Group>
         <div className="alert alert-primary mt-3 p-2" role="alert">
           <p style={{ fontSize: "12px" }} className="m-0">
@@ -47,7 +56,7 @@ export const GetPasswordReniec = ({ show, handleClose, dniAConsultar }) => {
         <Button variant="secondary" onClick={handleClose}>
           Omitir
         </Button>
-        <Button variant="primary">
+        <Button variant="primary" onClick={handleAccept} disabled={password.length === 0}>
           <CheckIcon width={16} height={16} stroke="#fff" /> Aceptar
         </Button>
       </Modal.Footer>
