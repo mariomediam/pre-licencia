@@ -1,4 +1,4 @@
-const CheckIcon = ({ className }) => (
+const CheckIcon = ({ className, width = 24, height = 24, stroke = "#2d8f46" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={`icon icon-tabler icons-tabler-outline icon-tabler-check ${className}`}
@@ -6,7 +6,7 @@ const CheckIcon = ({ className }) => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="#2d8f46"
+    stroke={stroke}
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"    
