@@ -1,0 +1,49 @@
+import ArrowRightIcon from "../../icons/ArrowRight";
+
+export const CardOficceIndicator = ({ dataIndicator, isMainCard = false }) => {
+  const { title, subTitle, icon } = dataIndicator;
+
+  if (isMainCard) {
+    return (
+      <div className="bg-white border rounded-4 shadow-sm p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div className="d-flex gap-3 align-items-center">
+          <div
+            className="d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10"
+            style={{ width: "4rem", height: "4rem" }}
+          >
+            {icon}
+          </div>
+          <div>
+            <h5 className="m-0 p-0 fw-semibold">{title}</h5>
+            <p className="text-muted small m-0 p-0">{subTitle}</p>
+          </div>
+        </div>
+        <button 
+          type="button"
+          className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 fw-medium p-0"
+        >
+          Ver indicadores <ArrowRightIcon width={18} height={18} />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white border rounded-4 shadow-sm p-4 card-subindicator d-flex flex-column h-100">
+      <div
+        className="d-flex align-items-center justify-content-center rounded-3 bg-primary bg-opacity-10 mb-3"
+        style={{ width: "3rem", height: "3rem" }}
+      >
+        {icon}
+      </div>
+      <h6 className="m-0 p-0 fw-semibold mb-2">{title}</h6>
+      <p className="text-muted small m-0 p-0 flex-grow-1">{subTitle}</p>
+      <button 
+        type="button"
+        className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 mt-3 small fw-medium p-0"
+      >
+        Ver indicadores <ArrowRightIcon width={16} height={16} />
+      </button>
+    </div>
+  );
+};

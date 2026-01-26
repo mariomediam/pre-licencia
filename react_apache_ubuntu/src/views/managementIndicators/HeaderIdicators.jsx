@@ -1,26 +1,26 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { ListGroup } from "react-bootstrap";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 import SideBarIcon from "../../icons/SideBarIcon";
 import BusIcon from "../../icons/BusIcon";
-import LockIcon from "../../icons/LockIcon";
+// import LockIcon from "../../icons/LockIcon";
 import WreckingBallIcon from "../../icons/WreckingBallIcon";
 
 export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) => {
   const navigate = useNavigate();
-  const { selectedYear } = useSelector((state) => state.indicators);
+  // const { selectedYear } = useSelector((state) => state.indicators);
   const [show, setShow] = useState(false);
   
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const onChangeSelectYear = (e) => {
-    setAnioSelected(parseInt(e.target.value));
-    navigate(`/indicadores/${selectedType}/${e.target.value}`);
-  };
+  // const onChangeSelectYear = (e) => {
+  //   setAnioSelected(parseInt(e.target.value));
+  //   navigate(`/indicadores/${selectedType}/${e.target.value}`);
+  // };
 
   const onClickMenu = (e) => {    
     navigate(`/indicadores/${e.target.id}`);
@@ -35,11 +35,11 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) =
       menDesc: "Transportes",
       icon: <BusIcon className="me-2"/>,
     },
-    {
-      tipo: "02",
-      menDesc: "Seguridad ciudadana",
-      icon: <LockIcon className="me-2"/>,
-    },
+    // {
+    //   tipo: "02",
+    //   menDesc: "Seguridad ciudadana",
+    //   icon: <LockIcon className="me-2"/>,
+    // },
     {
       tipo: "03",
       menDesc: "Desarrollo territorial",
@@ -68,7 +68,7 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) =
           </div>
         </div>
 
-        <div className="d-flex align-items-center gap-2 ">
+        {/* <div className="d-flex align-items-center gap-2 ">
           <span className="m-0 p-0">Año: </span>
           <select
             className="form-select "
@@ -82,7 +82,7 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) =
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
       </header>
 
       <Offcanvas show={show} onHide={handleClose}>

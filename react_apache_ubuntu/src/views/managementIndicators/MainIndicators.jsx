@@ -1,49 +1,41 @@
-import { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
-import "../../../src/MainIndicators.css";
 import { CardIndicator } from "../../components/managementIndicators/CardIndicator";
 import { HeaderIdicators } from "./HeaderIdicators";
-import { setSelectedTypeAndYearThunk, setSelectedYearThunk } from "../../store/slices/indicators/thunks";
-
-
-const currentYear = new Date().getFullYear();
-const anios = Array.from(
-  { length: currentYear - 2020 },
-  (_, i) => currentYear - i
-);
+import { FooterIndicators } from "./FooterIndicators";
 
 
 export const MainIndicators = () => {
 
-  const { anio = currentYear, tipo : urlTipo = "01" } = useParams();
-  const urlYear = parseInt(anio);
-
-
-
-  const dispatch = useDispatch();
-  
-
-  const setTipoYAnioSelected = useCallback((tipo, anio) => {
-    dispatch(setSelectedTypeAndYearThunk(tipo, anio));
-  }, [dispatch]);
-
-  const setAnioSelected = useCallback((anio) => {
-    dispatch(setSelectedYearThunk(anio));
-  }, [dispatch]);
-
-  useEffect(() => {
-    setTipoYAnioSelected(urlTipo, parseInt(urlYear));    
-  }, [urlTipo, urlYear, setTipoYAnioSelected]);
-
+  const { tipo: urlTipo = "01" } = useParams();
 
   return (
-    <div className="main-indicators-font m-3">
-      <HeaderIdicators anios={anios} setAnioSelected={setAnioSelected} selectedType={urlTipo} />
-      <main className="mt-4">        
-        <CardIndicator anioSelected={urlYear} tipoSelected={urlTipo} />
-      </main>
+    <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
+      <HeaderIdicators selectedType={urlTipo} />
+      
+      {/* Header Section */}
+      <div className="container-lg mx-auto py-5 flex-grow-1">
+        <div className="text-center mb-5">
+          <h1 className="fw-bold mb-3" style={{ fontSize: "2.5rem" }}>Plataforma de Datos</h1>
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8 col-lg-6">
+              <p className="text-muted mb-0">
+                Plataforma centralizada para el monitoreo y seguimiento de objetivos de la{" "}
+                <span className="fw-bold text-dark">Gerencia de Transporte y Movilidad Urbana</span>{" "}
+                de la Municipalidad Provincial de Piura
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Cards Section */}
+        <main className="px-3 px-md-4">
+          <CardIndicator tipoSelected={urlTipo} />
+        </main>
+      </div>
+
+      {/* Footer */}
+      <FooterIndicators />
     </div>
   );
 };

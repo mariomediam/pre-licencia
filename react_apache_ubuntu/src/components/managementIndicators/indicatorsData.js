@@ -1,104 +1,49 @@
-import { AmountsTransitTickets } from "./amountsTransitTickets/AmountsTransitTickets";
-import { AuthorizedVehicles } from "./authorizedVehicles/AuthorizedVehicles";
-import { CurrentPermits } from "./currentPermits/CurrentPermits";
-import { OccurrencesTime } from "./occurrencesTime/OccurrencesTime";
-import { OccurrencesType } from "./occurrencesType/OccurrencesType";
-import { OldVehicles } from "./oldVehicles/OldVehicles";
-import { InvestmentProjects } from "./InvestmentProjects/InvestmentProjects";
-import { PatrolGoal } from "./patrolGoal/PatrolGoal";
-import { TransportationTickets } from "./transportationTickets/TransportationTickets";
+import BusIcon from "../../icons/BusIcon";
+import ClipboardSearchIcon from "../../icons/ClipboardSearchIcon";
+import TrafficLightIcon from "../../icons/TrafficLightIcon";
+import ShieldCheckIcon from "../../icons/ShieldCheckIcon";
 
 
 export const getIndicators = (anioSelected) => [
   {
     type: "01",
+    code: "00",
+    title: "Gerencia de Transporte y Movilidad urbana",
+    subTitle: "Visualización de indicadores consolidados y políticas de transporte para la provincia.",
+    icon: <BusIcon width={36} height={36} />,
+    nivel: 1, // 1: Gerencia, 2: Subgerencia, 3: Unidad
+  },
+  {
+    type: "01",
     code: "01",
-    component: (
-      <CurrentPermits
-        anioSelected={anioSelected}
-        title={"Autorizaciones vigentes"}
-      />
-    ),
+    title: "Subgerencia de Transporte",
+    subTitle: "Gestión de rutas, paraderos y autorizaciones de servicios de transporte público.",
+    icon: <BusIcon width={28} height={28} />,
+    nivel: 2,
   },
   {
     type: "01",
     code: "02",
-    component: (
-      <AuthorizedVehicles
-        anioSelected={anioSelected}
-        title={"Autorizaciones emitidas"}
-      />
-    ),
+    title: "Subgerencia de Fiscalización",
+    subTitle: "Control de infracciones, operativos en vía pública y cumplimiento normativo.",
+    icon: <ClipboardSearchIcon width={28} height={28} />,
+    nivel: 2,
+  },
+  {
+    type: "01",
+    code: "03",
+    title: "Subgerencia de Tránsito y Movilidad Urbana",
+    subTitle: "Planificación de infraestructura peatonal, ciclovías y diseño urbano sostenible",
+    icon: <TrafficLightIcon width={28} height={28} />,
+    nivel: 2,
   },
   {
     type: "01",
     code: "04",
-    component: (
-      <TransportationTickets
-        anioSelected={anioSelected}
-        title={"Infracciones de transportes"}
-      />
-    ),
-  },
-  {
-    type: "01",
-    code: "05",
-    component: (
-      <OldVehicles
-        anioSelected={anioSelected}
-        title={"Antigüedad de vehículos con autorización vigente"}
-      />
-    ),
-  },
-  {
-    type: "01",
-    code: "06",
-    component: (
-      <AmountsTransitTickets
-        anioSelected={anioSelected}
-        title={"Recaudación por infracciones de transportes"}
-      />
-    ),
-  },
-  {
-    type: "02",
-    code: "01",
-    component: (
-      <OccurrencesType
-        anioSelected={anioSelected}
-        title={"Ocurrencias por tipo"}
-      />
-    ),
-  },
-  {
-    type: "02",
-    code: "02",
-    component: (
-      <OccurrencesTime
-        anioSelected={anioSelected}
-        title={"Ocurrencias por mes"}
-      />
-    ),
-  },
-  {
-    type: "02",
-    code: "03",
-    component: (
-      <PatrolGoal
-        anioSelected={anioSelected}
-        title={"Cumplimiento de metas por patrullaje"}
-      />
-    ),
-  },
-  {
-    type: "03",
-    code: "01",
-    component: (
-      <InvestmentProjects
-        anioSelected={anioSelected}
-        title={"Ejecución de proyectos"}
-      />
-    ),
+    title: "Subgerencia de Educación y Seguridad Vial",
+    subTitle: "Educación vial, señalización y programas de prevención de accidentes",
+    icon: <ShieldCheckIcon width={28} height={28} />,
+    nivel: 2,
   },
 ];
 
