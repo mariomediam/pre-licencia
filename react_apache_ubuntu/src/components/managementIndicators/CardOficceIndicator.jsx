@@ -1,7 +1,14 @@
 import ArrowRightIcon from "../../icons/ArrowRight";
+import { useNavigate } from "react-router-dom";
 
 export const CardOficceIndicator = ({ dataIndicator, isMainCard = false }) => {
   const { title, subTitle, icon } = dataIndicator;
+
+  const navigate = useNavigate();
+
+  const onClickGoTo = () => {
+    navigate(`/indicadores-list/${dataIndicator.type}/${dataIndicator.code}`);
+  }
 
   if (isMainCard) {
     return (
@@ -21,6 +28,7 @@ export const CardOficceIndicator = ({ dataIndicator, isMainCard = false }) => {
         <button 
           type="button"
           className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 fw-medium p-0"
+          onClick={onClickGoTo}
         >
           Ver indicadores <ArrowRightIcon width={18} height={18} />
         </button>
@@ -41,6 +49,7 @@ export const CardOficceIndicator = ({ dataIndicator, isMainCard = false }) => {
       <button 
         type="button"
         className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 mt-3 small fw-medium p-0"
+        onClick={onClickGoTo}
       >
         Ver indicadores <ArrowRightIcon width={16} height={16} />
       </button>

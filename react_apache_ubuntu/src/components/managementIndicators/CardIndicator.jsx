@@ -1,8 +1,8 @@
 import { CardOficceIndicator } from "./CardOficceIndicator";
-import { getIndicators } from "./indicatorsData";
+import { getOffices } from "./officesData";
 
 export const CardIndicator = ({ anioSelected, tipoSelected }) => {
-  const indicators = getIndicators(anioSelected);
+  const indicators = getOffices(anioSelected);
   const filteredIndicators = indicators.filter(({ type }) => type === tipoSelected);
   
   // Separar gerencia principal (nivel 1) de subgerencias (nivel 2)

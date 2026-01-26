@@ -4,7 +4,7 @@ import TrafficLightIcon from "../../icons/TrafficLightIcon";
 import ShieldCheckIcon from "../../icons/ShieldCheckIcon";
 
 
-export const getIndicators = (anioSelected) => [
+export const getOffices = (anioSelected) => [
   {
     type: "01",
     code: "00",
@@ -46,4 +46,3 @@ export const getIndicators = (anioSelected) => [
     nivel: 2,
   },
 ];
-
