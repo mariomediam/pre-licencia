@@ -15,7 +15,7 @@ import { PatrolGoalDetail } from "../components/managementIndicators/patrolGoal/
 import { AmountsTransitTicketsDetail } from "../components/managementIndicators/amountsTransitTickets/AmountsTransitTicketsDetail";
 import { InvestmentProjectsDetail } from "../components/managementIndicators/InvestmentProjects/InvestmentProjectsDetail";
 import { ListIndicators } from "../views/managementIndicators/ListIndicators";
-
+import IndicatorCollectionDetail from "../views/managementIndicators/IndicatorCollectionDetail";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -37,6 +37,7 @@ export const AppRouter = () => {
           </Route>
 
           <Route path="/indicadores-list/:tipo/:code" element={<ListIndicators />} />
+          <Route path="/indicadores-detail/:tipo/:code" element={<IndicatorCollectionDetail />} />  
 
           {/* <Route path="/indicadores/:anio" element={<MainIndicators />} /> */}
           <Route

@@ -201,6 +201,75 @@ const MontosPapeleta = async ( params ) => {
       }
     }
 
+    // {{url_api}}/api/indicadores/buscar-recaudacion-satp?anio=2025&mes=1&tasas=347,334
+
+
+    const BuscarRecaudacionSatp = async ( params ) => {
+      const { anio, mes, tasas } = params;
+      let credenciales = {};
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        let {
+          data: { content },
+        } = await axios.get(`${process.env.REACT_APP_API}/indicadores/buscar-recaudacion-satp?anio=${anio}&mes=${mes}&tasas=${tasas}`, credenciales, {
+          headers,
+        });
+        return content;
+      }
+      catch (error) {
+        throw error;
+      }
+    }
+
+//     curl --location 'http://127.0.0.1:8000/api/indicadores/select-proyeccion-por-anio-y-dependencia?opcion=02&anio=2026&dependencia=110659' \
+// --data ''
+const SelectProyeccionPorAnioYDependencia = async ( params ) => {
+  const { opcion, anio, dependencia } = params;
+  let credenciales = {};
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/select-proyeccion-por-anio-y-dependencia?opcion=${opcion}&anio=${anio}&dependencia=${dependencia}`, credenciales, {
+      headers,
+    });
+
+    if (opcion === "02") {
+      return content[0]
+    }
+
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+// curl --location 'http://127.0.0.1:8000/api/indicadores/select-recaudacion-por-anio-y-dependencia?anio=2026&dependencia=110659' \
+// --data ''
+
+const SelectRecaudacionPorAnioYDependencia = async ( params ) => {
+  const { anio, dependencia } = params;
+  let credenciales = {};
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/select-recaudacion-por-anio-y-dependencia?anio=${anio}&dependencia=${dependencia}`, credenciales, {
+      headers,
+    });
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
 
 
 export {
@@ -213,4 +282,7 @@ export {
   OcurrenciasxAnio,
   MontosPapeleta,
   ComparacionMontosPapeleta,
+  BuscarRecaudacionSatp,
+  SelectProyeccionPorAnioYDependencia,
+  SelectRecaudacionPorAnioYDependencia,
 };
