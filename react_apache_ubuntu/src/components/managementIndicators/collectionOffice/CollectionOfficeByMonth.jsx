@@ -10,7 +10,7 @@ const formatNumber = (value) => {
     }).format(Number(value));
 };
 
-export const CollectionOfficeByMonth = ({ monthlyData = [], totalRaised = 0 }) => {
+export const CollectionOfficeByMonth = ({ monthlyData = [], totalRaised = 0, year = 0 }) => {
     const dafaultOption = useMemo(
         () => {
             const montos = monthlyData.length > 0 
@@ -80,7 +80,7 @@ export const CollectionOfficeByMonth = ({ monthlyData = [], totalRaised = 0 }) =
                     <h6 className="fw-semibold text-secondary mb-1">Evolución de la recaudación por mes</h6>
                     <h4 className="fw-bold text-dark mb-0">{formatCurrency(totalRaised)}</h4>
                 </div>
-                <span className="text-muted small">Año 2026</span>
+                <span className="text-muted small">Año {year}</span>
             </div>
             <MyChart option={dafaultOption} widthChart="100%" heightChart="280px" />
         </div>

@@ -199,10 +199,10 @@ const IndicatorCollectionDetail = () => {
 
         <div className="row g-4 mt-2">
           <div className="col-12 col-md-4">
-            <CollectionOfficeRaisedVsProjected totalRaised={totalReaised} totalProjected={totalProjected} />
+            <CollectionOfficeRaisedVsProjected totalRaised={totalReaised} totalProjected={totalProjected} year={year} />
           </div>
           <div className="col-12 col-md-8">
-            <CollectionOfficeByMonth monthlyData={monthlyCollection} totalRaised={totalReaised} />
+            <CollectionOfficeByMonth monthlyData={monthlyCollection} totalRaised={totalReaised} year={year} />
           </div>
         </div>
 
