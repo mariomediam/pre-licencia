@@ -1,9 +1,14 @@
 import ArrowRightIcon from "../../icons/ArrowRight";
+import { useNavigate } from "react-router-dom";
   
 export const CardItemIndicator = ({ dataItemIndicator }) => {
   const { type, code, title, subTitle, icon } = dataItemIndicator;
 
-  
+  const navigate = useNavigate();
+
+  const onClickGoTo = () => {
+    navigate(`/indicadores-detail/${type}/${code}`);
+  }
 
   return (
     <div className="bg-white border rounded-4 shadow-sm p-4 card-subindicator d-flex flex-column h-100">
@@ -18,6 +23,7 @@ export const CardItemIndicator = ({ dataItemIndicator }) => {
       <button 
         type="button"
         className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 mt-3 small fw-medium p-0"
+        onClick={onClickGoTo}
       >
         Ver indicadores <ArrowRightIcon width={16} height={16} />
       </button>

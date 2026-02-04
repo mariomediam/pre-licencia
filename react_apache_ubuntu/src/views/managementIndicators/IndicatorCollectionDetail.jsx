@@ -11,6 +11,9 @@ import { CollectionOfficeRaisedVsProjected } from "../../components/managementIn
 import { CollectionOfficeByMonth } from "../../components/managementIndicators/collectionOffice/CollectionOfficeByMonth";
 import { FinancialSummaryByMonth } from "../../components/managementIndicators/collectionOffice/FinancialSummaryByMonth";
 import { CollectiobOfficeByRate } from "../../components/managementIndicators/collectionOffice/CollectiobOfficeByRate";
+import { CollecionDate } from "../../components/managementIndicators/CollecionDate";
+import { transformarFecha } from "../../utils/varios";
+import { FooterIndicators } from "./FooterIndicators";
 
 const IndicatorCollectionDetail = () => {
 
@@ -35,12 +38,21 @@ const IndicatorCollectionDetail = () => {
   const [monthlyProyected, setMonthlyProyected] = useState([]);
   const [financialSummary, setFinancialSummary] = useState([]);
   const [rateSummary, setRateSummary] = useState([]);
+  const [collectionDate, setCollectionDate] = useState("");
 
 
   useEffect(() => {
     const tasas = getTasas();
     setFilteredTasas(tasas);
   }, []);
+
+  useEffect(() => {
+    if (collection.length > 0) {
+      setCollectionDate(transformarFecha(collection[0].D_Recaud_Inicio));
+    } else {
+      setCollectionDate("");
+    }
+  }, [collection]);
 
   useEffect(() => {
     const getCollection = async () => {
@@ -201,7 +213,13 @@ const IndicatorCollectionDetail = () => {
         <div className="mt-4">
           <CollectiobOfficeByRate rateSummary={rateSummary} />
         </div>
+
+        <div className="mt-4">
+          <CollecionDate D_Recaud_Inicio={collectionDate} />
+        </div>
+
       </div>
+        <FooterIndicators />
     </div>
   )
 }
