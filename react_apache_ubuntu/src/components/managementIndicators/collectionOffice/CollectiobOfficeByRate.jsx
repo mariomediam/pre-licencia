@@ -15,10 +15,10 @@ export const CollectiobOfficeByRate = ({ rateSummary = [] }) => {
         <table className="table table-borderless align-middle mb-0">
           <thead>
             <tr className="text-muted small">
-              <th className="fw-semibold" style={{ width: '55%' }}>Descripción del concepto</th>
+              <th className="fw-semibold" style={{ width: '40%' }}>Descripción del concepto</th>
               <th className="fw-semibold text-end" style={{ width: '20%' }}>Monto recaudado</th>
               <th className="fw-semibold" style={{ width: '25%' }}>Avance meta</th>
-              {/* <th className="fw-semibold text-center" style={{ width: '15%' }}>Acción</th> */}
+              <th className="fw-semibold text-center" style={{ width: '15%' }}>Acción</th>
             </tr>
           </thead>
           <tbody>
@@ -57,7 +57,7 @@ export const CollectiobOfficeByRate = ({ rateSummary = [] }) => {
                       </span>
                     </div>
                   </td>
-                  {/* <td className="py-3 text-center">
+                  <td className="py-3 text-center">
                     <a
                       href="#" 
                       className="text-primary text-decoration-none small"
@@ -65,7 +65,7 @@ export const CollectiobOfficeByRate = ({ rateSummary = [] }) => {
                     >
                       Ver detalle <span>&gt;</span>
                     </a>
-                  </td> */}
+                  </td>
                 </tr>
               );
             })}
