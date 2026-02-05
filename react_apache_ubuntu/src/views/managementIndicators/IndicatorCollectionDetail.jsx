@@ -60,22 +60,25 @@ const IndicatorCollectionDetail = () => {
 
       if (filteredTasas.length > 0 && filteredOffice.dependencia) {
         const data = await SelectRecaudacionPorAnioYDependencia({ anio: year, dependencia: filteredOffice.dependencia });
-        setCollection(data);
+
+        const dataFiltered = data.filter((item) => selectedMonths.includes(item.M_RecDet_Mes));
+        setCollection(dataFiltered);
       }
     }
 
     getCollection();
-  }, [year, month, filteredOffice.dependencia, filteredTasas]);
+  }, [year, month, filteredOffice.dependencia, filteredTasas, selectedMonths]);
 
 
   useEffect(() => {
     const getProyected = async () => {
       const data = await SelectProyeccionPorAnioYDependencia({ opcion: "01", anio: year, dependencia: filteredOffice.dependencia });
 
-      setProyected(data);
+      const dataFiltered = data.filter((item) => selectedMonths.includes(item.M_Mes));
+      setProyected(dataFiltered);
     }
     getProyected();
-  }, [year, filteredOffice.dependencia]);
+  }, [year, filteredOffice.dependencia, selectedMonths]);
 
   useEffect(() => {
     const total = collection.reduce((acc, { Q_RecDet_Monto }) => acc + Q_RecDet_Monto, 0);
@@ -114,7 +117,10 @@ const IndicatorCollectionDetail = () => {
   }, [proyected]);
 
   useEffect(() => {
-    if (monthlyCollection.length === 0 || monthlyProyected.length === 0) return;
+    if (monthlyCollection.length === 0) {
+      setFinancialSummary([]);
+      return;
+    }
 
     const topMonth = year === new Date().getFullYear() ? new Date().getMonth() + 1 : 12;
 
@@ -132,11 +138,16 @@ const IndicatorCollectionDetail = () => {
         accumulatedPendingCollection: accumulatedProjected - accumulatedCollection > 0 ? accumulatedProjected - accumulatedCollection : 0
       };
     });
-    setFinancialSummary(result);
-  }, [monthlyCollection, monthlyProyected, year]);
+    const resultFiltered = result.filter((item) => selectedMonths.includes(item.Mes));
+    setFinancialSummary(resultFiltered);
+  }, [monthlyCollection, monthlyProyected, year, selectedMonths]);
 
   useEffect(() => {
-    if (collection.length === 0 ) return;
+    if (collection.length === 0 ) {
+      setRateSummary([]);
+      return;
+    }
+     
 
     const groupedColletionByTasa = collection.reduce((acc, item) => {
       const key = `${item.C_Tasa_SATP}-${item.C_Tasa}`;
@@ -184,6 +195,8 @@ const IndicatorCollectionDetail = () => {
         "Q_Proyecc_Monto": proyectedItem?.Q_Proyecc_Monto || 0,        
       };
     });
+
+
     setRateSummary(resultByTasa);
   }, [ collection, proyected ]);
 

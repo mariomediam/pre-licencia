@@ -11,7 +11,7 @@ export const FinancialSummaryByMonth = ({ financialSummary = [] }) => {
               <th className="fw-semibold">Mes</th>
               <th className="fw-semibold text-end">Recaudado</th>
               <th className="fw-semibold text-end">Proyectado</th>
-              <th className="fw-semibold text-end">Penndiente de recaudar</th>
+              <th className="fw-semibold text-end">Pendiente de recaudar</th>
               <th className="fw-semibold text-end">Acumulado pendiente de recaudar</th>
             </tr>
           </thead>
