@@ -168,7 +168,7 @@ const IndicatorCollectionDetail = () => {
         };
       }
       
-      acc[key].Q_Proyecc_Monto += item.Q_Proyecc_Monto;
+      acc[key].Q_Proyecc_Monto += item?.Q_Proyecc_Monto || 0;
       return acc;
     }, {});
     
@@ -180,8 +180,7 @@ const IndicatorCollectionDetail = () => {
       const proyectedItem = resultByTasaProyected.find((p) => p.C_Tasa_SATP === item.C_Tasa_SATP);
       return {
         ...item,
-        "Q_Proyecc_Monto": proyectedItem.Q_Proyecc_Monto,
-        "rate": item.Q_RecDet_Monto / proyectedItem.Q_Proyecc_Monto
+        "Q_Proyecc_Monto": proyectedItem?.Q_Proyecc_Monto || 0,        
       };
     });
     setRateSummary(resultByTasa);
