@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import ArrowLeftIcon from "../../../icons/ArrowLeft";
 import DownloadIcon from "../../../icons/DownloadIcon";
+import { MultiSelectMonths } from "../../tools/MultiSelectMonths";
 
-export const CollectionOfficeHeader = ({ dataOffice, setYear, setMonth }) => {
+export const CollectionOfficeHeader = ({ dataOffice, setYear, selectedMonths, setSelectedMonths }) => {
   const navigate = useNavigate();
   const { title } = dataOffice || {};
 
@@ -25,7 +26,7 @@ export const CollectionOfficeHeader = ({ dataOffice, setYear, setMonth }) => {
         </h2>
 
         {/* Filtros y botón exportar */}
-        <div className="d-flex flex-wrap align-items-center gap-3">
+        <div className="d-flex flex-column flex-lg-row flex-wrap align-items-center gap-3">
           {/* Selector Año */}
           <div className="d-flex align-items-center gap-2">
             <label htmlFor="year" className="text-muted mb-0 small">
@@ -46,33 +47,15 @@ export const CollectionOfficeHeader = ({ dataOffice, setYear, setMonth }) => {
           </div>
 
           {/* Selector Mes */}
-          {/* <div className="d-flex align-items-center gap-2">
-            <label htmlFor="month" className="text-muted mb-0 small">
-              Mes:
-            </label>
-            <select
-              name="month"
-              id="month"
-              className="form-select form-select-sm"
-              style={{ width: "auto", minWidth: "110px" }}
-              defaultValue="01"
-              onChange={(e) => setMonth(e.target.value)}
-            >
-              <option value="00">Todos</option>
-              <option value="01">Enero</option>
-              <option value="02">Febrero</option>
-              <option value="03">Marzo</option>
-              <option value="04">Abril</option>
-              <option value="05">Mayo</option>
-              <option value="06">Junio</option>
-              <option value="07">Julio</option>
-              <option value="08">Agosto</option>
-              <option value="09">Septiembre</option>
-              <option value="10">Octubre</option>
-              <option value="11">Noviembre</option>
-              <option value="12">Diciembre</option>
-            </select>
-          </div> */}
+          <div className="d-flex align-items-center gap-2">
+            <small className="text-muted mb-0 small">Mes:</small>
+           <MultiSelectMonths 
+            selectedMonths={selectedMonths}
+            onChange={setSelectedMonths}
+            label="Mes:"
+            placeholder="Seleccionar"
+           />
+          </div>
 
           {/* Botón Exportar */}
           <button className="btn btn-primary d-flex align-items-center gap-2">

@@ -39,6 +39,7 @@ const IndicatorCollectionDetail = () => {
   const [financialSummary, setFinancialSummary] = useState([]);
   const [rateSummary, setRateSummary] = useState([]);
   const [collectionDate, setCollectionDate] = useState("");
+  const [selectedMonths, setSelectedMonths] = useState([1,2,3,4,5,6,7,8,9,10,11,12]); // Todos los meses
 
 
   useEffect(() => {
@@ -192,7 +193,7 @@ const IndicatorCollectionDetail = () => {
     <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
       <HeaderIdicators selectedType={urlTipo} />
       <div className="container-lg mx-auto py-4 flex-grow-1">
-        <CollectionOfficeHeader dataOffice={filteredOffice} setYear={setYear} setMonth={setMonth} />
+        <CollectionOfficeHeader dataOffice={filteredOffice} setYear={setYear} selectedMonths={selectedMonths} setSelectedMonths={setSelectedMonths} />
 
         <CollectionOfficeCards totalRaised={totalReaised} totalProjected={totalProjected} />
 

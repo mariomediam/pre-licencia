@@ -69,7 +69,7 @@ export const MultiSelectMonths = ({
     <div ref={containerRef} style={styles.container}>
       {/* Botón trigger */}
       <div style={styles.triggerWrapper}>
-        <span style={styles.label}>{label}</span>
+        {/* <span style={styles.label}>{label}</span> */}
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
@@ -127,34 +127,28 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    backgroundColor: "#3366cc",
-    borderRadius: "4px",
-    padding: "6px 12px",
-  },
-  label: {
-    color: "#ffffff",
-    fontSize: "14px",
-    fontWeight: "500",
   },
   trigger: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: "8px",
-    backgroundColor: "#5588dd",
-    border: "none",
+    backgroundColor: "#ffffff",
+    border: "1px solid #ced4da",
     borderRadius: "4px",
-    padding: "4px 10px",
+    padding: "6px 12px",
     cursor: "pointer",
     minWidth: "100px",
+    fontSize: "14px",
   },
   triggerText: {
-    color: "#ffffff",
+    color: "#212529",
     fontSize: "14px",
     flex: 1,
     textAlign: "left",
   },
   arrow: {
-    color: "#ffffff",
+    color: "#212529",
     fontSize: "10px",
   },
   dropdown: {
@@ -163,7 +157,7 @@ const styles = {
     left: "0",
     marginTop: "4px",
     backgroundColor: "#ffffff",
-    border: "1px solid #e0e0e0",
+    border: "1px solid #ced4da",
     borderRadius: "4px",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
     minWidth: "220px",
