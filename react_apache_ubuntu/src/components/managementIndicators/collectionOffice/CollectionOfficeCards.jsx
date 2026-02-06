@@ -58,15 +58,16 @@ export const CollectionOfficeCards = ({ totalRaised, totalProjected }) => {
       icon: <CoinsIcon width={16} height={16} style={{ color: "#7c3aed" }} />,
     },
     {
-      title: "Monto pendiente de recaudación",
-      value: formatCurrency(pendingAmount),
-      icon: <CashIcon width={16} height={16} style={{ color: "#7c3aed" }} />,
-    },
-    {
       title: "Recaudación proyectada",
       value: formatCurrency(totalProjected),
       icon: <TrendingUpIcon width={16} height={16} style={{ color: "#7c3aed" }} />,
     },
+    {
+      title: "Monto pendiente de recaudación",
+      value: formatCurrency(pendingAmount),
+      icon: <CashIcon width={16} height={16} style={{ color: "#7c3aed" }} />,
+    },
+    
     {
       title: "Cumplimiento",
       value: `${completionPercentage}%`,

@@ -1,15 +1,30 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { HeaderIdicators } from "./HeaderIdicators";
-import { SelectTasa, SelectRecaudacionPorAnioYTasa } from "../../services/indicatorsService";
+import { SelectTasa, SelectRecaudacionPorAnioYTasa, SelectProyeccionPorAnioYTasa } from "../../services/indicatorsService";
 import { CollectionRateHeader } from "../../components/managementIndicators/collectionRate/CollectionRateHeader";
+import { CollectionOfficeCards } from "../../components/managementIndicators/collectionOffice/CollectionOfficeCards";
+import { CollectionOfficeByMonth } from "../../components/managementIndicators/collectionOffice/CollectionOfficeByMonth";
+import { FinancialSummaryByMonth } from "../../components/managementIndicators/collectionOffice/FinancialSummaryByMonth";
+import { transformarFecha } from "../../utils/varios";
+import { FooterIndicators } from "./FooterIndicators";
+import { CollecionDate } from "../../components/managementIndicators/CollecionDate";
+
 export const IndicatorRateDetail = () => {
 
     const { tipo: urlTipo, anio: urlYear, periodo: urlPeriodo, tasa: urlTasa } = useParams();
 
+    const selectedMonths = useMemo(() => urlPeriodo.split(",").map(Number), [urlPeriodo]);
+
     const [tasa, setTasa] = useState({});
     const [collection, setCollection] = useState([]);
     const [proyected, setProyected] = useState([]);
+    const [totalProjected, setTotalProjected] = useState(0);
+    const [totalReaised, setTotalReaised] = useState(0);
+    const [monthlyCollection, setMonthlyCollection] = useState([]);
+    const [monthlyProyected, setMonthlyProyected] = useState([]);
+    const [financialSummary, setFinancialSummary] = useState([]);
+    const [collectionDate, setCollectionDate] = useState("");
 
     useEffect(() => {
         const getTasa = async () => {
@@ -20,18 +35,112 @@ export const IndicatorRateDetail = () => {
     }, [urlTasa]);
 
     useEffect(() => {
+        if (collection.length > 0) {
+          setCollectionDate(transformarFecha(collection[0].D_Recaud_Inicio));
+        } else {
+          setCollectionDate("");
+        }
+      }, [collection]);
+
+    useEffect(() => {
         if (tasa.C_Tasa) {
             const getCollection = async () => {
                 const data = await SelectRecaudacionPorAnioYTasa({ anio: urlYear, tasa: tasa.C_Tasa });
-                console.log(data);
-                setCollection(data);
+                const dataFiltered = data.filter((item) => selectedMonths.includes(item.M_RecDet_Mes));
+                setCollection(dataFiltered);
             }
             getCollection();
         } else {
             setCollection([]);
         }
-    }, [urlYear, tasa]);
+    }, [urlYear, tasa, selectedMonths]);
 
+    useEffect(() => {
+        if (tasa.C_Tasa) {
+            const getProyected = async () => {
+                const data = await SelectProyeccionPorAnioYTasa({ opcion: "01", anio: urlYear, tasa: tasa.C_Tasa });
+                const dataFiltered = data.filter((item) => selectedMonths.includes(item.M_Mes));
+                setProyected(dataFiltered);
+            }
+            getProyected();
+        }
+    }, [urlYear, tasa, selectedMonths]);
+
+    useEffect(() => {
+        if (proyected.length > 0) {
+        const total = proyected.reduce((acc, { Q_Proyecc_Monto }) => acc + Q_Proyecc_Monto, 0);
+        setTotalProjected(parseFloat(total.toFixed(2)));
+        } else {
+            setTotalProjected(0);
+        }
+    }, [proyected]);
+
+    useEffect(() => {
+        const total = collection.reduce((acc, { Q_RecDet_Monto }) => acc + Q_RecDet_Monto, 0);
+        setTotalReaised(parseFloat(total.toFixed(2)));
+    }, [collection]);
+
+    useEffect(() => {
+        if (collection.length > 0) {
+            const monthlyTotals = collection.reduce((acc, { M_RecDet_Mes, Q_RecDet_Monto }) => {
+                acc[M_RecDet_Mes] = (acc[M_RecDet_Mes] || 0) + Q_RecDet_Monto;
+                return acc;
+            }, {});
+            const result = Array.from({ length: 12 }, (_, i) => ({
+                Mes: i + 1,
+                Monto: monthlyTotals[i + 1] || 0
+            }));
+            setMonthlyCollection(result);
+        } else {
+            setMonthlyCollection([]);
+        }
+    }, [collection]);
+
+    useEffect(() => {
+        const monthlyTotals = proyected.reduce((acc, { M_Mes, Q_Proyecc_Monto }) => {
+          acc[M_Mes] = (acc[M_Mes] || 0) + Q_Proyecc_Monto;
+          return acc;
+        }, {});
+    
+        const result = Array.from({ length: 12 }, (_, i) => ({
+          Mes: i + 1,
+          Monto: monthlyTotals[i + 1] || 0
+        }));
+        setMonthlyProyected(result);
+      }, [proyected]);
+
+      useEffect(() => {
+        if (monthlyCollection.length === 0) {
+          setFinancialSummary([]);
+          return;
+        }
+    
+        const topMonth = parseInt(urlYear) === new Date().getFullYear() ? new Date().getMonth() + 1 : 12;
+
+        console.log("topMonth", topMonth);
+        console.log("monthlyCollection", monthlyCollection);
+        console.log("monthlyProyected", monthlyProyected);
+        console.log("selectedMonths", selectedMonths);
+    
+        const result = monthlyCollection.filter(({ Mes }) => Mes <= topMonth).map(({ Mes, Monto }, index) => {
+          // Suma acumulada de projected hasta el mes actual (index + 1)
+          const accumulatedProjected = monthlyProyected.slice(0, index + 1).reduce((acc, { Monto }) => acc + Monto, 0);
+          // Suma acumulada de collection hasta el mes actual (index + 1)
+          const accumulatedCollection = monthlyCollection.slice(0, index + 1).reduce((acc, { Monto }) => acc + Monto, 0);
+    
+          return {
+            Mes: Mes,
+            collection: Monto,
+            projected: monthlyProyected[index]?.Monto || 0,
+            pendingCollection: (monthlyProyected[index]?.Monto || 0) - Monto > 0 ? (monthlyProyected[index]?.Monto || 0) - Monto : 0,
+            accumulatedPendingCollection: accumulatedProjected - accumulatedCollection > 0 ? accumulatedProjected - accumulatedCollection : 0
+          };
+        });
+        const resultFiltered = result.filter((item) => selectedMonths.includes(item.Mes));
+        setFinancialSummary(resultFiltered);
+      }, [monthlyCollection, monthlyProyected, urlYear, selectedMonths]);
+
+    
 
 
     return (
@@ -39,21 +148,21 @@ export const IndicatorRateDetail = () => {
             <HeaderIdicators selectedType={urlTipo} />
             <div className="container-lg mx-auto py-4 flex-grow-1">
                 <CollectionRateHeader tasa={tasa} year={urlYear} selectedMonths={urlPeriodo.split(",")} />
-                {/* <CollectionOfficeHeader dataOffice={filteredOffice} setYear={setYear} selectedMonths={selectedMonths} setSelectedMonths={setSelectedMonths} />
+               
     
-            <CollectionOfficeCards totalRaised={totalReaised} totalProjected={totalProjected} /> */}
+            <CollectionOfficeCards totalRaised={totalReaised} totalProjected={totalProjected} /> 
 
-                <div className="row g-4 mt-2">
-                    <div className="col-12 col-md-4">
-                        {/* <CollectionOfficeRaisedVsProjected totalRaised={totalReaised} totalProjected={totalProjected} year={year} /> */}
-                    </div>
-                    <div className="col-12 col-md-8">
-                        {/* <CollectionOfficeByMonth monthlyData={monthlyCollection} totalRaised={totalReaised} year={year} /> */}
-                    </div>
-                </div>
+                {/* <div className="row g-4 mt-2"> */}
+                    {/* <div className="col-12 col-md-4">
+                        <CollectionOfficeRaisedVsProjected totalRaised={totalReaised} totalProjected={totalProjected} year={year} />
+                    </div> */}
+                    {/* <div className="col-12 col-md-8"> */}
+                        <CollectionOfficeByMonth monthlyData={monthlyCollection} totalRaised={totalReaised} year={urlYear} />
+                    {/* </div> */}
+                {/* </div> */}
 
                 <div className="mt-4">
-                    {/* <FinancialSummaryByMonth financialSummary={financialSummary} /> */}
+                    <FinancialSummaryByMonth financialSummary={financialSummary} />
                 </div>
 
                 <div className="mt-4">
@@ -61,11 +170,11 @@ export const IndicatorRateDetail = () => {
                 </div>
 
                 <div className="mt-4">
-                    {/* <CollecionDate D_Recaud_Inicio={collectionDate} /> */}
+                    <CollecionDate D_Recaud_Inicio={collectionDate} />
                 </div>
 
             </div>
-            {/* <FooterIndicators /> */}
+            <FooterIndicators />
         </div>
     )
 }

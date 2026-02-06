@@ -335,9 +335,7 @@ const SelectProyeccionPorAnioYTasa = async ( params ) => {
     } = await axios.get(`${process.env.REACT_APP_API}/indicadores/select-proyeccion-por-anio-y-tasa?opcion=${opcion}&anio=${anio}&tasa=${tasa}`, credenciales, {
       headers,
     });
-    if (opcion === "01") {
-      return content[0];
-    }
+   
     return content;
   }
   catch (error) {
