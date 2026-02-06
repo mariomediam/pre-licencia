@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOffices } from "../../components/managementIndicators/officesData";
 import { getTasas } from "../../components/managementIndicators/TasasData";
@@ -17,7 +17,7 @@ import { FooterIndicators } from "./FooterIndicators";
 
 const IndicatorCollectionDetail = () => {
 
-  const navigate = useNavigate();
+  
   const { tipo: urlTipo = "01", code: urlCode = "00" } = useParams();
 
   const offices = getOffices();
@@ -28,7 +28,7 @@ const IndicatorCollectionDetail = () => {
 
 
   const [year, setYear] = useState(2026);
-  const [month, setMonth] = useState("00");
+  // const [month, setMonth] = useState("00");
   const [filteredTasas, setFilteredTasas] = useState([]);
   const [proyected, setProyected] = useState([]);
   const [collection, setCollection] = useState([]);
@@ -67,7 +67,7 @@ const IndicatorCollectionDetail = () => {
     }
 
     getCollection();
-  }, [year, month, filteredOffice.dependencia, filteredTasas, selectedMonths]);
+  }, [year, filteredOffice.dependencia, filteredTasas, selectedMonths]);
 
 
   useEffect(() => {
