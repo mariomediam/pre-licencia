@@ -224,7 +224,7 @@ const IndicatorCollectionDetail = () => {
         </div>
 
         <div className="mt-4">
-          <CollectiobOfficeByRate rateSummary={rateSummary} />
+          <CollectiobOfficeByRate rateSummary={rateSummary} year={year} periodo={selectedMonths.join(",")} />
         </div>
 
         <div className="mt-4">
