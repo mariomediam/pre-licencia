@@ -271,6 +271,79 @@ const SelectRecaudacionPorAnioYDependencia = async ( params ) => {
   }
 }
 
+// curl --location 'http://127.0.0.1:8000/api/indicadores/select-tasa?opcion=02&valor=i65' \
+// --data ''
+const SelectTasa = async ( params ) => {
+  const { opcion, valor } = params;
+  let credenciales = {};
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/select-tasa?opcion=${opcion}&valor=${valor}`, credenciales, {
+      headers,
+    });
+
+    if (content.length > 0) {
+      return content[0];
+    }
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+// curl --location 'http://127.0.0.1:8000/api/indicadores/select-recaudacion-por-anio-y-tasa?anio=2026&tasa=28' \
+// --data ''
+
+const SelectRecaudacionPorAnioYTasa = async ( params ) => {
+  const { anio, tasa } = params;
+  let credenciales = {};
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let {
+      data: { content },
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/select-recaudacion-por-anio-y-tasa?anio=${anio}&tasa=${tasa}`, credenciales, {
+      headers,
+    });    
+
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+// curl --location 'http://127.0.0.1:8000/api/indicadores/select-proyeccion-por-anio-y-tasa?opcion=01&anio=2026&tasa=28' \
+// --data ''
+
+const SelectProyeccionPorAnioYTasa = async ( params ) => {
+  const {opcion, anio, tasa} = params;
+  let credenciales = {};
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/select-proyeccion-por-anio-y-tasa?opcion=${opcion}&anio=${anio}&tasa=${tasa}`, credenciales, {
+      headers,
+    });
+    if (opcion === "01") {
+      return content[0];
+    }
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
 
 export {
   TranspVigente,
@@ -285,4 +358,8 @@ export {
   BuscarRecaudacionSatp,
   SelectProyeccionPorAnioYDependencia,
   SelectRecaudacionPorAnioYDependencia,
+  SelectTasa,
+  SelectRecaudacionPorAnioYTasa,
+  SelectProyeccionPorAnioYTasa
 };
+

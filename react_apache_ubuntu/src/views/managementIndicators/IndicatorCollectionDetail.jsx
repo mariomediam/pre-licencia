@@ -200,8 +200,6 @@ const IndicatorCollectionDetail = () => {
     setRateSummary(resultByTasa);
   }, [ collection, proyected ]);
 
-  console.log("rateSummary", rateSummary);
-
   return (
     <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
       <HeaderIdicators selectedType={urlTipo} />
@@ -224,7 +222,7 @@ const IndicatorCollectionDetail = () => {
         </div>
 
         <div className="mt-4">
-          <CollectiobOfficeByRate rateSummary={rateSummary} year={year} periodo={selectedMonths.join(",")} />
+          <CollectiobOfficeByRate rateSummary={rateSummary} year={year} periodo={selectedMonths.join(",")} tipo={urlTipo} />
         </div>
 
         <div className="mt-4">

@@ -7,7 +7,7 @@ const getProgressColor = (percentage) => {
   return '#ef4444'; // rojo
 };
 
-export const CollectiobOfficeByRate = ({ rateSummary = [], year, periodo }) => {
+export const CollectiobOfficeByRate = ({ rateSummary = [], year, periodo, tipo }) => {
   return (
     <div className="bg-white rounded-4 shadow-sm p-4">
       <h6 className="fw-bold mb-4">Detalle por concepto de tasa</h6>
@@ -59,7 +59,7 @@ export const CollectiobOfficeByRate = ({ rateSummary = [], year, periodo }) => {
                   </td>
                   <td className="py-3 text-center">
                     <a
-                      href={`/indicadores-detail-rate/${year}/${periodo}/${item.C_Tasa_SATP}`} 
+                      href={`/indicadores-detail-rate/${tipo}/${year}/${periodo}/${item.C_Tasa_SATP}`} 
                       className="text-primary text-decoration-none small"
                       
                     >

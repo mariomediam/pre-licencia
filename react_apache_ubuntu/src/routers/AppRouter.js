@@ -39,7 +39,7 @@ export const AppRouter = () => {
 
           <Route path="/indicadores-list/:tipo/:code" element={<ListIndicators />} />
           <Route path="/indicadores-detail/:tipo/:code" element={<IndicatorCollectionDetail />} />  
-          <Route path="/indicadores-detail-rate/:anio/:periodo/:tasa" element={<IndicatorRateDetail />} />
+          <Route path="/indicadores-detail-rate/:tipo/:anio/:periodo/:tasa" element={<IndicatorRateDetail />} />
 
           {/* <Route path="/indicadores/:anio" element={<MainIndicators />} /> */}
           <Route
