@@ -1,4 +1,5 @@
 import axios from "axios";
+import UseAxios from "../utils/useAxios";
 
 const URL = `${process.env.REACT_APP_API}/transporte`;
 
@@ -273,7 +274,7 @@ const SelectRecaudacionPorAnioYDependencia = async ( params ) => {
 
 // curl --location 'http://127.0.0.1:8000/api/indicadores/select-tasa?opcion=02&valor=i65' \
 // --data ''
-const SelectTasa = async ( params ) => {
+const SelectTasa = async ( params ) => {  
   const { opcion, valor } = params;
   let credenciales = {};
   try {
@@ -286,7 +287,7 @@ const SelectTasa = async ( params ) => {
       headers,
     });
 
-    if (content.length > 0) {
+    if (opcion.includes("01", "02") && content.length > 0) {
       return content[0];
     }
     return content;
@@ -343,6 +344,39 @@ const SelectProyeccionPorAnioYTasa = async ( params ) => {
   }
 }
 
+// curl --location --request PUT 'http://127.0.0.1:8000/api/indicadores/update-tasa/358' \
+// --header 'Content-Type: application/json' \
+// --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNjk0MzgwLCJpYXQiOjE3NzA2NTExODAsImp0aSI6IjkwODU0ZmU4ZjdhYTRjNDFhM2VhYzc5YjQ2NzgzODRjIiwidXNlcl9pZCI6Ik1NRURJTkEgICAgICAgICAgICAgIn0.ljZSxhL_plcYjeXdpzc3Y-J7kIHhxza-Zaj4keYoZm4' \
+// --data '{
+//     "dependencia": 110689
+// }'
+
+const UpdateTasa = async ( params ) => {
+  const { c_tasa, dependencia } = params;
+  let api = UseAxios();
+  
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    const body = {
+      dependencia: dependencia
+    };
+    let {
+      data: { content },
+    } = await api.put(`${process.env.REACT_APP_API}/indicadores/update-tasa/${c_tasa}`, body, { headers });
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+
+
+
+
+
 export {
   TranspVigente,
   VehiculosAutorizadosMes,
@@ -358,6 +392,7 @@ export {
   SelectRecaudacionPorAnioYDependencia,
   SelectTasa,
   SelectRecaudacionPorAnioYTasa,
-  SelectProyeccionPorAnioYTasa
+  SelectProyeccionPorAnioYTasa,
+  UpdateTasa
 };
 

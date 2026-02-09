@@ -32,6 +32,7 @@ import { ProyectoAgregar } from "../views/territorial/proyectosInversion/Proyect
 import { ProyectoEditar } from "../views/territorial/proyectosInversion/ProyectoEditar";
 import { DashboardProyectos } from "../views/territorial/proyectosInversion/DashboardProyectos";
 import { SincronizaGastoDiario } from "../views/territorial/proyectosInversion/SincronizaGastoDiario";
+import { ManageRate } from "../views/managementIndicators/ManageRate";
 
 export const DashboardRoutes = () => {
   return (
@@ -151,6 +152,8 @@ export const DashboardRoutes = () => {
            path="/territorial/proyectos-inversion/sincroniza-gasto-diario"
            element={<SincronizaGastoDiario />}
           />
+
+          <Route path="/recaudacion/gestionar-tasa" element={<ManageRate />} />
         </Routes>
 
       </div>
