@@ -8,6 +8,7 @@ import { SelectTasa } from "../../services/indicatorsService";
 import { ManageReteItem } from "../../components/managementIndicators/rates/ManageReteItem";
 import { EditRateModal } from "../../components/managementIndicators/rates/EditRateModal";
 import { FooterIndicators } from "./FooterIndicators";
+import { RateProjectionsModal } from "../../components/managementIndicators/rates/RateProjectionsModal";
 
 export const ManageRate = () => {
     const [filtro, setFiltro] = useState("03");
@@ -19,6 +20,11 @@ export const ManageRate = () => {
   const handleCloseEditRate = () => setShowEditRate(false);
   const handleShowEditRate = () => setShowEditRate(true);
 
+
+
+  const [showRateProjections, setShowRateProjections] = useState(false);
+  const handleCloseRateProjections = () => setShowRateProjections(false);
+  const handleShowRateProjections = () => setShowRateProjections(true);
   
 
     const handleBuscar = async () => {
@@ -139,6 +145,7 @@ export const ManageRate = () => {
                             <tbody>
                                 {rates.map((rate) => (
                                     <ManageReteItem key={rate.C_Tasa_SATP} rate={rate} handleShowEditRate={handleShowEditRate} setRateSelected={setRateSelected}                                     
+                                    handleShowRateProjections={handleShowRateProjections}
                                     />
                                 ))}
                             </tbody>
@@ -151,6 +158,12 @@ export const ManageRate = () => {
                 handleClose={handleCloseEditRate}
                 rateSelected={rateSelected}
                 handleBuscar={handleBuscar}
+            />
+
+            <RateProjectionsModal
+                show={showRateProjections}
+                handleClose={handleCloseRateProjections}
+                rateSelected={rateSelected}              
             />
 
 <FooterIndicators />

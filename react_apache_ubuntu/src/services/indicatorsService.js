@@ -373,6 +373,46 @@ const UpdateTasa = async ( params ) => {
 }
 
 
+// curl --location 'http://127.0.0.1:8000/api/indicadores/insertar-proyecciones/141/2026' \
+// --header 'Content-Type: application/json' \
+// --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNzQxNzE3LCJpYXQiOjE3NzA2OTg1MTcsImp0aSI6ImU1YWIwZTJlODI3NzQzYzA4MDdkZWZiOGNjODgwYmRhIiwidXNlcl9pZCI6Ik1NRURJTkEgICAgICAgICAgICAgIn0.4DeTpUrmJ4S56jigHSukJ4NCWLTG6QSfNDmR65S9yiA' \
+// --data '{
+//     "proyecciones": [
+//         {
+//             "M_Mes": 2,
+//             "Q_Proyecc_Monto": 100
+//         },
+//         {
+//             "M_Mes": 4,
+//             "Q_Proyecc_Monto": 200
+//         }
+//     ]
+// }'
+const InsertarProyecciones = async ( params ) => {
+
+  console.log("params *****************", params);
+  const { c_tasa, anio, proyecciones } = params;
+
+  const body = {
+    proyecciones: proyecciones
+  };
+
+  console.log("body *******************", body);
+
+  let api = UseAxios();
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await api.post(`${process.env.REACT_APP_API}/indicadores/insertar-proyecciones/${c_tasa}/${anio}`, body, { headers });
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+} ;
 
 
 
@@ -393,6 +433,7 @@ export {
   SelectTasa,
   SelectRecaudacionPorAnioYTasa,
   SelectProyeccionPorAnioYTasa,
-  UpdateTasa
+  UpdateTasa,
+  InsertarProyecciones
 };
 

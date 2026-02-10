@@ -2,12 +2,17 @@ import TrendingUpIcon from "../../../icons/TrendingUpIcon";
 import { formatMoney } from "../../../utils/varios";
 import EditIcon from "../../../icons/EditIcon";
 
-export const ManageReteItem = ({ rate, handleShowEditRate, setRateSelected }) => {
+export const ManageReteItem = ({ rate, handleShowEditRate, handleShowRateProjections, setRateSelected }) => {
 
 
     const handleEditRate = () => {
         setRateSelected(rate);
         handleShowEditRate();
+    };
+
+    const handleEditRateProjections = () => {
+        setRateSelected(rate);
+        handleShowRateProjections();
     };
   return (
     <tr style={{ borderBottom: "1px solid #e9ecef" }}>
@@ -48,6 +53,7 @@ export const ManageReteItem = ({ rate, handleShowEditRate, setRateSelected }) =>
                     className="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center"
                     style={{ width: "36px", height: "36px", borderRadius: "8px" }}
                     title="Proyección"
+                    onClick={handleEditRateProjections}
                 >
                     <TrendingUpIcon width={16} height={16} />
                 </button>
