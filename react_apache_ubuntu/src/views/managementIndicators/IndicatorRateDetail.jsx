@@ -29,7 +29,11 @@ export const IndicatorRateDetail = () => {
     useEffect(() => {
         const getTasa = async () => {
             const data = await SelectTasa({ opcion: "02", valor: urlTasa });
-            setTasa(data);
+            if (data.length > 0) {
+                setTasa(data[0]);
+            } else {
+                setTasa({});
+            }
         }
         getTasa();
     }, [urlTasa]);
@@ -117,11 +121,7 @@ export const IndicatorRateDetail = () => {
     
         const topMonth = parseInt(urlYear) === new Date().getFullYear() ? new Date().getMonth() + 1 : 12;
 
-        console.log("topMonth", topMonth);
-        console.log("monthlyCollection", monthlyCollection);
-        console.log("monthlyProyected", monthlyProyected);
-        console.log("selectedMonths", selectedMonths);
-    
+        
         const result = monthlyCollection.filter(({ Mes }) => Mes <= topMonth).map(({ Mes, Monto }, index) => {
           // Suma acumulada de projected hasta el mes actual (index + 1)
           const accumulatedProjected = monthlyProyected.slice(0, index + 1).reduce((acc, { Monto }) => acc + Monto, 0);
