@@ -415,7 +415,29 @@ const InsertarProyecciones = async ( params ) => {
 } ;
 
 
+// curl --location 'http://127.0.0.1:8000/api/indicadores/buscar-recaudacion-actas-control-satp?anio=2026&tipo=1' \
+// --data ''
 
+const BuscarRecaudacionActasControlSatp = async ( params ) => {
+  const { anio, tipo } = params;
+
+
+  let credenciales = {};
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/buscar-recaudacion-actas-control-satp?anio=${anio}&tipo=${tipo}`, credenciales, {
+      headers,
+    });
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
 
 export {
   TranspVigente,
@@ -434,6 +456,7 @@ export {
   SelectRecaudacionPorAnioYTasa,
   SelectProyeccionPorAnioYTasa,
   UpdateTasa,
-  InsertarProyecciones
+  InsertarProyecciones,
+  BuscarRecaudacionActasControlSatp
 };
 

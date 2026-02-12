@@ -40,11 +40,11 @@ export const IndicatorRateDetail = () => {
 
     useEffect(() => {
         if (collection.length > 0) {
-          setCollectionDate(transformarFecha(collection[0].D_Recaud_Inicio));
+            setCollectionDate(transformarFecha(collection[0].D_Recaud_Inicio));
         } else {
-          setCollectionDate("");
+            setCollectionDate("");
         }
-      }, [collection]);
+    }, [collection]);
 
     useEffect(() => {
         if (tasa.C_Tasa) {
@@ -72,8 +72,8 @@ export const IndicatorRateDetail = () => {
 
     useEffect(() => {
         if (proyected.length > 0) {
-        const total = proyected.reduce((acc, { Q_Proyecc_Monto }) => acc + Q_Proyecc_Monto, 0);
-        setTotalProjected(parseFloat(total.toFixed(2)));
+            const total = proyected.reduce((acc, { Q_Proyecc_Monto }) => acc + Q_Proyecc_Monto, 0);
+            setTotalProjected(parseFloat(total.toFixed(2)));
         } else {
             setTotalProjected(0);
         }
@@ -102,45 +102,45 @@ export const IndicatorRateDetail = () => {
 
     useEffect(() => {
         const monthlyTotals = proyected.reduce((acc, { M_Mes, Q_Proyecc_Monto }) => {
-          acc[M_Mes] = (acc[M_Mes] || 0) + Q_Proyecc_Monto;
-          return acc;
+            acc[M_Mes] = (acc[M_Mes] || 0) + Q_Proyecc_Monto;
+            return acc;
         }, {});
-    
+
         const result = Array.from({ length: 12 }, (_, i) => ({
-          Mes: i + 1,
-          Monto: monthlyTotals[i + 1] || 0
+            Mes: i + 1,
+            Monto: monthlyTotals[i + 1] || 0
         }));
         setMonthlyProyected(result);
-      }, [proyected]);
+    }, [proyected]);
 
-      useEffect(() => {
+    useEffect(() => {
         if (monthlyCollection.length === 0) {
-          setFinancialSummary([]);
-          return;
+            setFinancialSummary([]);
+            return;
         }
-    
+
         const topMonth = parseInt(urlYear) === new Date().getFullYear() ? new Date().getMonth() + 1 : 12;
 
-        
+
         const result = monthlyCollection.filter(({ Mes }) => Mes <= topMonth).map(({ Mes, Monto }, index) => {
-          // Suma acumulada de projected hasta el mes actual (index + 1)
-          const accumulatedProjected = monthlyProyected.slice(0, index + 1).reduce((acc, { Monto }) => acc + Monto, 0);
-          // Suma acumulada de collection hasta el mes actual (index + 1)
-          const accumulatedCollection = monthlyCollection.slice(0, index + 1).reduce((acc, { Monto }) => acc + Monto, 0);
-    
-          return {
-            Mes: Mes,
-            collection: Monto,
-            projected: monthlyProyected[index]?.Monto || 0,
-            pendingCollection: (monthlyProyected[index]?.Monto || 0) - Monto > 0 ? (monthlyProyected[index]?.Monto || 0) - Monto : 0,
-            accumulatedPendingCollection: accumulatedProjected - accumulatedCollection > 0 ? accumulatedProjected - accumulatedCollection : 0
-          };
+            // Suma acumulada de projected hasta el mes actual (index + 1)
+            const accumulatedProjected = monthlyProyected.slice(0, index + 1).reduce((acc, { Monto }) => acc + Monto, 0);
+            // Suma acumulada de collection hasta el mes actual (index + 1)
+            const accumulatedCollection = monthlyCollection.slice(0, index + 1).reduce((acc, { Monto }) => acc + Monto, 0);
+
+            return {
+                Mes: Mes,
+                collection: Monto,
+                projected: monthlyProyected[index]?.Monto || 0,
+                pendingCollection: (monthlyProyected[index]?.Monto || 0) - Monto > 0 ? (monthlyProyected[index]?.Monto || 0) - Monto : 0,
+                accumulatedPendingCollection: accumulatedProjected - accumulatedCollection > 0 ? accumulatedProjected - accumulatedCollection : 0
+            };
         });
         const resultFiltered = result.filter((item) => selectedMonths.includes(item.Mes));
         setFinancialSummary(resultFiltered);
-      }, [monthlyCollection, monthlyProyected, urlYear, selectedMonths]);
+    }, [monthlyCollection, monthlyProyected, urlYear, selectedMonths]);
 
-    
+
 
 
     return (
@@ -148,18 +148,11 @@ export const IndicatorRateDetail = () => {
             <HeaderIdicators selectedType={urlTipo} />
             <div className="container-lg mx-auto py-4 flex-grow-1">
                 <CollectionRateHeader tasa={tasa} year={urlYear} selectedMonths={urlPeriodo.split(",")} />
-               
-    
-            <CollectionOfficeCards totalRaised={totalReaised} totalProjected={totalProjected} /> 
 
-                {/* <div className="row g-4 mt-2"> */}
-                    {/* <div className="col-12 col-md-4">
-                        <CollectionOfficeRaisedVsProjected totalRaised={totalReaised} totalProjected={totalProjected} year={year} />
-                    </div> */}
-                    {/* <div className="col-12 col-md-8"> */}
-                        <CollectionOfficeByMonth monthlyData={monthlyCollection} totalRaised={totalReaised} year={urlYear} />
-                    {/* </div> */}
-                {/* </div> */}
+
+                <CollectionOfficeCards totalRaised={totalReaised} totalProjected={totalProjected} />
+
+                <CollectionOfficeByMonth monthlyData={monthlyCollection} totalRaised={totalReaised} year={urlYear} />
 
                 <div className="mt-4">
                     <FinancialSummaryByMonth financialSummary={financialSummary} />

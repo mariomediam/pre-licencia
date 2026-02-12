@@ -17,6 +17,7 @@ import { InvestmentProjectsDetail } from "../components/managementIndicators/Inv
 import { ListIndicators } from "../views/managementIndicators/ListIndicators";
 import IndicatorCollectionDetail from "../views/managementIndicators/IndicatorCollectionDetail";
 import { IndicatorRateDetail } from "../views/managementIndicators/IndicatorRateDetail";
+import { InspectionReports } from "../views/managementIndicators/InspectionReports";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -77,6 +78,10 @@ export const AppRouter = () => {
           <Route
             path="/indicadores/proyectos-inversion/:anio"
             element={<InvestmentProjectsDetail />}
+          />
+          <Route
+            path="/indicadores/actas-control/:anio"
+            element={<InspectionReports />}
           />
 
 

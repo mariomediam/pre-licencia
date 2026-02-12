@@ -10,7 +10,8 @@ const formatNumber = (value) => {
     }).format(Number(value));
 };
 
-export const CollectionOfficeByMonth = ({ monthlyData = [], totalRaised = 0, year = 0 }) => {
+
+export const InspectionReportsGRaphByMonth = ({ monthlyData = [], totalRaised = 0, year = 0 }) => {
     const dafaultOption = useMemo(
         () => {
             const montos = monthlyData.length > 0 
