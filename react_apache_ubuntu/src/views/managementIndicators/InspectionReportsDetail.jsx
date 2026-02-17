@@ -6,6 +6,9 @@ import Swal from "sweetalert2";
 import { HeaderIdicators } from "./HeaderIdicators";
 import { FooterIndicators } from "./FooterIndicators";
 import { InspectionReportsInfractHeader } from "../../components/managementIndicators/inspectionReports/InspectionReportsInfractHeader";
+import { InspectionReportsCards } from "../../components/managementIndicators/inspectionReports/InspectionReportsCards";
+import { InspectionReportsGraphByTotal } from "../../components/managementIndicators/inspectionReports/InspectionReportsGraphByTotal";
+import { InspectionReportsGRaphByMonth } from "../../components/managementIndicators/inspectionReports/InspectionReportsGRaphByMonth";
 
 export const InspectionReportsDetail = () => {
 
@@ -74,13 +77,21 @@ export const InspectionReportsDetail = () => {
         setmonthlyRecaudado(result);
       }, [recaudado]);
 
+      useEffect(() => {
+        if (recaudado.length > 0) {
+          setTotalActas(recaudado.reduce((acc, curr) => acc + curr.TotalActas, 0));
+        } else {
+          setTotalActas(0);
+        }
+      }, [recaudado]);
+
 
       return (
         <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
           <HeaderIdicators selectedType={urlTipo} />
           <div className="container-lg mx-auto py-4 flex-grow-1">
             <InspectionReportsInfractHeader year={urlYear} infraction={infraction} />
-            {/* <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} porEjecutar={totalPorEjecutar} totalActas={totalActas} isLoading={isLoadingRecaudado} />
+            <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} porEjecutar={totalPorEjecutar} totalActas={totalActas} isLoading={isLoadingRecaudado} />
     
             <div className="row g-4 mt-0">
               <div className="col-12 col-md-4">
@@ -92,7 +103,7 @@ export const InspectionReportsDetail = () => {
             </div>
     
     
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} />
             </div> */}
           </div>
