@@ -1,13 +1,20 @@
 import ArrowRightIcon from "../../icons/ArrowRight";
 import { useNavigate } from "react-router-dom";
+
+const currentYear = new Date().getFullYear();
   
 export const CardItemIndicator = ({ dataItemIndicator }) => {
-  const { type, code, title, subTitle, icon } = dataItemIndicator;
+  const { type, code, title, subTitle, icon, codIndicator } = dataItemIndicator;
 
   const navigate = useNavigate();
 
   const onClickGoTo = () => {
-    navigate(`/indicadores-detail/${type}/${code}`);
+    if (codIndicator === "010201") {
+      navigate(`/indicadores/actas-control/${currentYear}`);
+    } else {
+      navigate(`/indicadores-detail/${type}/${code}`);
+    }
+    
   }
 
   return (
@@ -25,7 +32,7 @@ export const CardItemIndicator = ({ dataItemIndicator }) => {
         className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 mt-3 small fw-medium p-0"
         onClick={onClickGoTo}
       >
-        Ver indicadores <ArrowRightIcon width={16} height={16} />
+        Ver indicadores<ArrowRightIcon width={16} height={16} />
       </button>
     </div>
   );
