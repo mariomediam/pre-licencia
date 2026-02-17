@@ -9,6 +9,7 @@ import { InspectionReportsCards } from "../../components/managementIndicators/in
 import { InspectionReportsGraphByTotal } from "../../components/managementIndicators/inspectionReports/InspectionReportsGraphByTotal";
 import { InspectionReportsGRaphByMonth } from "../../components/managementIndicators/inspectionReports/InspectionReportsGRaphByMonth";
 import { InspectionReportsSummaryByInfrac } from "../../components/managementIndicators/inspectionReports/InspectionReportsSummaryByInfrac";
+import { FooterIndicators } from "./FooterIndicators";
 
 export const InspectionReports = () => {
   const { anio: urlYear } = useParams();
@@ -127,6 +128,7 @@ export const InspectionReports = () => {
           <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} />
         </div>
       </div>
+      <FooterIndicators />
     </div>
   )
 }
