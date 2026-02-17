@@ -90,11 +90,13 @@ export const InspectionReports = () => {
           Abreviatura: item.Abreviatura,
           Descripcion: item.Descripcion,
           Norma: item.Norma,
-          Monto: 0
+          Monto: 0,
+          TotalActas: 0
         };
       }
 
       acc[key].Monto += item.Monto;
+      acc[key].TotalActas += item.TotalActas;
       return acc;
     }, {});
 
@@ -125,7 +127,7 @@ export const InspectionReports = () => {
 
 
         <div className="mt-4">
-          <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} />
+          <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} year={urlYear} />
         </div>
       </div>
       <FooterIndicators />

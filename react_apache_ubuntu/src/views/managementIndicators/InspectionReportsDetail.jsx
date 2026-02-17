@@ -9,6 +9,7 @@ import { InspectionReportsInfractHeader } from "../../components/managementIndic
 import { InspectionReportsCards } from "../../components/managementIndicators/inspectionReports/InspectionReportsCards";
 import { InspectionReportsGraphByTotal } from "../../components/managementIndicators/inspectionReports/InspectionReportsGraphByTotal";
 import { InspectionReportsGRaphByMonth } from "../../components/managementIndicators/inspectionReports/InspectionReportsGRaphByMonth";
+import { InspectionReportsInfractSummaryByMonth } from "../../components/managementIndicators/inspectionReports/InspectionReportsInfractSummaryByMonth";
 
 export const InspectionReportsDetail = () => {
 
@@ -20,7 +21,7 @@ export const InspectionReportsDetail = () => {
   const [totalPorCobrar, setTotalPorCobrar] = useState(100);
   const [totalPorEjecutar, setTotalPorEjecutar] = useState(200);
   const [monthlyRecaudado, setmonthlyRecaudado] = useState([])
-  const [recaudadoAgrupadoPorInfraccion, setRecaudadoAgrupadoPorInfraccion] = useState([])
+  
   const [infraction, setinfraction] = useState({})
 
     const urlTipo = "01";
@@ -85,7 +86,6 @@ export const InspectionReportsDetail = () => {
         }
       }, [recaudado]);
 
-
       return (
         <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
           <HeaderIdicators selectedType={urlTipo} />
@@ -103,9 +103,9 @@ export const InspectionReportsDetail = () => {
             </div>
     
     
-            {/* <div className="mt-4">
-              <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} />
-            </div> */}
+            <div className="mt-4">
+              <InspectionReportsInfractSummaryByMonth monthlyData={recaudado} />
+            </div>
           </div>
           <FooterIndicators />
         </div>
