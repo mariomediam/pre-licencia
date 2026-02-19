@@ -11,15 +11,57 @@ import { FooterIndicators } from "../managementIndicators/FooterIndicators";
 import PlusIcon from "../../icons/PlusIcon";
 import { TrainingPerMonthDetail } from "../../components/TransortTraining/TrainingPerMonthDetail";
 import EditIcon from "../../icons/EditIcon";
+import { TransportTrainingAddModal } from "../../components/TransortTraining/TransportTrainingAddModal";
+import { listarCapacitacionTema, listarCapacitacionModalidad, listarCapacitacionCapacitador } from "../../services/transporteService";
 
 export const TransportTrainingPerMonth = () => {
 
+    const navigate = useNavigate();
     const { anio, mes } = useParams();
+
     const [capacitaciones, setCapacitaciones] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [totalCapacitaciones, setTotalCapacitaciones] = useState(0);
     const [observacion, setObservacion] = useState({});
-    const navigate = useNavigate();
+    const [temas, setTemas] = useState([])
+    const [modalidades, setModalidades] = useState([])
+    const [capacitadores, setCapacitadores] = useState([])
+
+    
+
+
+    const [showAddTraining, setShowAddTraining] = useState(false);
+    const handleCloseAddTraining = () => setShowAddTraining(false);
+    const handleShowAddTraining = () => setShowAddTraining(true);
+
+    useEffect(() => {
+
+        const getTemas = async () => {
+            const data = await listarCapacitacionTema();            
+            setTemas(data);
+        }
+        getTemas();
+
+    }, []);
+
+
+    useEffect(() => {
+        const getModalidades = async () => {
+            const data = await listarCapacitacionModalidad();
+            setModalidades(data);
+        }
+        getModalidades();
+    }, []);
+
+    useEffect(() => {
+        const getCapacitadores = async () => {
+            const data = await listarCapacitacionCapacitador();
+            setCapacitadores(data);
+        }
+        getCapacitadores();
+    }, []);
+
+
     useEffect(() => {
         try {
             setIsLoading(true);
@@ -103,7 +145,7 @@ export const TransportTrainingPerMonth = () => {
                                 Exportar
                                 <DownloadIcon width={24} height={24} />
                             </button>
-                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || capacitaciones.length === 0}>
+                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || capacitaciones.length === 0} onClick={handleShowAddTraining}>
                                 Agregar capacitación
                                 <PlusIcon width={24} height={24} />
                             </button>
@@ -120,7 +162,7 @@ export const TransportTrainingPerMonth = () => {
 
                         <div className="d-flex justify-content-between align-items-end mt-3 gap-2">
                             <small className="text-muted">Observaciones</small>
-                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || capacitaciones.length === 0}>
+                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading}>
                                 Editar observaciones
                                 <EditIcon width={24} height={24} />
                             </button>
@@ -135,6 +177,13 @@ export const TransportTrainingPerMonth = () => {
             </div>
 
             <FooterIndicators />
+            <TransportTrainingAddModal
+                show={showAddTraining}
+                handleClose={handleCloseAddTraining}              
+                temas={temas}
+                modalidades={modalidades}
+                capacitadores={capacitadores}
+            />
 
         </>
     )
