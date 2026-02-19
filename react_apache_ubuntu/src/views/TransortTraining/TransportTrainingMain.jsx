@@ -122,7 +122,7 @@ export const TransportTrainingMain = () => {
               <div className="spinner-border text-primary" role="status">
                 <span className="">Loading...</span>
               </div>
-            </div> : <TrainingPerMonth capacitaciones={capacitaciones} />}
+            </div> : <TrainingPerMonth capacitaciones={capacitaciones} anio={anio} />}
           </div>
 
         </div>

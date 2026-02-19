@@ -1,27 +1,38 @@
+import { useNavigate } from "react-router-dom";
+
 import EyeIcon from "../../icons/EyeIcon";
 
-export const TrainingPerMonth = ({ capacitaciones }) => {
+export const TrainingPerMonth = ({ capacitaciones, anio }) => {
+
+  const navigate = useNavigate();
+
+  const onClickView = (anio, mes) => {
+    navigate(`/transportation/training/per-month/${anio}/${mes}`);
+  }
+
   const mesesDelAnio = [
-    { numero: 1, nombre: 'Enero' },
-    { numero: 2, nombre: 'Febrero' },
-    { numero: 3, nombre: 'Marzo' },
-    { numero: 4, nombre: 'Abril' },
-    { numero: 5, nombre: 'Mayo' },
-    { numero: 6, nombre: 'Junio' },
-    { numero: 7, nombre: 'Julio' },
-    { numero: 8, nombre: 'Agosto' },
-    { numero: 9, nombre: 'Septiembre' },
-    { numero: 10, nombre: 'Octubre' },
-    { numero: 11, nombre: 'Noviembre' },
-    { numero: 12, nombre: 'Diciembre' }
+    { mes: 1, nombre: 'Enero' },
+    { mes: 2, nombre: 'Febrero' },
+    { mes: 3, nombre: 'Marzo' },
+    { mes: 4, nombre: 'Abril' },
+    { mes: 5, nombre: 'Mayo' },
+    { mes: 6, nombre: 'Junio' },
+    { mes: 7, nombre: 'Julio' },
+    { mes: 8, nombre: 'Agosto' },
+    { mes: 9, nombre: 'Septiembre' },
+    { mes: 10, nombre: 'Octubre' },
+    { mes: 11, nombre: 'Noviembre' },
+    { mes: 12, nombre: 'Diciembre' }
   ];
 
-  const obtenerCantidadPorMes = (numeroMes) => {
-    const capacitacion = capacitaciones.find(cap => cap.mes === numeroMes);
+  const obtenerCantidadPorMes = (mes) => {
+    const capacitacion = capacitaciones.find(cap => cap.mes === mes);
     return capacitacion ? capacitacion.Q_Capacita_Cantidad : 0;
   };
 
   const maxCantidad = Math.max(...capacitaciones.map(cap => cap.Q_Capacita_Cantidad), 1);
+
+
 
   return (
     <>
@@ -35,13 +46,13 @@ export const TrainingPerMonth = ({ capacitaciones }) => {
           </tr>
         </thead>
         <tbody>
-          {mesesDelAnio.map((mes) => {
-            const cantidad = obtenerCantidadPorMes(mes.numero);
+          {mesesDelAnio.map((capacitacion) => {
+            const cantidad = obtenerCantidadPorMes(capacitacion.mes);
             const porcentaje = maxCantidad > 0 ? (cantidad / maxCantidad) * 100 : 0;
             
             return (
-              <tr key={mes.numero} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                <td style={{ padding: '12px 10px', fontWeight: '500' }}>{mes.nombre}</td>
+              <tr key={capacitacion.mes} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <td style={{ padding: '12px 10px', fontWeight: '500' }}>{capacitacion.nombre}</td>
                 <td style={{ padding: '12px 10px', textAlign: 'right', fontWeight: '500' }}>
                   {cantidad.toLocaleString()}
                 </td>
@@ -71,7 +82,7 @@ export const TrainingPerMonth = ({ capacitaciones }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
-                  }}>
+                    }} onClick={() => onClickView(anio, capacitacion.mes)}>
                     <EyeIcon className="text-primary" width={20} height={20} />
                   </button>
                 </td>
