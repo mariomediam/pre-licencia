@@ -157,7 +157,7 @@ export const TransportTrainingPerMonth = () => {
                             <div className="spinner-border text-primary" role="status">
                                 <span className="">Loading...</span>
                             </div>
-                        </div> : <TrainingPerMonthDetail capacitaciones={capacitaciones} anio={anio} />}
+                        </div> : <TrainingPerMonthDetail capacitaciones={capacitaciones} anio={anio} temas={temas} modalidades={modalidades} capacitadores={capacitadores} />}
 
 
                         <div className="d-flex justify-content-between align-items-end mt-3 gap-2">

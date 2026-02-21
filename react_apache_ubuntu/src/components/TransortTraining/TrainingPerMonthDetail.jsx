@@ -4,19 +4,32 @@ import EyeIcon from "../../icons/EyeIcon";
 import EditIcon from "../../icons/EditIcon";
 import TrashIcon from "../../icons/TrashIcon";
 import { TransportTrainingViewModal } from "./TransportTrainingViewModal";
-export const TrainingPerMonthDetail = ({ capacitaciones }) => {
+import { TransportTrainingEditModal } from "./TransportTrainingEditModal";
+
+
+export const TrainingPerMonthDetail = ({ capacitaciones, temas, modalidades, capacitadores }) => {
 
 const [capacitacionSelected, setCapacitacionSelected] = useState({})
+
+
+
+const [showViewTraining, setShowViewTraining] = useState(false)
+const handleCloseViewTraining = () => setShowViewTraining(false)
+const handleShowViewTraining = () => setShowViewTraining(true)
+
+const [showEditTraining, setShowEditTraining] = useState(false)
+const handleCloseEditTraining = () => setShowEditTraining(false)
+const handleShowEditTraining = () => setShowEditTraining(true)
 
 const handleViewCapacitacion = (capacitacion) => {
     setCapacitacionSelected(capacitacion)
     handleShowViewTraining()
 }
 
-
-const [showViewTraining, setShowViewTraining] = useState(false)
-const handleCloseViewTraining = () => setShowViewTraining(false)
-const handleShowViewTraining = () => setShowViewTraining(true)
+const handleEditCapacitacion = (capacitacion) => {
+    setCapacitacionSelected(capacitacion)
+    handleShowEditTraining()
+}
 
     const formatDay = (fecha) => {
         if (typeof fecha === 'string' && fecha.includes('-')) {
@@ -49,7 +62,7 @@ const handleShowViewTraining = () => setShowViewTraining(true)
                                     <button type="button" className="btn btn-sm btn-outline-primary"  title="Ver capacitación" onClick={() => handleViewCapacitacion(capacitacion)}>
                                         <EyeIcon width={20} height={20} />
                                     </button>
-                                    <button type="button" className="btn btn-sm btn-outline-primary"  title="Editar capacitación">
+                                    <button type="button" className="btn btn-sm btn-outline-primary"  title="Editar capacitación" onClick={() => handleEditCapacitacion(capacitacion)}>
                                         <EditIcon width={20} height={20} />
                                     </button>
                                     <button type="button" className="btn btn-sm btn-outline-danger"  title="Eliminar capacitación">
@@ -62,6 +75,7 @@ const handleShowViewTraining = () => setShowViewTraining(true)
                 </tbody>
             </table>
             <TransportTrainingViewModal show={showViewTraining} handleClose={handleCloseViewTraining} capacitacion={capacitacionSelected} />
+            <TransportTrainingEditModal show={showEditTraining} handleClose={handleCloseEditTraining} capacitacionParams={capacitacionSelected} temas={temas} modalidades={modalidades} capacitadores={capacitadores} />
         </div>
     );
 }
