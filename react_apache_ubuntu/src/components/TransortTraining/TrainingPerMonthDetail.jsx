@@ -1,35 +1,91 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 
+import { Toast } from "../tools/PopMessage";
 import EyeIcon from "../../icons/EyeIcon";
 import EditIcon from "../../icons/EditIcon";
 import TrashIcon from "../../icons/TrashIcon";
 import { TransportTrainingViewModal } from "./TransportTrainingViewModal";
 import { TransportTrainingEditModal } from "./TransportTrainingEditModal";
+import { eliminarCapacitacion } from "../../services/transporteService";
+import { transformarFecha } from "../../utils/varios";
 
 
 export const TrainingPerMonthDetail = ({ capacitaciones, temas, modalidades, capacitadores }) => {
 
-const [capacitacionSelected, setCapacitacionSelected] = useState({})
+    const [capacitacionSelected, setCapacitacionSelected] = useState({})
 
 
 
-const [showViewTraining, setShowViewTraining] = useState(false)
-const handleCloseViewTraining = () => setShowViewTraining(false)
-const handleShowViewTraining = () => setShowViewTraining(true)
+    const [showViewTraining, setShowViewTraining] = useState(false)
+    const handleCloseViewTraining = () => setShowViewTraining(false)
+    const handleShowViewTraining = () => setShowViewTraining(true)
 
-const [showEditTraining, setShowEditTraining] = useState(false)
-const handleCloseEditTraining = () => setShowEditTraining(false)
-const handleShowEditTraining = () => setShowEditTraining(true)
+    const [showEditTraining, setShowEditTraining] = useState(false)
+    const handleCloseEditTraining = () => setShowEditTraining(false)
+    const handleShowEditTraining = () => setShowEditTraining(true)
 
-const handleViewCapacitacion = (capacitacion) => {
-    setCapacitacionSelected(capacitacion)
-    handleShowViewTraining()
-}
+    const handleViewCapacitacion = (capacitacion) => {
+        setCapacitacionSelected(capacitacion)
+        handleShowViewTraining()
+    }
 
-const handleEditCapacitacion = (capacitacion) => {
-    setCapacitacionSelected(capacitacion)
-    handleShowEditTraining()
-}
+    const handleEditCapacitacion = (capacitacion) => {
+        setCapacitacionSelected(capacitacion)
+        handleShowEditTraining()
+    }
+
+    const handleDeleteCapacitacion = async (capacitacion) => {
+
+
+        try {
+            setCapacitacionSelected(capacitacion)
+            // cambia .then por wait
+            const result = await Swal.fire({
+                title: `¿Seguro de eliminar la capacitación ${capacitacion.N_Capacita_Tema} de fecha ${transformarFecha(capacitacion.D_Capacita_Fecha).substring(0, 10)}?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                reverseButtons: true,
+            });
+
+            if (result.isConfirmed) {
+                await eliminarCapacitacion(capacitacion.C_Capacitacion)
+
+                // const resultOk = await Swal.fire({
+                //     icon: "success",
+                //     title: "Capacitación",
+                //     text: "Capacitación eliminada correctamente",
+                // });
+
+                // if (resultOk.isConfirmed) {
+                //     window.location.reload();
+                // }
+
+                 // refrescar la pagina
+            window.location.reload();
+            
+            Toast.fire({
+                icon: "success",
+                title: "La capacitación se eliminó con éxito",
+                background: "#F4F6F6",
+                timer: 1500,
+            });
+            }
+        } catch (error) {
+            console.log(error)
+            Swal.fire({
+                icon: "error",
+                title: "Error al eliminar la capacitación",
+                text: error.response.data.message,
+            });
+        } finally {
+            setCapacitacionSelected({})
+        }
+    }
 
     const formatDay = (fecha) => {
         if (typeof fecha === 'string' && fecha.includes('-')) {
@@ -59,13 +115,13 @@ const handleEditCapacitacion = (capacitacion) => {
                             <td className="py-3 text-end align-middle">{capacitacion.Q_Capacita_Cantidad}</td>
                             <td className="py-3 align-middle">
                                 <div className="d-flex gap-2">
-                                    <button type="button" className="btn btn-sm btn-outline-primary"  title="Ver capacitación" onClick={() => handleViewCapacitacion(capacitacion)}>
+                                    <button type="button" className="btn btn-sm btn-outline-primary" title="Ver capacitación" onClick={() => handleViewCapacitacion(capacitacion)}>
                                         <EyeIcon width={20} height={20} />
                                     </button>
-                                    <button type="button" className="btn btn-sm btn-outline-primary"  title="Editar capacitación" onClick={() => handleEditCapacitacion(capacitacion)}>
+                                    <button type="button" className="btn btn-sm btn-outline-primary" title="Editar capacitación" onClick={() => handleEditCapacitacion(capacitacion)}>
                                         <EditIcon width={20} height={20} />
                                     </button>
-                                    <button type="button" className="btn btn-sm btn-outline-danger"  title="Eliminar capacitación">
+                                    <button type="button" className="btn btn-sm btn-outline-danger" title="Eliminar capacitación" onClick={() => handleDeleteCapacitacion(capacitacion)}>
                                         <TrashIcon width={20} height={20} />
                                     </button>
                                 </div>

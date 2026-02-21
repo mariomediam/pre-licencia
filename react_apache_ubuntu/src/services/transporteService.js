@@ -239,20 +239,6 @@ const insertarCapacitacion = async (params) => {
   }
 }
 
-// curl --location --request PUT 'http://127.0.0.1:8000/api/transporte/capacitacion/5' \
-// --header 'Content-Type: application/json' \
-// --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcxNjg0ODM2LCJpYXQiOjE3NzE2NDE2MzYsImp0aSI6ImMyNjhjN2FhZjEwMzQ2MzI4NzY3OTMwZTRiOTRlZGJiIiwidXNlcl9pZCI6Ik1NRURJTkEgICAgICAgICAgICAgIn0.U03s6Zmeru5OdsHOIKbbYnRwG-Rrod2xVyXe_dlTZ-o' \
-// --data '{
-//     "fecha": "2026-02-24",
-//     "tema": 1,
-//     "modalidad": 2,
-//     "capacitador": 1,
-//     "empresas": "Empresas modificado",
-//     "lugar": "lugar modificado",
-//     "cantidad": 972,
-//     "observacion": "Observaciones"
-// }'
-
 const actualizarCapacitacion = async (params) => {
   const { id, fecha, tema, modalidad, capacitador, empresas, lugar, cantidad, observacion } = params;
 
@@ -277,4 +263,16 @@ const actualizarCapacitacion = async (params) => {
   }
 }
 
-export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion };
+const eliminarCapacitacion = async (id) => {
+  
+  try {
+    let api = UseAxios();
+    let URLCapacitacion = `${URL}/capacitacion/${id}`;
+    let { data } = await api.delete(URLCapacitacion);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion };
