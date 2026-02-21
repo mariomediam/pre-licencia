@@ -1,7 +1,23 @@
+import { useState } from "react";
+
 import EyeIcon from "../../icons/EyeIcon";
 import EditIcon from "../../icons/EditIcon";
 import TrashIcon from "../../icons/TrashIcon";
+import { TransportTrainingView } from "./TransportTrainingView";
 export const TrainingPerMonthDetail = ({ capacitaciones }) => {
+
+const [capacitacionSelected, setCapacitacionSelected] = useState({})
+
+const handleViewCapacitacion = (capacitacion) => {
+    setCapacitacionSelected(capacitacion)
+    handleShowViewTraining()
+}
+
+
+const [showViewTraining, setShowViewTraining] = useState(false)
+const handleCloseViewTraining = () => setShowViewTraining(false)
+const handleShowViewTraining = () => setShowViewTraining(true)
+
     const formatDay = (fecha) => {
         if (typeof fecha === 'string' && fecha.includes('-')) {
             const day = fecha.split('-')[2];
@@ -30,7 +46,7 @@ export const TrainingPerMonthDetail = ({ capacitaciones }) => {
                             <td className="py-3 text-end align-middle">{capacitacion.Q_Capacita_Cantidad}</td>
                             <td className="py-3 align-middle">
                                 <div className="d-flex gap-2">
-                                    <button type="button" className="btn btn-sm btn-outline-primary"  title="Ver capacitación">
+                                    <button type="button" className="btn btn-sm btn-outline-primary"  title="Ver capacitación" onClick={() => handleViewCapacitacion(capacitacion)}>
                                         <EyeIcon width={20} height={20} />
                                     </button>
                                     <button type="button" className="btn btn-sm btn-outline-primary"  title="Editar capacitación">
@@ -45,6 +61,7 @@ export const TrainingPerMonthDetail = ({ capacitaciones }) => {
                     ))}
                 </tbody>
             </table>
+            <TransportTrainingView show={showViewTraining} handleClose={handleCloseViewTraining} capacitacion={capacitacionSelected} />
         </div>
     );
 }

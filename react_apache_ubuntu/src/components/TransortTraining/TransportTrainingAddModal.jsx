@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { useEffect, useState, useCallback } from "react";
-import { Modal, Button, Spinner,  } from "react-bootstrap";
+import { Modal, Button, Spinner, } from "react-bootstrap";
 import { Toast } from "../tools/PopMessage";
 
 
@@ -26,69 +26,69 @@ export const TransportTrainingAddModal = ({ show,
     handleClose, temas = [], modalidades = [], capacitadores = [] }) => {
 
 
-        const [capacitacion, setCapacitacion] = useState(initialCapacitacion)
-        const [isLoading, setIsLoading] = useState(false)
+    const [capacitacion, setCapacitacion] = useState(initialCapacitacion)
+    const [isLoading, setIsLoading] = useState(false)
 
-        const handleChange = (e) => {
-            setCapacitacion({ ...capacitacion, [e.target.name]: e.target.value });
+    const handleChange = (e) => {
+        setCapacitacion({ ...capacitacion, [e.target.name]: e.target.value });
+    }
+
+    const updateInitialCapacitacion = useCallback(() => {
+        if (temas.length > 0) {
+            setCapacitacion(prev => ({
+                ...prev,
+                tema: temas[0]?.C_Capacita_Tema || ""
+            }));
         }
-
-        const updateInitialCapacitacion = useCallback(() => {
-            if (temas.length > 0) {
-                setCapacitacion(prev => ({
-                    ...prev,
-                    tema: temas[0]?.C_Capacita_Tema || ""
-                }));
-            }
-            if (modalidades.length > 0) {
-                setCapacitacion(prev => ({
-                    ...prev,
-                    modalidad: modalidades[0]?.C_Capacita_Modalidad || ""
-                }));
-            }
-            if (capacitadores.length > 0) {
-                setCapacitacion(prev => ({
-                    ...prev,
-                    capacitador: capacitadores[0]?.C_Capacita_Capacitador || ""
-                }));
-            }
-        }, [temas, modalidades, capacitadores]);
-
-        useEffect(() => {
-            if (show) {
-                updateInitialCapacitacion();
-            } else {
-                setCapacitacion(initialCapacitacion);
-            }
-        }, [show, updateInitialCapacitacion]);
-
-
-        const hadleSubmit = async (e) => {
-
-            e.preventDefault();
-            try {
-                setIsLoading(true);
-                await insertarCapacitacion(capacitacion);
-                
-                // refrescar la pagina
-                window.location.reload();
-                handleClose();
-                Toast.fire({
-                    icon: "success",
-                    title: "La capacitación se grabó con éxito",
-                    background: "#F4F6F6",
-                    timer: 1500,
-                });
-            } catch (error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error al grabar la capacitación",
-                    text: error.response.data.message,
-                });
-            } finally {
-                setIsLoading(false);
-            }
+        if (modalidades.length > 0) {
+            setCapacitacion(prev => ({
+                ...prev,
+                modalidad: modalidades[0]?.C_Capacita_Modalidad || ""
+            }));
         }
+        if (capacitadores.length > 0) {
+            setCapacitacion(prev => ({
+                ...prev,
+                capacitador: capacitadores[0]?.C_Capacita_Capacitador || ""
+            }));
+        }
+    }, [temas, modalidades, capacitadores]);
+
+    useEffect(() => {
+        if (show) {
+            updateInitialCapacitacion();
+        } else {
+            setCapacitacion(initialCapacitacion);
+        }
+    }, [show, updateInitialCapacitacion]);
+
+
+    const hadleSubmit = async (e) => {
+
+        e.preventDefault();
+        try {
+            setIsLoading(true);
+            await insertarCapacitacion(capacitacion);
+
+            // refrescar la pagina
+            window.location.reload();
+            handleClose();
+            Toast.fire({
+                icon: "success",
+                title: "La capacitación se grabó con éxito",
+                background: "#F4F6F6",
+                timer: 1500,
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error al grabar la capacitación",
+                text: error.response.data.message,
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
 
 
@@ -155,21 +155,19 @@ export const TransportTrainingAddModal = ({ show,
                         </div>
 
                     </form>
-
-{JSON.stringify(capacitacion)}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
                         variant="secondary"
-                    //   onClick={handleClose}
-                    //   disabled={isLoading}
+                        onClick={handleClose}
+                        disabled={isLoading}
                     >
                         Cancelar
                     </Button>
                     <Button
                         variant="primary"
-                      onClick={hadleSubmit}
-                       disabled={isLoading}
+                        onClick={hadleSubmit}
+                        disabled={isLoading}
                     >
                         {isLoading ? <Spinner animation="border" size="sm" /> : "Grabar"}
                     </Button>
