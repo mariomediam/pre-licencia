@@ -3,7 +3,7 @@ import { useState } from "react";
 import EyeIcon from "../../icons/EyeIcon";
 import EditIcon from "../../icons/EditIcon";
 import TrashIcon from "../../icons/TrashIcon";
-import { TransportTrainingView } from "./TransportTrainingView";
+import { TransportTrainingViewModal } from "./TransportTrainingViewModal";
 export const TrainingPerMonthDetail = ({ capacitaciones }) => {
 
 const [capacitacionSelected, setCapacitacionSelected] = useState({})
@@ -61,7 +61,7 @@ const handleShowViewTraining = () => setShowViewTraining(true)
                     ))}
                 </tbody>
             </table>
-            <TransportTrainingView show={showViewTraining} handleClose={handleCloseViewTraining} capacitacion={capacitacionSelected} />
+            <TransportTrainingViewModal show={showViewTraining} handleClose={handleCloseViewTraining} capacitacion={capacitacionSelected} />
         </div>
     );
 }

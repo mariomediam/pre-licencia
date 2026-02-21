@@ -4,7 +4,7 @@ import EyeIcon from "../../icons/EyeIcon";
 import { transformarFecha } from "../../utils/varios";
 
 
-export const TransportTrainingView = ({ show,
+export const TransportTrainingViewModal = ({ show,
     handleClose, capacitacion = {} }) => {
     
     return (
