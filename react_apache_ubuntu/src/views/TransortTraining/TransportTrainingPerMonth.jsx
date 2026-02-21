@@ -13,6 +13,7 @@ import { TrainingPerMonthDetail } from "../../components/TransortTraining/Traini
 import EditIcon from "../../icons/EditIcon";
 import { TransportTrainingAddModal } from "../../components/TransortTraining/TransportTrainingAddModal";
 import { listarCapacitacionTema, listarCapacitacionModalidad, listarCapacitacionCapacitador } from "../../services/transporteService";
+import { TransportTrainingObservModal } from "../../components/TransortTraining/TransportTrainingObservModal";
 
 export const TransportTrainingPerMonth = () => {
 
@@ -33,6 +34,11 @@ export const TransportTrainingPerMonth = () => {
     const [showAddTraining, setShowAddTraining] = useState(false);
     const handleCloseAddTraining = () => setShowAddTraining(false);
     const handleShowAddTraining = () => setShowAddTraining(true);
+
+
+    const [showObservModal, setShowObservModal] = useState(false);
+    const handleCloseObservModal = () => setShowObservModal(false);
+    const handleShowObservModal = () => setShowObservModal(true);
 
     useEffect(() => {
 
@@ -118,7 +124,7 @@ export const TransportTrainingPerMonth = () => {
                                 </h3>
                             </div>
                             <div
-                                className="d-flex align-items-center gap-2 cursor-pointer bg-dark text-white p-2 rounded justify-content-center"
+                                className="d-flex align-items-center gap-2 cursor-pointer border border-dark text-dark p-2 rounded justify-content-center"
                                 role="button"
                                 onClick={() => navigate(-1)}
                             >
@@ -162,14 +168,14 @@ export const TransportTrainingPerMonth = () => {
 
                         <div className="d-flex justify-content-between align-items-end mt-3 gap-2">
                             <small className="text-muted">Observaciones</small>
-                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading}>
+                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading} onClick={handleShowObservModal}>
                                 Editar observaciones
                                 <EditIcon width={24} height={24} />
                             </button>
                             
                         </div>
                         
-                        <textarea className="form-control mt-2" value={observacion.T_Capacita_Observ}/>
+                        <textarea className="form-control mt-2" value={observacion.T_Capacita_Observ} readOnly/>
                     </div>
 
                 </div>
@@ -184,6 +190,17 @@ export const TransportTrainingPerMonth = () => {
                 modalidades={modalidades}
                 capacitadores={capacitadores}
             />
+
+            <TransportTrainingObservModal
+                show={showObservModal}
+                handleClose={handleCloseObservModal}
+                anio={anio}
+                mes={mes}
+                observacionText={observacion.T_Capacita_Observ || ""}
+                observacionId={observacion.C_Capacita_Observ}
+            />
+
+
 
         </>
     )

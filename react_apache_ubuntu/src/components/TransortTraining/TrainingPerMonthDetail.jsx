@@ -55,25 +55,14 @@ export const TrainingPerMonthDetail = ({ capacitaciones, temas, modalidades, cap
             if (result.isConfirmed) {
                 await eliminarCapacitacion(capacitacion.C_Capacitacion)
 
-                // const resultOk = await Swal.fire({
-                //     icon: "success",
-                //     title: "Capacitación",
-                //     text: "Capacitación eliminada correctamente",
-                // });
+                window.location.reload();
 
-                // if (resultOk.isConfirmed) {
-                //     window.location.reload();
-                // }
-
-                 // refrescar la pagina
-            window.location.reload();
-            
-            Toast.fire({
-                icon: "success",
-                title: "La capacitación se eliminó con éxito",
-                background: "#F4F6F6",
-                timer: 1500,
-            });
+                Toast.fire({
+                    icon: "success",
+                    title: "La capacitación se eliminó con éxito",
+                    background: "#F4F6F6",
+                    timer: 1500,
+                });
             }
         } catch (error) {
             console.log(error)

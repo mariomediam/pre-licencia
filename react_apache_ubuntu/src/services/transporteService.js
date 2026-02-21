@@ -275,4 +275,39 @@ const eliminarCapacitacion = async (id) => {
   }
 }
 
-export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion };
+const insertarCapacitacionObservacion = async (params) => {
+
+  console.log("params", params)
+  const { anio, mes, observacion } = params;
+  const body = {
+    anio,
+    mes,
+    observacion
+  }
+
+  try {
+    let api = UseAxios();
+    let URLCapacitacion = `${URL}/capacitacion-observacion/`;
+    let { data } = await api.post(URLCapacitacion, body);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+const actualizarCapacitacionObservacion = async (params) => {
+  const { id, observacion } = params;
+  const body = {
+    observacion
+  }
+
+  try {
+    let api = UseAxios();
+    let URLCapacitacion = `${URL}/capacitacion-observacion/${id}`;
+    let { data } = await api.put(URLCapacitacion, body);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion };
