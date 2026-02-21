@@ -53,6 +53,15 @@ const obtenerCapacitacion = async (params) => {
     }
   };
 
+  const obterCapacitacionPorId = async ({id}) => {
+    try {
+      const data = await obtenerCapacitacion({opcion: "03", valor1: id});
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 const obtenerCapacitacionObservacion = async (params) => {
   const { opcion, valor1, valor2 } = params;
 
@@ -206,7 +215,30 @@ const listarCapacitacionCapacitador = async () => {
   }
 }
 
+const insertarCapacitacion = async (params) => {
+  const { fecha, tema, modalidad, capacitador, empresas, lugar, cantidad, observacion } = params;
+
+  const body = {
+    fecha,
+    tema,
+    modalidad,
+    capacitador,
+    empresas,
+    lugar,
+    cantidad,
+    observacion
+  }
+
+  try {
+    let api = UseAxios();
+    let URLCapacitacion = `${URL}/capacitacion/`;
+    let { data } = await api.post(URLCapacitacion, body);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 
-export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador };
+export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId };

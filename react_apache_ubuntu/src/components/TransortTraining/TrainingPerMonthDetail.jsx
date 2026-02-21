@@ -3,7 +3,11 @@ import EditIcon from "../../icons/EditIcon";
 import TrashIcon from "../../icons/TrashIcon";
 export const TrainingPerMonthDetail = ({ capacitaciones }) => {
     const formatDay = (fecha) => {
-        const date = new Date(fecha);
+        if (typeof fecha === 'string' && fecha.includes('-')) {
+            const day = fecha.split('-')[2];
+            return day.padStart(2, '0');
+        }
+        const date = new Date(fecha + 'T00:00:00');
         return date.getDate().toString().padStart(2, '0');
     };
 

@@ -1,15 +1,21 @@
 import Swal from "sweetalert2";
 import { useEffect, useState, useCallback } from "react";
-import { Modal, Button, Spinner, Form, InputGroup } from "react-bootstrap";
+import { Modal, Button, Spinner,  } from "react-bootstrap";
+import { Toast } from "../tools/PopMessage";
+
 
 import PlusIcon from "../../icons/PlusIcon";
+import { insertarCapacitacion } from "../../services/transporteService";
+import { getTodayDate } from "../../utils/varios";
+
+
 
 const initialCapacitacion = {
-    fecha: new Date().toISOString().split('T')[0],
+    fecha: getTodayDate(),
     tema: "",
     modalidad: "",
     capacitador: "",
-    empresa: "",
+    empresas: "",
     lugar: "",
     cantidad: "",
     observacion: "",
@@ -21,6 +27,7 @@ export const TransportTrainingAddModal = ({ show,
 
 
         const [capacitacion, setCapacitacion] = useState(initialCapacitacion)
+        const [isLoading, setIsLoading] = useState(false)
 
         const handleChange = (e) => {
             setCapacitacion({ ...capacitacion, [e.target.name]: e.target.value });
@@ -54,6 +61,34 @@ export const TransportTrainingAddModal = ({ show,
                 setCapacitacion(initialCapacitacion);
             }
         }, [show, updateInitialCapacitacion]);
+
+
+        const hadleSubmit = async (e) => {
+
+            e.preventDefault();
+            try {
+                setIsLoading(true);
+                await insertarCapacitacion(capacitacion);
+                
+                // refrescar la pagina
+                window.location.reload();
+                handleClose();
+                Toast.fire({
+                    icon: "success",
+                    title: "La capacitación se grabó con éxito",
+                    background: "#F4F6F6",
+                    timer: 1500,
+                });
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error al grabar la capacitación",
+                    text: error.response.data.message,
+                });
+            } finally {
+                setIsLoading(false);
+            }
+        }
 
 
 
@@ -100,8 +135,8 @@ export const TransportTrainingAddModal = ({ show,
                         </div>
 
                         <div className="mb-2">
-                            <small for="textareaEmpresa" className="form-label text-muted">Empresa</small>
-                            <textarea className="form-control" aria-label="Empresa" name="empresa" onChange={handleChange} value={capacitacion.empresa} />
+                            <small for="textareaempresas" className="form-label text-muted">Empresa</small>
+                            <textarea className="form-control" aria-label="Empresa" name="empresas" onChange={handleChange} value={capacitacion.empresas} />
                         </div>
 
                         <div className="mb-2">
@@ -133,12 +168,10 @@ export const TransportTrainingAddModal = ({ show,
                     </Button>
                     <Button
                         variant="primary"
-                    //   onClick={addCartas}
-                    //   disabled={isLoading || !existeCartaSeleccionada()}
+                      onClick={hadleSubmit}
+                       disabled={isLoading}
                     >
-
-                        Agregar
-
+                        {isLoading ? <Spinner animation="border" size="sm" /> : "Grabar"}
                     </Button>
                 </Modal.Footer>
             </Modal>
