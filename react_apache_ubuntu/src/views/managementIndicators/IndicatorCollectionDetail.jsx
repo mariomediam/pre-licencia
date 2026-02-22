@@ -15,6 +15,8 @@ import { CollecionDate } from "../../components/managementIndicators/CollecionDa
 import { transformarFecha } from "../../utils/varios";
 import { FooterIndicators } from "./FooterIndicators";
 
+const currentYear = new Date().getFullYear();
+
 const IndicatorCollectionDetail = () => {
 
   
@@ -27,7 +29,7 @@ const IndicatorCollectionDetail = () => {
   // const filteredTasas = tasas
 
 
-  const [year, setYear] = useState(2026);
+  const [year, setYear] = useState(currentYear);
   // const [month, setMonth] = useState("00");
   const [filteredTasas, setFilteredTasas] = useState([]);
   const [proyected, setProyected] = useState([]);

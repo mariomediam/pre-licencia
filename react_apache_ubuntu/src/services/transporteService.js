@@ -53,6 +53,16 @@ const obtenerCapacitacion = async (params) => {
     }
   };
 
+  const obtenerCapacitacionPorAnio = async ({anio}) => {
+    try {
+        const data = await obtenerCapacitacion({opcion: "04", valor1: anio});
+        return data;
+    } catch (error) {
+        throw error;
+    }
+  };
+
+
   const obterCapacitacionPorId = async ({id}) => {
     try {
       const data = await obtenerCapacitacion({opcion: "03", valor1: id});
@@ -310,4 +320,4 @@ const actualizarCapacitacionObservacion = async (params) => {
   }
 }
 
-export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion };
+export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion, obtenerCapacitacionPorAnio };

@@ -151,7 +151,7 @@ export const TransportTrainingPerMonth = () => {
                                 Exportar
                                 <DownloadIcon width={24} height={24} />
                             </button>
-                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || capacitaciones.length === 0} onClick={handleShowAddTraining}>
+                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading} onClick={handleShowAddTraining}>
                                 Agregar capacitación
                                 <PlusIcon width={24} height={24} />
                             </button>

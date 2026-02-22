@@ -19,6 +19,9 @@ import IndicatorCollectionDetail from "../views/managementIndicators/IndicatorCo
 import { IndicatorRateDetail } from "../views/managementIndicators/IndicatorRateDetail";
 import { InspectionReports } from "../views/managementIndicators/InspectionReports";
 import { InspectionReportsDetail } from "../views/managementIndicators/InspectionReportsDetail";
+import { IndicatorTransportTrainingMain } from "../views/managementIndicators/IndicatorTransportTrainingMain";
+
+
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -87,6 +90,11 @@ export const AppRouter = () => {
           <Route
             path="/indicadores/actas-control/:anio/:abreviatura"
             element={<InspectionReportsDetail />}
+          />
+
+            <Route
+            path="/indicadores/transportes-capacitacion/:anio"
+            element={<IndicatorTransportTrainingMain />}
           />
 
 
