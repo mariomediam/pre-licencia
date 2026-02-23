@@ -419,7 +419,55 @@ const InsertarProyecciones = async ( params ) => {
 // --data ''
 
 const BuscarRecaudacionActasControlSatp = async ( params ) => {
-  const { anio, tipo } = params;
+  const { anio } = params;
+
+  const tipo = 1;
+
+
+  let credenciales = {};
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/buscar-recaudacion-actas-control-satp?anio=${anio}&tipo=${tipo}`, credenciales, {
+      headers,
+    });
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+const BuscarPorCobrarActasControlSatp = async ( params ) => {
+  const { anio } = params;
+
+  const tipo = 2;
+
+
+  let credenciales = {};
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/buscar-recaudacion-actas-control-satp?anio=${anio}&tipo=${tipo}`, credenciales, {
+      headers,
+    });
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+const BuscarPorEjecutarActasControlSatp = async ( params ) => {
+  const { anio } = params;
+
+  const tipo = 3;
 
 
   let credenciales = {};
@@ -457,6 +505,8 @@ export {
   SelectProyeccionPorAnioYTasa,
   UpdateTasa,
   InsertarProyecciones,
-  BuscarRecaudacionActasControlSatp
+  BuscarRecaudacionActasControlSatp,
+  BuscarPorCobrarActasControlSatp,
+  BuscarPorEjecutarActasControlSatp
 };
 

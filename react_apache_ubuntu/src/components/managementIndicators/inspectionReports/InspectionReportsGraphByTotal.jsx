@@ -9,7 +9,7 @@ const formatNumber = (value) => {
     }).format(Number(value));
 };
 
-export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, porEjecutar, year = 0 }) => {
+export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, porEjecutar, year = 0, isLoading = false }) => {
     const dafaultOption = useMemo(
         () => {
             return {
@@ -44,7 +44,7 @@ export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, porEjecuta
                 series: [
                     {
                         name: 'Recaudado',
-                        data: [recaudado],
+                        data: isLoading ? [0] : [recaudado],
                         type: 'bar',
                         barWidth: '25%',
                         itemStyle: { color: '#3b82f6' },
@@ -57,7 +57,7 @@ export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, porEjecuta
                     },
                     {
                         name: 'Por cobrar',
-                        data: [porCobrar],
+                        data: isLoading ? [0] : [porCobrar],
                         type: 'bar',
                         barWidth: '25%',
                         itemStyle: { color:  '#22c55e'},
@@ -70,7 +70,7 @@ export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, porEjecuta
                     },
                     {
                         name: 'Por ejecutar',
-                        data: [porEjecutar],
+                        data: isLoading ? [0] : [porEjecutar],
                         type: 'bar',
                         barWidth: '25%',
                         itemStyle: { color:  '#ef4444'},
@@ -84,7 +84,7 @@ export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, porEjecuta
                 ]
             };
         },
-        [recaudado, porCobrar, porEjecutar]
+        [recaudado, porCobrar, porEjecutar, isLoading]
     );
 
     return (

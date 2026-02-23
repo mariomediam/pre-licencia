@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import { HeaderIdicators } from "./HeaderIdicators";
 import { InspectionReportsHeader } from "../../components/managementIndicators/inspectionReports/InspectionReportsHeader";
-import { BuscarRecaudacionActasControlSatp } from "../../services/indicatorsService";
+import { BuscarRecaudacionActasControlSatp, BuscarPorCobrarActasControlSatp, BuscarPorEjecutarActasControlSatp } from "../../services/indicatorsService";
 import { InspectionReportsCards } from "../../components/managementIndicators/inspectionReports/InspectionReportsCards";
 import { InspectionReportsGraphByTotal } from "../../components/managementIndicators/inspectionReports/InspectionReportsGraphByTotal";
 import { InspectionReportsGRaphByMonth } from "../../components/managementIndicators/inspectionReports/InspectionReportsGRaphByMonth";
@@ -13,12 +13,21 @@ import { FooterIndicators } from "./FooterIndicators";
 
 export const InspectionReports = () => {
   const { anio: urlYear } = useParams();
+  
   const [recaudado, setRecaudado] = useState([]);
+  const [porCobrar, setPorCobrar] = useState([]);
+  const [porEjecutar, setPorEjecutar] = useState([]);
+  
   const [totalRecaudado, setTotalRecaudado] = useState(0);
-  const [totalActas, setTotalActas] = useState(0);
+  const [totalPorEjecutar, setTotalPorEjecutar] = useState(0);
   const [totalPorCobrar, setTotalPorCobrar] = useState(100);
-  const [totalPorEjecutar, setTotalPorEjecutar] = useState(200);
+
+  const [totalActas, setTotalActas] = useState(0);
+  
   const [isLoadingRecaudado, setIsLoadingRecaudado] = useState(false);
+  const [isLoadingPorCobrar, setIsLoadingPorCobrar] = useState(false);
+  const [isLoadingPorEjecutar, setIsLoadingPorEjecutar] = useState(false);
+  
   const [monthlyRecaudado, setmonthlyRecaudado] = useState([])
   const [recaudadoAgrupadoPorInfraccion, setRecaudadoAgrupadoPorInfraccion] = useState([])
 
@@ -29,7 +38,7 @@ export const InspectionReports = () => {
     const getRecaudado = async () => {
       try {
         setIsLoadingRecaudado(true);
-        const data = await BuscarRecaudacionActasControlSatp({ anio: urlYear, tipo: 1 });
+        const data = await BuscarRecaudacionActasControlSatp({ anio: urlYear });
         setRecaudado(data);
       } catch (error) {
         Swal.fire({
@@ -55,12 +64,74 @@ export const InspectionReports = () => {
   }, [recaudado]);
 
   useEffect(() => {
+    const getPorCobrar = async () => {
+      try {
+        setIsLoadingPorCobrar(true);
+        const data = await BuscarPorCobrarActasControlSatp({ anio: urlYear });
+        setPorCobrar(data);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error al buscar la recaudación por cobrar de actas",
+          text: error.response.data.message,
+        });
+      } finally {
+        setIsLoadingPorCobrar(false);
+      }
+    }
+    getPorCobrar();
+  }, [urlYear, urlTipo]);
+
+  useEffect(() => {
+    if (porCobrar.length > 0) {
+      setTotalPorCobrar(porCobrar.reduce((acc, curr) => acc + curr.Monto, 0));
+    } else {
+      setTotalPorCobrar(0);
+    }
+  }, [porCobrar]);
+
+
+
+
+  useEffect(() => {
+    const getPorEjecutar = async () => {
+      try {
+        setIsLoadingPorEjecutar(true);
+        const data = await BuscarPorEjecutarActasControlSatp({ anio: urlYear });
+        setPorEjecutar(data);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error al buscar la recaudación por ejecutar de actas",
+          text: error.response.data.message,
+        });
+      } finally {
+        setIsLoadingPorEjecutar(false);
+      }
+    }
+    getPorEjecutar();
+  }, [urlYear, urlTipo]);
+
+  useEffect(() => {
+    if (porEjecutar.length > 0) {
+      setTotalPorEjecutar(porEjecutar.reduce((acc, curr) => acc + curr.Monto, 0));
+    } else {
+      setTotalPorEjecutar(0);
+    }
+  }, [porEjecutar]);
+
+
+  useEffect(() => {
     if (recaudado.length > 0) {
-      setTotalActas(recaudado.reduce((acc, curr) => acc + curr.TotalActas, 0));
+      const totalRecaudado = recaudado.reduce((acc, curr) => acc + curr.TotalActas, 0);
+      const totalPorCobrar = porCobrar.reduce((acc, curr) => acc + curr.TotalActas, 0);
+      const totalPorEjecutar = porEjecutar.reduce((acc, curr) => acc + curr.TotalActas, 0);
+      setTotalActas(totalRecaudado + totalPorCobrar + totalPorEjecutar);
     } else {
       setTotalActas(0);
     }
-  }, [recaudado]);
+  }, [recaudado, porCobrar, porEjecutar]);
+
 
   useEffect(() => {
     const monthlyTotals = recaudado.reduce((acc, { Mes, Monto }) => {
@@ -114,20 +185,20 @@ export const InspectionReports = () => {
       <HeaderIdicators selectedType={urlTipo} />
       <div className="container-lg mx-auto py-4 flex-grow-1">
         <InspectionReportsHeader year={urlYear} />
-        <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} porEjecutar={totalPorEjecutar} totalActas={totalActas} isLoading={isLoadingRecaudado} />
+        <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} porEjecutar={totalPorEjecutar} totalActas={totalActas} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingPorEjecutar} />
 
         <div className="row g-4 mt-0">
           <div className="col-12 col-md-4">
-            <InspectionReportsGraphByTotal recaudado={totalRecaudado} porCobrar={totalPorCobrar} porEjecutar={totalPorEjecutar} year={urlYear} />
+            <InspectionReportsGraphByTotal recaudado={totalRecaudado} porCobrar={totalPorCobrar} porEjecutar={totalPorEjecutar} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingPorEjecutar} />
           </div>
           <div className="col-12 col-md-8">
-            <InspectionReportsGRaphByMonth monthlyData={monthlyRecaudado} totalRaised={totalRecaudado} year={urlYear} />
+            <InspectionReportsGRaphByMonth monthlyData={monthlyRecaudado} totalRaised={totalRecaudado} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingPorEjecutar} />
           </div>
         </div>
 
 
         <div className="mt-4">
-          <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} year={urlYear} />
+          <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingPorEjecutar} />
         </div>
       </div>
       <FooterIndicators />

@@ -11,10 +11,10 @@ const formatNumber = (value) => {
 };
 
 
-export const InspectionReportsGRaphByMonth = ({ monthlyData = [], totalRaised = 0, year = 0 }) => {
+export const InspectionReportsGRaphByMonth = ({ monthlyData = [], totalRaised = 0, year = 0, isLoading = false }) => {
     const dafaultOption = useMemo(
         () => {
-            const montos = monthlyData.length > 0 
+            const montos = monthlyData.length > 0 && !isLoading
                 ? monthlyData.map(item => item.Monto) 
                 : [0,0,0,0,0,0,0,0,0,0,0,0];
 
@@ -63,7 +63,7 @@ export const InspectionReportsGRaphByMonth = ({ monthlyData = [], totalRaised = 
                 ]
             };
         },
-        [monthlyData]
+        [monthlyData, isLoading]
     );
 
     const formatCurrency = (value) => {
@@ -79,7 +79,7 @@ export const InspectionReportsGRaphByMonth = ({ monthlyData = [], totalRaised = 
             <div className="d-flex justify-content-between align-items-start mb-2">
                 <div>
                     <h6 className="fw-semibold text-secondary mb-1">Evolución de la recaudación por mes</h6>
-                    <h4 className="fw-bold text-dark mb-0">{formatCurrency(totalRaised)}</h4>
+                    <h4 className="fw-bold text-dark mb-0">{isLoading ? <small className="text-muted">{formatCurrency(0)}</small> : formatCurrency(totalRaised)}</h4>
                 </div>
                 <span className="text-muted small">Año {year}</span>
             </div>
