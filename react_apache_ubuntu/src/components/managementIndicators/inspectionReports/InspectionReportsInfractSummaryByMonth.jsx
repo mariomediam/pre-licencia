@@ -9,7 +9,7 @@ export const InspectionReportsInfractSummaryByMonth = ({ monthlyData }) => {
               <thead>
                 <tr className="text-muted small">
                   <th className="fw-semibold" style={{ width: '65%' }}>Mes</th>
-                  <th className="fw-semibold text-end" style={{ width: '10%' }}>Total actas</th>
+                  <th className="fw-semibold text-end" style={{ width: '10%' }}>Actas recaudadas</th>
                   <th className="fw-semibold text-end" style={{ width: '20%' }}>Monto recaudado</th>                  
                  
                 </tr>

@@ -10,7 +10,7 @@ export const InspectionReportsSummaryByInfrac = ({ recaudadoAgrupadoPorInfraccio
           <thead>
             <tr className="text-muted small">
               <th className="fw-semibold" style={{ width: '55%' }}>Infracción</th>
-              <th className="fw-semibold text-end" style={{ width: '10%' }}>Total actas</th>
+              <th className="fw-semibold text-end" style={{ width: '10%' }}>Actas recaudadas</th>
               <th className="fw-semibold text-end" style={{ width: '20%' }}>Monto recaudado</th>
               <th className="fw-semibold text-center" style={{ width: '15%' }}>Acción</th>
             </tr>
@@ -23,19 +23,8 @@ export const InspectionReportsSummaryByInfrac = ({ recaudadoAgrupadoPorInfraccio
                 <td colSpan={4} className="text-center"><small className="text-muted">Cargando...</small></td>
               </tr>
             ) : (
-
-
-
               <>
-
-
-
-
-
-
                 {recaudadoAgrupadoPorInfraccion.map((item) => {
-
-
                   return (
                     <tr key={item.Abreviatura} className="border-bottom animate__animated animate__fadeIn animate__faster">
                       <td className="py-3">{item.Descripcion}

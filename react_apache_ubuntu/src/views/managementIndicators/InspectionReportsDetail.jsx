@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { BuscarRecaudacionActasControlSatp } from "../../services/indicatorsService";
+import { BuscarRecaudacionActasControlSatp, BuscarPorCobrarActasControlSatp, BuscarPorEjecutarActasControlSatp } from "../../services/indicatorsService";
 import Swal from "sweetalert2";
 
 import { HeaderIdicators } from "./HeaderIdicators";
@@ -16,10 +16,20 @@ export const InspectionReportsDetail = () => {
     const { anio: urlYear, abreviatura: urlAbreviatura } = useParams();
   const [recaudado, setRecaudado] = useState([]);
   const [totalRecaudado, setTotalRecaudado] = useState(0);
-  const [totalActas, setTotalActas] = useState(0);
   const [isLoadingRecaudado, setIsLoadingRecaudado] = useState(false);
-  const [totalPorCobrar, setTotalPorCobrar] = useState(100);
-  const [totalPorEjecutar, setTotalPorEjecutar] = useState(200);
+
+  const [porCobrar, setPorCobrar] = useState([]);
+  const [totalPorCobrar, setTotalPorCobrar] = useState(0);
+  const [isLoadingPorCobrar, setIsLoadingPorCobrar] = useState(false);
+  
+  const [porEjecutar, setPorEjecutar] = useState([]);
+  const [totalPorEjecutar, setTotalPorEjecutar] = useState(0);
+  const [isLoadingPorEjecutar, setIsLoadingPorEjecutar] = useState(false);
+
+  
+
+  const [totalActas, setTotalActas] = useState(0);
+  
   const [monthlyRecaudado, setmonthlyRecaudado] = useState([])
   
   const [infraction, setinfraction] = useState({})
@@ -57,6 +67,66 @@ export const InspectionReportsDetail = () => {
         }
       }, [recaudado]);
 
+
+      useEffect(() => {
+        const getPorCobrar = async () => {
+          try {
+            setIsLoadingPorCobrar(true);
+            const data = await BuscarPorCobrarActasControlSatp({ anio: urlYear });
+            setPorCobrar(data.filter((item) => item.Abreviatura === urlAbreviatura));
+          }
+          catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Error al buscar la recaudación por cobrar de actas",
+              text: error.response.data.message,
+            });
+          } finally {
+            setIsLoadingPorCobrar(false);
+          }
+        }
+        getPorCobrar();
+      }, [urlYear, urlTipo, urlAbreviatura]);
+
+      useEffect(() => {
+        if (porCobrar.length > 0) {
+          setTotalPorCobrar(porCobrar.reduce((acc, curr) => acc + curr.Monto, 0));
+        } else {
+          setTotalPorCobrar(0);
+        }
+      }, [porCobrar]);
+
+
+      useEffect(() => {
+        const getPorEjecutar = async () => {
+          try {
+            setIsLoadingPorEjecutar(true);
+            const data = await BuscarPorEjecutarActasControlSatp({ anio: urlYear });
+            setPorEjecutar(data.filter((item) => item.Abreviatura === urlAbreviatura));
+          }
+          catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Error al buscar la recaudación por ejecutar de actas",
+              text: error.response.data.message,
+            });
+          } finally {
+            setIsLoadingPorEjecutar(false);
+          }
+        }
+        getPorEjecutar();
+      }, [urlYear, urlTipo, urlAbreviatura]);
+
+
+      useEffect(() => {
+        if (porEjecutar.length > 0) {
+          setTotalPorEjecutar(porEjecutar.reduce((acc, curr) => acc + curr.Monto, 0));
+        } else {
+          setTotalPorEjecutar(0);
+        }
+      }, [porEjecutar]);
+
+
       useEffect(() => {
         if (recaudado.length > 0) {
           setinfraction(recaudado[0]);
@@ -79,12 +149,11 @@ export const InspectionReportsDetail = () => {
       }, [recaudado]);
 
       useEffect(() => {
-        if (recaudado.length > 0) {
-          setTotalActas(recaudado.reduce((acc, curr) => acc + curr.TotalActas, 0));
-        } else {
-          setTotalActas(0);
-        }
-      }, [recaudado]);
+        const totalRecaudado = recaudado.reduce((acc, curr) => acc + curr.TotalActas, 0);
+        const totalPorCobrar = porCobrar.reduce((acc, curr) => acc + curr.TotalActas, 0);
+        const totalPorEjecutar = porEjecutar.reduce((acc, curr) => acc + curr.TotalActas, 0);
+        setTotalActas(totalRecaudado + totalPorCobrar + totalPorEjecutar);  
+      }, [recaudado, porCobrar, porEjecutar]);
 
       return (
         <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
