@@ -1,4 +1,5 @@
 import UseAxios from "../utils/useAxios";
+import axios from "axios";
 
 const URL = `${process.env.REACT_APP_API}/transporte`;
 
@@ -6,8 +7,7 @@ const obtenerCapacitacion = async (params) => {
 
     const { opcion, valor1, valor2 } = params;
 
-    try {
-      let api = UseAxios();
+    try {      
   
       let URLCapacitacion = `${URL}/capacitacion?opcion=${opcion}`;
 
@@ -25,7 +25,7 @@ const obtenerCapacitacion = async (params) => {
   
       let {
         data: { content },
-      } = await api.get(`${URLCapacitacion}`, { headers });
+      } = await axios.get(`${URLCapacitacion}`, { headers });
   
       return content;
     } catch (error) {
@@ -76,8 +76,7 @@ const obtenerCapacitacionObservacion = async (params) => {
   const { opcion, valor1, valor2 } = params;
 
   try {
-    let api = UseAxios();
-
+    
     let URLCapacitacion = `${URL}/capacitacion-observacion?opcion=${opcion}`;
 
     if (valor1) {
@@ -94,7 +93,7 @@ const obtenerCapacitacionObservacion = async (params) => {
 
     let {
       data: { content },
-    } = await api.get(`${URLCapacitacion}`, { headers });
+    } = await axios.get(`${URLCapacitacion}`, { headers });
 
     return content;
   } catch (error) {
