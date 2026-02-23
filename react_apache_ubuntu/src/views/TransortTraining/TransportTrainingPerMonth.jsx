@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { Breadcrumb } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import { obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacionPorAnioyMes } from "../../services/transporteService";
+import { obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacionPorAnioyMes, descargarCapacitacion } from "../../services/transporteService";
 import { obtenerNombreMes } from "../../utils/varios";
 import Header from "../../components/Header";
 import SchoolIcon from "../../icons/Schoolcon";
@@ -100,6 +101,18 @@ export const TransportTrainingPerMonth = () => {
         getObservacion();
     }, [anio, mes]);
 
+    const handleDownload = async () => {
+        try {
+          await descargarCapacitacion({ anio, mes });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error al descargar la capacitación",
+            text: error.response.data.message,
+          });
+        }
+      }
+
     return (
         <>
             <Header />
@@ -147,7 +160,7 @@ export const TransportTrainingPerMonth = () => {
                         </div>
 
                         <div className="d-flex justify-content-end mt-3 gap-2">
-                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || capacitaciones.length === 0}>
+                            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || capacitaciones.length === 0} onClick={handleDownload}>
                                 Exportar
                                 <DownloadIcon width={24} height={24} />
                             </button>

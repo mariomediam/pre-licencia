@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 import SchoolIcon from "../../icons/Schoolcon";
 import DownloadIcon from "../../icons/DownloadIcon";
-import { obtenerCapacitacionAgrupadaPorAnioyMes } from "../../services/transporteService";
+import { obtenerCapacitacionAgrupadaPorAnioyMes, descargarCapacitacion } from "../../services/transporteService";
 import { TrainingPerMonth } from "../../components/TransortTraining/TrainingPerMonth";
 import { FooterIndicators } from "../managementIndicators/FooterIndicators";
 
@@ -69,6 +69,18 @@ export const TransportTrainingMain = () => {
     }
   }, [capacitaciones]);
 
+  const handleDownload = async () => {
+    try {
+      await descargarCapacitacion({ anio });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error al descargar la capacitación",
+        text: error.response.data.message,
+      });
+    }
+  }
+
   return (
     <>
       <Header />
@@ -110,7 +122,7 @@ export const TransportTrainingMain = () => {
             </div>
 
             <div className="d-flex justify-content-end mt-3">
-            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || capacitaciones.length === 0}>
+            <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || capacitaciones.length === 0} onClick={handleDownload}>
               Exportar
               <DownloadIcon width={16} height={16} />
             </button>
