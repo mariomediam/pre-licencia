@@ -31,7 +31,7 @@ export const RoadSignsMain = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [totalSenializaciones, setTotalSenializaciones] = useState([]);
     const [tipoIndicador, setTipoIndicador] = useState([])
-    const [selectedTipoIndicador, setSelectedTipoIndicador] = useState(null)
+    const [selectedTipoIndicador, setSelectedTipoIndicador] = useState(TIPO_INDICADOR_TODOS)
 
 
 
@@ -185,7 +185,7 @@ export const RoadSignsMain = () => {
                             <div>
                                 <span className="text-muted fw-medium p-0 m-0"><small>Total intervenido:</small></span>
                                 {totalSenializaciones.map((item) => (
-                                    <h5 className="text-muted p-0 m-0"> {item.cantidad} {item.N_unimed_desc === "M2" ? "m²" : item.N_unimed_desc}</h5>
+                                    <h5 className="text-muted p-0 m-0" key={item.N_unimed_desc}> {item.cantidad} {item.N_unimed_desc === "M2" ? "m²" : item.N_unimed_desc}</h5>
                                 ))}
                             </div>
 

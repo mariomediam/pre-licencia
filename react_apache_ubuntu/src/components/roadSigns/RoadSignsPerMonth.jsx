@@ -66,12 +66,12 @@ export const RoadSignsPerMonth = ({ senializacionesMonthly, anio }) => {
           </tr>
         </thead>
         <tbody>
-          {mesesDelAnio.map((mesInfo) => {
+          {mesesDelAnio.map((mesInfo, idx) => {
             const mesData = senializacionesMonthly.find(sen => parseInt(sen.M_Senializa_Mes) === mesInfo.mes);
             const unidades = mesData ? mesData.unidades : [];
             
             return (
-              <tr key={mesInfo.mes} style={{ borderBottom: '1px solid #f0f0f0' }}>
+              <tr key={ `${mesInfo.mes}-${anio}-${idx}` } style={{ borderBottom: '1px solid #f0f0f0' }}>
                 <td style={{ padding: '12px 10px', fontWeight: '500', verticalAlign: 'top' }}>
                   {mesInfo.nombre}
                 </td>
