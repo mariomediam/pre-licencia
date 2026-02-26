@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import RoadIcon from "../../icons/RoadIcon";
 import DownloadIcon from "../../icons/DownloadIcon";
 import { obtenerSenializacionAgrupadaPorAnioyMes, descargarCapacitacion, listarSenializacionIndicador } from "../../services/transporteService";
-import { TrainingPerMonth } from "../../components/TransortTraining/TrainingPerMonth";
+import { RoadSignsPerMonth } from "../../components/roadSigns/RoadSignsPerMonth";
 import { FooterIndicators } from "../managementIndicators/FooterIndicators";
 
 // crear array con años desde el 2024 hasta la actualidad
@@ -50,7 +50,7 @@ export const RoadSignsMain = () => {
         getTipoIndicador();
     }, []);
 
-    
+
 
     useEffect(() => {
         if (!anio) {
@@ -82,42 +82,6 @@ export const RoadSignsMain = () => {
             setIsLoading(false);
         }
     }, [anio, selectedTipoIndicador]);
-
-    //   senializaciones tiene los siguientes campos:
-    //   [
-    //     {
-    //         "C_Senializa_Indicador": 1,
-    //         "M_Senializa_Anio": 2026,
-    //         "M_Senializa_Mes": 1,
-    //         "Q_Senializa_Cantidad": 12.0,
-    //         "N_Senializa_Indicador": "Lineas peatonales",
-    //         "N_unimed_desc": "M2"
-    //     },
-    //     {
-    //         "C_Senializa_Indicador": 2,
-    //         "M_Senializa_Anio": 2026,
-    //         "M_Senializa_Mes": 2,
-    //         "Q_Senializa_Cantidad": 30.0,
-    //         "N_Senializa_Indicador": "Linea de pare",
-    //         "N_unimed_desc": "M2"
-    //     },
-    //     {
-    //         "C_Senializa_Indicador": 1,
-    //         "M_Senializa_Anio": 2026,
-    //         "M_Senializa_Mes": 2,
-    //         "Q_Senializa_Cantidad": 100.0,
-    //         "N_Senializa_Indicador": "Lineas peatonales",
-    //         "N_unimed_desc": "M2"
-    //     },
-    //     {
-    //         "C_Senializa_Indicador": 4,
-    //         "M_Senializa_Anio": 2026,
-    //         "M_Senializa_Mes": 2,
-    //         "Q_Senializa_Cantidad": 20.0,
-    //         "N_Senializa_Indicador": "Linea de borde de calzada",
-    //         "N_unimed_desc": "UNIDAD"
-    //     }
-    // ]
 
     useEffect(() => {
         if (senializaciones.length > 0) {
@@ -176,6 +140,8 @@ export const RoadSignsMain = () => {
             }));
 
             setSenializacionMonthly(resultado);
+        } else {
+            setSenializacionMonthly([]);
         }
     }, [senializaciones]);
 
@@ -241,13 +207,13 @@ export const RoadSignsMain = () => {
                         <div className="d-flex justify-content-between mt-3">
                             <div className="d-flex align-items-center gap-2">
 
-                            <small className="text-muted">Tipo de señalización:</small>
-                            <select className="form-select" onChange={(e) => setSelectedTipoIndicador(parseInt(e.target.value))} value={selectedTipoIndicador}>
-                                {tipoIndicador.map((item) => (
-                                    <option key={item.C_Senializa_Indicador} value={item.C_Senializa_Indicador}>{item.N_Senializa_Indicador}</option>
-                                ))}
-                            </select>
-                                </div>
+                                <small className="text-muted">Tipo de señalización:</small>
+                                <select className="form-select" onChange={(e) => setSelectedTipoIndicador(parseInt(e.target.value))} value={selectedTipoIndicador}>
+                                    {tipoIndicador.map((item) => (
+                                        <option key={item.C_Senializa_Indicador} value={item.C_Senializa_Indicador}>{item.N_Senializa_Indicador}</option>
+                                    ))}
+                                </select>
+                            </div>
 
 
                             <button className="btn btn-primary d-flex align-items-center gap-2" disabled={isLoading || senializaciones.length === 0} onClick={handleDownload}>
@@ -258,16 +224,14 @@ export const RoadSignsMain = () => {
 
 
 
-                        {/* {isLoading ? <div className="d-flex justify-content-center align-items-center">
-              <div className="spinner-border text-primary" role="status">
-                <span className="">Loading...</span>
-              </div>
-            </div> : <TrainingPerMonth capacitaciones={capacitaciones} anio={anio} />} */}
+                        {isLoading ? <div className="d-flex justify-content-center align-items-center">
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="">Loading...</span>
+                            </div>
+                        </div> : <RoadSignsPerMonth senializacionesMonthly={senializacionMonthly} anio={anio} />}
                     </div>
 
                 </div>
-                {JSON.stringify(senializacionMonthly)}
-                {JSON.stringify(selectedTipoIndicador)}
 
             </div>
 
