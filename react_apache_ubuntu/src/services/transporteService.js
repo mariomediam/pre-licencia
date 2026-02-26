@@ -319,13 +319,6 @@ const actualizarCapacitacionObservacion = async (params) => {
   }
 }
 
-// curl --location --request POST 'http://127.0.0.1:8000/api/transporte/download-capacitacion/' \
-// --header 'Content-Type: application/json' \
-// --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcxOTE3Njg2LCJpYXQiOjE3NzE4NzQ0ODYsImp0aSI6ImMwMDgyOGEwMTc4NTRhMTlhMGU4NTdhM2Y1YjM4YjUxIiwidXNlcl9pZCI6Ik1NRURJTkEgICAgICAgICAgICAgIn0.PxnSbMGb490lDdvzfkqRfGl3HvjnQ7Y-qX_ScnKulsw' \
-// --data '{
-//     "anio": "2026"
-// }'
-
 const descargarCapacitacion = async (params) => {
   const { anio, mes } = params;
 
@@ -363,4 +356,88 @@ const descargarCapacitacion = async (params) => {
   }
 }
 
-export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion, obtenerCapacitacionPorAnio, descargarCapacitacion };
+const obtenerSenializacion = async (params) => {
+  const { opcion, valor1, valor2 } = params;
+
+  try {      
+
+    let URLSenializacion = `${URL}/senializacion?opcion=${opcion}`;
+
+    if (valor1) {
+      URLSenializacion += `&valor1=${valor1}`;
+    }
+
+    if (valor2) {
+      URLSenializacion += `&valor2=${valor2}`;
+    }
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let {
+      data: { content },
+    } = await axios.get(`${URLSenializacion}`, { headers });
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const obtenerSenializacionAgrupadaPorAnioyMes = async ({anio}) => {
+
+  try {
+      const data = await obtenerSenializacion({opcion: "01", valor1: anio});
+
+      return data;
+  } catch (error) {
+      throw error;
+  }
+};
+
+// curl --location --request GET 'http://127.0.0.1:8000/api/transporte/senializacion-indicador?opcion=01' \
+// --data ''
+
+const obtenerSenializacionIndicador = async (params) => {
+  const { opcion, valor1, valor2 } = params;
+
+  try {      
+
+    let URLSenializacionIndicador = `${URL}/senializacion-indicador?opcion=${opcion}`;
+
+    if (valor1) {
+      URLSenializacionIndicador += `&valor1=${valor1}`;
+    }
+
+    if (valor2) {
+      URLSenializacionIndicador += `&valor2=${valor2}`;
+    }
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    let {
+      data: { content },
+    } = await axios.get(`${URLSenializacionIndicador}`, { headers });
+
+    return content;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const listarSenializacionIndicador = async () => {
+  try {
+    const data = await obtenerSenializacionIndicador({opcion: "01"});
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
+
+export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion, obtenerCapacitacionPorAnio, descargarCapacitacion, obtenerSenializacion, obtenerSenializacionAgrupadaPorAnioyMes, obtenerSenializacionIndicador, listarSenializacionIndicador };

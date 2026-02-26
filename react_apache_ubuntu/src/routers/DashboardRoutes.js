@@ -35,6 +35,7 @@ import { SincronizaGastoDiario } from "../views/territorial/proyectosInversion/S
 import { ManageRate } from "../views/managementIndicators/ManageRate";
 import { TransportTrainingMain } from "../views/TransortTraining/TransportTrainingMain";
 import { TransportTrainingPerMonth } from "../views/TransortTraining/TransportTrainingPerMonth";
+import { RoadSignsMain } from "../views/roadSigns/RoadSignsMain";
 
 export const DashboardRoutes = () => {
   return (
@@ -162,6 +163,11 @@ export const DashboardRoutes = () => {
           </Route>
 
           <Route path="/transportation/training/per-month/:anio/:mes" element={<TransportTrainingPerMonth />} />
+
+          <Route path="/transportation/road-signs">
+            <Route index element={<RoadSignsMain />} />
+            <Route path=":anio" element={<RoadSignsMain />} />
+          </Route>
 
           
         </Routes>
