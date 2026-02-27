@@ -163,7 +163,7 @@ export const RoadSignsMain = () => {
             <Header />
             <div className="ps-3 mb-0">
                 <Breadcrumb>
-                    <Breadcrumb.Item active>SubGerencia de Educación y Seguridad Vial</Breadcrumb.Item>
+                    <Breadcrumb.Item active>SubGerencia de Tránsito y Movilidad Urbana</Breadcrumb.Item>
                 </Breadcrumb>
             </div>
             <hr />

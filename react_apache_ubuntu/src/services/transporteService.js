@@ -437,7 +437,138 @@ const listarSenializacionIndicador = async () => {
   }
 }
 
+const obtenerSenializacionPorAnioyMes = async ({anio, mes}) => {
+  try {
+    const data = await obtenerSenializacion({opcion: "02", valor1: anio, valor2: mes});
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// curl --location --request POST 'http://127.0.0.1:8000/api/transporte/senializacion/2026/1' \
+// --header 'Content-Type: application/json' \
+// --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMjY1MDgwLCJpYXQiOjE3NzIyMjE4ODAsImp0aSI6ImIwMGZiYjY1NmE5NTQzZjJhZDUwMzlkNWM3N2ZjODdkIiwidXNlcl9pZCI6Ik1NRURJTkEgICAgICAgICAgICAgIn0.wi9SA4geRObMnUPWowmcBa8i4arz-zx1A-35BvUH8MU' \
+// --data '{
+//     "senializaciones": [
+//         {
+//             "C_Senializa_Indicador": 5,
+//             "N_Senializa_Indicador": "Flechas direccional",
+//             "C_Senializa_Meta": 1,
+//             "C_bieser_unimed": "037",
+//             "C_Senializa": null,
+//             "M_Senializa_Anio": null,
+//             "M_Senializa_Mes": null,
+//             "Q_Senializa_Cantidad": 0,
+//             "C_Usuari_Login": null,
+//             "D_Senializa_FecDig": null,
+//             "N_unimed_desc": "M2"
+//         },
+//         {
+//             "C_Senializa_Indicador": 6,
+//             "N_Senializa_Indicador": "Letras y números",
+//             "C_Senializa_Meta": 1,
+//             "C_bieser_unimed": "037",
+//             "C_Senializa": null,
+//             "M_Senializa_Anio": null,
+//             "M_Senializa_Mes": null,
+//             "Q_Senializa_Cantidad": 0,
+//             "C_Usuari_Login": null,
+//             "D_Senializa_FecDig": null,
+//             "N_unimed_desc": "M2"
+//         },
+//         {
+//             "C_Senializa_Indicador": 4,
+//             "N_Senializa_Indicador": "Linea de borde de calzada",
+//             "C_Senializa_Meta": 1,
+//             "C_bieser_unimed": "036",
+//             "C_Senializa": 2,
+//             "M_Senializa_Anio": 2026,
+//             "M_Senializa_Mes": 2,
+//             "Q_Senializa_Cantidad": 20,
+//             "C_Usuari_Login": "mmedina ",
+//             "D_Senializa_FecDig": "2026-02-25T00:00:00",
+//             "N_unimed_desc": "UNIDAD"
+//         },
+//         {
+//             "C_Senializa_Indicador": 3,
+//             "N_Senializa_Indicador": "Linea de carril",
+//             "C_Senializa_Meta": 1,
+//             "C_bieser_unimed": "037",
+//             "C_Senializa": null,
+//             "M_Senializa_Anio": null,
+//             "M_Senializa_Mes": null,
+//             "Q_Senializa_Cantidad": 0,
+//             "C_Usuari_Login": null,
+//             "D_Senializa_FecDig": null,
+//             "N_unimed_desc": "M2"
+//         },
+//         {
+//             "C_Senializa_Indicador": 2,
+//             "N_Senializa_Indicador": "Linea de pare",
+//             "C_Senializa_Meta": 1,
+//             "C_bieser_unimed": "037",
+//             "C_Senializa": 3,
+//             "M_Senializa_Anio": 2026,
+//             "M_Senializa_Mes": 2,
+//             "Q_Senializa_Cantidad": 30,
+//             "C_Usuari_Login": "mmedina ",
+//             "D_Senializa_FecDig": "2026-02-25T00:00:00",
+//             "N_unimed_desc": "M2"
+//         },
+//         {
+//             "C_Senializa_Indicador": 1,
+//             "N_Senializa_Indicador": "Lineas peatonales",
+//             "C_Senializa_Meta": 1,
+//             "C_bieser_unimed": "037",
+//             "C_Senializa": 1,
+//             "M_Senializa_Anio": 2026,
+//             "M_Senializa_Mes": 2,
+//             "Q_Senializa_Cantidad": 100,
+//             "C_Usuari_Login": "mmedina ",
+//             "D_Senializa_FecDig": "2026-02-25T00:00:00",
+//             "N_unimed_desc": "M2"
+//         },
+//         {
+//             "C_Senializa_Indicador": 7,
+//             "N_Senializa_Indicador": "Mantenimiento en pintura",
+//             "C_Senializa_Meta": 2,
+//             "C_bieser_unimed": "037",
+//             "C_Senializa": null,
+//             "M_Senializa_Anio": null,
+//             "M_Senializa_Mes": null,
+//             "Q_Senializa_Cantidad": 0,
+//             "C_Usuari_Login": null,
+//             "D_Senializa_FecDig": null,
+//             "N_unimed_desc": "M2"
+//         }
+//     ]
+// }'
+
+const insertarSenializaciones = async (params) => {
+  
+  const { anio, mes, senializaciones } = params;
+
+  const body = {
+    senializaciones: senializaciones
+  };
+
+  
+  let api = UseAxios();
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    let {
+      data: { content },
+    } = await api.post(`${process.env.REACT_APP_API}/transporte/senializacion/${anio}/${mes}`, body, { headers });
+    return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
 
 
 
-export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion, obtenerCapacitacionPorAnio, descargarCapacitacion, obtenerSenializacion, obtenerSenializacionAgrupadaPorAnioyMes, obtenerSenializacionIndicador, listarSenializacionIndicador };
+export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion, obtenerCapacitacionPorAnio, descargarCapacitacion, obtenerSenializacion, obtenerSenializacionAgrupadaPorAnioyMes, obtenerSenializacionIndicador, listarSenializacionIndicador, obtenerSenializacionPorAnioyMes, insertarSenializaciones };

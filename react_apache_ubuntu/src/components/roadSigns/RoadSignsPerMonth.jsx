@@ -117,7 +117,7 @@ export const RoadSignsPerMonth = ({ senializacionesMonthly, anio }) => {
                   )}
                 </td>
                 <td style={{ padding: '12px 10px', textAlign: 'center', verticalAlign: 'top' }}>
-                  {unidades.length > 0 && (
+                 
                     <button style={{
                       background: 'none',
                       border: '1px solid #ddd',
@@ -130,7 +130,7 @@ export const RoadSignsPerMonth = ({ senializacionesMonthly, anio }) => {
                     }} onClick={() => onClickView(anio, mesInfo.mes)}>
                       <EyeIcon className="text-primary" width={20} height={20} />
                     </button>
-                  )}
+                 
                 </td>
               </tr>
             );

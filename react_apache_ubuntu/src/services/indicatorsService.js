@@ -390,15 +390,14 @@ const UpdateTasa = async ( params ) => {
 // }'
 const InsertarProyecciones = async ( params ) => {
 
-  console.log("params *****************", params);
+  
   const { c_tasa, anio, proyecciones } = params;
 
   const body = {
     proyecciones: proyecciones
   };
 
-  console.log("body *******************", body);
-
+  
   let api = UseAxios();
   try {
     const headers = {

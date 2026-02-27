@@ -36,6 +36,7 @@ import { ManageRate } from "../views/managementIndicators/ManageRate";
 import { TransportTrainingMain } from "../views/TransortTraining/TransportTrainingMain";
 import { TransportTrainingPerMonth } from "../views/TransortTraining/TransportTrainingPerMonth";
 import { RoadSignsMain } from "../views/roadSigns/RoadSignsMain";
+import { RoadSignsPerMonth } from "../views/roadSigns/RoadSignsPerMonth";
 
 export const DashboardRoutes = () => {
   return (
@@ -168,6 +169,8 @@ export const DashboardRoutes = () => {
             <Route index element={<RoadSignsMain />} />
             <Route path=":anio" element={<RoadSignsMain />} />
           </Route>
+
+          <Route path="/transportation/road-signs/per-month/:anio/:mes" element={<RoadSignsPerMonth />} />
 
           
         </Routes>
