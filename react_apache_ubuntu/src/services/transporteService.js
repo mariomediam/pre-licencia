@@ -569,6 +569,42 @@ const insertarSenializaciones = async (params) => {
   }
 }
 
+const descargarSenializacion = async (params) => {
+  const { anio, mes } = params;
+
+  let api = UseAxios();
+  const body = {
+    anio
+  }
+
+  if (mes) {
+    body.mes = mes;
+  }
+
+  try {
+    const response = await api.post(`${URL}/download-senializacion/`, body, { responseType: 'blob' });
+    const file = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    
+    const mesesNombres = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const nombreMes = mes ? `_${mesesNombres[mes - 1]}` : '';
+    const fileName = `Senializaciones_${anio}${nombreMes}.xlsx`;
+    
+    const url = window.URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+    return file;
+  } catch (error) {
+    throw error;
+  }
+}
 
 
-export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion, obtenerCapacitacionPorAnio, descargarCapacitacion, obtenerSenializacion, obtenerSenializacionAgrupadaPorAnioyMes, obtenerSenializacionIndicador, listarSenializacionIndicador, obtenerSenializacionPorAnioyMes, insertarSenializaciones };
+export { obtenerCapacitacion, obtenerCapacitacionAgrupadaPorAnioyMes, obtenerCapacitacionPorAnioyMes, obtenerCapacitacionObservacion, obtenerCapacitacionObservacionPorAnioyMes, listarCapacitacionTema, obtenerCapacitacionModalidad, listarCapacitacionModalidad, obtenerCapacitacionCapacitador, listarCapacitacionCapacitador, insertarCapacitacion, obterCapacitacionPorId, actualizarCapacitacion, eliminarCapacitacion, insertarCapacitacionObservacion, actualizarCapacitacionObservacion, obtenerCapacitacionPorAnio, descargarCapacitacion, obtenerSenializacion, obtenerSenializacionAgrupadaPorAnioyMes, obtenerSenializacionIndicador, listarSenializacionIndicador, obtenerSenializacionPorAnioyMes, insertarSenializaciones, descargarSenializacion };

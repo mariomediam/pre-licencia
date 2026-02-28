@@ -6,13 +6,13 @@ import Swal from "sweetalert2";
 
 import RoadIcon from "../../icons/RoadIcon";
 import DownloadIcon from "../../icons/DownloadIcon";
-import { obtenerSenializacionAgrupadaPorAnioyMes, descargarCapacitacion, listarSenializacionIndicador } from "../../services/transporteService";
+import { obtenerSenializacionAgrupadaPorAnioyMes, descargarSenializacion, listarSenializacionIndicador } from "../../services/transporteService";
 import { RoadSignsPerMonth } from "../../components/roadSigns/RoadSignsPerMonth";
 import { FooterIndicators } from "../managementIndicators/FooterIndicators";
 
 // crear array con años desde el 2024 hasta la actualidad
 const anios = Array.from(
-    { length: new Date().getFullYear() - 2024 + 1 },
+    { length: new Date().getFullYear() - 2026 + 1 },
     (_, i) => new Date().getFullYear() - i
 );
 
@@ -146,16 +146,16 @@ export const RoadSignsMain = () => {
     }, [senializaciones]);
 
     const handleDownload = async () => {
-        return;
-        // try {
-        //   await descargarCapacitacion({ anio });
-        // } catch (error) {
-        //   Swal.fire({
-        //     icon: "error",
-        //     title: "Error al descargar la capacitación",
-        //     text: error.response.data.message,
-        //   });
-        // }
+        
+        try {
+          await descargarSenializacion({ anio });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error al descargar la capacitación",
+            text: error.response.data.message,
+          });
+        }
     }
 
     return (

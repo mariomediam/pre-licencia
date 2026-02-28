@@ -9,7 +9,7 @@ import XIcon from "../../icons/XIcon";
 import DownloadIcon from "../../icons/DownloadIcon";
 import { FooterIndicators } from "../managementIndicators/FooterIndicators";
 import { obtenerNombreMes } from "../../utils/varios";
-import { obtenerSenializacionPorAnioyMes, insertarSenializaciones } from "../../services/transporteService";
+import { obtenerSenializacionPorAnioyMes, insertarSenializaciones, descargarSenializacion } from "../../services/transporteService";
 import { RoadSignsPerMonthDetail } from "../../components/roadSigns/RoadSignsPerMonthDetail";
 
 export const RoadSignsPerMonth = () => {
@@ -22,15 +22,16 @@ export const RoadSignsPerMonth = () => {
     const [totalSenializacionesByUniMed, setTotalSenializacionesByUniMed] = useState([])
 
     const handleDownload = async () => {
-        // try {
-        //   await descargarCapacitacion({ anio, mes });
-        // } catch (error) {
-        //   Swal.fire({
-        //     icon: "error",
-        //     title: "Error al descargar la capacitación",
-        //     text: error.response.data.message,
-        //   });
-        // }
+        
+        try {
+          await descargarSenializacion({ anio, mes });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error al descargar la capacitación",
+            text: error.response.data.message,
+          });
+        }
     }
 
     const goBack = () => {
