@@ -13,6 +13,7 @@ export const CardItemIndicator = ({ dataItemIndicator }) => {
 const links = {
   "010201": `/indicadores/actas-control/${currentYear}`,
   "010401": `/indicadores/transportes-capacitacion/${currentYear}`,
+  "010302": `/indicadores/senializacion-vial/${currentYear}`,
 }
 
   const onClickGoTo = () => {

@@ -157,12 +157,6 @@ export const IndicatorTransportTrainingMain = () => {
     }, [capacitaciones]);
 
 
-
-
-
-    // Ejemplo de lo que se almacena en capacitaciones
-    // [{"C_Capacitacion":3,"D_Capacita_Fecha":"2026-01-02","C_Capacita_Tema":3,"C_Capacita_Modalidad":1,"C_Capacita_Capacitador":2,"N_Capacita_Empresas":"empresa 3","N_Capacita_Lugar":"lugar 3","Q_Capacita_Cantidad":15,"T_Capacita_Observ":"observaciones 3","C_Usuari_Login":"MMEDINA ","D_Capacita_FecDig":"2026-02-21T01:10:00","N_Capacita_Tema":"Talleres de Seguridad Vial","N_Capacita_Modalidad":"Vehículos menores","N_Capacita_Capacitador":"PEDRO MENDOZA PAIMA"},{"C_Capacitacion":1,"D_Capacita_Fecha":"2026-02-17","C_Capacita_Tema":1,"C_Capacita_Modalidad":2,"C_Capacita_Capacitador":1,"N_Capacita_Empresas":"empresa","N_Capacita_Lugar":"lugar","Q_Capacita_Cantidad":30,"T_Capacita_Observ":"obervaciones","C_Usuari_Login":"mmedina ","D_Capacita_FecDig":"2026-02-17T00:00:00","N_Capacita_Tema":"Programa de Seguridad Vial","N_Capacita_Modalidad":"Servicio de taxi","N_Capacita_Capacitador":"ORLANDO SANDOVAL CHANGANAQUE"},{"C_Capacitacion":2,"D_Capacita_Fecha":"2026-02-20","C_Capacita_Tema":2,"C_Capacita_Modalidad":3,"C_Capacita_Capacitador":1,"N_Capacita_Empresas":"empresa 2","N_Capacita_Lugar":"lugar 2","Q_Capacita_Cantidad":20,"T_Capacita_Observ":"observaciones 2","C_Usuari_Login":"mmedina ","D_Capacita_FecDig":"2026-02-17T00:00:00","N_Capacita_Tema":"Protocolo de Acoso Sexual","N_Capacita_Modalidad":"Transporte urbano","N_Capacita_Capacitador":"ORLANDO SANDOVAL CHANGANAQUE"},{"C_Capacitacion":10,"D_Capacita_Fecha":"2026-02-21","C_Capacita_Tema":1,"C_Capacita_Modalidad":1,"C_Capacita_Capacitador":1,"N_Capacita_Empresas":"NINGUNA","N_Capacita_Lugar":"BIBLIOTECA MUNICIPAL","Q_Capacita_Cantidad":150,"T_Capacita_Observ":"NINGUNA","C_Usuari_Login":"MMEDINA ","D_Capacita_FecDig":"2026-02-21T23:09:00","N_Capacita_Tema":"Programa de Seguridad Vial","N_Capacita_Modalidad":"Vehículos menores","N_Capacita_Capacitador":"ORLANDO SANDOVAL CHANGANAQUE"},{"C_Capacitacion":8,"D_Capacita_Fecha":"2026-02-25","C_Capacita_Tema":1,"C_Capacita_Modalidad":3,"C_Capacita_Capacitador":2,"N_Capacita_Empresas":"AEDAEDE editado","N_Capacita_Lugar":"ADADE ditado","Q_Capacita_Cantidad":25,"T_Capacita_Observ":"SDASDASD editado","C_Usuari_Login":"MMEDINA ","D_Capacita_FecDig":"2026-02-21T11:50:00","N_Capacita_Tema":"Programa de Seguridad Vial","N_Capacita_Modalidad":"Transporte urbano","N_Capacita_Capacitador":"PEDRO MENDOZA PAIMA"}]
-
     return (
         <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
             <HeaderIdicators selectedType={urlTipo} />
@@ -185,34 +179,8 @@ export const IndicatorTransportTrainingMain = () => {
 
 
 
-                {/* <CollectionOfficeCards totalRaised={totalReaised} totalProjected={totalProjected} />
-  
-          <div className="row g-4 mt-2">
-            <div className="col-12 col-md-4">
-              <CollectionOfficeRaisedVsProjected totalRaised={totalReaised} totalProjected={totalProjected} year={year} />
-            </div>
-            <div className="col-12 col-md-8">
-              <CollectionOfficeByMonth monthlyData={monthlyCollection} totalRaised={totalReaised} year={year} />
-            </div>
-          </div>
-  
-          <div className="mt-4">
-            <FinancialSummaryByMonth financialSummary={financialSummary} />
-          </div>
-  
-          <div className="mt-4">
-            <CollectiobOfficeByRate rateSummary={rateSummary} year={year} periodo={selectedMonths.join(",")} tipo={urlTipo} />
-          </div>
-  
-          <div className="mt-4">
-            <CollecionDate D_Recaud_Inicio={collectionDate} />
-          </div> */}
-
             </div>
 
-            {/* {JSON.stringify(capacitaciones)} */}
-            {/* {JSON.stringify(capacitacionesAgrupadasPorModalidad)} */}
-            {/* {JSON.stringify(capacitacionesPorMes)} */}
             <FooterIndicators />
         </div>
     );

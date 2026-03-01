@@ -20,7 +20,7 @@ import { IndicatorRateDetail } from "../views/managementIndicators/IndicatorRate
 import { InspectionReports } from "../views/managementIndicators/InspectionReports";
 import { InspectionReportsDetail } from "../views/managementIndicators/InspectionReportsDetail";
 import { IndicatorTransportTrainingMain } from "../views/managementIndicators/IndicatorTransportTrainingMain";
-
+import { IndicatorRoadSingsMain } from "../views/managementIndicators/IndicatorRoadSingsMain";
 
 export const AppRouter = () => {
   return (
@@ -42,9 +42,18 @@ export const AppRouter = () => {
             <Route path="" element={<MainIndicators />} />
           </Route>
 
-          <Route path="/indicadores-list/:tipo/:code" element={<ListIndicators />} />
-          <Route path="/indicadores-detail/:tipo/:code" element={<IndicatorCollectionDetail />} />  
-          <Route path="/indicadores-detail-rate/:tipo/:anio/:periodo/:tasa" element={<IndicatorRateDetail />} />
+          <Route
+            path="/indicadores-list/:tipo/:code"
+            element={<ListIndicators />}
+          />
+          <Route
+            path="/indicadores-detail/:tipo/:code"
+            element={<IndicatorCollectionDetail />}
+          />
+          <Route
+            path="/indicadores-detail-rate/:tipo/:anio/:periodo/:tasa"
+            element={<IndicatorRateDetail />}
+          />
 
           {/* <Route path="/indicadores/:anio" element={<MainIndicators />} /> */}
           <Route
@@ -92,11 +101,15 @@ export const AppRouter = () => {
             element={<InspectionReportsDetail />}
           />
 
-            <Route
+          <Route
             path="/indicadores/transportes-capacitacion/:anio"
             element={<IndicatorTransportTrainingMain />}
           />
 
+          <Route
+            path="/indicadores/senializacion-vial/:anio"
+            element={<IndicatorRoadSingsMain />}
+          />
 
           <Route
             path="/*"
