@@ -12,20 +12,23 @@ import { CollectionOfficeByMonth } from "../../components/managementIndicators/c
 import { FinancialSummaryByMonth } from "../../components/managementIndicators/collectionOffice/FinancialSummaryByMonth";
 import { CollectiobOfficeByRate } from "../../components/managementIndicators/collectionOffice/CollectiobOfficeByRate";
 import { CollecionDate } from "../../components/managementIndicators/CollecionDate";
-import { transformarFecha } from "../../utils/varios";
+import { transformarFecha, obtenerNombreMes, formatMoney } from "../../utils/varios";
 import { FooterIndicators } from "./FooterIndicators";
+import { exportarJsonToExcelMultiple } from "../../services/generalService";
+
 
 const currentYear = new Date().getFullYear();
 
 const IndicatorCollectionDetail = () => {
 
-  
+
   const { tipo: urlTipo = "01", code: urlCode = "00" } = useParams();
 
   const offices = getOffices();
 
 
   const filteredOffice = offices.find((row) => row.type === urlTipo && row.code === urlCode);
+  console.log(filteredOffice);
   // const filteredTasas = tasas
 
 
@@ -41,7 +44,7 @@ const IndicatorCollectionDetail = () => {
   const [financialSummary, setFinancialSummary] = useState([]);
   const [rateSummary, setRateSummary] = useState([]);
   const [collectionDate, setCollectionDate] = useState("");
-  const [selectedMonths, setSelectedMonths] = useState([1,2,3,4,5,6,7,8,9,10,11,12]); // Todos los meses
+  const [selectedMonths, setSelectedMonths] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]); // Todos los meses
 
 
   useEffect(() => {
@@ -145,15 +148,15 @@ const IndicatorCollectionDetail = () => {
   }, [monthlyCollection, monthlyProyected, year, selectedMonths]);
 
   useEffect(() => {
-    if (collection.length === 0 ) {
+    if (collection.length === 0) {
       setRateSummary([]);
       return;
     }
-     
+
 
     const groupedColletionByTasa = collection.reduce((acc, item) => {
       const key = `${item.C_Tasa_SATP}-${item.C_Tasa}`;
-      
+
       if (!acc[key]) {
         acc[key] = {
           C_Tasa_SATP: item.C_Tasa_SATP,
@@ -162,17 +165,17 @@ const IndicatorCollectionDetail = () => {
           Q_RecDet_Monto: 0
         };
       }
-      
+
       acc[key].Q_RecDet_Monto += item.Q_RecDet_Monto;
       return acc;
     }, {});
-    
+
     // Convertir el objeto a array
-    const resultByTasaCollection = Object.values(groupedColletionByTasa);  
+    const resultByTasaCollection = Object.values(groupedColletionByTasa);
 
     const groupedProyectedByTasa = proyected.reduce((acc, item) => {
       const key = `${item.C_Tasa_SATP}-${item.C_Tasa}`;
-      
+
       if (!acc[key]) {
         acc[key] = {
           C_Tasa_SATP: item.C_Tasa_SATP,
@@ -181,32 +184,70 @@ const IndicatorCollectionDetail = () => {
           Q_Proyecc_Monto: 0
         };
       }
-      
+
       acc[key].Q_Proyecc_Monto += item?.Q_Proyecc_Monto || 0;
       return acc;
     }, {});
-    
-    // Convertir el objeto a array
-    const resultByTasaProyected = Object.values(groupedProyectedByTasa);  
 
-// Merge resultByTasaCollection and resultByTasaProyected
+    // Convertir el objeto a array
+    const resultByTasaProyected = Object.values(groupedProyectedByTasa);
+
+    // Merge resultByTasaCollection and resultByTasaProyected
     const resultByTasa = resultByTasaCollection.map((item) => {
       const proyectedItem = resultByTasaProyected.find((p) => p.C_Tasa_SATP === item.C_Tasa_SATP);
       return {
         ...item,
-        "Q_Proyecc_Monto": proyectedItem?.Q_Proyecc_Monto || 0,        
+        "Q_Proyecc_Monto": proyectedItem?.Q_Proyecc_Monto || 0,
       };
     });
 
 
     setRateSummary(resultByTasa);
-  }, [ collection, proyected ]);
+  }, [collection, proyected]);
+
+  const handleExportExcel = async () => {
+
+    const dataRecaudacionMensual = financialSummary.map((item) => {
+      return {
+        Mes: obtenerNombreMes(item.Mes),
+        Recaudado: item.collection || 0,
+        Proyectado: item.projected || 0,
+        Pendiente: item.pendingCollection || 0,
+        Acumulado: item.accumulatedPendingCollection || 0,
+      };
+    });
+
+    const dataTasas = rateSummary.map((item) => {
+      return {
+        Codigo: item.C_Tasa_SATP,
+        Tasa: item.N_Tasa_Descrip,
+        Dependencia: item.N_depend_Descripcion,
+        Recaudado: item.Q_RecDet_Monto || 0,
+        Proyectado: item.Q_Proyecc_Monto || 0,
+        percentage: item.Q_Proyecc_Monto > 0
+          ? Math.min((item.Q_RecDet_Monto / item.Q_Proyecc_Monto), 100)
+          : 0
+      };
+    });
+
+    const sheets = [
+      {
+        sheet_name: "Recaudación mensual",
+        data: dataRecaudacionMensual,
+      },
+      {
+        sheet_name: "Recaudación por tasa",
+        data: dataTasas,
+      },
+    ];
+    await exportarJsonToExcelMultiple({ sheets, filename: `Recaudación por tasas - ${filteredOffice.title} - ${year}.xlsx` });
+  }
 
   return (
     <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
       <HeaderIdicators selectedType={urlTipo} />
       <div className="container-lg mx-auto py-4 flex-grow-1">
-        <CollectionOfficeHeader dataOffice={filteredOffice} setYear={setYear} selectedMonths={selectedMonths} setSelectedMonths={setSelectedMonths} />
+        <CollectionOfficeHeader dataOffice={filteredOffice} setYear={setYear} selectedMonths={selectedMonths} setSelectedMonths={setSelectedMonths} handleExportExcel={handleExportExcel} />
 
         <CollectionOfficeCards totalRaised={totalReaised} totalProjected={totalProjected} />
 
@@ -231,8 +272,9 @@ const IndicatorCollectionDetail = () => {
           <CollecionDate D_Recaud_Inicio={collectionDate} />
         </div>
 
+        
       </div>
-        <FooterIndicators />
+      <FooterIndicators />
     </div>
   )
 }

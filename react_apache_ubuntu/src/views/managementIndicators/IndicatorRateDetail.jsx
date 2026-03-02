@@ -6,9 +6,10 @@ import { CollectionRateHeader } from "../../components/managementIndicators/coll
 import { CollectionOfficeCards } from "../../components/managementIndicators/collectionOffice/CollectionOfficeCards";
 import { CollectionOfficeByMonth } from "../../components/managementIndicators/collectionOffice/CollectionOfficeByMonth";
 import { FinancialSummaryByMonth } from "../../components/managementIndicators/collectionOffice/FinancialSummaryByMonth";
-import { transformarFecha } from "../../utils/varios";
+import { transformarFecha, obtenerNombreMes } from "../../utils/varios";
 import { FooterIndicators } from "./FooterIndicators";
 import { CollecionDate } from "../../components/managementIndicators/CollecionDate";
+import { exportarJsonToExcelMultiple } from "../../services/generalService";
 
 export const IndicatorRateDetail = () => {
 
@@ -141,13 +142,33 @@ export const IndicatorRateDetail = () => {
     }, [monthlyCollection, monthlyProyected, urlYear, selectedMonths]);
 
 
+    const handleExportExcel = async () => {
+      
+        const dataRecaudacionMensual = financialSummary.map((item) => {
+            return {
+                Mes: obtenerNombreMes(item.Mes),
+                Recaudado: item.collection || 0,
+                Proyectado: item.projected || 0,
+                Pendiente: item.pendingCollection || 0,
+                "Acumulado pendiente de recaudar": item.accumulatedPendingCollection || 0,
+            };
+        });
+
+        const sheets = [
+            {
+                sheet_name: "Recaudación mensual",
+                data: dataRecaudacionMensual,
+            },
+        ];
+        await exportarJsonToExcelMultiple({ sheets, filename: `Recaudación mensual - ${tasa.C_Tasa_SATP.trim()} ${tasa.N_Tasa_Descrip.trim()} - ${urlYear}.xlsx` });
+    }
 
 
     return (
         <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
             <HeaderIdicators selectedType={urlTipo} />
             <div className="container-lg mx-auto py-4 flex-grow-1">
-                <CollectionRateHeader tasa={tasa} year={urlYear} selectedMonths={urlPeriodo.split(",")} />
+                <CollectionRateHeader tasa={tasa} year={urlYear} selectedMonths={urlPeriodo.split(",")} handleExportExcel={handleExportExcel} />
 
 
                 <CollectionOfficeCards totalRaised={totalReaised} totalProjected={totalProjected} />
@@ -158,13 +179,13 @@ export const IndicatorRateDetail = () => {
                     <FinancialSummaryByMonth financialSummary={financialSummary} />
                 </div>
 
-                <div className="mt-4">
-                    {/* <CollectiobOfficeByRate rateSummary={rateSummary} year={year} periodo={selectedMonths.join(",")} /> */}
-                </div>
+               
 
                 <div className="mt-4">
                     <CollecionDate D_Recaud_Inicio={collectionDate} />
                 </div>
+
+                {JSON.stringify(financialSummary)}
 
             </div>
             <FooterIndicators />

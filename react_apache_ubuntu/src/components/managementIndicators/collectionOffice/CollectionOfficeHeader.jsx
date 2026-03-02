@@ -3,7 +3,7 @@ import ArrowLeftIcon from "../../../icons/ArrowLeft";
 import DownloadIcon from "../../../icons/DownloadIcon";
 import { MultiSelectMonths } from "../../tools/MultiSelectMonths";
 
-export const CollectionOfficeHeader = ({ dataOffice, setYear, selectedMonths, setSelectedMonths }) => {
+export const CollectionOfficeHeader = ({ dataOffice, setYear, selectedMonths, setSelectedMonths, handleExportExcel }) => {
   const navigate = useNavigate();
   const { title } = dataOffice || {};
 
@@ -58,7 +58,7 @@ export const CollectionOfficeHeader = ({ dataOffice, setYear, selectedMonths, se
           </div>
 
           {/* Botón Exportar */}
-          <button className="btn btn-primary d-flex align-items-center gap-2">
+          <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleExportExcel}>
             <DownloadIcon width={16} height={16} />
             Exportar
           </button>

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 
 
-export const CollectionRateHeader = ({ tasa, year, selectedMonths }) => {
+export const CollectionRateHeader = ({ tasa, year, selectedMonths, handleExportExcel }) => {
     const navigate = useNavigate();
     const { N_Tasa_Descrip, N_depend_Descripcion, C_Tasa_SATP } = tasa || {};
 
@@ -63,7 +63,7 @@ export const CollectionRateHeader = ({ tasa, year, selectedMonths }) => {
             </div>
   
             {/* Botón Exportar */}
-            <button className="btn btn-primary d-flex align-items-center gap-2">
+            <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleExportExcel}>
               <DownloadIcon width={16} height={16} />
               Exportar
             </button>
