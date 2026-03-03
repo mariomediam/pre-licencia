@@ -19,14 +19,14 @@ export const getIndicators = () => [
     icon: <BusIcon width={36} height={36} />,
     
   }, 
-  {
-    type: "01",
-    code: "01",
-    codIndicator: "010102",
-    title: "Autorizaciones vigentes",
-    subTitle: "Consulta y seguimiento del estado de las autorizaciones emitidas",
-    icon: <BusIcon width={36} height={36} />,    
-  },
+  // {
+  //   type: "01",
+  //   code: "01",
+  //   codIndicator: "010102",
+  //   title: "Autorizaciones vigentes",
+  //   subTitle: "Consulta y seguimiento del estado de las autorizaciones emitidas",
+  //   icon: <BusIcon width={36} height={36} />,    
+  // },
   {
     type: "01",
     code: "02",
@@ -36,15 +36,15 @@ export const getIndicators = () => [
     icon: <BusIcon width={36} height={36} />,
     
   },
-  {
-    type: "01",
-    code: "02",
-    codIndicator: "010202",
-    title: "Infracciones impuestas",
-    subTitle: "Consulta y seguimiento de actas de control emitidas.",
-    icon: <BusIcon width={36} height={36} />,
+  // {
+  //   type: "01",
+  //   code: "02",
+  //   codIndicator: "010202",
+  //   title: "Infracciones impuestas",
+  //   subTitle: "Consulta y seguimiento de actas de control emitidas.",
+  //   icon: <BusIcon width={36} height={36} />,
     
-  },
+  // },
   {
     type: "01",
     code: "03",

@@ -5,7 +5,7 @@ import { MultiSelectMonths } from "../../tools/MultiSelectMonths";
 
 const years = Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => new Date().getFullYear() - i);
 
-export const IndicatorRoadSignsHeader = ({ setYear, selectedMonths, setSelectedMonths, roadSignsGroupByUniMed = [] }) => {
+export const IndicatorRoadSignsHeader = ({ setYear, selectedMonths, setSelectedMonths, roadSignsGroupByUniMed = [], handleDownload }) => {
   const navigate = useNavigate();
   // const title  = `${totalCapacitaciones} personas capacitadas`
 
@@ -66,7 +66,7 @@ export const IndicatorRoadSignsHeader = ({ setYear, selectedMonths, setSelectedM
           </div>
 
           {/* Botón Exportar */}
-          <button className="btn btn-primary d-flex align-items-center gap-2">
+          <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleDownload}>
             <DownloadIcon width={16} height={16} />
             Exportar
           </button>

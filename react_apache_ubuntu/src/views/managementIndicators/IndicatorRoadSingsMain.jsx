@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import { HeaderIdicators } from "./HeaderIdicators";
 import { FooterIndicators } from "./FooterIndicators";
-import { obtenerSenializacionAgrupadaPorAnioyMes } from "../../services/transporteService";
+import { obtenerSenializacionAgrupadaPorAnioyMes, descargarSenializacion } from "../../services/transporteService";
 import { IndicatorRoadSignsHeader } from "../../components/managementIndicators/roadSigns/IndicatorRoadSignsHeader";
 import { IndicatorRoadSignsByIndicator } from "../../components/managementIndicators/roadSigns/IndicatorRoadSignsByIndicator";
 import { IndicatorRoadSignsByMonth } from "../../components/managementIndicators/roadSigns/IndicatorRoadSignsByMonth";
@@ -170,12 +170,28 @@ export const IndicatorRoadSingsMain = () => {
     setRoadSignsGroupByIndicatorAndMonth(agrupadoPorIndicadorYMes);
   }, [roadSings]);
 
+  const handleDownload = async () => {
+        
+    try {
+      await descargarSenializacion({ anio });
+    } catch (error) {
+      console.error(error.response);
+      Swal.fire({
+        icon: "error",
+        title: "Error al descargar la capacitación",
+        text: error.response.data.message,
+      });
+    }
+}
+
+
+
     return (
       <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
         <HeaderIdicators selectedType={urlTipo} />
         <div className="container-lg mx-auto py-4 flex-grow-1">
 
-          <IndicatorRoadSignsHeader setYear={onChangeYear} selectedMonths={selectedMonths} setSelectedMonths={setSelectedMonths} roadSignsGroupByUniMed={roadSignsGroupByUniMed} />
+          <IndicatorRoadSignsHeader setYear={onChangeYear} selectedMonths={selectedMonths} setSelectedMonths={setSelectedMonths} roadSignsGroupByUniMed={roadSignsGroupByUniMed} handleDownload={handleDownload} />
 
 
           <IndicatorRoadSignsByIndicator roadSignsGroupByIndicator={roadSignsGroupByIndicator} />

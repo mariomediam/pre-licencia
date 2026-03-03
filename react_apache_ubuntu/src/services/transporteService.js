@@ -322,7 +322,7 @@ const actualizarCapacitacionObservacion = async (params) => {
 const descargarCapacitacion = async (params) => {
   const { anio, mes } = params;
 
-  let api = UseAxios();
+  // let api = UseAxios();
   const body = {
     anio
   }
@@ -332,7 +332,7 @@ const descargarCapacitacion = async (params) => {
   }
 
   try {
-    const response = await api.post(`${URL}/download-capacitacion/`, body, { responseType: 'blob' });
+    const response = await axios.post(`${URL}/download-capacitacion/`, body, { responseType: 'blob' });
     const file = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
@@ -475,7 +475,7 @@ const insertarSenializaciones = async (params) => {
 const descargarSenializacion = async (params) => {
   const { anio, mes } = params;
 
-  let api = UseAxios();
+  
   const body = {
     anio
   }
@@ -485,7 +485,7 @@ const descargarSenializacion = async (params) => {
   }
 
   try {
-    const response = await api.post(`${URL}/download-senializacion/`, body, { responseType: 'blob' });
+    const response = await axios.post(`${URL}/download-senializacion/`, body, { responseType: 'blob' });
     const file = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });

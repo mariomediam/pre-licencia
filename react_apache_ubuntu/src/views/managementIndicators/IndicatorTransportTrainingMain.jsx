@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-
+import Swal from "sweetalert2";
 import { HeaderIdicators } from "./HeaderIdicators";
 import { FooterIndicators } from "./FooterIndicators";
 import { IndicatorTranportTrainingHeader } from "../../components/managementIndicators/transportTraining/IndicatorTranportTrainingHeader";
-import { obtenerCapacitacionPorAnio } from "../../services/transporteService";
+import { obtenerCapacitacionPorAnio, descargarCapacitacion } from "../../services/transporteService";
 import { IndicatorTranportTrainingByTheme } from "../../components/managementIndicators/transportTraining/IndicatorTranportTrainingByTheme";
 import { IndicatorTranportTrainingByModality } from "../../components/managementIndicators/transportTraining/IndicatorTranportTrainingByModality";
 import { IndicatorTranportTrainingByMonth } from "../../components/managementIndicators/transportTraining/IndicatorTranportTrainingByMonth";
@@ -156,12 +156,25 @@ export const IndicatorTransportTrainingMain = () => {
         setCapacitacionesPorModalidadYMes(agrupadoPorModalidadYMes);
     }, [capacitaciones]);
 
+    const handleDownload = async () => {
+        try {
+          await descargarCapacitacion({ anio:year });
+        } catch (error) {
+          console.error(error.response);
+          Swal.fire({
+            icon: "error",
+            title: "Error al descargar la capacitación",
+            text: error.response.data.message,
+          });
+        }
+      }
+
 
     return (
         <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
             <HeaderIdicators selectedType={urlTipo} />
             <div className="container-lg mx-auto py-4 flex-grow-1">
-                <IndicatorTranportTrainingHeader setYear={setYear} selectedMonths={selectedMonths} setSelectedMonths={setSelectedMonths} totalCapacitaciones={totalCapacitaciones} />
+                <IndicatorTranportTrainingHeader setYear={setYear} selectedMonths={selectedMonths} setSelectedMonths={setSelectedMonths} totalCapacitaciones={totalCapacitaciones} handleDownload={handleDownload} />
 
                 <IndicatorTranportTrainingByTheme capacitacionesAgrupadasPorTema={capacitacionesAgrupadasPorTema} />
 
@@ -179,6 +192,7 @@ export const IndicatorTransportTrainingMain = () => {
 
 
 
+{JSON.stringify(capacitaciones)}
             </div>
 
             <FooterIndicators />

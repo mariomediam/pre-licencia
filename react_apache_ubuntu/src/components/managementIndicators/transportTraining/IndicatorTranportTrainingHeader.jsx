@@ -5,7 +5,7 @@ import { MultiSelectMonths } from "../../tools/MultiSelectMonths";
 
 const years = Array.from({ length: new Date().getFullYear() - 2026 + 1 }, (_, i) => new Date().getFullYear() - i);
 
-export const IndicatorTranportTrainingHeader = ({ setYear, selectedMonths, setSelectedMonths, totalCapacitaciones = 0}) => {
+export const IndicatorTranportTrainingHeader = ({ setYear, selectedMonths, setSelectedMonths, totalCapacitaciones = 0, handleDownload }) => {
   const navigate = useNavigate();
   const title  = `${totalCapacitaciones} personas capacitadas`
   const subtitle = "Capacitaciones realizadas por la Subgerencia de Seguridad y Educación Vial"
@@ -65,7 +65,7 @@ export const IndicatorTranportTrainingHeader = ({ setYear, selectedMonths, setSe
           </div>
 
           {/* Botón Exportar */}
-          <button className="btn btn-primary d-flex align-items-center gap-2">
+          <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleDownload}>
             <DownloadIcon width={16} height={16} />
             Exportar
           </button>
