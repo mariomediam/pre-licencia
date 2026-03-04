@@ -4,6 +4,8 @@ import { CardIndicator } from "../../components/managementIndicators/CardIndicat
 import { HeaderIdicators } from "./HeaderIdicators";
 import { FooterIndicators } from "./FooterIndicators";
 
+import logoMPP from "../../assets/images/logo-mpp.png";
+
 
 export const MainIndicators = () => {
 
@@ -13,10 +15,11 @@ export const MainIndicators = () => {
     <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
       <HeaderIdicators selectedType={urlTipo} />
       
+              
       {/* Header Section */}
-      <div className="container-lg mx-auto py-5 flex-grow-1">
-        <div className="text-center mb-5">
-          <h1 className="fw-bold mb-3" style={{ fontSize: "2.5rem" }}>Plataforma de Datos</h1>
+      <div className="container-lg mx-auto pt-3 pb-5 flex-grow-1">
+        <div className="text-center mb-2">
+          <h1 className="fw-bold mb-3" style={{ fontSize: "2.5rem" }}>Plataforma de Indicadores de Datos de Transporte - Piura</h1>
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6">
               <p className="text-muted mb-0">

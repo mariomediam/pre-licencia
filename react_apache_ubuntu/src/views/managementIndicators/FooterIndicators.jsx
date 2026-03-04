@@ -1,5 +1,7 @@
 import logoGiz from "../../assets/images/logo GIZ.jpeg";
 import logoEmbajadaSuiza from "../../assets/images/logo embajada suiza.jpeg";
+import logoPromovilidad from "../../assets/images/logo-promovilidad.png";
+import logoMTC from "../../assets/images/logo-mtc.png";
 
 export const FooterIndicators = () => {
     const currentYear = new Date().getFullYear();
@@ -10,36 +12,41 @@ export const FooterIndicators = () => {
 
 
                 {/* Contenido principal del footer */}
-                <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+                <div className="d-flex flex-column  align-items-center justify-content-cemter gap-2">
                     {/* Copyright - Lado izquierdo */}
-                    <div className="">
+                    {/* <div className="">
                         <p className="text-muted small mb-0 text-center text-md-start">
                             © {currentYear} Municipalidad Provincial de Piura. Todos los derechos reservados
                         </p>
-                    </div>
+                    </div> */}
 
                     {/* Logos - Lado derecho */}
-                    <div className="">
-                        {/* Texto superior centrado */}
-                        <div className="mb-4">
-                            <p className="text-muted small mb-0">Implementada por</p>
-                        </div>
+                    {/* Texto superior centrado */}
+                    <div className="mb-4">
+                        <p className="text-muted small mb-0">Implementada por</p>
+                    </div>
+
+                    <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-2">
+
+                        <img src={logoMTC} alt="MTC" style={{ height: "150px", objectFit: "contain" }} />
+                    <img src={logoPromovilidad} alt="Promovilidad" style={{ height: "80px", objectFit: "contain" }} />
+
 
                         <img
                             src={logoGiz}
                             alt="Cooperación Alemana - GIZ"
-                            
-                            style={{ height: "150px", objectFit: "contain" }}
+
+                            style={{ height: "120px", objectFit: "contain" }}
                         />
 
                         <img
                             src={logoEmbajadaSuiza}
                             alt="Embajada de Suiza en el Perú"
-                            style={{ height: "150px", objectFit: "contain" }}
-                        />     <div>
+                            style={{ height: "120px", objectFit: "contain" }}
+                        />
 
-                        </div>
 
+                     
 
                     </div>
                 </div>
