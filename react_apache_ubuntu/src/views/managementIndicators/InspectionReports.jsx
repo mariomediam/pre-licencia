@@ -4,34 +4,66 @@ import Swal from "sweetalert2";
 
 import { HeaderIdicators } from "./HeaderIdicators";
 import { InspectionReportsHeader } from "../../components/managementIndicators/inspectionReports/InspectionReportsHeader";
-import { BuscarRecaudacionActasControlSatp, BuscarPorCobrarActasControlSatp, BuscarPorEjecutarActasControlSatp } from "../../services/indicatorsService";
+import { BuscarRecaudacionActasControlSatp, BuscarPorCobrarActasControlSatp, BuscarImpuestoActasControlSatp } from "../../services/indicatorsService";
 import { InspectionReportsCards } from "../../components/managementIndicators/inspectionReports/InspectionReportsCards";
 import { InspectionReportsGraphByTotal } from "../../components/managementIndicators/inspectionReports/InspectionReportsGraphByTotal";
 import { InspectionReportsGRaphByMonth } from "../../components/managementIndicators/inspectionReports/InspectionReportsGRaphByMonth";
 import { InspectionReportsSummaryByInfrac } from "../../components/managementIndicators/inspectionReports/InspectionReportsSummaryByInfrac";
 import { FooterIndicators } from "./FooterIndicators";
+import { exportarJsonToExcelMultiple } from "../../services/generalService";
 
 export const InspectionReports = () => {
   const { anio: urlYear } = useParams();
   
+  const [impuesto, setImpuesto] = useState([]);
   const [recaudado, setRecaudado] = useState([]);
   const [porCobrar, setPorCobrar] = useState([]);
-  const [porEjecutar, setPorEjecutar] = useState([]);
   
+  
+  const [totalImpuesto, setTotalImpuesto] = useState(0);
   const [totalRecaudado, setTotalRecaudado] = useState(0);
-  const [totalPorEjecutar, setTotalPorEjecutar] = useState(0);
   const [totalPorCobrar, setTotalPorCobrar] = useState(100);
 
   const [totalActas, setTotalActas] = useState(0);
   
+  const [isLoadingImpuesto, setIsLoadingImpuesto] = useState(false);
   const [isLoadingRecaudado, setIsLoadingRecaudado] = useState(false);
   const [isLoadingPorCobrar, setIsLoadingPorCobrar] = useState(false);
-  const [isLoadingPorEjecutar, setIsLoadingPorEjecutar] = useState(false);
   
   const [monthlyRecaudado, setmonthlyRecaudado] = useState([])
   const [recaudadoAgrupadoPorInfraccion, setRecaudadoAgrupadoPorInfraccion] = useState([])
 
   const urlTipo = "01";
+
+
+  useEffect(() => {
+    const getImpuesto = async () => {
+      try {
+        setIsLoadingImpuesto(true);
+        const data = await BuscarImpuestoActasControlSatp({ anio: urlYear });
+        setImpuesto(data);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error al buscar las actas impuestas",
+          text: error.response.data.message,
+        });
+      } finally {
+        setIsLoadingImpuesto(false);
+      }
+
+
+    }
+    getImpuesto();
+  }, [urlYear, urlTipo]);
+
+  useEffect(() => {
+    if (impuesto.length > 0) {
+      setTotalImpuesto(impuesto.reduce((acc, curr) => acc + curr.Monto, 0));
+    } else {
+      setTotalImpuesto(0);
+    }
+  }, [impuesto]);
 
 
   useEffect(() => {
@@ -93,44 +125,42 @@ export const InspectionReports = () => {
 
 
 
-  useEffect(() => {
-    const getPorEjecutar = async () => {
-      try {
-        setIsLoadingPorEjecutar(true);
-        const data = await BuscarPorEjecutarActasControlSatp({ anio: urlYear });
-        setPorEjecutar(data);
-      } catch (error) {
-        Swal.fire({
-          icon: "error",
-          title: "Error al buscar la recaudación por ejecutar de actas",
-          text: error.response.data.message,
-        });
-      } finally {
-        setIsLoadingPorEjecutar(false);
-      }
-    }
-    getPorEjecutar();
-  }, [urlYear, urlTipo]);
+  // useEffect(() => {
+  //   const getPorEjecutar = async () => {
+  //     try {
+  //       setIsLoadingPorEjecutar(true);
+  //       const data = await BuscarPorEjecutarActasControlSatp({ anio: urlYear });
+  //       setPorEjecutar(data);
+  //     } catch (error) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error al buscar la recaudación por ejecutar de actas",
+  //         text: error.response.data.message,
+  //       });
+  //     } finally {
+  //       setIsLoadingPorEjecutar(false);
+  //     }
+  //   }
+  //   getPorEjecutar();
+  // }, [urlYear, urlTipo]);
+
+  // useEffect(() => {
+  //   if (porEjecutar.length > 0) {
+  //     setTotalPorEjecutar(porEjecutar.reduce((acc, curr) => acc + curr.Monto, 0));
+  //   } else {
+  //     setTotalPorEjecutar(0);
+  //   }
+  // }, [porEjecutar]);
+
 
   useEffect(() => {
-    if (porEjecutar.length > 0) {
-      setTotalPorEjecutar(porEjecutar.reduce((acc, curr) => acc + curr.Monto, 0));
-    } else {
-      setTotalPorEjecutar(0);
-    }
-  }, [porEjecutar]);
-
-
-  useEffect(() => {
-    if (recaudado.length > 0) {
-      const totalRecaudado = recaudado.reduce((acc, curr) => acc + curr.TotalActas, 0);
-      const totalPorCobrar = porCobrar.reduce((acc, curr) => acc + curr.TotalActas, 0);
-      const totalPorEjecutar = porEjecutar.reduce((acc, curr) => acc + curr.TotalActas, 0);
-      setTotalActas(totalRecaudado + totalPorCobrar + totalPorEjecutar);
+    if (impuesto.length > 0) {
+      const totalImpuesto = impuesto.reduce((acc, curr) => acc + curr.TotalActas, 0);
+      setTotalActas(totalImpuesto);
     } else {
       setTotalActas(0);
     }
-  }, [recaudado, porCobrar, porEjecutar]);
+  }, [impuesto]);
 
 
   useEffect(() => {
@@ -160,6 +190,7 @@ export const InspectionReports = () => {
         acc[key] = {
           Abreviatura: item.Abreviatura,
           Descripcion: item.Descripcion,
+          Articulo: item.Articulo,
           Norma: item.Norma,
           Monto: 0,
           TotalActas: 0
@@ -179,26 +210,47 @@ export const InspectionReports = () => {
 
   }, [recaudado]);
 
+  const handleExportExcel = async () => {
+
+    
+
+    const sheets = [
+      {
+        sheet_name: "Impuesto",
+        data: impuesto,
+      },
+      {
+        sheet_name: "Recaudado",
+        data: recaudado,
+      },
+      {
+        sheet_name: "Por cobrar",
+        data: porCobrar,
+      },
+    ];
+    await exportarJsonToExcelMultiple({ sheets, filename: `Actas de control - ${urlYear}.xlsx` });
+  }
+
 
   return (
     <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
       <HeaderIdicators selectedType={urlTipo} />
       <div className="container-lg mx-auto py-4 flex-grow-1">
-        <InspectionReportsHeader year={urlYear} />
-        <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} porEjecutar={totalPorEjecutar} totalActas={totalActas} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingPorEjecutar} />
+        <InspectionReportsHeader year={urlYear} handleExportExcel={handleExportExcel} />
+        <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} impuesto={totalImpuesto} totalActas={totalActas} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingImpuesto} />
 
         <div className="row g-4 mt-0">
           <div className="col-12 col-md-4">
-            <InspectionReportsGraphByTotal recaudado={totalRecaudado} porCobrar={totalPorCobrar} porEjecutar={totalPorEjecutar} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingPorEjecutar} />
+            <InspectionReportsGraphByTotal recaudado={totalRecaudado} porCobrar={totalPorCobrar} impuesto={totalImpuesto} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingImpuesto} />
           </div>
           <div className="col-12 col-md-8">
-            <InspectionReportsGRaphByMonth monthlyData={monthlyRecaudado} totalRaised={totalRecaudado} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingPorEjecutar} />
+            <InspectionReportsGRaphByMonth monthlyData={monthlyRecaudado} totalRaised={totalRecaudado} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingImpuesto} />
           </div>
         </div>
 
 
         <div className="mt-4">
-          <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingPorEjecutar} />
+          <InspectionReportsSummaryByInfrac recaudadoAgrupadoPorInfraccion={recaudadoAgrupadoPorInfraccion} year={urlYear} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingImpuesto} />
         </div>
       </div>
       <FooterIndicators />

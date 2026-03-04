@@ -9,7 +9,7 @@ let anios = [];
   }
 
 
-export const InspectionReportsHeader = ({ year }) => {
+export const InspectionReportsHeader = ({ year, handleExportExcel }) => {
   const navigate = useNavigate();
 
   const title = "Indicadores de actas de control";
@@ -70,7 +70,7 @@ export const InspectionReportsHeader = ({ year }) => {
               
   
             {/* Botón Exportar */}
-            <button className="btn btn-primary d-flex align-items-center gap-2">
+            <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleExportExcel}>
               <DownloadIcon width={16} height={16} />
               Exportar
             </button>

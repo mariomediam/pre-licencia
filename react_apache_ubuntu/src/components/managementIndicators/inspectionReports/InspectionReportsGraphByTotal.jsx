@@ -9,7 +9,7 @@ const formatNumber = (value) => {
     }).format(Number(value));
 };
 
-export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, porEjecutar, year = 0, isLoading = false }) => {
+export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, impuesto, year = 0, isLoading = false }) => {
     const dafaultOption = useMemo(
         () => {
             return {
@@ -67,24 +67,11 @@ export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, porEjecuta
                             fontSize: 10,
                             formatter: (params) => formatNumber(params.value)
                         },
-                    },
-                    {
-                        name: 'Por ejecutar',
-                        data: isLoading ? [0] : [porEjecutar],
-                        type: 'bar',
-                        barWidth: '25%',
-                        itemStyle: { color:  '#ef4444'},
-                        label: {
-                            show: true,
-                            position: "top",
-                            fontSize: 10,
-                            formatter: (params) => formatNumber(params.value)
-                        },
-                    }
+                    },                    
                 ]
             };
         },
-        [recaudado, porCobrar, porEjecutar, isLoading]
+        [recaudado, porCobrar, isLoading]
     );
 
     return (

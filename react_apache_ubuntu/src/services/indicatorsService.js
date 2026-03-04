@@ -413,27 +413,52 @@ const InsertarProyecciones = async ( params ) => {
   }
 } ;
 
+const BuscarPagosActasControlSatp = async ( params ) => {
+  const { anio, tipo } = params;
 
-// curl --location 'http://127.0.0.1:8000/api/indicadores/buscar-recaudacion-actas-control-satp?anio=2026&tipo=1' \
-// --data ''
-
-const BuscarRecaudacionActasControlSatp = async ( params ) => {
-  const { anio } = params;
-
-  const tipo = 1;
-
-
-  let credenciales = {};
+    let credenciales = {};
   try {
     const headers = {
       "Content-Type": "application/json",
     };
     let {
       data: { content },
-    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/buscar-recaudacion-actas-control-satp?anio=${anio}&tipo=${tipo}`, credenciales, {
+    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/buscar-pagos-actas-control-satp?anio=${anio}&tipo=${tipo}`, credenciales, {
       headers,
     });
     return content;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+const BuscarImpuestoActasControlSatp = async ( params ) => {
+  const { anio } = params;
+
+  const tipo = 0;
+
+  try {
+    const data = await BuscarPagosActasControlSatp({ anio, tipo });
+    return data;
+    
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+
+
+const BuscarRecaudacionActasControlSatp = async ( params ) => {
+  const { anio } = params;
+
+  const tipo = 1;
+
+  try {
+    const data = await BuscarPagosActasControlSatp({ anio, tipo });
+    return data;
+    
   }
   catch (error) {
     throw error;
@@ -441,50 +466,21 @@ const BuscarRecaudacionActasControlSatp = async ( params ) => {
 }
 
 const BuscarPorCobrarActasControlSatp = async ( params ) => {
-  const { anio } = params;
+   const { anio } = params;
 
   const tipo = 2;
-
-
-  let credenciales = {};
+  
   try {
-    const headers = {
-      "Content-Type": "application/json",
-    };
-    let {
-      data: { content },
-    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/buscar-recaudacion-actas-control-satp?anio=${anio}&tipo=${tipo}`, credenciales, {
-      headers,
-    });
-    return content;
+    const data = await BuscarPagosActasControlSatp({ anio, tipo });
+    return data;
+    
   }
   catch (error) {
     throw error;
   }
 }
 
-const BuscarPorEjecutarActasControlSatp = async ( params ) => {
-  const { anio } = params;
 
-  const tipo = 3;
-
-
-  let credenciales = {};
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-    };
-    let {
-      data: { content },
-    } = await axios.get(`${process.env.REACT_APP_API}/indicadores/buscar-recaudacion-actas-control-satp?anio=${anio}&tipo=${tipo}`, credenciales, {
-      headers,
-    });
-    return content;
-  }
-  catch (error) {
-    throw error;
-  }
-}
 
 export {
   TranspVigente,
@@ -504,8 +500,8 @@ export {
   SelectProyeccionPorAnioYTasa,
   UpdateTasa,
   InsertarProyecciones,
+  BuscarImpuestoActasControlSatp,
   BuscarRecaudacionActasControlSatp,
-  BuscarPorCobrarActasControlSatp,
-  BuscarPorEjecutarActasControlSatp
+  BuscarPorCobrarActasControlSatp,  
 };
 

@@ -27,8 +27,8 @@ export const InspectionReportsSummaryByInfrac = ({ recaudadoAgrupadoPorInfraccio
                 {recaudadoAgrupadoPorInfraccion.map((item) => {
                   return (
                     <tr key={item.Abreviatura} className="border-bottom animate__animated animate__fadeIn animate__faster">
-                      <td className="py-3">{item.Descripcion}
-                        <p className='m-0 p-0'><small className="text-muted">Norma: {item.Norma}</small></p></td>
+                      <td className="py-3"> <span className='fw-bold'> {item.Articulo} </span> - {item.Descripcion}
+                        <p className='m-0 p-0'><small className="text-muted">Norma: {item.Norma} </small></p></td>
                       <td className="py-3 text-end">{item.TotalActas}</td>
                       <td className="py-3 text-end">{formatMoney(item.Monto)}</td>
 
