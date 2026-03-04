@@ -26,23 +26,23 @@ export const FooterIndicators = () => {
                         <p className="text-muted small mb-0">Implementada por</p>
                     </div>
 
-                    <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-2">
+                    <div className="d-flex align-items-center justify-content-center gap-4" style={{ flexWrap: "wrap" }}> 
 
-                        <img src={logoMTC} alt="MTC" style={{ height: "150px", objectFit: "contain" }} />
-                    <img src={logoPromovilidad} alt="Promovilidad" style={{ height: "80px", objectFit: "contain" }} />
+                        <img src={logoMTC} alt="MTC" style={{ height: "50px", objectFit: "contain" }} />
+                    <img src={logoPromovilidad} alt="Promovilidad" style={{ height: "50px", objectFit: "contain" }} />
 
 
                         <img
                             src={logoGiz}
                             alt="Cooperación Alemana - GIZ"
 
-                            style={{ height: "120px", objectFit: "contain" }}
+                            style={{ height: "80px", objectFit: "contain" }}
                         />
 
                         <img
                             src={logoEmbajadaSuiza}
                             alt="Embajada de Suiza en el Perú"
-                            style={{ height: "120px", objectFit: "contain" }}
+                            style={{ height: "80px", objectFit: "contain" }}
                         />
 
 
