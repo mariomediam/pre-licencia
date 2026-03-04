@@ -4,7 +4,7 @@ import { CardIndicator } from "../../components/managementIndicators/CardIndicat
 import { HeaderIdicators } from "./HeaderIdicators";
 import { FooterIndicators } from "./FooterIndicators";
 
-import logoMPP from "../../assets/images/logo-mpp.png";
+
 
 
 export const MainIndicators = () => {
