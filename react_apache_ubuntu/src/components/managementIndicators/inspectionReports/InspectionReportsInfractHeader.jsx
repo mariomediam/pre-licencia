@@ -8,7 +8,7 @@ for (let i = 2024; i <= new Date().getFullYear(); i++) {
   anios.push(i);
 }
 
-export const InspectionReportsInfractHeader = ({ year, infraction }) => {
+export const InspectionReportsInfractHeader = ({ year, infraction, handleExportExcel }) => {
   const navigate = useNavigate();
 
   const { Articulo: articulo, Descripcion: descripcion, Norma: norma } = infraction || {};
@@ -54,7 +54,7 @@ export const InspectionReportsInfractHeader = ({ year, infraction }) => {
 
 
           {/* Botón Exportar */}
-          <button className="btn btn-primary d-flex align-items-center gap-2">
+          <button className="btn btn-primary d-flex align-items-center gap-2" onClick={handleExportExcel}>
             <DownloadIcon width={16} height={16} />
             Exportar
           </button>

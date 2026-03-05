@@ -3,14 +3,14 @@ import { Spinner } from "react-bootstrap";
 import TrendingUpIcon from "../../../icons/TrendingUpIcon";
 import CashIcon from "../../../icons/CashIcon";
 import CheckIcon from "../../../icons/CheckIcon";
-import { formatMoney, formatNumber } from "../../../utils/varios";
+import { formatMoney } from "../../../utils/varios";
 import MoneyBagIcon from "../../../icons/MoneyBagIcon";
 import FileTextIcon from "../../../icons/FileTextIcon";
 import CashRegisterIcon from "../../../icons/CashRegisterIcon";
 
 
 
-export const InspectionReportsCards = ({ recaudado, porCobrar, impuesto, totalActas, isLoading = false }) => {
+export const InspectionReportsCards = ({ recaudado, porCobrar, impuesto, totalActas, isLoading = false, isMain = false }) => {
 
 
 
@@ -46,17 +46,23 @@ export const InspectionReportsCards = ({ recaudado, porCobrar, impuesto, totalAc
   };
 
   const valueStyle = {
-    fontSize: "1.5rem",
+    fontSize: "1.4rem",
     fontWeight: "700",
     color: "#212529",
     margin: 0,
   };
 
-  const cards = [
+  const allCards = [
     {
       title: "Total actas",
       value: `${totalActas}`,
       icon: <FileTextIcon width={16} height={16} style={{ color: "#7c3aed" }} />,      
+    },
+    {
+      title: "Meta anual",
+      value: formatMoney(5000000),
+      icon: <TrendingUpIcon width={16} height={16} style={{ color: "#7c3aed" }} />,
+      showOnlyInMain: true,
     },
     {
       title: "Impuesto",
@@ -82,6 +88,8 @@ export const InspectionReportsCards = ({ recaudado, porCobrar, impuesto, totalAc
       icon: <CheckIcon width={16} height={16} style={{ color: "#7c3aed" }} />,
     },
   ];
+
+  const cards = allCards.filter(card => !card.showOnlyInMain || isMain);
 
   return (
     <div className="d-flex flex-wrap gap-3 my-3">

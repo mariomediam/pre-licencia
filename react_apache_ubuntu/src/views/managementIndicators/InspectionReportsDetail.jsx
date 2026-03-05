@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BuscarRecaudacionActasControlSatp, BuscarPorCobrarActasControlSatp, BuscarImpuestoActasControlSatp } from "../../services/indicatorsService";
+import { exportarJsonToExcelMultiple } from "../../services/generalService";
 import Swal from "sweetalert2";
 
 import { HeaderIdicators } from "./HeaderIdicators";
@@ -155,11 +156,30 @@ export const InspectionReportsDetail = () => {
     setTotalActas(totalImpuesto);
   }, [impuesto]);
 
+  const handleExportExcel = async () => {
+
+    const sheets = [
+      {
+        sheet_name: "Impuesto",
+        data: impuesto,
+      },
+      {
+        sheet_name: "Recaudado",
+        data: recaudado,
+      },
+      {
+        sheet_name: "Por cobrar",
+        data: porCobrar,
+      },
+    ];
+    await exportarJsonToExcelMultiple({ sheets, filename: `Actas de control - ${urlYear}.xlsx` });
+  }
+
   return (
     <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
       <HeaderIdicators selectedType={urlTipo} />
       <div className="container-lg mx-auto py-4 flex-grow-1">
-        <InspectionReportsInfractHeader year={urlYear} infraction={infraction} />
+        <InspectionReportsInfractHeader year={urlYear} infraction={infraction} handleExportExcel={handleExportExcel} />
         <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} impuesto={totalImpuesto} totalActas={totalActas} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingImpuesto} />
 
         <div className="row g-4 mt-0">

@@ -23,7 +23,7 @@ export const FooterIndicators = () => {
                     {/* Logos - Lado derecho */}
                     {/* Texto superior centrado */}
                     <div className="mb-4">
-                        <p className="text-muted small mb-0">Implementada por</p>
+                        <p className="text-muted small mb-0">Con el apoyo de:</p>
                     </div>
 
                     <div className="d-flex align-items-center justify-content-center gap-4" style={{ flexWrap: "wrap" }}> 

@@ -237,7 +237,7 @@ export const InspectionReports = () => {
       <HeaderIdicators selectedType={urlTipo} />
       <div className="container-lg mx-auto py-4 flex-grow-1">
         <InspectionReportsHeader year={urlYear} handleExportExcel={handleExportExcel} />
-        <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} impuesto={totalImpuesto} totalActas={totalActas} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingImpuesto} />
+        <InspectionReportsCards recaudado={totalRecaudado} porCobrar={totalPorCobrar} impuesto={totalImpuesto} totalActas={totalActas} isLoading={isLoadingRecaudado || isLoadingPorCobrar || isLoadingImpuesto} isMain={true} />
 
         <div className="row g-4 mt-0">
           <div className="col-12 col-md-4">
