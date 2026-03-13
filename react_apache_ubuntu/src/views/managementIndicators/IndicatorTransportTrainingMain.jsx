@@ -190,9 +190,6 @@ export const IndicatorTransportTrainingMain = () => {
                 />
 
 
-
-
-{JSON.stringify(capacitaciones)}
             </div>
 
             <FooterIndicators />

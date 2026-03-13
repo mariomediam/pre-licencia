@@ -22,6 +22,10 @@ export const ListIndicators = () => {
     return null;
   }
 
+  const onClickBack = () => {
+    navigate(`/indicadores/${urlTipo}`);
+  }
+
   const { title : officeTitle, subTitle: officeSubTitle } = filteredOffices;
 
   return (
@@ -30,7 +34,7 @@ export const ListIndicators = () => {
       
       {/* Header Section */}
       <div className="container-lg mx-auto py-5 flex-grow-1">
-        <button className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 fw-medium p-0" onClick={() => navigate(-1)}>
+        <button className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 fw-medium p-0" onClick={onClickBack}>
           <ArrowLeftIcon width={16} height={16} />
           Volver
         </button>

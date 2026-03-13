@@ -184,8 +184,7 @@ export const IndicatorRateDetail = () => {
                 <div className="mt-4">
                     <CollecionDate D_Recaud_Inicio={collectionDate} />
                 </div>
-
-                {JSON.stringify(financialSummary)}
+                
 
             </div>
             <FooterIndicators />

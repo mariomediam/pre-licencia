@@ -13,12 +13,16 @@ export const InspectionReportsHeader = ({ year, handleExportExcel }) => {
   const navigate = useNavigate();
 
   const title = "Indicadores de actas de control";
-  const subTitle = "Subgerencia de Fiscalización";
+  const subTitle = "Subgerencia de Fiscalización de Transporte y Tránsito";
 
   const handleYearChange = (e) => {
     const newYear = parseInt(e.target.value);
     navigate(`/indicadores/actas-control/${newYear}`);
   };
+
+  const onClickBack = () => {
+    navigate(`/indicadores-list/01/02`);
+  }
 
   
 
@@ -27,7 +31,7 @@ export const InspectionReportsHeader = ({ year, handleExportExcel }) => {
         {/* Botón Volver */}
         <button
           className="btn btn-link text-primary text-decoration-none d-flex align-items-center gap-1 fw-medium p-0 mb-3"
-          onClick={() => navigate(-1)}
+          onClick={onClickBack}
         >
           <ArrowLeftIcon width={16} height={16} />
           Volver

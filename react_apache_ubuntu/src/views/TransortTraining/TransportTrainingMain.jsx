@@ -86,7 +86,7 @@ export const TransportTrainingMain = () => {
       <Header />
       <div className="ps-3 mb-0">
         <Breadcrumb>
-          <Breadcrumb.Item active>SubGerencia de Educación y Seguridad Vial</Breadcrumb.Item>
+          <Breadcrumb.Item active>Subgerencia de Seguridad y Educación Vial</Breadcrumb.Item>
         </Breadcrumb>
       </div>
       <hr />
