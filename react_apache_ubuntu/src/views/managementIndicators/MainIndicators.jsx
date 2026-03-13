@@ -31,6 +31,25 @@ export const MainIndicators = () => {
           </div>
         </div>
 
+        <div className="d-flex justify-content-end mx-4 mt-0 mb-1">
+            <small>
+              <span style={{ color: "#4169E1" }}>
+                <a
+                  href={`${process.env.REACT_APP_API}/download-file/indicadores/manual_indicadores.pdf`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <i
+                    className="fas fa-download"
+                    title="Descargar"
+                    style={{ color: "#4169E1" }}
+                  ></i>{" "}
+                  Manual de usuario
+                </a>
+              </span>{" "}
+            </small>
+          </div>
+
         {/* Cards Section */}
         <main className="px-3 px-md-4">
           <CardIndicator tipoSelected={urlTipo} />

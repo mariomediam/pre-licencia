@@ -39,7 +39,7 @@ export const ListIndicators = () => {
           Volver
         </button>
         <div className="text-center mb-5">
-          <h1 className="fw-bold mb-3" style={{ fontSize: "2.5rem" }}>Indicadores de {officeTitle}</h1>
+          <h1 className="fw-bold mb-3" style={{ fontSize: "2.5rem" }}>Indicadores de la {officeTitle}</h1>
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6">
               <p className="text-muted mb-0">

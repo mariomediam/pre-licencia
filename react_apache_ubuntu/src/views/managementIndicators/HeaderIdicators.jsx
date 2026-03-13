@@ -1,34 +1,34 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { useSelector } from "react-redux";
-import { ListGroup } from "react-bootstrap";
-import Offcanvas from "react-bootstrap/Offcanvas";
+// import { ListGroup } from "react-bootstrap";
+// import Offcanvas from "react-bootstrap/Offcanvas";
 
-import SideBarIcon from "../../icons/SideBarIcon";
+// import SideBarIcon from "../../icons/SideBarIcon";
 import BusIcon from "../../icons/BusIcon";
 // import LockIcon from "../../icons/LockIcon";
 import WreckingBallIcon from "../../icons/WreckingBallIcon";
 
-import logoMPP from "../../assets/images/logo-mpp.png";
+import logoMPP from "../../assets/images/escudo_muni.jpg";
 
 export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const { selectedYear } = useSelector((state) => state.indicators);
   const [show, setShow] = useState(false);
   
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
 
   // const onChangeSelectYear = (e) => {
   //   setAnioSelected(parseInt(e.target.value));
   //   navigate(`/indicadores/${selectedType}/${e.target.value}`);
   // };
 
-  const onClickMenu = (e) => {    
-    navigate(`/indicadores/${e.target.id}`);
-    handleClose();
+  // const onClickMenu = (e) => {    
+  //   navigate(`/indicadores/${e.target.id}`);
+  //   handleClose();
 
-  }
+  // }
 
   
   const menuPrincipal = useMemo(() => ( [
@@ -51,8 +51,9 @@ export const HeaderIdicators = ({ anios = [], setAnioSelected, selectedType }) =
 
   return (
     <>
-    <header className="d-flex justify-content-center mt-4">
+    <header className="d-flex flex-column align-items-center justify-content-center mt-4">
     <img src={logoMPP} alt="Logo MPP" style={{ height: "60px", objectFit: "contain" }} />
+    <p className="m-0 p-0" style={{ fontSize: "0.7rem" }}>Municipalidad Provincial de Piura</p>
     </header>
     </>
   )

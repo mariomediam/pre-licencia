@@ -12,24 +12,24 @@ export const FooterIndicators = () => {
 
 
                 {/* Contenido principal del footer */}
-                <div className="d-flex flex-column  align-items-center justify-content-cemter gap-2">
-                    {/* Copyright - Lado izquierdo */}
-                    {/* <div className="">
+                {/* Copyright - Lado izquierdo */}
+                {/* <div className="">
                         <p className="text-muted small mb-0 text-center text-md-start">
-                            © {currentYear} Municipalidad Provincial de Piura. Todos los derechos reservados
+                        © {currentYear} Municipalidad Provincial de Piura. Todos los derechos reservados
                         </p>
-                    </div> */}
+                        </div> */}
 
-                    {/* Logos - Lado derecho */}
-                    {/* Texto superior centrado */}
-                    <div className="mb-4">
-                        <p className="text-muted small mb-0">Con el apoyo de:</p>
-                    </div>
+                {/* Logos - Lado derecho */}
+                {/* Texto superior izquierdo */}
+                <div className="mb-3 text-left">
+                    <p className="ps-4 text-muted small mb-0">Con el apoyo de:</p>
+                </div>
 
-                    <div className="d-flex align-items-center justify-content-center gap-4" style={{ flexWrap: "wrap" }}> 
+                <div className="d-flex flex-column  align-items-center justify-content-cemter gap-2">
+                    <div className="d-flex align-items-center justify-content-center gap-4" style={{ flexWrap: "wrap" }}>
 
                         <img src={logoMTC} alt="MTC" style={{ height: "50px", objectFit: "contain" }} />
-                    <img src={logoPromovilidad} alt="Promovilidad" style={{ height: "50px", objectFit: "contain" }} />
+                        <img src={logoPromovilidad} alt="Promovilidad" style={{ height: "50px", objectFit: "contain" }} />
 
 
                         <img
@@ -46,7 +46,7 @@ export const FooterIndicators = () => {
                         />
 
 
-                     
+
 
                     </div>
                 </div>

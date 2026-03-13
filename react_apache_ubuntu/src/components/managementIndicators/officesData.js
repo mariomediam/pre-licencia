@@ -10,7 +10,7 @@ export const getOffices = (anioSelected) => [
     type: "01",
     code: "00",
     dependencia: "110659",
-    title: "Gerencia de Transporte y Movilidad urbana",
+    title: "Gerencia de Transporte y Movilidad Urbana",
     subTitle: "Visualización de indicadores consolidados y políticas de transporte para la provincia.",
     icon: <BusIcon width={36} height={36} />,
     nivel: 1, // 1: Gerencia, 2: Subgerencia, 3: Unidad

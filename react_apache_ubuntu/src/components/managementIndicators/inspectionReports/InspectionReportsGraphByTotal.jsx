@@ -60,7 +60,7 @@ export const InspectionReportsGraphByTotal = ({ recaudado, porCobrar, impuesto, 
                         data: isLoading ? [0] : [porCobrar],
                         type: 'bar',
                         barWidth: '25%',
-                        itemStyle: { color:  '#22c55e'},
+                        itemStyle: { color:  '#FFC107'}, 
                         label: {
                             show: true,
                             position: "top",
