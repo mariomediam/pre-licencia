@@ -12,9 +12,10 @@ import { CollectionOfficeByMonth } from "../../components/managementIndicators/c
 import { FinancialSummaryByMonth } from "../../components/managementIndicators/collectionOffice/FinancialSummaryByMonth";
 import { CollectiobOfficeByRate } from "../../components/managementIndicators/collectionOffice/CollectiobOfficeByRate";
 import { CollecionDate } from "../../components/managementIndicators/CollecionDate";
-import { transformarFecha, obtenerNombreMes, formatMoney } from "../../utils/varios";
+import { transformarFecha, obtenerNombreMes } from "../../utils/varios";
 import { FooterIndicators } from "./FooterIndicators";
 import { exportarJsonToExcelMultiple } from "../../services/generalService";
+import { CollectionOfficeByOffice } from "../../components/managementIndicators/collectionOffice/CollectionOfficeByOffice";
 
 
 const currentYear = new Date().getFullYear();
@@ -25,12 +26,9 @@ const IndicatorCollectionDetail = () => {
   const { tipo: urlTipo = "01", code: urlCode = "00" } = useParams();
 
   const offices = getOffices();
-
-
   const filteredOffice = offices.find((row) => row.type === urlTipo && row.code === urlCode);
-  console.log(filteredOffice);
-  // const filteredTasas = tasas
 
+  
 
   const [year, setYear] = useState(currentYear);
   // const [month, setMonth] = useState("00");
@@ -45,6 +43,9 @@ const IndicatorCollectionDetail = () => {
   const [rateSummary, setRateSummary] = useState([]);
   const [collectionDate, setCollectionDate] = useState("");
   const [selectedMonths, setSelectedMonths] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]); // Todos los meses
+  const [isGerenciaTransportes, setIsGerenciaTransportes] = useState(urlCode === "00" && urlTipo === "01");
+  const [collectionByOffice, setCollectionByOffice] = useState([])
+  
 
 
   useEffect(() => {
@@ -243,6 +244,26 @@ const IndicatorCollectionDetail = () => {
     await exportarJsonToExcelMultiple({ sheets, filename: `Recaudación por tasas - ${filteredOffice.title} - ${year}.xlsx` });
   }
 
+
+  useEffect(() => {
+    if (collection.length > 0) {
+      const groupedCollectionByOffice = collection.reduce((acc, item) => {
+        const key = item.N_depend_Descripcion;
+        if (!acc[key]) {
+          acc[key] = {
+            N_depend_Descripcion: key,
+            Q_RecDet_Monto: 0
+          };
+        }
+        acc[key].Q_RecDet_Monto += item.Q_RecDet_Monto;
+        return acc;
+      }, {});
+      setCollectionByOffice(Object.values(groupedCollectionByOffice));
+    } else {
+      setCollectionByOffice([]);
+    }
+  }, [collection]);
+
   return (
     <div className="main-indicators-font min-vh-100 d-flex flex-column" style={{ backgroundColor: "#f8f9fc" }}>
       <HeaderIdicators selectedType={urlTipo} />
@@ -259,6 +280,12 @@ const IndicatorCollectionDetail = () => {
             <CollectionOfficeByMonth monthlyData={monthlyCollection} totalRaised={totalReaised} year={year} />
           </div>
         </div>
+
+        {isGerenciaTransportes && (
+          <div className="mt-4">
+            <CollectionOfficeByOffice collectionByOffice={collectionByOffice} isGerenciaTransportes={isGerenciaTransportes} year={year} />
+          </div>
+        )}
 
         <div className="mt-4">
           <FinancialSummaryByMonth financialSummary={financialSummary} />
